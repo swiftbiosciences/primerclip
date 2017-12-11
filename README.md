@@ -1,8 +1,8 @@
-##primerclip
+## primerclip
 
-####primerclip v0.1 primer trimming tool.
+#### primerclip v0.1 primer trimming tool.
 
-####Swift Biosciences Inc. 2017
+#### Swift Biosciences Inc. 2017
 
 Primerclip is an alignment-based primer trimming tool designed for trimming
 primer sequences from aligned reads sequenced from a targeted high-throughput
@@ -54,23 +54,23 @@ trimming and alignment steps:
 
         samtools view -h yourbamfile.bam > yoursamfile.sam
 
-3. You should now have an alignment file in SAM format which can be used as
-    input to the primerclip tool.
+3. Run primerclip to generate a primer-trimmed SAM file.
 
- Primerclip takes three arguments:
 
-1. alignment file in SAM format (see above if you're not sure how to get a
-    SAM file from your FASTQ files)
+Primerclip takes three arguments:
 
-2. a text "master" file containing the target and primer
+1. alignment input file in SAM format (see above if you're not sure how to get a
+    SAM file from your FASTQ files) [alignmentfile.sam]
+
+2. a text "master" input file containing the target and primer
     coordinates (as well as other information) for each amplicon in the panel
-    used to create the library.
+    used to create the library. [masterfile.sam]
     Master files for each Swift Accel-Amplicon panel are available at
     swiftbiosci.com. Primerclip extracts the primer genomic coordinates from
     the master file to use for trimming primers from the aligned reads.
 
 3. the desired name of the output file containing the primer-trimmed
-    alignments in SAM format.
+    alignments in SAM format. [outputfilename.sam]
 
 The primerclip output file is in SAM format; it is common to convert The
 output SAM file to sorted and indexed BAM format using samtools or
