@@ -1,0 +1,121 @@
+name:                primerclip
+version:             0.1.0.0
+synopsis:            Initial project template from stack
+description:         Please see README.md
+homepage:            https://github.com/swiftbiosci/primerclip#readme
+license:             OtherLicense
+license-file:        LICENSE
+author:              Jonathan Irish
+maintainer:          irish@swiftbiosci.com
+copyright:           2016 Jonathan Irish
+category:            Bio
+build-type:          Simple
+cabal-version:       >=1.10
+
+library
+  hs-source-dirs:      src
+  exposed-modules:     Lib
+  build-depends:       base >= 4.7 && < 5
+                     , bytestring
+                     , either
+                     , process
+                     , monad-control
+                     , vector
+                     , binary
+                     , digits
+                     , transformers
+                     , mtl
+                     , attoparsec
+                     , containers
+                     , conduit
+                     , conduit-combinators
+                     , conduit-extra
+  extensions:          FlexibleContexts
+                     , OverloadedStrings
+                     , GADTs
+                     , BangPatterns
+                     , QuasiQuotes
+                     , TemplateHaskell
+                     , TypeFamilies
+                     , GeneralizedNewtypeDeriving
+                     , MultiParamTypeClasses
+                     , ScopedTypeVariables
+                     , RecordWildCards
+                     , ExtendedDefaultRules
+                     , DeriveGeneric
+                     , DeriveAnyClass
+  default-language:    Haskell2010
+
+executable primerclip
+  hs-source-dirs:      app
+  main-is:             Main.hs
+  ghc-options:         -O2 -static -optl-static -optl-pthread
+  build-depends:       base
+                     , primerclip
+                     , bytestring
+                     , either
+                     , process
+                     , monad-control
+                     , vector
+                     , binary
+                     , digits
+                     , transformers
+                     , mtl
+                     , attoparsec
+                     , containers
+                     , optparse-applicative
+                     , conduit
+                     , conduit-combinators
+                     , conduit-extra
+  extensions:          FlexibleContexts
+                     , OverloadedStrings
+                     , GADTs
+                     , BangPatterns
+                     , QuasiQuotes
+                     , TemplateHaskell
+                     , TypeFamilies
+                     , GeneralizedNewtypeDeriving
+                     , MultiParamTypeClasses
+                     , ScopedTypeVariables
+                     , RecordWildCards
+                     , ExtendedDefaultRules
+                     , DeriveGeneric
+                     , DeriveAnyClass
+  default-language:    Haskell2010
+
+test-suite primerclip-test
+  type:                exitcode-stdio-1.0
+  hs-source-dirs:      test
+  main-is:             Spec.hs
+  build-depends:       base
+                     , primerclip
+                     , bytestring
+                     , either
+                     , process
+                     , monad-control
+                     , vector
+                     , binary
+                     , digits
+                     , transformers
+                     , mtl
+                     , attoparsec
+                     , conduit
+                     , conduit-combinators
+                     , conduit-extra
+  extensions:          FlexibleContexts
+                     , OverloadedStrings
+                     , GADTs
+                     , BangPatterns
+                     , QuasiQuotes
+                     , TemplateHaskell
+                     , TypeFamilies
+                     , GeneralizedNewtypeDeriving
+                     , MultiParamTypeClasses
+                     , ScopedTypeVariables
+                     , RecordWildCards
+  ghc-options:         -threaded -rtsopts -with-rtsopts=-N
+  default-language:    Haskell2010
+
+source-repository head
+  type:     git
+  location: https://github.com/swiftbiosci/primerclip

@@ -1,0 +1,75 @@
+Configuring gtk2hs-buildtools-0.13.2.1...
+Building gtk2hs-buildtools-0.13.2.1...
+Preprocessing library gtk2hs-buildtools-0.13.2.1...
+[ 1 of 46] Compiling Switches         ( c2hs/state/Switches.hs, .stack-work/dist/x86_64-linux/Cabal-1.24.0.0/build/Switches.o )
+[ 2 of 46] Compiling DLists           ( c2hs/base/general/DLists.hs, .stack-work/dist/x86_64-linux/Cabal-1.24.0.0/build/DLists.o )
+[ 3 of 46] Compiling BaseVersion      ( c2hs/base/admin/BaseVersion.hs, .stack-work/dist/x86_64-linux/Cabal-1.24.0.0/build/BaseVersion.o )
+[ 4 of 46] Compiling C2HSConfig       ( c2hs/toplevel/C2HSConfig.hs, .stack-work/dist/x86_64-linux/Cabal-1.24.0.0/build/C2HSConfig.o )
+[ 5 of 46] Compiling CInfo            ( c2hs/gen/CInfo.hs, .stack-work/dist/x86_64-linux/Cabal-1.24.0.0/build/CInfo.o )
+[ 6 of 46] Compiling FNameOps         ( c2hs/base/general/FNameOps.hs, .stack-work/dist/x86_64-linux/Cabal-1.24.0.0/build/FNameOps.o )
+[ 7 of 46] Compiling FileOps          ( c2hs/base/general/FileOps.hs, .stack-work/dist/x86_64-linux/Cabal-1.24.0.0/build/FileOps.o )
+[ 8 of 46] Compiling Paths_gtk2hs_buildtools ( .stack-work/dist/x86_64-linux/Cabal-1.24.0.0/build/autogen/Paths_gtk2hs_buildtools.hs, .stack-work/dist/x86_64-linux/Cabal-1.24.0.0/build/Paths_gtk2hs_buildtools.o )
+[ 9 of 46] Compiling TypeGen          ( hierarchyGen/TypeGen.hs, .stack-work/dist/x86_64-linux/Cabal-1.24.0.0/build/TypeGen.o )
+[10 of 46] Compiling HookGenerator    ( callbackGen/HookGenerator.hs, .stack-work/dist/x86_64-linux/Cabal-1.24.0.0/build/HookGenerator.o )
+[11 of 46] Compiling Set              ( c2hs/base/general/Set.hs, .stack-work/dist/x86_64-linux/Cabal-1.24.0.0/build/Set.o )
+[12 of 46] Compiling Map              ( c2hs/base/general/Map.hs, .stack-work/dist/x86_64-linux/Cabal-1.24.0.0/build/Map.o )
+[13 of 46] Compiling Version          ( c2hs/toplevel/Version.hs, .stack-work/dist/x86_64-linux/Cabal-1.24.0.0/build/Version.o )
+[14 of 46] Compiling FastMutInt       ( c2hs/base/general/FastMutInt.hs, .stack-work/dist/x86_64-linux/Cabal-1.24.0.0/build/FastMutInt.o )
+[15 of 46] Compiling Binary           ( c2hs/base/general/Binary.hs, .stack-work/dist/x86_64-linux/Cabal-1.24.0.0/build/Binary.o )
+[16 of 46] Compiling UNames           ( c2hs/base/general/UNames.hs, .stack-work/dist/x86_64-linux/Cabal-1.24.0.0/build/UNames.o )
+[17 of 46] Compiling Position         ( c2hs/base/general/Position.hs, .stack-work/dist/x86_64-linux/Cabal-1.24.0.0/build/Position.o )
+[18 of 46] Compiling Errors           ( c2hs/base/errors/Errors.hs, .stack-work/dist/x86_64-linux/Cabal-1.24.0.0/build/Errors.o )
+[19 of 46] Compiling StateTrans       ( c2hs/base/state/StateTrans.hs, .stack-work/dist/x86_64-linux/Cabal-1.24.0.0/build/StateTrans.o )
+[20 of 46] Compiling StateBase        ( c2hs/base/state/StateBase.hs, .stack-work/dist/x86_64-linux/Cabal-1.24.0.0/build/StateBase.o )
+[21 of 46] Compiling CIO              ( c2hs/base/state/CIO.hs, .stack-work/dist/x86_64-linux/Cabal-1.24.0.0/build/CIO.o )
+
+c2hs/base/state/CIO.hs:77:1: warning: [-Wdeprecations]
+    Module ‘System.Cmd’ is deprecated: Use "System.Process" instead
+[22 of 46] Compiling Lexers           ( c2hs/base/syntax/Lexers.hs, .stack-work/dist/x86_64-linux/Cabal-1.24.0.0/build/Lexers.o )
+
+c2hs/base/syntax/Lexers.hs:133:1: warning: [-Wtabs]
+    Tab character found here, and in 172 further locations.
+    Please use spaces instead.
+[23 of 46] Compiling Attributes       ( c2hs/base/syms/Attributes.hs, .stack-work/dist/x86_64-linux/Cabal-1.24.0.0/build/Attributes.o )
+[24 of 46] Compiling Idents           ( c2hs/base/syms/Idents.hs, .stack-work/dist/x86_64-linux/Cabal-1.24.0.0/build/Idents.o )
+[25 of 46] Compiling CTokens          ( c2hs/c/CTokens.hs, .stack-work/dist/x86_64-linux/Cabal-1.24.0.0/build/CTokens.o )
+[26 of 46] Compiling CParserMonad     ( c2hs/c/CParserMonad.hs, .stack-work/dist/x86_64-linux/Cabal-1.24.0.0/build/CParserMonad.o )
+[27 of 46] Compiling CLexer           ( .stack-work/dist/x86_64-linux/Cabal-1.24.0.0/build/CLexer.hs, .stack-work/dist/x86_64-linux/Cabal-1.24.0.0/build/CLexer.o )
+
+c2hs/c/CLexer.x:75:14: warning: [-Wtabs]
+    Tab character found here, and in 226 further locations.
+    Please use spaces instead.
+[28 of 46] Compiling NameSpaces       ( c2hs/base/syms/NameSpaces.hs, .stack-work/dist/x86_64-linux/Cabal-1.24.0.0/build/NameSpaces.o )
+[29 of 46] Compiling CAST             ( c2hs/c/CAST.hs, .stack-work/dist/x86_64-linux/Cabal-1.24.0.0/build/CAST.o )
+[30 of 46] Compiling CPretty          ( c2hs/c/CPretty.hs, .stack-work/dist/x86_64-linux/Cabal-1.24.0.0/build/CPretty.o )
+[31 of 46] Compiling CAttrs           ( c2hs/c/CAttrs.hs, .stack-work/dist/x86_64-linux/Cabal-1.24.0.0/build/CAttrs.o )
+[32 of 46] Compiling CBuiltin         ( c2hs/c/CBuiltin.hs, .stack-work/dist/x86_64-linux/Cabal-1.24.0.0/build/CBuiltin.o )
+[33 of 46] Compiling Config           ( c2hs/base/admin/Config.hs, .stack-work/dist/x86_64-linux/Cabal-1.24.0.0/build/Config.o )
+[34 of 46] Compiling State            ( c2hs/base/state/State.hs, .stack-work/dist/x86_64-linux/Cabal-1.24.0.0/build/State.o )
+[35 of 46] Compiling C2HSState        ( c2hs/state/C2HSState.hs, .stack-work/dist/x86_64-linux/Cabal-1.24.0.0/build/C2HSState.o )
+[36 of 46] Compiling CTrav            ( c2hs/c/CTrav.hs, .stack-work/dist/x86_64-linux/Cabal-1.24.0.0/build/CTrav.o )
+[37 of 46] Compiling CNames           ( c2hs/c/CNames.hs, .stack-work/dist/x86_64-linux/Cabal-1.24.0.0/build/CNames.o )
+[38 of 46] Compiling CHSLexer         ( c2hs/chs/CHSLexer.hs, .stack-work/dist/x86_64-linux/Cabal-1.24.0.0/build/CHSLexer.o )
+[39 of 46] Compiling CHS              ( c2hs/chs/CHS.hs, .stack-work/dist/x86_64-linux/Cabal-1.24.0.0/build/CHS.o )
+[40 of 46] Compiling GenHeader        ( c2hs/gen/GenHeader.hs, .stack-work/dist/x86_64-linux/Cabal-1.24.0.0/build/GenHeader.o )
+[41 of 46] Compiling CParser          ( .stack-work/dist/x86_64-linux/Cabal-1.24.0.0/build/CParser.hs, .stack-work/dist/x86_64-linux/Cabal-1.24.0.0/build/CParser.o )
+[42 of 46] Compiling C                ( c2hs/c/C.hs, .stack-work/dist/x86_64-linux/Cabal-1.24.0.0/build/C.o )
+[43 of 46] Compiling GBMonad          ( c2hs/gen/GBMonad.hs, .stack-work/dist/x86_64-linux/Cabal-1.24.0.0/build/GBMonad.o )
+[44 of 46] Compiling GenBind          ( c2hs/gen/GenBind.hs, .stack-work/dist/x86_64-linux/Cabal-1.24.0.0/build/GenBind.o )
+[45 of 46] Compiling Gtk2HsC2Hs       ( c2hs/toplevel/Gtk2HsC2Hs.hs, .stack-work/dist/x86_64-linux/Cabal-1.24.0.0/build/Gtk2HsC2Hs.o )
+[46 of 46] Compiling Gtk2HsSetup      ( src/Gtk2HsSetup.hs, .stack-work/dist/x86_64-linux/Cabal-1.24.0.0/build/Gtk2HsSetup.o )
+Preprocessing executable 'gtk2hsTypeGen' for gtk2hs-buildtools-0.13.2.1...
+[1 of 1] Compiling Main             ( exe/gtk2hsTypeGenMain.hs, .stack-work/dist/x86_64-linux/Cabal-1.24.0.0/build/gtk2hsTypeGen/gtk2hsTypeGen-tmp/Main.o )
+Linking .stack-work/dist/x86_64-linux/Cabal-1.24.0.0/build/gtk2hsTypeGen/gtk2hsTypeGen ...
+Preprocessing executable 'gtk2hsHookGenerator' for
+gtk2hs-buildtools-0.13.2.1...
+[1 of 1] Compiling Main             ( exe/gtk2hsHookGeneratorMain.hs, .stack-work/dist/x86_64-linux/Cabal-1.24.0.0/build/gtk2hsHookGenerator/gtk2hsHookGenerator-tmp/Main.o )
+Linking .stack-work/dist/x86_64-linux/Cabal-1.24.0.0/build/gtk2hsHookGenerator/gtk2hsHookGenerator ...
+Preprocessing executable 'gtk2hsC2hs' for gtk2hs-buildtools-0.13.2.1...
+[1 of 1] Compiling Main             ( exe/gtk2hsC2hsMain.hs, .stack-work/dist/x86_64-linux/Cabal-1.24.0.0/build/gtk2hsC2hs/gtk2hsC2hs-tmp/Main.o )
+Linking .stack-work/dist/x86_64-linux/Cabal-1.24.0.0/build/gtk2hsC2hs/gtk2hsC2hs ...
+Installing library in
+/home/irish/.stack/snapshots/x86_64-linux/lts-7.3/8.0.1/lib/x86_64-linux-ghc-8.0.1/gtk2hs-buildtools-0.13.2.1-4lBl9o81OkS1Feffr2qa70
+Installing executable(s) in
+/home/irish/.stack/snapshots/x86_64-linux/lts-7.3/8.0.1/bin
+Registering gtk2hs-buildtools-0.13.2.1...

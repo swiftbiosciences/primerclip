@@ -1,0 +1,14 @@
+Configuring hashable-1.2.4.0...
+Building hashable-1.2.4.0...
+Preprocessing library hashable-1.2.4.0...
+[1 of 3] Compiling Data.Hashable.Class ( Data/Hashable/Class.hs, .stack-work/dist/x86_64-linux/Cabal-1.24.0.0/build/Data/Hashable/Class.o )
+
+Data/Hashable/Class.hs:460:28: warning: [-Wdeprecations]
+    In the use of ‘inlinePerformIO’
+    (imported from Data.ByteString.Internal):
+    Deprecated: "If you think you know what you are doing, use 'unsafePerformIO'. If you are sure you know what you are doing, use 'unsafeDupablePerformIO'. If you enjoy sharing an address space with a malevolent agent of chaos, try 'accursedUnutterablePerformIO'."
+[2 of 3] Compiling Data.Hashable.Generic ( Data/Hashable/Generic.hs, .stack-work/dist/x86_64-linux/Cabal-1.24.0.0/build/Data/Hashable/Generic.o )
+[3 of 3] Compiling Data.Hashable    ( Data/Hashable.hs, .stack-work/dist/x86_64-linux/Cabal-1.24.0.0/build/Data/Hashable.o )
+Installing library in
+/home/irish/.stack/snapshots/x86_64-linux/lts-7.3/8.0.1/lib/x86_64-linux-ghc-8.0.1/hashable-1.2.4.0-EMu4H7FB10MAl6hwKw992G
+Registering hashable-1.2.4.0...

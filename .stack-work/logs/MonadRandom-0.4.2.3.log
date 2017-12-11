@@ -1,0 +1,32 @@
+Configuring MonadRandom-0.4.2.3...
+Building MonadRandom-0.4.2.3...
+Preprocessing library MonadRandom-0.4.2.3...
+[1 of 2] Compiling Control.Monad.Random.Class ( Control/Monad/Random/Class.hs, .stack-work/dist/x86_64-linux/Cabal-1.24.0.0/build/Control/Monad/Random/Class.o )
+[2 of 2] Compiling Control.Monad.Random ( Control/Monad/Random.hs, .stack-work/dist/x86_64-linux/Cabal-1.24.0.0/build/Control/Monad/Random.o )
+
+Control/Monad/Random.hs:54:1: warning: [-Wdeprecations]
+    Module ‘Control.Monad.Error’ is deprecated:
+      Use Control.Monad.Except instead
+
+Control/Monad/Random.hs:206:11: warning: [-Wdeprecations]
+    In the use of type constructor or class ‘Error’
+    (imported from Control.Monad.Error, but defined in Control.Monad.Trans.Error):
+    Deprecated: "Use Control.Monad.Trans.Except instead"
+
+Control/Monad/Random.hs:206:51: warning: [-Wdeprecations]
+    In the use of type constructor or class ‘ErrorT’
+    (imported from Control.Monad.Error, but defined in Control.Monad.Trans.Error):
+    Deprecated: "Use Control.Monad.Trans.Except instead"
+
+Control/Monad/Random.hs:251:11: warning: [-Wdeprecations]
+    In the use of type constructor or class ‘Error’
+    (imported from Control.Monad.Error, but defined in Control.Monad.Trans.Error):
+    Deprecated: "Use Control.Monad.Trans.Except instead"
+
+Control/Monad/Random.hs:251:53: warning: [-Wdeprecations]
+    In the use of type constructor or class ‘ErrorT’
+    (imported from Control.Monad.Error, but defined in Control.Monad.Trans.Error):
+    Deprecated: "Use Control.Monad.Trans.Except instead"
+Installing library in
+/home/irish/.stack/snapshots/x86_64-linux/lts-7.3/8.0.1/lib/x86_64-linux-ghc-8.0.1/MonadRandom-0.4.2.3-8TfCm6PGvGYB7omozORhov
+Registering MonadRandom-0.4.2.3...

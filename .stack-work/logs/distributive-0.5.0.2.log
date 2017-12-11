@@ -1,0 +1,16 @@
+[1 of 2] Compiling Main             ( /tmp/stack81381/distributive-0.5.0.2/Setup.lhs, /tmp/stack81381/distributive-0.5.0.2/.stack-work/dist/x86_64-linux/Cabal-1.24.0.0/setup/Main.o )
+
+/tmp/stack81381/distributive-0.5.0.2/Setup.lhs:44:69: warning: [-Wdeprecations]
+    In the use of type constructor or class ‘InstalledPackageId’
+    (imported from Distribution.Package):
+    Deprecated: "Use UnitId instead"
+[2 of 2] Compiling StackSetupShim   ( /home/irish/.stack/setup-exe-src/setup-shim-mPHDZzAJ.hs, /tmp/stack81381/distributive-0.5.0.2/.stack-work/dist/x86_64-linux/Cabal-1.24.0.0/setup/StackSetupShim.o )
+Linking /tmp/stack81381/distributive-0.5.0.2/.stack-work/dist/x86_64-linux/Cabal-1.24.0.0/setup/setup ...
+Configuring distributive-0.5.0.2...
+Building distributive-0.5.0.2...
+Preprocessing library distributive-0.5.0.2...
+[1 of 2] Compiling Data.Distributive.Generic ( src/Data/Distributive/Generic.hs, .stack-work/dist/x86_64-linux/Cabal-1.24.0.0/build/Data/Distributive/Generic.o )
+[2 of 2] Compiling Data.Distributive ( src/Data/Distributive.hs, .stack-work/dist/x86_64-linux/Cabal-1.24.0.0/build/Data/Distributive.o )
+Installing library in
+/home/irish/.stack/snapshots/x86_64-linux/lts-7.3/8.0.1/lib/x86_64-linux-ghc-8.0.1/distributive-0.5.0.2-Cdz2vLOk85j1doGXLcictT
+Registering distributive-0.5.0.2...

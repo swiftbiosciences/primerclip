@@ -1,0 +1,27 @@
+Configuring either-4.4.1.1...
+Building either-4.4.1.1...
+Preprocessing library either-4.4.1.1...
+[1 of 3] Compiling Data.Either.Validation ( src/Data/Either/Validation.hs, .stack-work/dist/x86_64-linux/Cabal-1.24.2.0/build/Data/Either/Validation.o )
+[2 of 3] Compiling Data.Either.Combinators ( src/Data/Either/Combinators.hs, .stack-work/dist/x86_64-linux/Cabal-1.24.2.0/build/Data/Either/Combinators.o )
+
+src/Data/Either/Combinators.hs:39:1: warning: [-Wunused-imports]
+    The import of ‘Control.Applicative’ is redundant
+      except perhaps to import instances from ‘Control.Applicative’
+    To import instances alone, use: import Control.Applicative()
+[3 of 3] Compiling Control.Monad.Trans.Either ( src/Control/Monad/Trans/Either.hs, .stack-work/dist/x86_64-linux/Cabal-1.24.2.0/build/Control/Monad/Trans/Either.o )
+
+src/Control/Monad/Trans/Either.hs:3:14: warning: [-Wtrustworthy-safe]
+    ‘Control.Monad.Trans.Either’ is marked as Trustworthy but has been inferred as safe!
+
+src/Control/Monad/Trans/Either.hs:55:1: warning: [-Wunused-imports]
+    The import of ‘Data.Foldable’ is redundant
+      except perhaps to import instances from ‘Data.Foldable’
+    To import instances alone, use: import Data.Foldable()
+
+src/Control/Monad/Trans/Either.hs:59:1: warning: [-Wunused-imports]
+    The import of ‘Data.Traversable’ is redundant
+      except perhaps to import instances from ‘Data.Traversable’
+    To import instances alone, use: import Data.Traversable()
+Installing library in
+/home/irish/.stack/snapshots/x86_64-linux/lts-8.12/8.0.2/lib/x86_64-linux-ghc-8.0.2/either-4.4.1.1-9aA8MP2wTIY67KxU3P5lGZ
+Registering either-4.4.1.1...

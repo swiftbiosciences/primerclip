@@ -1,0 +1,17 @@
+Configuring void-0.7.1...
+Building void-0.7.1...
+Preprocessing library void-0.7.1...
+[1 of 1] Compiling Data.Void.Unsafe ( src/Data/Void/Unsafe.hs, .stack-work/dist/x86_64-linux/Cabal-1.24.0.0/build/Data/Void/Unsafe.o )
+
+src/Data/Void/Unsafe.hs:31:1: warning: [-Wredundant-constraints]
+    • Redundant constraint: Functor f
+    • In the type signature for:
+           unsafeVacuous :: Functor f => f Void -> f a
+
+src/Data/Void/Unsafe.hs:42:1: warning: [-Wredundant-constraints]
+    • Redundant constraint: Monad m
+    • In the type signature for:
+           unsafeVacuousM :: Monad m => m Void -> m a
+Installing library in
+/home/irish/.stack/snapshots/x86_64-linux/lts-7.3/8.0.1/lib/x86_64-linux-ghc-8.0.1/void-0.7.1-DMDx4oiJSktE01vWZZ8Wjg
+Registering void-0.7.1...
