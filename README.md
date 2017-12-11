@@ -15,8 +15,6 @@ adapter sequence. Trimming based on alignment position allows primerclip to run
 in significantly less time than sequence-based trim tools, particularly as the
 size of the targeted panel increases.
 
-TODO: add table of run-times on control samples comparing cutadapt to primerclip
-
 INSTALL PRE-COMPILED BINARY:
 
 This binary is compiled for linux on x86_64 (Ubuntu 16.04).
