@@ -4,15 +4,20 @@
 
 #### Swift Biosciences Inc. 2017
 
-Primerclip is an alignment-based primer trimming tool designed for trimming
-primer sequences from aligned reads sequenced from a targeted high-throughput
-sequencing library generated from PCR-amplified library molecules. The motivation
-for designing an alignment-based primer trimming tool is speed: primerclip uses
-an algorithm based on genomic intervals of the aligned reads rather than the
-sequence matching approach necessarily used by most trimming tools to trim
-adapter sequence. Trimming based on alignment position allows primerclip to run
-in significantly less time than sequence-based trim tools, particularly as the
-size of the targeted panel increases.
+Primerclip™ is an alignment-based primer trimming tool designed to trim
+primer sequences for Swift Biosciences Accel-Amplicon™ panels. The motivation
+for designing an alignment-based primer trimming tool to increase speed.
+Primerclip uses an algorithm based on genomic intervals of the aligned reads
+rather than the sequence matching approach necessarily used by most trimming
+tools to trim adapter sequences. Trimming based on alignment position allows
+primerclip to run in significantly less time than sequence-based trim tools,
+particularly as the size of the targeted panel increases.
+
+If you have questions or would like additional support, please contact
+Swift Technical Support at:
+
+email: TechSupport@swiftbiosci.com
+phone: 734 330 2568
 
 __INSTALL PRE-COMPILED BINARY:__
 
@@ -24,15 +29,20 @@ Path to the pre-compiled binary:
 
 To install, copy the "primerclip" file into a folder on your PATH, e.g /usr/local/bin
 
+    cp .stack-work/install/x86_64-linux/lts-8.12/8.0.2/bin/primerclip /usr/local/bin
+
 Test that the binary is accessible by running
     which primerclip
 
 If the path to the binary is returned, the binary should be ready to use.
 If no path is returned, please double-check the location of the binary,
-ensure that the folder with the binary is on your path (echo $PATH),
+ensure that the folder with the binary is on your PATH:
+
+    echo $PATH
+
 and ensure that execute permissions are set for the binary:
 
-  chmod a+x /path/to/primerclip
+    chmod a+x /path/to/primerclip
 
 NOTE: although the pre-compiled binary is statically linked, it will still
       require that glibc version 2.19 is installed for the binary to run
@@ -99,7 +109,4 @@ The primerclip binary has been tested on the following operating systems:
 * Ubuntu 16.04
 * macOS Sierra
 
-If you have questions or would like to provide feedback, please contact us:
-
-TechSupport@swiftbiosci.com
 
