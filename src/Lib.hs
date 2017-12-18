@@ -1468,7 +1468,6 @@ makechrbedmap bs =
         tups = zipWith (,) bchrs chrintmaps
     in M.fromList tups
 
--- store entire primer interval, not just start and end (D'Oh!)
 makebedmap :: [BedRecord] -> I.IntMap BedRecord
 makebedmap bs =
     let tups = join $ makeprimertups <$> bs
