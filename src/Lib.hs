@@ -4,6 +4,8 @@ module Lib
 
 import System.Process
 import Control.Applicative
+import Options.Applicative hiding (flag)
+import Data.Semigroup ((<>))
 import Control.Monad
 import Control.Monad.IO.Class (liftIO)
 import Control.Exception (evaluate)
@@ -20,7 +22,7 @@ import qualified Data.Vector as V
 import Data.Bits
 import Data.Digits
 import Data.Ord (comparing, Down)
-import Data.Monoid
+import Data.Monoid hiding ((<>))
 import qualified Data.IntMap.Strict as I
 import Data.Maybe
 import qualified Data.Set as S
@@ -105,6 +107,23 @@ defaultAlignment = AlignedRead { qname = "NONE"
                                , xmid = ""
                                , tbed = defaultBed
                                }
+
+-- 180206
+data BEDPE = BEDPE { chr1 :: UChr
+                   , start1 :: Integer
+                   , end1 :: Integer
+                   , chr2 :: UChr
+                   , start2 :: Integer
+                   , end2 :: Integer
+                   , bedpename :: B.ByteString
+                   } deriving (Show, Eq, Generic)
+
+instance Ord BEDPE where
+    compare =  comparing chr1
+            <> comparing start1
+
+defaultBEDPE = BEDPE NONE 0 0 NONE 0 0 "DEFAULTBEDPE"
+
 
 data BedRecord = BedRecord { bedchr :: UChr
                            , bedstart :: Integer
@@ -554,6 +573,31 @@ uchrparser =      (A.string "chr10" >> return Chr10)
         <|>  (A.string "NC_007605" >> return NC_007605)
         <|>  (A.string "*" >> return NONE)
 
+
+-- 180206 include option for providing primer coords in BED or BEDPE format
+-- in addition to master file
+optargs :: Parser Opts
+optargs = Opts
+    <$> option auto
+        ( short 'f'
+       <> long "primerfile"
+       <> metavar "PRIMERFILEFORMAT"
+       <> help "primer coordinate input format (default is master file): master | bedpe"
+       <> showDefault
+       <> value "master" )
+    <*> argument str (metavar "SAM_INFILE")
+    <*> argument str (metavar "PANEL_MASTER_INFILE")
+    <*> argument str (metavar "OUTPUT_SAM_FILENAME")
+
+-- record to store command line arguments
+data Opts = Opts { coordfileformat :: String
+                 , incoordsfile :: String
+                 , outfilename :: String
+                 , insamfile :: String
+                 } deriving (Show, Eq)
+
+
+
 -- 170927 parse master file for primer and target intervals
 masterparser :: A.Parser MasterRecord
 masterparser = do
@@ -603,6 +647,24 @@ bedrecparser = do
                             , bedname = bname
                             }
     return bedrec
+
+-- 20180206
+bedPEparser :: A.Parser BEDPE
+bedPEparser = do
+    c1 <- uchrparser
+    A.skipSpace
+    s1 <- A.decimal
+    A.skipSpace
+    e1 <- A.decimal
+    A.skipSpace
+    c2 <- uchrparser
+    A.skipSpace
+    s2 <- A.decimal
+    A.skipSpace
+    e2 <- A.decimal
+    bname <- txtfieldp
+    -- ignore any additional columns present
+    return $ BEDPE c1 s1 e1 c2 s2 e2 bname
 
 ------------------------------------------------------------------------------
 ------------------------------------------------------------------------------
@@ -670,7 +732,27 @@ getBED fp = do
     writeFile "primer_parsing.log" parsestatus
     return succs
 
+getBEDPE :: FilePath -> IO [BEDPE]
+getBEDPE fp = do
+    flines <- B.lines <$> B.readFile fp
+    let nr = length flines
+        bs = parseBEDPE <$> flines -- [BEDPE]
+        lks = [0..] :: [Int]
+        bmap = M.fromList $ zip lks bs
+        (succm, failm) = M.partition U.isRight bmap
+        succs = U.rights $ snd <$> M.toAscList succm
+        faildlineixs = M.keys failm
+        bcnt = length succs
+        failcnt = length faildlineixs
+        parsestatus = parsechkBED nr bcnt faildlineixs
+        parsefaildLines = B.unlines $ (flines !!) <$> faildlineixs
+    putStrLn parsestatus
+    B.writeFile "bedPEparsefails.log" parsefaildLines
+    writeFile "primer_BEDPE_parsing.log" parsestatus
+    return succs
+
 parseBED bs = A.parseOnly bedrecparser bs
+parseBEDPE bs = A.parseOnly bedPEparser bs
 
 -- 170510 write parse fail lines to log file (don't print line nums to stdout)
 parsechkSAM :: Int -> Int -> [Int] -> String
@@ -1494,6 +1576,32 @@ justbedmaps ms = catMaybes ms
 
 justchrmaps :: [Maybe (I.IntMap BedRecord)] -> [I.IntMap BedRecord]
 justchrmaps mcmaps = catMaybes mcmaps
+
+createprimerbedmaps :: Opts -> IO ( M.Map UChr (I.IntMap BedRecord)
+                                  , M.Map UChr (I.IntMap BedRecord) )
+createprimerbedmaps args = case (coordfileformat args) of
+    "master" -> do
+        m <- getMasterFile $ incoordsfile args
+        let fm = makechrbedmap $ masterToFPrimerBED m
+            rm = makechrbedmap $ masterToRPrimerBED m
+        return (fm, rm)
+    "bedpe"  -> do
+        bedpe <- getBEDPE $ incoordsfile args
+        let fb = bedpeToFbed <$> bedpe
+            rb = bedpeToRbed <$> bedpe
+            fmpFromBedPE = makechrbedmap $ V.fromList fb
+            rmpFromBedPE = makechrbedmap $ V.fromList rb
+        return (fmpFromBedPE, rmpFromBedPE)
+    _        -> error "(!) Incorrect primer coord input string"
+
+-- 180206 split BEDPE to forward and reverse BedRecords
+bedpeToFbed :: BEDPE -> BedRecord
+bedpeToFbed b = BedRecord (chr1 b) (start1 b) (end1 b)
+                          (B.append (bedpename b) "_F")
+
+bedpeToRbed :: BEDPE -> BedRecord
+bedpeToRbed b = BedRecord (chr2 b) (start2 b) (end2 b)
+                          (B.append (bedpename b) "_R")
 
 -- 171017 convert AlignedRead to output string format, handling either header
 -- information stored in an AlignedRead record or an actual alignment
