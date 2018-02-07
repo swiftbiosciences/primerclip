@@ -1,6 +1,6 @@
 ## primerclip
 
-#### primerclip v0.1 primer trimming tool.
+#### primerclip v0.2beta primer trimming tool.
 
 #### Swift Biosciences Inc. 2017
 
@@ -52,7 +52,11 @@ NOTE: although the pre-compiled binary is statically linked, it will still
 
 __USAGE:__
 
-    primerclip alignmentfile.sam masterfile.txt outputfilename.sam
+    primerclip masterfile.txt alignmentfile.sam outputfilename.sam
+
+OPTIONAL USE OF BEDPE format for primer coordinates:
+
+    primerclip -b primer_coords_bedpe.bed alignmentfile.sam outputfilename.sam
 
 This primer trimming tool is designed to be used after the Illumina adapter
 trimming and alignment steps:
@@ -71,7 +75,7 @@ trimming and alignment steps:
 3. Run primerclip to generate a primer-trimmed SAM file.
 
 
-Primerclip takes three arguments:
+Primerclip takes three arguments and one optional switch:
 
 1. alignment input file in SAM format (see above if you're not sure how to get a
     SAM file from your FASTQ files) [alignmentfile.sam]
@@ -82,6 +86,11 @@ Primerclip takes three arguments:
     Master files for each Swift Accel-Amplicon panel are available at
     swiftbiosci.com. Primerclip extracts the primer genomic coordinates from
     the master file to use for trimming primers from the aligned reads.
+
+   optionally, the "-b" or "--bedpe" switch can be included and a BEDPE primer
+   coordinates file can be used as the second argument if your primer coordinates
+   are not in master file format.
+
 
 3. the desired name of the output file containing the primer-trimmed
     alignments in SAM format. [outputfilename.sam]
@@ -109,4 +118,12 @@ The primerclip binary has been tested on the following operating systems:
 * Ubuntu 16.04
 * macOS Sierra
 
+__KNOWN ISSUES__
 
+There is a known issue with primerclip losing the file handle when a network-
+attached drive (NAS drive) is used as the source or destination of input/output
+files. To avoid issues, please run primerclip with input and output file paths
+that point to files on a local storage drive if possible.
+We are working on resolving this issue as soon as possible.
+NOTE: this bug does not appear to affect EBS volumes on EC2 instances, however
+s3 has not yet been tested.

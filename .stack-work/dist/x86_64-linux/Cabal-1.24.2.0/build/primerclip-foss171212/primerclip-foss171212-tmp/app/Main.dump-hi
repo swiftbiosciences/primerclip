@@ -1,11 +1,11 @@
 
 ==================== FINAL INTERFACE ====================
-2017-12-12 14:33:27.59991 UTC
+2018-02-06 21:24:07.337163 UTC
 
 interface main@main:Main 8002
-  interface hash: bfbcb042818c64253c4cb24b31500571
-  ABI hash: 51c2009a9488e5ca036b98e500fa3b71
-  export-list hash: 475b91a905fbca00ec8fa9840507f3f6
+  interface hash: 5105927bd72ecf47e91cc5cf1034173c
+  ABI hash: 28edf86b7799fa3d41379d63f2da2dcb
+  export-list hash: 1b52582645c5ec629fd8427d1ff9041c
   orphan hash: f067ff874353f9bbd5b00d2dd0f7a928
   flag hash: c226051f3a564b7ae995d0a15392fcca
   sig of: Nothing
@@ -15,7 +15,9 @@ exports:
   Main.cargs
   Main.main
   Main.runPrimerTrimming
+  Main.runPrimerTrimming'
   Main.Cmd{Main.Cmd masterfile outsamfile samfile}
+  Main.CoordFmt{Main.BEDPE Main.MASTER}
 module dependencies:
 package dependencies: QuickCheck-2.9.2@QuickCheck-2.9.2-Jyj4gc4JxkEIgGFLAsGhs9
                       ansi-terminal-0.6.2.3@ansi-terminal-0.6.2.3-4HPxin1iv6RAndS8lH3nzo
@@ -49,7 +51,7 @@ package dependencies: QuickCheck-2.9.2@QuickCheck-2.9.2-Jyj4gc4JxkEIgGFLAsGhs9
                       mwc-random-0.13.5.0@mwc-random-0.13.5.0-Dp3Ri46ZxJuCFZWIowNqha
                       optparse-applicative-0.13.2.0@optparse-applicative-0.13.2.0-34EUj6Bj0pDLtYR0AoQs8j
                       pretty-1.1.3.3@pretty-1.1.3.3
-                      primerclip-0.1.0.0@primerclip-0.1.0.0-KtmdnGpJra4GypcvVGF2ng
+                      primerclip-0.1.0.0@primerclip-0.1.0.0-BvEEl93NsBt2YPC7rsTWdy
                       primitive-0.6.1.0@primitive-0.6.1.0-6AbSTw9JXz141LE5p6LGH
                       process-1.4.3.0@process-1.4.3.0
                       random-1.1@random-1.1-9tceXaeYIMZ4JrKq20Egog
@@ -107,7 +109,7 @@ family instance modules: attoparsec-0.13.1.0@attoparsec-0.13.1.0-HhuV3U7exg79Uml
                          mwc-random-0.13.5.0@mwc-random-0.13.5.0-Dp3Ri46ZxJuCFZWIowNqha:System.Random.MWC
                          pretty-1.1.3.3@pretty-1.1.3.3:Text.PrettyPrint.Annotated.HughesPJ
                          pretty-1.1.3.3@pretty-1.1.3.3:Text.PrettyPrint.HughesPJ
-                         primerclip-0.1.0.0@primerclip-0.1.0.0-KtmdnGpJra4GypcvVGF2ng:Lib
+                         primerclip-0.1.0.0@primerclip-0.1.0.0-BvEEl93NsBt2YPC7rsTWdy:Lib
                          primitive-0.6.1.0@primitive-0.6.1.0-6AbSTw9JXz141LE5p6LGH:Control.Monad.Primitive
                          resourcet-1.1.9@resourcet-1.1.9-Ej57FoSD8NQLck5u9CwWz8:Control.Monad.Trans.Resource.Internal
                          template-haskell-2.11.1.0:Language.Haskell.TH.Syntax
@@ -130,6 +132,7 @@ import  -/  base-4.9.1.0:Data.List 07ae2acca6538aa0800bd0a993ac6ac1
 import  -/  base-4.9.1.0:Data.Maybe d876c4ffe4b3c43755a781e8ad860d88
 import  -/  base-4.9.1.0:Data.Semigroup fc55c71ff629dcbd821309c310055959
 import  -/  base-4.9.1.0:GHC.Base c4231c43c07e46080a26bf94094c7aa1
+import  -/  base-4.9.1.0:GHC.Read b6821365d2d5fa2155c9e910160e7f57
 import  -/  base-4.9.1.0:GHC.Show a027f5ac24879eaba752f44aa90fe511
 import  -/  base-4.9.1.0:Prelude 22dd289b8469a8fa8dc81cab7b237771
 import  -/  base-4.9.1.0:System.IO e4a64a8e3dce8616da54f0ee7104f7db
@@ -148,7 +151,7 @@ import  -/  optparse-applicative-0.13.2.0@optparse-applicative-0.13.2.0-34EUj6Bj
 import  -/  optparse-applicative-0.13.2.0@optparse-applicative-0.13.2.0-34EUj6Bj0pDLtYR0AoQs8j:Options.Applicative.Builder cddcfb07a988339795d2e38d4387ac76
 import  -/  optparse-applicative-0.13.2.0@optparse-applicative-0.13.2.0-34EUj6Bj0pDLtYR0AoQs8j:Options.Applicative.Extra 149b9f0d4c43ee9476133f84e028bc40
 import  -/  optparse-applicative-0.13.2.0@optparse-applicative-0.13.2.0-34EUj6Bj0pDLtYR0AoQs8j:Options.Applicative.Types ce7b38f2adf864314131dd747c72d2ba
-import  -/  primerclip-0.1.0.0@primerclip-0.1.0.0-KtmdnGpJra4GypcvVGF2ng:Lib f35ee9b2ce1e69b9577ee6cf5bf8b19d
+import  -/  primerclip-0.1.0.0@primerclip-0.1.0.0-BvEEl93NsBt2YPC7rsTWdy:Lib c3748e33c7d6719b10dd975e75dbc979
 3c24ba07eb6c97e755e818a67d74e3bc
   $fEqCmd :: GHC.Classes.Eq Main.Cmd
   DFunId
@@ -173,6 +176,228 @@ import  -/  primerclip-0.1.0.0@primerclip-0.1.0.0-KtmdnGpJra4GypcvVGF2ng:Lib f35
                  case w of ww { Main.Cmd ww1 ww2 ww3 ->
                  case w1 of ww4 { Main.Cmd ww5 ww6 ww7 ->
                  Main.$w$c== ww1 ww2 ww3 ww5 ww6 ww7 } }) -}
+a4d869c0c3e0720222506d73d1493981
+  $fEqCoordFmt :: GHC.Classes.Eq Main.CoordFmt
+  DFunId
+  {- HasNoCafRefs, Strictness: m, Inline: [ALWAYS] CONLIKE,
+     Unfolding: DFun:.
+                  @ Main.CoordFmt Main.$fEqCoordFmt_$c== Main.$fEqCoordFmt_$c/= -}
+a4d869c0c3e0720222506d73d1493981
+  $fEqCoordFmt_$c/= ::
+    Main.CoordFmt -> Main.CoordFmt -> GHC.Types.Bool
+  {- Arity: 2, HasNoCafRefs, Strictness: <S,1*U><S,1*U>,
+     Unfolding: InlineRule (2, True, False)
+                (\ (a :: Main.CoordFmt) (b :: Main.CoordFmt) ->
+                 case a of wild {
+                   Main.MASTER
+                   -> case b of wild1 {
+                        Main.MASTER -> GHC.Types.False Main.BEDPE -> GHC.Types.True }
+                   Main.BEDPE
+                   -> case b of wild1 {
+                        Main.MASTER -> GHC.Types.True Main.BEDPE -> GHC.Types.False } }) -}
+a4d869c0c3e0720222506d73d1493981
+  $fEqCoordFmt_$c== ::
+    Main.CoordFmt -> Main.CoordFmt -> GHC.Types.Bool
+  {- Arity: 2, HasNoCafRefs, Strictness: <S,1*U><S,1*U>,
+     Unfolding: InlineRule (2, True, False)
+                (\ (ds :: Main.CoordFmt) (ds1 :: Main.CoordFmt) ->
+                 case ds of wild {
+                   Main.MASTER
+                   -> case ds1 of wild1 {
+                        Main.MASTER -> GHC.Types.True Main.BEDPE -> GHC.Types.False }
+                   Main.BEDPE
+                   -> case ds1 of wild1 {
+                        Main.MASTER -> GHC.Types.False Main.BEDPE -> GHC.Types.True } }) -}
+a4d869c0c3e0720222506d73d1493981
+  $fReadCoordFmt :: GHC.Read.Read Main.CoordFmt
+  DFunId
+  {- Strictness: m, Inline: [ALWAYS] CONLIKE,
+     Unfolding: DFun:.
+                  @ Main.CoordFmt
+                  Main.$fReadCoordFmt_$creadsPrec
+                  Main.$fReadCoordFmt_$creadList
+                  Main.$fReadCoordFmt_$creadPrec
+                  Main.$fReadCoordFmt_$creadListPrec -}
+a4d869c0c3e0720222506d73d1493981
+  $fReadCoordFmt1 ::
+    Text.ParserCombinators.ReadPrec.Prec
+    -> forall b.
+       ([Main.CoordFmt] -> Text.ParserCombinators.ReadP.P b)
+       -> Text.ParserCombinators.ReadP.P b
+  {- Arity: 2, Strictness: <L,U><L,U>,
+     Unfolding: InlineRule (2, True, False)
+                (\ (eta :: Text.ParserCombinators.ReadPrec.Prec)
+                   @ b
+                   (eta1 :: [Main.CoordFmt] -> Text.ParserCombinators.ReadP.P b) ->
+                 GHC.Read.list1
+                   @ Main.CoordFmt
+                   Main.$fReadCoordFmt2
+                     `cast`
+                   (Sym (Text.ParserCombinators.ReadPrec.N:ReadPrec[0]
+                             <Main.CoordFmt>_R))
+                   eta
+                   @ b
+                   eta1) -}
+a4d869c0c3e0720222506d73d1493981
+  $fReadCoordFmt10 ::
+    Text.ParserCombinators.ReadPrec.Prec
+    -> forall b.
+       (Main.CoordFmt -> Text.ParserCombinators.ReadP.P b)
+       -> Text.ParserCombinators.ReadP.P b
+  {- Arity: 2, HasNoCafRefs, Strictness: <L,A><C(S),1*C1(U)>,
+     Unfolding: InlineRule (2, True, True)
+                (\ (ds :: Text.ParserCombinators.ReadPrec.Prec)
+                   @ b
+                   (eta :: Main.CoordFmt -> Text.ParserCombinators.ReadP.P b) ->
+                 eta Main.MASTER) -}
+d38bdac94c3423b00adea2bc3b473260
+  $fReadCoordFmt11 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# "MASTER"#) -}
+a4d869c0c3e0720222506d73d1493981
+  $fReadCoordFmt12 :: Text.ParserCombinators.ReadP.P [Main.CoordFmt]
+  {- Unfolding: (GHC.Read.list1
+                   @ Main.CoordFmt
+                   Main.$fReadCoordFmt2
+                     `cast`
+                   (Sym (Text.ParserCombinators.ReadPrec.N:ReadPrec[0]
+                             <Main.CoordFmt>_R))
+                   GHC.Read.$fRead()5
+                   @ [Main.CoordFmt]
+                   (Text.ParserCombinators.ReadP.$fApplicativeP_$cpure
+                      @ [Main.CoordFmt])) -}
+a4d869c0c3e0720222506d73d1493981
+  $fReadCoordFmt2 ::
+    Text.ParserCombinators.ReadPrec.Prec
+    -> Text.ParserCombinators.ReadP.ReadP Main.CoordFmt
+  {- Arity: 1,
+     Unfolding: (GHC.Read.parens1
+                   @ Main.CoordFmt
+                   Main.$fReadCoordFmt3
+                     `cast`
+                   (Sym (Text.ParserCombinators.ReadPrec.N:ReadPrec[0]
+                             <Main.CoordFmt>_R))) -}
+a4d869c0c3e0720222506d73d1493981
+  $fReadCoordFmt3 ::
+    Text.ParserCombinators.ReadPrec.Prec
+    -> Text.ParserCombinators.ReadP.ReadP Main.CoordFmt
+  {- Arity: 1, Strictness: <L,U>,
+     Unfolding: InlineRule (1, True, False)
+                (\ (eta :: Text.ParserCombinators.ReadPrec.Prec) ->
+                 GHC.Read.choose2 @ Main.CoordFmt Main.$fReadCoordFmt4 eta) -}
+a4d869c0c3e0720222506d73d1493981
+  $fReadCoordFmt4 ::
+    [(GHC.Base.String,
+      Text.ParserCombinators.ReadPrec.ReadPrec Main.CoordFmt)]
+  {- Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ (GHC.Base.String,
+                      Text.ParserCombinators.ReadPrec.ReadPrec Main.CoordFmt)
+                   Main.$fReadCoordFmt9
+                   Main.$fReadCoordFmt5) -}
+a4d869c0c3e0720222506d73d1493981
+  $fReadCoordFmt5 ::
+    [(GHC.Base.String,
+      Text.ParserCombinators.ReadPrec.ReadPrec Main.CoordFmt)]
+  {- Strictness: m2,
+     Unfolding: (GHC.Types.:
+                   @ (GHC.Base.String,
+                      Text.ParserCombinators.ReadPrec.ReadPrec Main.CoordFmt)
+                   Main.$fReadCoordFmt6
+                   (GHC.Types.[]
+                      @ (GHC.Base.String,
+                         Text.ParserCombinators.ReadPrec.ReadPrec Main.CoordFmt))) -}
+a4d869c0c3e0720222506d73d1493981
+  $fReadCoordFmt6 ::
+    ([GHC.Types.Char],
+     Text.ParserCombinators.ReadPrec.ReadPrec Main.CoordFmt)
+  {- Strictness: m,
+     Unfolding: ((Main.$fReadCoordFmt8,
+                  Main.$fReadCoordFmt7
+                    `cast`
+                  (Trans
+                       (<Text.ParserCombinators.ReadPrec.Prec>_R
+                        ->_R Sym (Text.ParserCombinators.ReadP.N:ReadP[0]
+                                      <Main.CoordFmt>_R))
+                       (Sym (Text.ParserCombinators.ReadPrec.N:ReadPrec[0]
+                                 <Main.CoordFmt>_R))))) -}
+a4d869c0c3e0720222506d73d1493981
+  $fReadCoordFmt7 ::
+    Text.ParserCombinators.ReadPrec.Prec
+    -> forall b.
+       (Main.CoordFmt -> Text.ParserCombinators.ReadP.P b)
+       -> Text.ParserCombinators.ReadP.P b
+  {- Arity: 2, HasNoCafRefs, Strictness: <L,A><C(S),1*C1(U)>,
+     Unfolding: InlineRule (2, True, True)
+                (\ (ds :: Text.ParserCombinators.ReadPrec.Prec)
+                   @ b
+                   (eta :: Main.CoordFmt -> Text.ParserCombinators.ReadP.P b) ->
+                 eta Main.BEDPE) -}
+7a07208b7520ccb454f4fa5dfd75f42c
+  $fReadCoordFmt8 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# "BEDPE"#) -}
+a4d869c0c3e0720222506d73d1493981
+  $fReadCoordFmt9 ::
+    ([GHC.Types.Char],
+     Text.ParserCombinators.ReadPrec.ReadPrec Main.CoordFmt)
+  {- Strictness: m,
+     Unfolding: ((Main.$fReadCoordFmt11,
+                  Main.$fReadCoordFmt10
+                    `cast`
+                  (Trans
+                       (<Text.ParserCombinators.ReadPrec.Prec>_R
+                        ->_R Sym (Text.ParserCombinators.ReadP.N:ReadP[0]
+                                      <Main.CoordFmt>_R))
+                       (Sym (Text.ParserCombinators.ReadPrec.N:ReadPrec[0]
+                                 <Main.CoordFmt>_R))))) -}
+a4d869c0c3e0720222506d73d1493981
+  $fReadCoordFmt_$creadList ::
+    Text.ParserCombinators.ReadP.ReadS [Main.CoordFmt]
+  {- Arity: 1,
+     Unfolding: (Text.ParserCombinators.ReadP.run
+                   @ [Main.CoordFmt]
+                   Main.$fReadCoordFmt12) -}
+a4d869c0c3e0720222506d73d1493981
+  $fReadCoordFmt_$creadListPrec ::
+    Text.ParserCombinators.ReadPrec.ReadPrec [Main.CoordFmt]
+  {- Arity: 2, Strictness: <L,U><L,U>,
+     Unfolding: InlineRule (0, True, True)
+                Main.$fReadCoordFmt1
+                  `cast`
+                (Trans
+                     (<Text.ParserCombinators.ReadPrec.Prec>_R
+                      ->_R Sym (Text.ParserCombinators.ReadP.N:ReadP[0]
+                                    <[Main.CoordFmt]>_R))
+                     (Sym (Text.ParserCombinators.ReadPrec.N:ReadPrec[0]
+                               <[Main.CoordFmt]>_R))) -}
+a4d869c0c3e0720222506d73d1493981
+  $fReadCoordFmt_$creadPrec ::
+    Text.ParserCombinators.ReadPrec.ReadPrec Main.CoordFmt
+  {- Arity: 1,
+     Unfolding: InlineRule (0, True, True)
+                Main.$fReadCoordFmt2
+                  `cast`
+                (Sym (Text.ParserCombinators.ReadPrec.N:ReadPrec[0]
+                          <Main.CoordFmt>_R)) -}
+a4d869c0c3e0720222506d73d1493981
+  $fReadCoordFmt_$creadsPrec ::
+    GHC.Types.Int -> Text.ParserCombinators.ReadP.ReadS Main.CoordFmt
+  {- Arity: 1, Strictness: <L,U>,
+     Unfolding: InlineRule (1, True, False)
+                (\ (eta :: GHC.Types.Int) ->
+                 Text.ParserCombinators.ReadP.run
+                   @ Main.CoordFmt
+                   ((GHC.Read.parens1
+                       @ Main.CoordFmt
+                       Main.$fReadCoordFmt3
+                         `cast`
+                       (Sym (Text.ParserCombinators.ReadPrec.N:ReadPrec[0]
+                                 <Main.CoordFmt>_R))
+                       eta)
+                      `cast`
+                    (Text.ParserCombinators.ReadP.N:ReadP[0] <Main.CoordFmt>_R)
+                      @ Main.CoordFmt
+                      (Text.ParserCombinators.ReadP.$fApplicativeP_$cpure
+                         @ Main.CoordFmt))) -}
 3c24ba07eb6c97e755e818a67d74e3bc
   $fShowCmd :: GHC.Show.Show Main.Cmd
   DFunId
@@ -229,6 +454,76 @@ d95cf73c6291ff45f106721c45c318fd
                  case w of ww { GHC.Types.I# ww1 ->
                  case w1 of ww2 { Main.Cmd ww3 ww4 ww5 ->
                  Main.$w$cshowsPrec ww1 ww3 ww4 ww5 w2 } }) -}
+a4d869c0c3e0720222506d73d1493981
+  $fShowCoordFmt :: GHC.Show.Show Main.CoordFmt
+  DFunId
+  {- Strictness: m, Inline: [ALWAYS] CONLIKE,
+     Unfolding: DFun:.
+                  @ Main.CoordFmt
+                  Main.$fShowCoordFmt_$cshowsPrec
+                  Main.$fShowCoordFmt_$cshow
+                  Main.$fShowCoordFmt_$cshowList -}
+a4d869c0c3e0720222506d73d1493981
+  $fShowCoordFmt1 :: Main.CoordFmt -> GHC.Show.ShowS
+  {- Arity: 2, Strictness: <S,1*U><L,1*U>,
+     Unfolding: InlineRule (2, True, False)
+                (\ (ds :: Main.CoordFmt) (eta :: GHC.Base.String) ->
+                 case ds of wild {
+                   Main.MASTER
+                   -> GHC.Base.augment
+                        @ GHC.Types.Char
+                        (\ @ b
+                           (c :: GHC.Types.Char -> b -> b)[OneShot]
+                           (n :: b)[OneShot] ->
+                         GHC.Base.foldr @ GHC.Types.Char @ b c n Main.$fReadCoordFmt11)
+                        eta
+                   Main.BEDPE
+                   -> GHC.Base.augment
+                        @ GHC.Types.Char
+                        (\ @ b
+                           (c :: GHC.Types.Char -> b -> b)[OneShot]
+                           (n :: b)[OneShot] ->
+                         GHC.Base.foldr @ GHC.Types.Char @ b c n Main.$fReadCoordFmt8)
+                        eta }) -}
+a4d869c0c3e0720222506d73d1493981
+  $fShowCoordFmt_$cshow :: Main.CoordFmt -> GHC.Base.String
+  {- Arity: 1, Strictness: <S,1*U>,
+     Unfolding: InlineRule (1, True, False)
+                (\ (x :: Main.CoordFmt) ->
+                 case x of wild {
+                   Main.MASTER -> Main.$fReadCoordFmt11
+                   Main.BEDPE -> Main.$fReadCoordFmt8 }) -}
+a4d869c0c3e0720222506d73d1493981
+  $fShowCoordFmt_$cshowList :: [Main.CoordFmt] -> GHC.Show.ShowS
+  {- Arity: 2,
+     Unfolding: (GHC.Show.showList__
+                   @ Main.CoordFmt
+                   Main.$fShowCoordFmt1) -}
+a4d869c0c3e0720222506d73d1493981
+  $fShowCoordFmt_$cshowsPrec ::
+    GHC.Types.Int -> Main.CoordFmt -> GHC.Show.ShowS
+  {- Arity: 3, Strictness: <L,A><S,1*U><L,1*U>,
+     Unfolding: InlineRule (3, True, False)
+                (\ (ds :: GHC.Types.Int)
+                   (ds1 :: Main.CoordFmt)
+                   (eta :: GHC.Base.String) ->
+                 case ds1 of wild {
+                   Main.MASTER
+                   -> GHC.Base.augment
+                        @ GHC.Types.Char
+                        (\ @ b
+                           (c :: GHC.Types.Char -> b -> b)[OneShot]
+                           (n :: b)[OneShot] ->
+                         GHC.Base.foldr @ GHC.Types.Char @ b c n Main.$fReadCoordFmt11)
+                        eta
+                   Main.BEDPE
+                   -> GHC.Base.augment
+                        @ GHC.Types.Char
+                        (\ @ b
+                           (c :: GHC.Types.Char -> b -> b)[OneShot]
+                           (n :: b)[OneShot] ->
+                         GHC.Base.foldr @ GHC.Types.Char @ b c n Main.$fReadCoordFmt8)
+                        eta }) -}
 ffe787835a7a1860338941124400c7dd
   $s$fApplicativeResourceT ::
     GHC.Base.Applicative
@@ -443,6 +738,18 @@ aa8bfb27e674f4b3c1a51b51271b81f2
                            ->_R Sym (GHC.Types.N:IO[0] <a>_R))
                           (Sym (Control.Monad.Trans.Resource.Internal.N:ResourceT[0]
                                     <GHC.Types.IO>_R <a>_N))) -}
+a68887d2f9aa57db7e2830c8c6eb0894
+  $tc'BEDPE :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   4687789636131019708##
+                   4684787976935219051##
+                   Main.$trModule
+                   Main.$tc'BEDPE1) -}
+8f1c197ef8631046754b783cab17ce77
+  $tc'BEDPE1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS "'BEDPE"#) -}
 93e1824a03b56a104e5cb7d88c594fb2
   $tc'Cmd :: GHC.Types.TyCon
   {- HasNoCafRefs, Strictness: m,
@@ -455,6 +762,18 @@ aa8bfb27e674f4b3c1a51b51271b81f2
   $tc'Cmd1 :: GHC.Types.TrName
   {- HasNoCafRefs, Strictness: m1,
      Unfolding: (GHC.Types.TrNameS "'Cmd"#) -}
+44888486a44d109fd8b89ab0b45a2ac9
+  $tc'MASTER :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   17618115710630039235##
+                   13749648019272261024##
+                   Main.$trModule
+                   Main.$tc'MASTER1) -}
+cce3c4ad35ad43ec25d81176ac8b8f21
+  $tc'MASTER1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS "'MASTER"#) -}
 49940ed3209dc55ec46e705eeb137154
   $tcCmd :: GHC.Types.TyCon
   {- HasNoCafRefs, Strictness: m,
@@ -467,6 +786,18 @@ aa8bfb27e674f4b3c1a51b51271b81f2
   $tcCmd1 :: GHC.Types.TrName
   {- HasNoCafRefs, Strictness: m1,
      Unfolding: (GHC.Types.TrNameS "Cmd"#) -}
+1039322743f6f28a4ad659a61914f194
+  $tcCoordFmt :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   11408944075642162328##
+                   2501114599751764570##
+                   Main.$trModule
+                   Main.$tcCoordFmt1) -}
+a59a6427477f37a36aadaa039aead79c
+  $tcCoordFmt1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS "CoordFmt"#) -}
 d6831ef04cb9301b090dfae6f7bb7ec7
   $trModule :: GHC.Types.Module
   {- HasNoCafRefs, Strictness: m,
@@ -577,11 +908,24 @@ d6831ef04cb9301b090dfae6f7bb7ec7
                         @ GHC.Types.Char
                         GHC.Show.shows7
                         (p (GHC.Types.: @ GHC.Types.Char GHC.Show.shows4 w)) }) -}
+55dabfad0f00a26bb1d589e25d732a55
+  $wrunPrimerTrimming ::
+    GHC.Base.String
+    -> GHC.Base.String
+    -> GHC.Base.String
+    -> GHC.Base.String
+    -> GHC.Prim.State# GHC.Prim.RealWorld
+    -> (# GHC.Prim.State# GHC.Prim.RealWorld,
+          GHC.Integer.Type.Integer #)
+  {- Arity: 5, Strictness: <S,1*U><L,1*U><L,U><L,U><S,U>,
+     Inline: [0] -}
 3c24ba07eb6c97e755e818a67d74e3bc
   data Cmd
     = Cmd {samfile :: GHC.Base.String,
            masterfile :: GHC.Base.String,
            outsamfile :: GHC.Base.String}
+a4d869c0c3e0720222506d73d1493981
+  data CoordFmt = MASTER | BEDPE
 2a29099517d7be7d9a38d14543f3f246
   cargs :: Options.Applicative.Types.Parser Main.Cmd
   {- Unfolding: (Options.Applicative.Types.MultP
@@ -748,12 +1092,12 @@ ae080a417fee6c3670e3dc170ec1c459
 8a6a0151c93c832affbe0f269434a9f7
   cargs_var2 :: GHC.Base.String
   {- Unfolding: (GHC.CString.unpackCString# "SAM_INFILE"#) -}
-8ec632559864a986ce7af7e6740ebe65
+0b5193df4e038a47737cf0052fbe7d1a
   main :: GHC.Types.IO ()
   {- Arity: 1, Strictness: <S,U>,
      Unfolding: InlineRule (0, True, True)
                 Main.main1 `cast` (Sym (GHC.Types.N:IO[0] <()>_R)) -}
-f813d07563e6b2801d56243c6b1f953b
+e9caacacfce6e7f2b2d5522b5819b319
   main1 ::
     GHC.Prim.State# GHC.Prim.RealWorld
     -> (# GHC.Prim.State# GHC.Prim.RealWorld, () #)
@@ -761,23 +1105,29 @@ f813d07563e6b2801d56243c6b1f953b
      Unfolding: (\ (s :: GHC.Prim.State# GHC.Prim.RealWorld)[OneShot] ->
                  case System.Environment.getArgs1 s of ds { (#,#) ipv ipv1 ->
                  case Options.Applicative.Extra.customExecParser2
-                        @ Main.Cmd
+                        @ Lib.Opts
                         (Options.Applicative.Extra.execParserPure
-                           @ Main.Cmd
+                           @ Lib.Opts
                            Options.Applicative.Builder.defaultPrefs
-                           Main.main5
+                           Main.main4
                            ipv1)
                         ipv of ds1 { (#,#) ipv2 ipv3 ->
-                 case Main.main4 ipv3 ipv2 of ds2 { (#,#) ipv4 ipv5 ->
+                 case ipv3 of ww { Lib.Opts ww1 ww2 ww3 ww4 ->
+                 case Main.$wrunPrimerTrimming
+                        ww1
+                        ww2
+                        ww3
+                        ww4
+                        ipv2 of ds2 { (#,#) ipv4 ipv5 ->
                  case GHC.IO.Handle.Text.hPutStr2
                         GHC.IO.Handle.FD.stdout
                         (case GHC.Show.$w$cshowsPrec1
                                 0#
                                 ipv5
-                                (GHC.Types.[] @ GHC.Types.Char) of ww2 { (#,#) ww3 ww4 ->
+                                (GHC.Types.[] @ GHC.Types.Char) of ww5 { (#,#) ww6 ww7 ->
                          GHC.Base.++
                            @ GHC.Types.Char
-                           (GHC.Types.: @ GHC.Types.Char ww3 ww4)
+                           (GHC.Types.: @ GHC.Types.Char ww6 ww7)
                            Main.main3 })
                         GHC.Types.True
                         ipv4 of ds3 { (#,#) ipv6 ipv7 ->
@@ -785,16 +1135,9 @@ f813d07563e6b2801d56243c6b1f953b
                    GHC.IO.Handle.FD.stdout
                    Main.main2
                    GHC.Types.True
-                   ipv6 } } } }) -}
-e504e12e7d86bd1cab486d535961cfa4
-  main10 :: Options.Applicative.Types.Parser Main.Cmd
-  {- Unfolding: (Options.Applicative.Types.MultP
-                   @ Main.Cmd
-                   @ Main.Cmd
-                   (Options.Applicative.Extra.helper @ Main.Cmd)
-                   Main.cargs) -}
-ed2fad359cecd3373e53cf42e99302df
-  main11 ::
+                   ipv6 } } } } }) -}
+3894f15274686a32ac19bb2b40e6a369
+  main10 ::
     GHC.Prim.State# GHC.Prim.RealWorld
     -> (# GHC.Prim.State# GHC.Prim.RealWorld, () #)
   {- Arity: 1,
@@ -809,28 +1152,21 @@ ed2fad359cecd3373e53cf42e99302df
   main3 :: [GHC.Types.Char]
   {- Unfolding: (GHC.CString.unpackCString#
                    " alignments with >=1 primer bases trimmed."#) -}
-fc23b97bd8d14ac996301e21a090873f
-  main4 ::
-    Main.Cmd
-    -> GHC.Prim.State# GHC.Prim.RealWorld
-    -> (# GHC.Prim.State# GHC.Prim.RealWorld,
-          GHC.Integer.Type.Integer #)
-  {- Arity: 2, Strictness: <L,U(1*U,1*U,1*U)><S,U> -}
-12f7e37fcbc132ccaaaafcf3b4b11926
-  main5 :: Options.Applicative.Types.ParserInfo Main.Cmd
+80fc3dd491a6dee4669267d50753af84
+  main4 :: Options.Applicative.Types.ParserInfo Lib.Opts
   {- Unfolding: (Options.Applicative.Types.ParserInfo
-                   @ Main.Cmd
-                   Main.main10
+                   @ Lib.Opts
+                   Main.main9
                    GHC.Types.True
-                   Main.main8
-                   Main.main6
+                   Main.main7
+                   Main.main5
                    (GHC.Base.Nothing @ Text.PrettyPrint.ANSI.Leijen.Doc)
                      `cast`
                    (Sym (Options.Applicative.Help.Chunk.N:Chunk[0]) <Text.PrettyPrint.ANSI.Leijen.Doc>_N)
                    Options.Applicative.Builder.info1
                    GHC.Types.True) -}
-2e5df8bb66a204d02ca0030a0204790d
-  main6 ::
+1be71d5f937b81b1ec5f45f841dce4dd
+  main5 ::
     Options.Applicative.Help.Chunk.Chunk
       Text.PrettyPrint.ANSI.Leijen.Doc
   {- Unfolding: (Data.OldList.wordsFB
@@ -840,13 +1176,13 @@ fc23b97bd8d14ac996301e21a090873f
                    (GHC.Base.Nothing @ Text.PrettyPrint.ANSI.Leijen.Doc)
                      `cast`
                    (Sym (Options.Applicative.Help.Chunk.N:Chunk[0]) <Text.PrettyPrint.ANSI.Leijen.Doc>_N)
-                   Main.main7) -}
-3cfb486a9765673c4c8c2e6baef12f52
-  main7 :: [GHC.Types.Char]
+                   Main.main6) -}
+72c9aaa4c2b7fa7641ef2cace238f2bf
+  main6 :: [GHC.Types.Char]
   {- Unfolding: (GHC.CString.unpackCString#
-                   "primerclip -- Swift Biosciences primer trimming tool v0.1"#) -}
-857b4ca7b8c597f51d474340aee97ed3
-  main8 ::
+                   "primerclip -- Swift Biosciences primer trimming tool v0.2"#) -}
+8c6d6767e58d166d378e03e878d7b364
+  main7 ::
     Options.Applicative.Help.Chunk.Chunk
       Text.PrettyPrint.ANSI.Leijen.Doc
   {- Unfolding: (Data.OldList.wordsFB
@@ -856,11 +1192,18 @@ fc23b97bd8d14ac996301e21a090873f
                    (GHC.Base.Nothing @ Text.PrettyPrint.ANSI.Leijen.Doc)
                      `cast`
                    (Sym (Options.Applicative.Help.Chunk.N:Chunk[0]) <Text.PrettyPrint.ANSI.Leijen.Doc>_N)
-                   Main.main9) -}
-e2fc34ba69b88177e83e828cee1e8675
-  main9 :: [GHC.Types.Char]
+                   Main.main8) -}
+8efb09b697efdd9fead4eddca2f0663b
+  main8 :: [GHC.Types.Char]
   {- Unfolding: (GHC.CString.unpackCString#
                    "Trim PCR primer sequences from aligned reads"#) -}
+5baeeb9003ad58c48aba1a500f950520
+  main9 :: Options.Applicative.Types.Parser Lib.Opts
+  {- Unfolding: (Options.Applicative.Types.MultP
+                   @ Lib.Opts
+                   @ Lib.Opts
+                   (Options.Applicative.Extra.helper @ Lib.Opts)
+                   Lib.optargs) -}
 227b0447d20a33fac2f350d2c83ab2ae
   masterfile :: Main.Cmd -> GHC.Base.String
   RecSel Left Main.Cmd
@@ -875,15 +1218,44 @@ e2fc34ba69b88177e83e828cee1e8675
      Unfolding: InlineRule (1, True, False)
                 (\ (ds :: Main.Cmd) ->
                  case ds of wild { Main.Cmd ds1 ds2 ds3 -> ds3 }) -}
-6db13595af0a4a36b4656603c23b67e5
+9f26ddb593bcbbc53fc693c372b8088b
   runPrimerTrimming ::
+    Lib.Opts -> GHC.Types.IO GHC.Integer.Type.Integer
+  {- Arity: 2, Strictness: <S(SLLL),1*U(1*U,1*U,U,U)><S,U>,
+     Unfolding: InlineRule (0, True, True)
+                Main.runPrimerTrimming1
+                  `cast`
+                (<Lib.Opts>_R
+                 ->_R Sym (GHC.Types.N:IO[0] <GHC.Integer.Type.Integer>_R)) -}
+d5c4f1771683d6b63bec2d70897eff8c
+  runPrimerTrimming' ::
     Main.Cmd -> GHC.Types.IO GHC.Integer.Type.Integer
   {- Arity: 2, Strictness: <L,U(1*U,1*U,1*U)><S,U>,
      Unfolding: InlineRule (0, True, True)
-                Main.main4
+                Main.runPrimerTrimming'1
                   `cast`
                 (<Main.Cmd>_R
                  ->_R Sym (GHC.Types.N:IO[0] <GHC.Integer.Type.Integer>_R)) -}
+0564def1108a095e259f12b7ad81b1a9
+  runPrimerTrimming'1 ::
+    Main.Cmd
+    -> GHC.Prim.State# GHC.Prim.RealWorld
+    -> (# GHC.Prim.State# GHC.Prim.RealWorld,
+          GHC.Integer.Type.Integer #)
+  {- Arity: 2, Strictness: <L,U(1*U,1*U,1*U)><S,U> -}
+d1ea4c42aa6b52c697031ae0975c7275
+  runPrimerTrimming1 ::
+    Lib.Opts
+    -> GHC.Prim.State# GHC.Prim.RealWorld
+    -> (# GHC.Prim.State# GHC.Prim.RealWorld,
+          GHC.Integer.Type.Integer #)
+  {- Arity: 2, Strictness: <S(SLLL),1*U(1*U,1*U,U,U)><S,U>,
+     Inline: INLINE[0],
+     Unfolding: InlineRule (2, True, False)
+                (\ (w :: Lib.Opts)
+                   (w1 :: GHC.Prim.State# GHC.Prim.RealWorld)[OneShot] ->
+                 case w of ww { Lib.Opts ww1 ww2 ww3 ww4 ->
+                 Main.$wrunPrimerTrimming ww1 ww2 ww3 ww4 w1 }) -}
 63b78ef08e3b9afdd6ec7a1a53909ed1
   samfile :: Main.Cmd -> GHC.Base.String
   RecSel Left Main.Cmd
@@ -892,7 +1264,10 @@ e2fc34ba69b88177e83e828cee1e8675
                 (\ (ds :: Main.Cmd) ->
                  case ds of wild { Main.Cmd ds1 ds2 ds3 -> ds1 }) -}
 instance GHC.Classes.Eq [Main.Cmd] = Main.$fEqCmd
+instance GHC.Classes.Eq [Main.CoordFmt] = Main.$fEqCoordFmt
+instance GHC.Read.Read [Main.CoordFmt] = Main.$fReadCoordFmt
 instance GHC.Show.Show [Main.Cmd] = Main.$fShowCmd
+instance GHC.Show.Show [Main.CoordFmt] = Main.$fShowCoordFmt
 "SPEC/Main $fApplicativeResourceT @ IO" [ALWAYS] forall ($dApplicative :: GHC.Base.Applicative
                                                                             GHC.Types.IO)
   Control.Monad.Trans.Resource.Internal.$fApplicativeResourceT @ GHC.Types.IO

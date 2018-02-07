@@ -578,22 +578,20 @@ uchrparser =      (A.string "chr10" >> return Chr10)
 -- in addition to master file
 optargs :: Parser Opts
 optargs = Opts
-    <$> option auto
-        ( short 'f'
-       <> long "primerfile"
-       <> metavar "PRIMERFILEFORMAT"
-       <> help "primer coordinate input format (default is master file): master | bedpe"
-       <> showDefault
-       <> value "master" )
+    <$> switch
+        ( short 'b'
+       <> long "bedpe"
+       <> help "add this switch to use BEDPE coordinate input format (default format is master file)"
+        )
+    <*> argument str (metavar "PRIMER_COORDS_INFILE")
     <*> argument str (metavar "SAM_INFILE")
-    <*> argument str (metavar "PANEL_MASTER_INFILE")
     <*> argument str (metavar "OUTPUT_SAM_FILENAME")
 
 -- record to store command line arguments
-data Opts = Opts { coordfileformat :: String
+data Opts = Opts { coordfileformat :: Bool
                  , incoordsfile :: String
-                 , outfilename :: String
                  , insamfile :: String
+                 , outfilename :: String
                  } deriving (Show, Eq)
 
 
@@ -776,14 +774,14 @@ parsechkBED numrec numsucc failedlines
     | numrec == numsucc = reportOK
     | otherwise = reportFails
         where reportOK = "all " ++ (show numrec)
-                                ++ " primer BED records parsed successfully.\n"
+                                ++ " primer BEDPE records parsed successfully.\n"
               parsediff = length failedlines
               -- flinestrs = show <$> failedlines
               -- fstring = intercalate "\n" flinestrs
               reportFails = "WARNING: "
                              ++ (show parsediff)
                              ++ " of " ++ (show numrec)
-                             ++ " primer BED records failed to parse (see bedparsefails.log)"
+                             ++ " primer BEDPE records failed to parse (see bedparsefails.log)"
                              ++ "\n"
 
 
@@ -1580,19 +1578,19 @@ justchrmaps mcmaps = catMaybes mcmaps
 createprimerbedmaps :: Opts -> IO ( M.Map UChr (I.IntMap BedRecord)
                                   , M.Map UChr (I.IntMap BedRecord) )
 createprimerbedmaps args = case (coordfileformat args) of
-    "master" -> do
+    False -> do
         m <- getMasterFile $ incoordsfile args
         let fm = makechrbedmap $ masterToFPrimerBED m
             rm = makechrbedmap $ masterToRPrimerBED m
         return (fm, rm)
-    "bedpe"  -> do
+    True  -> do
         bedpe <- getBEDPE $ incoordsfile args
         let fb = bedpeToFbed <$> bedpe
             rb = bedpeToRbed <$> bedpe
             fmpFromBedPE = makechrbedmap $ V.fromList fb
             rmpFromBedPE = makechrbedmap $ V.fromList rb
         return (fmpFromBedPE, rmpFromBedPE)
-    _        -> error "(!) Incorrect primer coord input string"
+    -- _        -> error "(!) Incorrect primer coord input string"
 
 -- 180206 split BEDPE to forward and reverse BedRecords
 bedpeToFbed :: BEDPE -> BedRecord

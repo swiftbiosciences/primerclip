@@ -91,6 +91,13 @@
   (major1) == 2 && (major2) <  2 || \
   (major1) == 2 && (major2) == 2 && (minor) <= 1)
 
+/* package optparse-applicative-0.13.2.0 */
+#define VERSION_optparse_applicative "0.13.2.0"
+#define MIN_VERSION_optparse_applicative(major1,major2,minor) (\
+  (major1) <  0 || \
+  (major1) == 0 && (major2) <  13 || \
+  (major1) == 0 && (major2) == 13 && (minor) <= 2)
+
 /* package process-1.4.3.0 */
 #define VERSION_process "1.4.3.0"
 #define MIN_VERSION_process(major1,major2,minor) (\
@@ -111,13 +118,6 @@
   (major1) <  0 || \
   (major1) == 0 && (major2) <  11 || \
   (major1) == 0 && (major2) == 11 && (minor) <= 0)
-
-/* package optparse-applicative-0.13.2.0 */
-#define VERSION_optparse_applicative "0.13.2.0"
-#define MIN_VERSION_optparse_applicative(major1,major2,minor) (\
-  (major1) <  0 || \
-  (major1) == 0 && (major2) <  13 || \
-  (major1) == 0 && (major2) == 13 && (minor) <= 2)
 
 /* tool alex-3.2.1 */
 #define TOOL_VERSION_alex "3.2.1"
@@ -189,7 +189,7 @@
   (major1) == 2 && (major2) <  24 || \
   (major1) == 2 && (major2) == 24 && (minor) <= 0)
 
-#define CURRENT_COMPONENT_ID "primerclip-0.1.0.0-KtmdnGpJra4GypcvVGF2ng"
+#define CURRENT_COMPONENT_ID "primerclip-0.1.0.0-BvEEl93NsBt2YPC7rsTWdy"
 
-#define CURRENT_PACKAGE_KEY "primerclip-0.1.0.0-KtmdnGpJra4GypcvVGF2ng"
+#define CURRENT_PACKAGE_KEY "primerclip-0.1.0.0-BvEEl93NsBt2YPC7rsTWdy"
 

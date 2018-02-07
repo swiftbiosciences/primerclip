@@ -30,7 +30,7 @@ version = Version [0,1,0,0] []
 bindir, libdir, dynlibdir, datadir, libexecdir, sysconfdir :: FilePath
 
 bindir     = "/home/irish/github/primerclip/.stack-work/install/x86_64-linux/lts-8.12/8.0.2/bin"
-libdir     = "/home/irish/github/primerclip/.stack-work/install/x86_64-linux/lts-8.12/8.0.2/lib/x86_64-linux-ghc-8.0.2/primerclip-0.1.0.0-KtmdnGpJra4GypcvVGF2ng"
+libdir     = "/home/irish/github/primerclip/.stack-work/install/x86_64-linux/lts-8.12/8.0.2/lib/x86_64-linux-ghc-8.0.2/primerclip-0.1.0.0-BvEEl93NsBt2YPC7rsTWdy"
 dynlibdir  = "/home/irish/github/primerclip/.stack-work/install/x86_64-linux/lts-8.12/8.0.2/lib/x86_64-linux-ghc-8.0.2"
 datadir    = "/home/irish/github/primerclip/.stack-work/install/x86_64-linux/lts-8.12/8.0.2/share/x86_64-linux-ghc-8.0.2/primerclip-0.1.0.0"
 libexecdir = "/home/irish/github/primerclip/.stack-work/install/x86_64-linux/lts-8.12/8.0.2/libexec"
