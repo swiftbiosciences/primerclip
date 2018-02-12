@@ -1,11 +1,11 @@
 
 ==================== FINAL INTERFACE ====================
-2018-02-07 17:34:38.870007 UTC
+2018-02-12 21:48:43.193587 UTC
 
 interface primerclip-0.1.0.0-BvEEl93NsBt2YPC7rsTWdy:Lib [family instance module] 8002
-  interface hash: e6e3d487e440011665901fd0a90be6cd
-  ABI hash: 79d82e466ff3d8d6d9ee7195b5e9bd55
-  export-list hash: 0f499ecc6369b6824a9020b2bea66e86
+  interface hash: d4ee767f63336e4732bf76d3b69e0599
+  ABI hash: d14fb1ef6e61f2d7dc7aff4f604822e4
+  export-list hash: e466e41bd275a7a2babb4fddc7a9f09a
   orphan hash: 188145cfdf9895c582635c2b3bb2e078
   flag hash: c700d67e8f1203d8103b9f3bfac8bb0d
   sig of: Nothing
@@ -13,6 +13,7 @@ interface primerclip-0.1.0.0-BvEEl93NsBt2YPC7rsTWdy:Lib [family instance module]
   where
 exports:
   Lib.addprimerints
+  Lib.addtrimtag
   Lib.adjustcrds
   Lib.alnparser
   Lib.bedPEparser
@@ -77,6 +78,7 @@ exports:
   Lib.masterparser
   Lib.noclip
   Lib.nohardclip
+  Lib.nomapCigToNomapRname
   Lib.nopadding
   Lib.optargs
   Lib.optasp
@@ -105,6 +107,7 @@ exports:
   Lib.printAlignmentOrHdr
   Lib.printAlnStreamToFile
   Lib.rdint
+  Lib.readSAM
   Lib.readSAMFlag
   Lib.readint
   Lib.removeDs
@@ -12370,6 +12373,253 @@ ce657bac6e59d7092f8c70c9463d708a
                    ww24
                    ww25
                    ww26) -}
+5a112f59bdeaa56ff2456c43ed3b91ae
+  $waddtrimtag ::
+    Data.ByteString.Internal.ByteString
+    -> GHC.Types.Int
+    -> Lib.UChr
+    -> GHC.Integer.Type.Integer
+    -> GHC.Integer.Type.Integer
+    -> GHC.Integer.Type.Integer
+    -> Data.ByteString.Internal.ByteString
+    -> Data.ByteString.Internal.ByteString
+    -> Lib.CigarMap
+    -> Lib.CigarMap
+    -> Data.ByteString.Internal.ByteString
+    -> GHC.Integer.Type.Integer
+    -> GHC.Integer.Type.Integer
+    -> Data.ByteString.Internal.ByteString
+    -> Data.ByteString.Internal.ByteString
+    -> Data.ByteString.Internal.ByteString
+    -> Data.ByteString.Internal.ByteString
+    -> GHC.Types.Bool
+    -> GHC.Types.Bool
+    -> [Lib.BedRecord]
+    -> [Lib.BedRecord]
+    -> GHC.Types.Bool
+    -> GHC.Types.Bool
+    -> GHC.Integer.Type.Integer
+    -> GHC.Integer.Type.Integer
+    -> Lib.Header
+    -> GHC.Types.Bool
+    -> Data.ByteString.Internal.ByteString
+    -> Data.ByteString.Internal.ByteString
+    -> Lib.BedRecord
+    -> Lib.AlignedRead
+  {- Arity: 30,
+     Strictness: <L,U><L,U(U)><L,U><L,U><L,U><L,U><L,U><L,U(U,U,U,U)><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><S,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U>,
+     Inline: [0],
+     Unfolding: (\ (ww :: Data.ByteString.Internal.ByteString)
+                   (ww1 :: GHC.Types.Int)
+                   (ww2 :: Lib.UChr)
+                   (ww3 :: GHC.Integer.Type.Integer)
+                   (ww4 :: GHC.Integer.Type.Integer)
+                   (ww5 :: GHC.Integer.Type.Integer)
+                   (ww6 :: Data.ByteString.Internal.ByteString)
+                   (ww7 :: Data.ByteString.Internal.ByteString)
+                   (ww8 :: Lib.CigarMap)
+                   (ww9 :: Lib.CigarMap)
+                   (ww10 :: Data.ByteString.Internal.ByteString)
+                   (ww11 :: GHC.Integer.Type.Integer)
+                   (ww12 :: GHC.Integer.Type.Integer)
+                   (ww13 :: Data.ByteString.Internal.ByteString)
+                   (ww14 :: Data.ByteString.Internal.ByteString)
+                   (ww15 :: Data.ByteString.Internal.ByteString)
+                   (ww16 :: Data.ByteString.Internal.ByteString)
+                   (ww17 :: GHC.Types.Bool)
+                   (ww18 :: GHC.Types.Bool)
+                   (ww19 :: [Lib.BedRecord])
+                   (ww20 :: [Lib.BedRecord])
+                   (ww21 :: GHC.Types.Bool)
+                   (ww22 :: GHC.Types.Bool)
+                   (ww23 :: GHC.Integer.Type.Integer)
+                   (ww24 :: GHC.Integer.Type.Integer)
+                   (ww25 :: Lib.Header)
+                   (ww26 :: GHC.Types.Bool)
+                   (ww27 :: Data.ByteString.Internal.ByteString)
+                   (ww28 :: Data.ByteString.Internal.ByteString)
+                   (ww29 :: Lib.BedRecord) ->
+                 let {
+                   $j :: GHC.Prim.Void# -> Lib.AlignedRead
+                     {- Arity: 1, Strictness: <L,A> -}
+                   = \ (w :: GHC.Prim.Void#)[OneShot] ->
+                     case ww22 of wild {
+                       GHC.Types.False
+                       -> Lib.AlignedRead
+                            ww
+                            ww1
+                            ww2
+                            ww3
+                            ww4
+                            ww5
+                            ww6
+                            ww7
+                            ww8
+                            ww9
+                            ww10
+                            ww11
+                            ww12
+                            ww13
+                            ww14
+                            ww15
+                            ww16
+                            ww17
+                            ww18
+                            ww19
+                            ww20
+                            ww21
+                            GHC.Types.False
+                            ww23
+                            ww24
+                            ww25
+                            ww26
+                            ww27
+                            ww28
+                            ww29
+                       GHC.Types.True
+                       -> Lib.AlignedRead
+                            ww
+                            (case ww1 of wild1 { GHC.Types.I# x# ->
+                             GHC.Types.I# (GHC.Prim.orI# (GHC.Prim.andI# x# -3#) 4#) })
+                            ww2
+                            ww3
+                            ww4
+                            ww5
+                            ww6
+                            ww7
+                            ww8
+                            ww9
+                            ww10
+                            ww11
+                            ww12
+                            ww13
+                            ww14
+                            (Data.ByteString.Internal.$fMonoidByteString_$cmconcat
+                               (GHC.Types.:
+                                  @ Data.ByteString.Internal.ByteString
+                                  ww15
+                                  Lib.addtrimtag6))
+                            ww16
+                            ww17
+                            ww18
+                            ww19
+                            ww20
+                            ww21
+                            GHC.Types.True
+                            ww23
+                            ww24
+                            ww25
+                            ww26
+                            ww27
+                            ww28
+                            ww29 }
+                 } in
+                 case ww22 of wild {
+                   GHC.Types.False -> $j GHC.Prim.void#
+                   GHC.Types.True
+                   -> case ww7 of wild1 { Data.ByteString.Internal.PS dt dt1 dt2 dt3 ->
+                      case Lib.addtrimtag5 of wild2 { Data.ByteString.Internal.PS dt4 dt5 dt6 dt7 ->
+                      case GHC.Prim.tagToEnum#
+                             @ GHC.Types.Bool
+                             (GHC.Prim./=# dt3 dt7) of wild3 {
+                        GHC.Types.False
+                        -> let {
+                             $j1 :: GHC.Prim.Void# -> Lib.AlignedRead
+                               {- Arity: 1, Strictness: <L,A> -}
+                             = \ (w :: GHC.Prim.Void#)[OneShot] ->
+                               case Data.ByteString.Internal.$wcompareBytes
+                                      dt
+                                      dt1
+                                      dt2
+                                      dt3
+                                      dt4
+                                      dt5
+                                      dt6
+                                      dt7 of wild4 {
+                                 DEFAULT
+                                 -> Lib.AlignedRead
+                                      ww
+                                      ww1
+                                      ww2
+                                      ww3
+                                      ww4
+                                      ww5
+                                      ww6
+                                      wild1
+                                      ww8
+                                      ww9
+                                      ww10
+                                      ww11
+                                      ww12
+                                      ww13
+                                      ww14
+                                      (Data.ByteString.Internal.$fMonoidByteString_$cmconcat
+                                         (GHC.Types.:
+                                            @ Data.ByteString.Internal.ByteString
+                                            ww15
+                                            Lib.addtrimtag1))
+                                      ww16
+                                      ww17
+                                      ww18
+                                      ww19
+                                      ww20
+                                      ww21
+                                      GHC.Types.True
+                                      ww23
+                                      ww24
+                                      ww25
+                                      ww26
+                                      ww27
+                                      ww28
+                                      ww29
+                                 GHC.Types.EQ -> $j GHC.Prim.void# }
+                           } in
+                           case GHC.Prim.tagToEnum#
+                                  @ GHC.Types.Bool
+                                  (GHC.Prim.eqAddr# dt dt4) of wild4 {
+                             GHC.Types.False -> $j1 GHC.Prim.void#
+                             GHC.Types.True
+                             -> case GHC.Prim.tagToEnum#
+                                       @ GHC.Types.Bool
+                                       (GHC.Prim.==# dt2 dt6) of wild5 {
+                                  GHC.Types.False -> $j1 GHC.Prim.void#
+                                  GHC.Types.True -> $j GHC.Prim.void# } }
+                        GHC.Types.True
+                        -> Lib.AlignedRead
+                             ww
+                             ww1
+                             ww2
+                             ww3
+                             ww4
+                             ww5
+                             ww6
+                             wild1
+                             ww8
+                             ww9
+                             ww10
+                             ww11
+                             ww12
+                             ww13
+                             ww14
+                             (Data.ByteString.Internal.$fMonoidByteString_$cmconcat
+                                (GHC.Types.:
+                                   @ Data.ByteString.Internal.ByteString
+                                   ww15
+                                   Lib.addtrimtag1))
+                             ww16
+                             ww17
+                             ww18
+                             ww19
+                             ww20
+                             ww21
+                             GHC.Types.True
+                             ww23
+                             ww24
+                             ww25
+                             ww26
+                             ww27
+                             ww28
+                             ww29 } } } }) -}
 6250227b56e16b4f4ddec84999d31057
   $walnparser ::
     GHC.Prim.Addr#
@@ -12483,7 +12733,7 @@ fffe210bc2b63dfa36b85efcdf3372b7
                               (GHC.Types.[] @ GHC.Types.Char))
                            Data.OldList.genericLength1) of wild { DEFAULT ->
                  GHC.Prim.tagToEnum# @ GHC.Types.Bool wild }) -}
-459095f738f89e97a328b13054145de5
+2c3fedaeef14f2bbade001ffb7505fa5
   $wcheckcigseqlen2 ::
     GHC.Prim.Addr#
     -> GHC.ForeignPtr.ForeignPtrContents
@@ -12511,7 +12761,7 @@ fffe210bc2b63dfa36b85efcdf3372b7
                        tcmap :: Lib.CigarMap = Lib.mapcig ww4
                      } in
                      case GHC.Integer.Type.eqInteger#
-                            (Lib.checkcigseqlen2_go tcmap Lib.checkCigarSeqlen1)
+                            (Lib.checkcigseqlen2_go1 tcmap Lib.checkCigarSeqlen1)
                             (Lib.checkcigseqlen2_gl
                                (Data.ByteString.Internal.$wunpackAppendCharsLazy
                                   ww7
@@ -12524,7 +12774,7 @@ fffe210bc2b63dfa36b85efcdf3372b7
                        GHC.Types.False -> GHC.Types.False
                        GHC.Types.True
                        -> case GHC.Integer.Type.gtInteger#
-                                 (Lib.checkCigarSeqlen_go tcmap Lib.checkCigarSeqlen1)
+                                 (Lib.checkcigseqlen2_go tcmap Lib.checkCigarSeqlen1)
                                  Lib.checkCigarSeqlen1 of wild3 { DEFAULT ->
                           GHC.Prim.tagToEnum# @ GHC.Types.Bool wild3 } } } }
                  } in
@@ -12688,7 +12938,7 @@ e857b7c545096d992259c50933a54a05
                             @ (GHC.Integer.Type.Integer, Data.ByteString.Internal.ByteString)
                             a1
                             a2) }) } })) -}
-dc4c332d8358e001f8250b578e8efcfb
+cc3451a8181cf7f38b17189c5b1e976a
   $wcigseqlenHdrPassTest ::
     GHC.Prim.Addr#
     -> GHC.ForeignPtr.ForeignPtrContents
@@ -12712,11 +12962,8 @@ dc4c332d8358e001f8250b578e8efcfb
                      {- Arity: 1, Strictness: <L,A> -}
                    = \ (w :: GHC.Prim.Void#)[OneShot] ->
                      case ww5 of ww6 { Data.ByteString.Internal.PS ww7 ww8 ww9 ww10 ->
-                     let {
-                       tcmap :: Lib.CigarMap = Lib.mapcig ww4
-                     } in
                      case GHC.Integer.Type.eqInteger#
-                            (Lib.checkCigarSeqlen_go1 tcmap Lib.checkCigarSeqlen1)
+                            (Lib.checkCigarSeqlen_go (Lib.mapcig ww4) Lib.checkCigarSeqlen1)
                             (Lib.checkCigarSeqlen_gl
                                (Data.ByteString.Internal.$wunpackAppendCharsLazy
                                   ww7
@@ -12725,13 +12972,7 @@ dc4c332d8358e001f8250b578e8efcfb
                                   ww10
                                   (GHC.Types.[] @ GHC.Types.Char))
                                Data.OldList.genericLength1) of wild { DEFAULT ->
-                     case GHC.Prim.tagToEnum# @ GHC.Types.Bool wild of wild2 {
-                       GHC.Types.False -> GHC.Types.False
-                       GHC.Types.True
-                       -> case GHC.Integer.Type.gtInteger#
-                                 (Lib.checkCigarSeqlen_go tcmap Lib.checkCigarSeqlen1)
-                                 Lib.checkCigarSeqlen1 of wild3 { DEFAULT ->
-                          GHC.Prim.tagToEnum# @ GHC.Types.Bool wild3 } } } }
+                     GHC.Prim.tagToEnum# @ GHC.Types.Bool wild } }
                  } in
                  case GHC.Prim.tagToEnum#
                         @ GHC.Types.Bool
@@ -13549,8 +13790,75 @@ e1c678fe0a2bcb6adfc6ccb2f4fa9780
                                   DEFAULT -> GHC.Types.True GHC.Types.EQ -> GHC.Types.False }
                              GHC.Types.True -> GHC.Types.False } }
                    GHC.Types.True -> GHC.Types.True } }) -}
-5c457ee0403dd56c61fa5a840898b523
+af1718f99a55d5a376e98c5579d9595d
   $wlvl4 ::
+    GHC.Prim.Addr#
+    -> GHC.ForeignPtr.ForeignPtrContents
+    -> GHC.Prim.Int#
+    -> GHC.Prim.Int#
+    -> GHC.Prim.Int#
+    -> GHC.Prim.Int#
+    -> GHC.Prim.Int#
+    -> Data.Attoparsec.Internal.Types.More
+    -> Data.Attoparsec.Internal.Types.Failure
+         Data.ByteString.Internal.ByteString
+         (Data.Attoparsec.Internal.Types.State
+            Data.ByteString.Internal.ByteString)
+         r
+    -> Data.Attoparsec.Internal.Types.Success
+         Data.ByteString.Internal.ByteString
+         (Data.Attoparsec.Internal.Types.State
+            Data.ByteString.Internal.ByteString)
+         Lib.AlignedRead
+         r
+    -> Data.Attoparsec.Internal.Types.IResult
+         Data.ByteString.Internal.ByteString r
+  {- Arity: 10,
+     Strictness: <L,U><L,U><L,U><S,U><L,U><L,U><S,U><L,U><L,C(C1(C1(C1(C1(U)))))><L,C(C1(C1(C1(U))))>,
+     Inline: [0],
+     Unfolding: (\ @ r
+                   (ww :: GHC.Prim.Addr#)
+                   (ww1 :: GHC.ForeignPtr.ForeignPtrContents)
+                   (ww2 :: GHC.Prim.Int#)
+                   (ww3 :: GHC.Prim.Int#)
+                   (ww4 :: GHC.Prim.Int#)
+                   (ww5 :: GHC.Prim.Int#)
+                   (ww6 :: GHC.Prim.Int#)
+                   (w :: Data.Attoparsec.Internal.Types.More)
+                   (w1 :: Data.Attoparsec.Internal.Types.Failure
+                            Data.ByteString.Internal.ByteString
+                            (Data.Attoparsec.Internal.Types.State
+                               Data.ByteString.Internal.ByteString)
+                            r)
+                   (w2 :: Data.Attoparsec.Internal.Types.Success
+                            Data.ByteString.Internal.ByteString
+                            (Data.Attoparsec.Internal.Types.State
+                               Data.ByteString.Internal.ByteString)
+                            Lib.AlignedRead
+                            r) ->
+                 Lib.$whdralnparser
+                   @ r
+                   ww
+                   ww1
+                   ww2
+                   ww3
+                   ww4
+                   ww5
+                   ww6
+                   w
+                   (\ (t' :: Data.Attoparsec.Internal.Types.State
+                               Data.ByteString.Internal.ByteString)
+                      (_pos' :: Data.Attoparsec.Internal.Types.Pos)[OneShot]
+                      (more' :: Data.Attoparsec.Internal.Types.More)[OneShot]
+                      (_ctx :: [GHC.Base.String])[OneShot]
+                      (_msg :: GHC.Base.String)[OneShot] ->
+                    case t'
+                           `cast`
+                         (Sub (Data.Attoparsec.Internal.Types.D:R:StateByteString[0])) of ww7 { Data.Attoparsec.ByteString.Buffer.Buf ww8 ww9 ww10 ww11 ww12 ww13 ->
+                    Lib.$walnparser @ r ww8 ww9 ww10 ww11 ww12 ww13 ww6 more' w1 w2 })
+                   w2) -}
+6408e5bf2964933269061e2c9552e6a2
+  $wlvl5 ::
     GHC.Prim.Addr#
     -> GHC.ForeignPtr.ForeignPtrContents
     -> GHC.Prim.Int#
@@ -13939,6 +14247,56 @@ b9d38256753f02a54d8b1c797c346ebf
                                   DEFAULT -> GHC.Types.True GHC.Types.EQ -> GHC.Types.False }
                              GHC.Types.True -> GHC.Types.False } }
                    GHC.Types.True -> GHC.Types.True } }) -}
+5ceaedd8ef5c7cd81e343ee14bd5aba0
+  $wnomapCigToNomapRname ::
+    GHC.Prim.Addr#
+    -> GHC.ForeignPtr.ForeignPtrContents
+    -> GHC.Prim.Int#
+    -> GHC.Prim.Int#
+    -> Lib.UChr
+    -> Lib.UChr
+  {- Arity: 5, Strictness: <L,U><L,U><L,U><S,U><L,1*U>, Inline: [0],
+     Unfolding: (\ (ww :: GHC.Prim.Addr#)
+                   (ww1 :: GHC.ForeignPtr.ForeignPtrContents)
+                   (ww2 :: GHC.Prim.Int#)
+                   (ww3 :: GHC.Prim.Int#)
+                   (w :: Lib.UChr) ->
+                 case Lib.nomapCigToNomapRname1 of wild1 { Data.ByteString.Internal.PS dt4 dt5 dt6 dt7 ->
+                 case GHC.Prim.tagToEnum#
+                        @ GHC.Types.Bool
+                        (GHC.Prim./=# ww3 dt7) of wild2 {
+                   GHC.Types.False
+                   -> case GHC.Prim.tagToEnum#
+                             @ GHC.Types.Bool
+                             (GHC.Prim.eqAddr# ww dt4) of wild {
+                        GHC.Types.False
+                        -> case Data.ByteString.Internal.$wcompareBytes
+                                  ww
+                                  ww1
+                                  ww2
+                                  ww3
+                                  dt4
+                                  dt5
+                                  dt6
+                                  dt7 of wild4 {
+                             DEFAULT -> w GHC.Types.EQ -> Lib.NONE }
+                        GHC.Types.True
+                        -> case GHC.Prim.tagToEnum#
+                                  @ GHC.Types.Bool
+                                  (GHC.Prim.==# ww2 dt6) of wild3 {
+                             GHC.Types.False
+                             -> case Data.ByteString.Internal.$wcompareBytes
+                                       ww
+                                       ww1
+                                       ww2
+                                       ww3
+                                       dt4
+                                       dt5
+                                       dt6
+                                       dt7 of wild4 {
+                                  DEFAULT -> w GHC.Types.EQ -> Lib.NONE }
+                             GHC.Types.True -> Lib.NONE } }
+                   GHC.Types.True -> w } }) -}
 8cbf96f7a12d458debd73baeea00e559
   $wnopadding ::
     GHC.Prim.Addr#
@@ -15209,7 +15567,7 @@ d8a1dfda0c03068e57f6b723344c61a3
   {- Arity: 29,
      Strictness: <L,U><L,U><L,U><L,U><L,U><L,U><L,U(U,U,U,U)><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><S,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U>,
      Inline: [0] -}
-622a0e6801a8fac99e721afe0c1aa4a0
+bcdea473ef0e79ad108f4258c87caa1e
   $wtrimboth ::
     Data.ByteString.Internal.ByteString
     -> GHC.Types.Int
@@ -15238,7 +15596,7 @@ d8a1dfda0c03068e57f6b723344c61a3
     -> Lib.BedRecord
     -> Lib.AlignedRead
   {- Arity: 25,
-     Strictness: <L,U><L,U><L,U><L,U><L,U><L,U><L,U(U,U,U,U)><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U>,
+     Strictness: <L,U><L,U><L,1*U><L,U><L,U><L,U><L,U(U,U,U,U)><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U>,
      Inline: [0],
      Unfolding: (\ (ww :: Data.ByteString.Internal.ByteString)
                    (ww1 :: GHC.Types.Int)
@@ -15310,7 +15668,7 @@ d8a1dfda0c03068e57f6b723344c61a3
                  Lib.AlignedRead
                    ww
                    ww1
-                   ww2
+                   (Lib.nomapCigToNomapRname newcig ww2)
                    ww3
                    ww4
                    ww5
@@ -15425,7 +15783,7 @@ d8a1dfda0c03068e57f6b723344c61a3
                    ww22
                    ww23
                    ww24) -}
-0b6bc4c9303cf6b506bef8da44307714
+e5208f449706069b1b6d6fa217c9202e
   $wtrimfwd ::
     Data.ByteString.Internal.ByteString
     -> GHC.Types.Int
@@ -15455,7 +15813,7 @@ d8a1dfda0c03068e57f6b723344c61a3
     -> Lib.BedRecord
     -> Lib.AlignedRead
   {- Arity: 26,
-     Strictness: <L,U><L,U><L,U><L,U><L,U><L,U><L,U(U,U,U,U)><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U>,
+     Strictness: <L,U><L,U><L,1*U><L,U><L,U><L,U><L,U(U,U,U,U)><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U>,
      Inline: [0],
      Unfolding: (\ (ww :: Data.ByteString.Internal.ByteString)
                    (ww1 :: GHC.Types.Int)
@@ -15509,7 +15867,7 @@ d8a1dfda0c03068e57f6b723344c61a3
                  Lib.AlignedRead
                    ww
                    ww1
-                   ww2
+                   (Lib.nomapCigToNomapRname newcig ww2)
                    ww3
                    ww4
                    ww5
@@ -15621,7 +15979,7 @@ d8a1dfda0c03068e57f6b723344c61a3
                    ww23
                    ww24
                    ww25) -}
-d2ad1b3ba2e6a3d93414474e04754d3f
+b4e8a30d50a53dbf1d2b235393b19753
   $wtrimrev ::
     Data.ByteString.Internal.ByteString
     -> GHC.Types.Int
@@ -15651,7 +16009,7 @@ d2ad1b3ba2e6a3d93414474e04754d3f
     -> Lib.BedRecord
     -> Lib.AlignedRead
   {- Arity: 26,
-     Strictness: <L,U><L,U><L,U><L,U><L,U><L,U><L,U(U,U,U,U)><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U>,
+     Strictness: <L,U><L,U><L,1*U><L,U><L,U><L,U><L,U(U,U,U,U)><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U>,
      Inline: [0],
      Unfolding: (\ (ww :: Data.ByteString.Internal.ByteString)
                    (ww1 :: GHC.Types.Int)
@@ -15705,7 +16063,7 @@ d2ad1b3ba2e6a3d93414474e04754d3f
                  Lib.AlignedRead
                    ww
                    ww1
-                   ww2
+                   (Lib.nomapCigToNomapRname newcig ww2)
                    ww3
                    ww4
                    ww5
@@ -17142,6 +17500,185 @@ a637548c601edbdeb9545d3891f8f557
                    ww28
                    ww29
                    ww30 }) -}
+7bdc356238185c14be782b49a8dca1bb
+  addtrimtag :: Lib.AlignedRead -> Lib.AlignedRead
+  {- Arity: 1,
+     Strictness: <S(LLLLLLLLLLLLLLLLLLLLLLSLLLLLLL),1*U(U,U(U),U,U,U,U,U,U(U,U,U,U),U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U)>,
+     Inline: INLINE[0],
+     Unfolding: InlineRule (1, True, False)
+                (\ (w :: Lib.AlignedRead) ->
+                 case w of ww { Lib.AlignedRead ww1 ww2 ww3 ww4 ww5 ww6 ww7 ww8 ww9 ww10 ww11 ww12 ww13 ww14 ww15 ww16 ww17 ww18 ww19 ww20 ww21 ww22 ww23 ww24 ww25 ww26 ww27 ww28 ww29 ww30 ->
+                 Lib.$waddtrimtag
+                   ww1
+                   ww2
+                   ww3
+                   ww4
+                   ww5
+                   ww6
+                   ww7
+                   ww8
+                   ww9
+                   ww10
+                   ww11
+                   ww12
+                   ww13
+                   ww14
+                   ww15
+                   ww16
+                   ww17
+                   ww18
+                   ww19
+                   ww20
+                   ww21
+                   ww22
+                   ww23
+                   ww24
+                   ww25
+                   ww26
+                   ww27
+                   ww28
+                   ww29
+                   ww30 }) -}
+af283133721917fe3b65b5e681daca23
+  addtrimtag1 :: [Data.ByteString.Internal.ByteString]
+  {- Unfolding: (GHC.Types.:
+                   @ Data.ByteString.Internal.ByteString
+                   Lib.addtrimtag4
+                   Lib.addtrimtag2) -}
+adc17283f8e64f99f494f5ac12480316
+  addtrimtag2 :: [Data.ByteString.Internal.ByteString]
+  {- Unfolding: (GHC.Types.:
+                   @ Data.ByteString.Internal.ByteString
+                   Lib.addtrimtag3
+                   (GHC.Types.[] @ Data.ByteString.Internal.ByteString)) -}
+56a932c12eecadc9ce8f5376284f5710
+  addtrimtag3 :: Data.ByteString.Internal.ByteString
+  {- Unfolding: (case GHC.Prim.newMutVar#
+                        @ GHC.ForeignPtr.Finalizers
+                        @ GHC.Prim.RealWorld
+                        GHC.ForeignPtr.NoFinalizers
+                        GHC.Prim.realWorld# of ds6 { (#,#) ipv ipv1 ->
+                 let {
+                   addr# :: GHC.Prim.Addr# = "CO:Z:primer_trimmed"#
+                 } in
+                 case {__pkg_ccall bytestring-0.10.8.1@bytestring-0.10.8.1 strlen GHC.Prim.Addr#
+                                                                                  -> GHC.Prim.State#
+                                                                                       GHC.Prim.RealWorld
+                                                                                  -> (# GHC.Prim.State#
+                                                                                          GHC.Prim.RealWorld,
+                                                                                        GHC.Prim.Word# #)}
+                        addr#
+                        ipv of wild { (#,#) ds7 ds8 ->
+                 Data.ByteString.Internal.PS
+                   addr#
+                   (GHC.ForeignPtr.PlainForeignPtr ipv1)
+                   0#
+                   (GHC.Prim.word2Int# ds8) } }) -}
+d5ff1e81f59f5e5ccb75ba01914c05e1
+  addtrimtag4 :: Data.ByteString.Internal.ByteString
+  {- Unfolding: (case GHC.Prim.newMutVar#
+                        @ GHC.ForeignPtr.Finalizers
+                        @ GHC.Prim.RealWorld
+                        GHC.ForeignPtr.NoFinalizers
+                        GHC.Prim.realWorld# of ds6 { (#,#) ipv ipv1 ->
+                 let {
+                   addr# :: GHC.Prim.Addr# = "\t"#
+                 } in
+                 case {__pkg_ccall bytestring-0.10.8.1@bytestring-0.10.8.1 strlen GHC.Prim.Addr#
+                                                                                  -> GHC.Prim.State#
+                                                                                       GHC.Prim.RealWorld
+                                                                                  -> (# GHC.Prim.State#
+                                                                                          GHC.Prim.RealWorld,
+                                                                                        GHC.Prim.Word# #)}
+                        addr#
+                        ipv of wild { (#,#) ds7 ds8 ->
+                 Data.ByteString.Internal.PS
+                   addr#
+                   (GHC.ForeignPtr.PlainForeignPtr ipv1)
+                   0#
+                   (GHC.Prim.word2Int# ds8) } }) -}
+5002161037ce5690a22db640d6db5e6a
+  addtrimtag5 :: Data.ByteString.Internal.ByteString
+  {- Unfolding: (case GHC.Prim.newMutVar#
+                        @ GHC.ForeignPtr.Finalizers
+                        @ GHC.Prim.RealWorld
+                        GHC.ForeignPtr.NoFinalizers
+                        GHC.Prim.realWorld# of ds6 { (#,#) ipv ipv1 ->
+                 let {
+                   addr# :: GHC.Prim.Addr# = "*"#
+                 } in
+                 case {__pkg_ccall bytestring-0.10.8.1@bytestring-0.10.8.1 strlen GHC.Prim.Addr#
+                                                                                  -> GHC.Prim.State#
+                                                                                       GHC.Prim.RealWorld
+                                                                                  -> (# GHC.Prim.State#
+                                                                                          GHC.Prim.RealWorld,
+                                                                                        GHC.Prim.Word# #)}
+                        addr#
+                        ipv of wild { (#,#) ds7 ds8 ->
+                 Data.ByteString.Internal.PS
+                   addr#
+                   (GHC.ForeignPtr.PlainForeignPtr ipv1)
+                   0#
+                   (GHC.Prim.word2Int# ds8) } }) -}
+8c84047ff64f8879756114c21ff891b6
+  addtrimtag6 :: [Data.ByteString.Internal.ByteString]
+  {- Unfolding: (GHC.Types.:
+                   @ Data.ByteString.Internal.ByteString
+                   Lib.addtrimtag9
+                   Lib.addtrimtag7) -}
+3f42bb7e7ed27c64809d193a00a9a8a3
+  addtrimtag7 :: [Data.ByteString.Internal.ByteString]
+  {- Unfolding: (GHC.Types.:
+                   @ Data.ByteString.Internal.ByteString
+                   Lib.addtrimtag8
+                   (GHC.Types.[] @ Data.ByteString.Internal.ByteString)) -}
+9e61cc60a240b3b60f80329a49140944
+  addtrimtag8 :: Data.ByteString.Internal.ByteString
+  {- Unfolding: (case GHC.Prim.newMutVar#
+                        @ GHC.ForeignPtr.Finalizers
+                        @ GHC.Prim.RealWorld
+                        GHC.ForeignPtr.NoFinalizers
+                        GHC.Prim.realWorld# of ds6 { (#,#) ipv ipv1 ->
+                 let {
+                   addr# :: GHC.Prim.Addr#
+                   = "CO:Z:zero_alignment_length_after_primer_trim"#
+                 } in
+                 case {__pkg_ccall bytestring-0.10.8.1@bytestring-0.10.8.1 strlen GHC.Prim.Addr#
+                                                                                  -> GHC.Prim.State#
+                                                                                       GHC.Prim.RealWorld
+                                                                                  -> (# GHC.Prim.State#
+                                                                                          GHC.Prim.RealWorld,
+                                                                                        GHC.Prim.Word# #)}
+                        addr#
+                        ipv of wild { (#,#) ds7 ds8 ->
+                 Data.ByteString.Internal.PS
+                   addr#
+                   (GHC.ForeignPtr.PlainForeignPtr ipv1)
+                   0#
+                   (GHC.Prim.word2Int# ds8) } }) -}
+0b594f32358d33feba9837a3a1b3af18
+  addtrimtag9 :: Data.ByteString.Internal.ByteString
+  {- Unfolding: (case GHC.Prim.newMutVar#
+                        @ GHC.ForeignPtr.Finalizers
+                        @ GHC.Prim.RealWorld
+                        GHC.ForeignPtr.NoFinalizers
+                        GHC.Prim.realWorld# of ds6 { (#,#) ipv ipv1 ->
+                 let {
+                   addr# :: GHC.Prim.Addr# = "\t"#
+                 } in
+                 case {__pkg_ccall bytestring-0.10.8.1@bytestring-0.10.8.1 strlen GHC.Prim.Addr#
+                                                                                  -> GHC.Prim.State#
+                                                                                       GHC.Prim.RealWorld
+                                                                                  -> (# GHC.Prim.State#
+                                                                                          GHC.Prim.RealWorld,
+                                                                                        GHC.Prim.Word# #)}
+                        addr#
+                        ipv of wild { (#,#) ds7 ds8 ->
+                 Data.ByteString.Internal.PS
+                   addr#
+                   (GHC.ForeignPtr.PlainForeignPtr ipv1)
+                   0#
+                   (GHC.Prim.word2Int# ds8) } }) -}
 eb68c9cfaff29288e04b06fe5ad3424e
   adjustcrds ::
     [(GHC.Integer.Type.Integer, Data.ByteString.Internal.ByteString)]
@@ -17563,7 +18100,7 @@ f0d2b992922db17fbc7a824bfeb4d0e0
                    (w2 :: GHC.Prim.State# GHC.Prim.RealWorld)[OneShot] ->
                  case w1 of ww { Data.Vector.Vector ww1 ww2 ww3 ->
                  Lib.$wcheckChromNameMatchStatus w ww1 ww2 ww3 w2 }) -}
-868d15ab2022420711cc03a44bce584e
+69b01cd10c36e5efb2232008c191b98e
   checkCigarSeqlen :: Lib.AlignedRead -> Lib.AlignedRead
   {- Arity: 1,
      Strictness: <S(LLLLLLLLLLLLLLLLLLLLLLLLLLSLLL),1*U(U,U,U,U,U,U,U(U,U,U,U),U(U,U,U,U),U,U,U,U,U,U(U,U,U,U),U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U)>,
@@ -17685,11 +18222,6 @@ e571941653a38918f8980f4e53e01562
     [(GHC.Integer.Type.Integer, Data.ByteString.Internal.ByteString)]
     -> GHC.Integer.Type.Integer -> GHC.Integer.Type.Integer
   {- Arity: 1, Strictness: <S,1*U> -}
-7d28f5e5721aa2efd7aea99346980cda
-  checkCigarSeqlen_go1 ::
-    [(GHC.Integer.Type.Integer, Data.ByteString.Internal.ByteString)]
-    -> GHC.Integer.Type.Integer -> GHC.Integer.Type.Integer
-  {- Arity: 1, Strictness: <S,1*U> -}
 18637977d0035540bd19a3403bc3d41e
   checkcigseqlen :: Lib.AlignedRead -> GHC.Types.Bool
   {- Arity: 1,
@@ -17723,7 +18255,7 @@ a35cc7da60e8dc98f2cf51d0f71266d5
                    (GHC.ForeignPtr.PlainForeignPtr ipv1)
                    0#
                    (GHC.Prim.word2Int# ds8) } }) -}
-357bbc052770bfd1cba670923595cb39
+a7876f3d3f7465762c7968830fd19102
   checkcigseqlen2 :: Lib.AlignedRead -> GHC.Types.Bool
   {- Arity: 1,
      Strictness: <S(LLLLLLS(LLLS)LLLLLLLLLLLLLLLLLLLLLLL),1*U(A,A,A,A,A,A,1*U(U,U,U,U),1*U(U,U,U,U),A,A,A,A,A,1*U(U,U,U,U),A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A)>,
@@ -17740,6 +18272,11 @@ a35cc7da60e8dc98f2cf51d0f71266d5
   {- Arity: 2, Strictness: <S,1*U><S,1*U> -}
 64037a3b80b37bf5fc0fc1df2f49874e
   checkcigseqlen2_go ::
+    [(GHC.Integer.Type.Integer, Data.ByteString.Internal.ByteString)]
+    -> GHC.Integer.Type.Integer -> GHC.Integer.Type.Integer
+  {- Arity: 1, Strictness: <S,1*U> -}
+32059749b5087f65d25f485bf4fab049
+  checkcigseqlen2_go1 ::
     [(GHC.Integer.Type.Integer, Data.ByteString.Internal.ByteString)]
     -> GHC.Integer.Type.Integer -> GHC.Integer.Type.Integer
   {- Arity: 1, Strictness: <S,1*U> -}
@@ -17877,7 +18414,7 @@ fe508381253385eaa5a1da4d60bab17b
                 (\ (ds6 :: Lib.AlignedRead) ->
                  case ds6 of wild { Lib.AlignedRead ds7 ds8 ds9 ds10 ds11 ds12 ds13 ds14 ds15 ds16 ds17 ds18 ds19 ds20 ds21 ds22 ds23 ds24 ds25 ds26 ds27 ds28 ds29 ds30 ds31 ds32 ds33 ds34 ds35 ds36 ->
                  ds15 }) -}
-00f853ed4b65cfc4fd82c6b167b899c4
+df5864d76ff58dd03ac8fd750fe96b22
   cigseqlenHdrPassTest :: Lib.AlignedRead -> GHC.Types.Bool
   {- Arity: 1,
      Strictness: <S(LLLLLLS(LLLS)LLLLLLLLLLLLLLLLLLLLLLL),1*U(A,A,A,A,A,A,1*U(U,U,U,U),1*U(U,U,U,U),A,A,A,A,A,1*U(U,U,U,U),A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A)>,
@@ -18750,7 +19287,7 @@ cf8f4c66294d8f3dfdde4f9c7222f000
                 (\ (ds6 :: Lib.SAMFlag) ->
                  case ds6 of wild { Lib.SAMFlag ds7 ds8 ds9 ds10 ds11 ds12 ds13 ds14 ds15 ds16 ds17 ds18 ->
                  ds13 }) -}
-4f78fe23546bc4a75b333e5560151597
+6146986d92c69320cf26f742fc37326c
   getAlignedLength ::
     Data.ByteString.Internal.ByteString -> GHC.Integer.Type.Integer
   {- Arity: 1, Strictness: <L,1*U(U,U,U,U)>,
@@ -20725,6 +21262,38 @@ f083d166fe8fb17019238be5b7c9a3c4
                    (GHC.ForeignPtr.PlainForeignPtr ipv1)
                    0#
                    (GHC.Prim.word2Int# ds8) } }) -}
+2d6bbc3c50321931ec0e3265fe467559
+  nomapCigToNomapRname ::
+    Data.ByteString.Internal.ByteString -> Lib.UChr -> Lib.UChr
+  {- Arity: 2, Strictness: <S(LLLS),1*U(U,U,U,U)><L,1*U>,
+     Inline: INLINE[0],
+     Unfolding: InlineRule (2, True, False)
+                (\ (w :: Data.ByteString.Internal.ByteString) (w1 :: Lib.UChr) ->
+                 case w of ww { Data.ByteString.Internal.PS ww1 ww2 ww3 ww4 ->
+                 Lib.$wnomapCigToNomapRname ww1 ww2 ww3 ww4 w1 }) -}
+ca4e33a73d352b76c23079b77976fdcc
+  nomapCigToNomapRname1 :: Data.ByteString.Internal.ByteString
+  {- Unfolding: (case GHC.Prim.newMutVar#
+                        @ GHC.ForeignPtr.Finalizers
+                        @ GHC.Prim.RealWorld
+                        GHC.ForeignPtr.NoFinalizers
+                        GHC.Prim.realWorld# of ds6 { (#,#) ipv ipv1 ->
+                 let {
+                   addr# :: GHC.Prim.Addr# = "*"#
+                 } in
+                 case {__pkg_ccall bytestring-0.10.8.1@bytestring-0.10.8.1 strlen GHC.Prim.Addr#
+                                                                                  -> GHC.Prim.State#
+                                                                                       GHC.Prim.RealWorld
+                                                                                  -> (# GHC.Prim.State#
+                                                                                          GHC.Prim.RealWorld,
+                                                                                        GHC.Prim.Word# #)}
+                        addr#
+                        ipv of wild { (#,#) ds7 ds8 ->
+                 Data.ByteString.Internal.PS
+                   addr#
+                   (GHC.ForeignPtr.PlainForeignPtr ipv1)
+                   0#
+                   (GHC.Prim.word2Int# ds8) } }) -}
 42659f6b481ce11f815fde3f0916bc91
   nopadding ::
     (GHC.Integer.Type.Integer, Data.ByteString.Internal.ByteString)
@@ -22293,6 +22862,91 @@ e41db396a543f5625f94bda0283f8e67
 af308e494c51e58e26e5868b0b010a22
   rdint :: GHC.Base.String -> GHC.Types.Int
   {- Arity: 1, Strictness: <L,U>, Unfolding: (Lib.toBinInt) -}
+5aeadb3e09f46f2ff2bcf44f82393f56
+  readSAM :: GHC.IO.FilePath -> GHC.Types.IO [Lib.AlignedRead]
+  {- Arity: 2, Strictness: <L,U><S,U>,
+     Unfolding: InlineRule (0, True, True)
+                Lib.readSAM1
+                  `cast`
+                (<GHC.IO.FilePath>_R
+                 ->_R Sym (GHC.Types.N:IO[0] <[Lib.AlignedRead]>_R)) -}
+ed403da9a3c2782f9ba9a778c571de55
+  readSAM1 ::
+    GHC.IO.FilePath
+    -> GHC.Prim.State# GHC.Prim.RealWorld
+    -> (# GHC.Prim.State# GHC.Prim.RealWorld, [Lib.AlignedRead] #)
+  {- Arity: 2, Strictness: <L,U><S,U>,
+     Unfolding: (\ (fp :: GHC.IO.FilePath)
+                   (s :: GHC.Prim.State# GHC.Prim.RealWorld)[OneShot] ->
+                 case Data.ByteString.Char8.readFile1
+                        fp
+                        s of ds6 { (#,#) ipv ipv1 ->
+                 (# ipv,
+                    case ipv1 of ww { Data.ByteString.Internal.PS ww1 ww2 ww3 ww4 ->
+                    Data.Either.rights1
+                      @ GHC.Base.String
+                      @ Lib.AlignedRead
+                      (GHC.Base.map
+                         @ Data.ByteString.Internal.ByteString
+                         @ (Data.Either.Either GHC.Base.String Lib.AlignedRead)
+                         Lib.readSAM2
+                         (Data.ByteString.Char8.$wlines ww1 ww2 ww3 ww4)) } #) }) -}
+c1ba3df65f5944a4b29cb4a094b32bb1
+  readSAM2 ::
+    Data.ByteString.Internal.ByteString
+    -> Data.Either.Either GHC.Base.String Lib.AlignedRead
+  {- Arity: 1,
+     Unfolding: (Data.Attoparsec.ByteString.Internal.parseOnly
+                   @ Lib.AlignedRead
+                   Lib.readSAM3
+                     `cast`
+                   (Sym (Data.Attoparsec.Internal.Types.N:Parser[0]
+                             <Data.ByteString.Internal.ByteString>_N <Lib.AlignedRead>_R))) -}
+b7f417f09f4a370c50fe8951ef7dfb8f
+  readSAM3 ::
+    Data.Attoparsec.Internal.Types.State
+      Data.ByteString.Internal.ByteString
+    -> Data.Attoparsec.Internal.Types.Pos
+    -> Data.Attoparsec.Internal.Types.More
+    -> Data.Attoparsec.Internal.Types.Failure
+         Data.ByteString.Internal.ByteString
+         (Data.Attoparsec.Internal.Types.State
+            Data.ByteString.Internal.ByteString)
+         r
+    -> Data.Attoparsec.Internal.Types.Success
+         Data.ByteString.Internal.ByteString
+         (Data.Attoparsec.Internal.Types.State
+            Data.ByteString.Internal.ByteString)
+         Lib.AlignedRead
+         r
+    -> Data.Attoparsec.Internal.Types.IResult
+         Data.ByteString.Internal.ByteString r
+  {- Arity: 5,
+     Strictness: <S(LLLSLL),1*U(U,U,U,U,U,U)><S(S),U(U)><L,U><L,C(C1(C1(C1(C1(U)))))><L,C(C1(C1(C1(U))))>,
+     Inline: INLINE[0],
+     Unfolding: InlineRule (5, True, False)
+                (\ @ r
+                   (w :: Data.Attoparsec.Internal.Types.State
+                           Data.ByteString.Internal.ByteString)
+                   (w1 :: Data.Attoparsec.Internal.Types.Pos)
+                   (w2 :: Data.Attoparsec.Internal.Types.More)
+                   (w3 :: Data.Attoparsec.Internal.Types.Failure
+                            Data.ByteString.Internal.ByteString
+                            (Data.Attoparsec.Internal.Types.State
+                               Data.ByteString.Internal.ByteString)
+                            r)
+                   (w4 :: Data.Attoparsec.Internal.Types.Success
+                            Data.ByteString.Internal.ByteString
+                            (Data.Attoparsec.Internal.Types.State
+                               Data.ByteString.Internal.ByteString)
+                            Lib.AlignedRead
+                            r) ->
+                 case w `cast`
+                      (Sub (Data.Attoparsec.Internal.Types.D:R:StateByteString[0])) of ww { Data.Attoparsec.ByteString.Buffer.Buf ww1 ww2 ww3 ww4 ww5 ww6 ->
+                 case w1
+                        `cast`
+                      (Data.Attoparsec.Internal.Types.N:Pos[0]) of ww7 { GHC.Types.I# ww8 ->
+                 Lib.$wlvl4 @ r ww1 ww2 ww3 ww4 ww5 ww6 ww8 w2 w3 w4 } }) -}
 44368e9d181c4ac7ba83465303c0c5d5
   readSAMFlag :: GHC.Types.Int -> Lib.SAMFlag
   {- Arity: 1, HasNoCafRefs, Strictness: <L,U(U)>,
@@ -22367,7 +23021,7 @@ bb6dd4a5c3279c92d819ebfb5a420f58
                 (\ (ds6 :: Lib.AlignedRead) ->
                  case ds6 of wild { Lib.AlignedRead ds7 ds8 ds9 ds10 ds11 ds12 ds13 ds14 ds15 ds16 ds17 ds18 ds19 ds20 ds21 ds22 ds23 ds24 ds25 ds26 ds27 ds28 ds29 ds30 ds31 ds32 ds33 ds34 ds35 ds36 ->
                  ds20 }) -}
-0009fb291347dcf27bf7a36bea62f41c
+521b1d5d370e1c0a6e9e522d82e29672
   removeDs ::
     [(GHC.Integer.Type.Integer, Data.ByteString.Internal.ByteString)]
     -> [(GHC.Integer.Type.Integer,
@@ -22393,7 +23047,7 @@ bb6dd4a5c3279c92d819ebfb5a420f58
                          Lib.removeDs1)
                       n
                       cs)) -}
-0c07baa53bc68ade73edf2b929b73d80
+09c1fd5bc88283dcd8c5ad958e37706b
   removeDs1 ::
     (GHC.Integer.Type.Integer, Data.ByteString.Internal.ByteString)
     -> GHC.Types.Bool
@@ -22404,7 +23058,7 @@ bb6dd4a5c3279c92d819ebfb5a420f58
                           Data.ByteString.Internal.ByteString)) ->
                  case w of ww { (,) ww1 ww2 ->
                  case ww2 of ww3 { Data.ByteString.Internal.PS ww4 ww5 ww6 ww7 ->
-                 Lib.$wlvl4 ww4 ww5 ww6 ww7 } }) -}
+                 Lib.$wlvl5 ww4 ww5 ww6 ww7 } }) -}
 16e76de4e5c309c8d04d87b970bcd02e
   removeDs2 :: Data.ByteString.Internal.ByteString
   {- Unfolding: (case GHC.Prim.newMutVar#
@@ -23223,14 +23877,14 @@ b256572e9082051e7070ebf7977d2f1f
                 (\ (ds6 :: Lib.AlignedRead) ->
                  case ds6 of wild { Lib.AlignedRead ds7 ds8 ds9 ds10 ds11 ds12 ds13 ds14 ds15 ds16 ds17 ds18 ds19 ds20 ds21 ds22 ds23 ds24 ds25 ds26 ds27 ds28 ds29 ds30 ds31 ds32 ds33 ds34 ds35 ds36 ->
                  ds23 }) -}
-b03ab21dd92979dd748b6ef2f06dccfb
+4b9854e1d794141dd0c10bde8527a43b
   sumMatches ::
     [(GHC.Integer.Type.Integer, Data.ByteString.Internal.ByteString)]
     -> GHC.Integer.Type.Integer
   {- Arity: 1, Strictness: <S,1*U>,
      Unfolding: (\ (cigs :: [(GHC.Integer.Type.Integer,
                               Data.ByteString.Internal.ByteString)]) ->
-                 Lib.checkCigarSeqlen_go cigs Lib.checkCigarSeqlen1) -}
+                 Lib.checkcigseqlen2_go cigs Lib.checkCigarSeqlen1) -}
 879ce32d8b1ab4c943aa5519c1d7e439
   taketrim ::
     GHC.Integer.Type.Integer
@@ -23364,10 +24018,10 @@ dba95bdec59954f5857fe60faed99c5c
                    ww28
                    ww29
                    ww30 }) -}
-e05b3d882a5cc3456c45ca7a830ccb05
+ef290fb57dddffa469c675eaccffa7f1
   trimboth :: Lib.AlignedRead -> Lib.AlignedRead
   {- Arity: 1,
-     Strictness: <S,1*U(U,U,U,U,U,U,U(U,U,U,U),A,U,A,U,U,U,U,U,U,U,U,U,U,U,U,A,A,A,U,U,U,U,U)>,
+     Strictness: <S,1*U(U,U,1*U,U,U,U,U(U,U,U,U),A,U,A,U,U,U,U,U,U,U,U,U,U,U,U,A,A,A,U,U,U,U,U)>,
      Inline: INLINE[0],
      Unfolding: InlineRule (1, True, False)
                 (\ (w :: Lib.AlignedRead) ->
@@ -23444,10 +24098,10 @@ d7c88823d42ccd5da3638a05af9d3074
                 (\ (ds6 :: Lib.AlignedRead) ->
                  case ds6 of wild { Lib.AlignedRead ds7 ds8 ds9 ds10 ds11 ds12 ds13 ds14 ds15 ds16 ds17 ds18 ds19 ds20 ds21 ds22 ds23 ds24 ds25 ds26 ds27 ds28 ds29 ds30 ds31 ds32 ds33 ds34 ds35 ds36 ->
                  ds30 }) -}
-558632ac9eba1450d12d9b65949e7c49
+5281bc2bbbaf09909f1f4c51b7e5f2cb
   trimfwd :: Lib.AlignedRead -> Lib.AlignedRead
   {- Arity: 1,
-     Strictness: <S,1*U(U,U,U,U,U,U,U(U,U,U,U),A,U,A,U,U,U,U,U,U,U,U,U,U,U,U,A,A,U,U,U,U,U,U)>,
+     Strictness: <S,1*U(U,U,1*U,U,U,U,U(U,U,U,U),A,U,A,U,U,U,U,U,U,U,U,U,U,U,U,A,A,U,U,U,U,U,U)>,
      Inline: INLINE[0],
      Unfolding: InlineRule (1, True, False)
                 (\ (w :: Lib.AlignedRead) ->
@@ -23587,10 +24241,10 @@ e9dbc5b4d3e7606a1e996003b31bcc16
                    (GHC.ForeignPtr.PlainForeignPtr ipv1)
                    0#
                    (GHC.Prim.word2Int# ds8) } }) -}
-d7d2fdd86b63fa5a4365b1e063486d51
+8d00b9d2e4074187d552891148966963
   trimrev :: Lib.AlignedRead -> Lib.AlignedRead
   {- Arity: 1,
-     Strictness: <S,1*U(U,U,U,U,U,U,U(U,U,U,U),A,U,A,U,U,U,U,U,U,U,U,U,U,U,U,A,U,A,U,U,U,U,U)>,
+     Strictness: <S,1*U(U,U,1*U,U,U,U,U(U,U,U,U),A,U,A,U,U,U,U,U,U,U,U,U,U,U,U,A,U,A,U,U,U,U,U)>,
      Inline: INLINE[0],
      Unfolding: InlineRule (1, True, False)
                 (\ (w :: Lib.AlignedRead) ->

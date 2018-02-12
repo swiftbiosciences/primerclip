@@ -672,6 +672,14 @@ bedPEparser = do
 -- event they are needed for future use.
 ------------------------------------------------------------------------------
 ------------------------------------------------------------------------------
+
+-- 180212 non-conduit latest SAM parsing function for debugging
+readSAM :: FilePath -> IO [AlignedRead]
+readSAM fp = do
+    bslines <- B.lines <$> B.readFile fp
+    let parsedAlns = (A.parseOnly (hdralnparser <|> alnparser)) <$> bslines
+    return $ U.rights parsedAlns
+
 getSAM2 :: FilePath -> IO SAM
 getSAM2 fp = parseSAM <$> B.lines <$> B.readFile fp
 
@@ -1008,6 +1016,12 @@ getAlignedLength cigcol = sumMatches ciglist
 sumMatches :: [(Integer, B.ByteString)] -> Integer
 sumMatches cigs = sum [ x | (x, y) <- cigs, y == "M" || y == "I" ]
 
+-- 180212
+nomapCigToNomapRname :: B.ByteString -> UChr -> UChr
+nomapCigToNomapRname c rname
+    | c == "*"  = NONE
+    | otherwise = rname
+
 -- 161023 check if cigar "length" equal to read length (refseq)
 checkcigseqlen :: AlignedRead -> Bool
 checkcigseqlen a
@@ -1046,7 +1060,8 @@ cigseqlenHdrPassTest :: AlignedRead -> Bool
 cigseqlenHdrPassTest a
     -- | (isheader a) = True
     | cigar a == "*" = True
-    | (cigmatchlen == refseqlen) && (matchcnt > 0) = True
+    | (cigmatchlen == refseqlen) = True
+    -- | (cigmatchlen == refseqlen) && (matchcnt > 0) = True
     | otherwise = False
         where matchcnt = sumMatches tcmap
               cigmatchlen = sum [ x | (x, y) <- tcmap, y == "M"
@@ -1274,7 +1289,7 @@ setpintflag hits
 ---------- Functions to trim AlignedRead if it intersects >=1 primer ---------
 ------------------------------------------------------------------------------
 
--- 161017 modify AlignedRead to trim primer sequence by softclips
+-- 180212 added addtrimtag function to append comment to optfields (CO:Z: SAM tag)
 trimalignment :: AlignedRead -> AlignedRead
 trimalignment a
     | (fint a /= []) && (rint a /= []) = btrimdaln
@@ -1282,9 +1297,9 @@ trimalignment a
     | (fint a == []) && (rint a /= []) = rtrimdaln
     | (fint a == []) && (rint a == []) = a { trimdcigar = cigar a }
     | otherwise = a { trimdcigar = cigar a }
-         where ftrimdaln = trimfwd a
-               rtrimdaln = trimrev a
-               btrimdaln = trimboth a
+         where ftrimdaln = addtrimtag $ trimfwd a
+               rtrimdaln = addtrimtag $ trimrev a
+               btrimdaln = addtrimtag $ trimboth a
 
 -- for alignments intersecting a "forward" primer only ( ref (+)-strand orientation)
 trimfwd :: AlignedRead -> AlignedRead
@@ -1296,10 +1311,12 @@ trimfwd a =
         newcig = updateCigF fdiff oldcigar
         newcigmap = exrights $ parseCigar newcig
         tpos = (if (fdiff < 0) then as else newpos)
+        newrname = nomapCigToNomapRname newcig (rname a) -- convert rname to "*" if new CIGAR is "*"
     in a { trimdpos = tpos
          , trimdcigar = newcig
          , trimdcigmap = newcigmap
          , trimdflag = if (as /= tpos) then True else False
+         , rname = newrname
          }
 
 -- for alignments intersecting a "reverse" primer only ( ref (+)-strand orientation)
@@ -1312,10 +1329,12 @@ trimrev a =
         newcig = updateCigR rdiff oldcigar
         newcigmap = exrights $ parseCigar newcig
         tendpos = (if (rdiff < 0) then ae else newendpos)
+        newrname = nomapCigToNomapRname newcig (rname a) -- convert rname to "*" if new CIGAR is "*"
     in a { trimdendpos = tendpos
          , trimdcigar = newcig
          , trimdcigmap = newcigmap
          , trimdflag = if (ae /= tendpos) then True else False
+         , rname = newrname
          }
 
 -- for alignments with primer intersections at both ends
@@ -1332,6 +1351,7 @@ trimboth a =
         newcigmap = exrights $ parseCigar newcig
         tpos = (if (fdiff < 0) then as else newpos)
         tendpos = (if (rdiff < 0) then ae else newendpos)
+        newrname = nomapCigToNomapRname newcig (rname a) -- convert rname to "*" if new CIGAR is "*"
     in a { trimdpos = tpos
          , trimdendpos = tendpos
          , trimdcigar = newcig
@@ -1339,8 +1359,8 @@ trimboth a =
          , trimdflag = if ((as /= tpos) || (ae /= tendpos))
                        then True
                        else False
+         , rname = newrname
          }
-
 
 -- UPDATE 17-02-01 simplify CIGAR arithmetic by adjusting read coords to match
 --                 reference coords (D CIGAR chars don't increment coords, and
@@ -1349,8 +1369,9 @@ updateCigF :: Integer -> B.ByteString -> B.ByteString
 updateCigF fdiff cigar
     | snd (head cmap) == "*" = "*"
     | fdiffi <= 0 = cigar
-    | (nopadlen - fdiffi) == 0 = cigar
-    | ((nopadlen - fdiffi) > 0) = newcig
+    -- | (nopadlen - fdiffi) == 0 = cigar -- 180212 debug malformed CIGAR where aln is all primer
+    | ((nopadlen - fdiffi) == 0) = newcig -- 180212 zero-match CIGAR strings fail picard validation
+    -- | ((nopadlen - fdiffi) >= 0) = newcig
     | otherwise = "*"
         where cmap = mapcig cigar
               grps = B.group $ expandcigar cmap
@@ -1379,8 +1400,9 @@ updateCigR :: Integer -> B.ByteString -> B.ByteString
 updateCigR rdiff cigar
     | snd (head cmap) == "*" = "*"
     | rdiffi <= 0 = cigar
-    | (nopadlen - rdiffi) == 0 = cigar
-    | ((nopadlen - rdiffi) > 0) = newcig
+    -- | (nopadlen - rdiffi) == 0 = cigar -- 180212 see updateCigF
+    | ((nopadlen - rdiffi) == 0) = newcig -- 180212 zero-match CIGAR strings fail picard validation
+    -- | ((nopadlen - rdiffi) >= 0) = newcig
     | otherwise = "*"
         where cmap = mapcig cigar
               grps = B.group $ expandcigar cmap
@@ -1414,9 +1436,10 @@ updateCigB fdiff rdiff cigar
     | snd (head cmap) == "*" = "*"
     | fdiffi <= 0 = updateCigR rdiff cigar
     | rdiffi <= 0 = updateCigF fdiff cigar
-    | (nopadlen - fdiffi) == 0 = updateCigR rdiff cigar
-    | (nopadlen - rdiffi) == 0 = updateCigF fdiff cigar
-    | ((nopadlen - fdiffi - rdiffi) > 0) = newcig
+    -- | (nopadlen - fdiffi) == 0 = updateCigR rdiff cigar -- 180212
+    -- | (nopadlen - rdiffi) == 0 = updateCigF fdiff cigar -- 180212
+    | ((nopadlen - fdiffi - rdiffi) == 0) = newcig -- 180212 zero-match CIGAR strings fail picard validation
+    -- | ((nopadlen - fdiffi - rdiffi) >= 0) = newcig
     | otherwise = "*"
         where cmap = mapcig cigar
               grps = B.group $ expandcigar cmap
@@ -1535,6 +1558,28 @@ checknonzeroCigMatch a
     | (not $ mapped a) = True
     | (B.any (== 'M') (trimdcigar a)) = True
     | otherwise = False
+
+-- 180212 append CO:Z tag indicating alignment was trimmed by >= 1 base, and
+-- also a warning if trimming removed all non-clipped bases from alignment
+-- (alignment == primer sequence)
+-- NOTE: this function also sets bit 2 and clears bit 1 of the SAM FLAG if
+-- trimming results in zero-length alignment
+addtrimtag :: AlignedRead -> AlignedRead
+addtrimtag a
+    | (trimdflag a) && ((trimdcigar a) /= "*") = trimdAln
+    | (trimdflag a) = trimdToZero
+    | otherwise = a -- no clipping due to no primer intersections for alignment
+        where trimdAlnTag = "CO:Z:primer_trimmed" :: B.ByteString
+              trimdToZeroTag = "CO:Z:zero_alignment_length_after_primer_trim" :: B.ByteString
+              trimdAln = a { optfields = B.concat [ (optfields a)
+                                                  , "\t", trimdAlnTag
+                                                  ] }
+              trimdToZero = a { optfields = B.concat [ (optfields a)
+                                                     , "\t", trimdToZeroTag
+                                                     ]
+                              , flag = zeroLenFlag
+                              }
+              zeroLenFlag = setBit (clearBit (flag a) 1) 2 -- no longer mapped
 
 -- 161017 create I.IntMap Int B.ByteString from (Int, BedRecord)
 -- NOTE: this is an attempt at fast lookup of primer intervals

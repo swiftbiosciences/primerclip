@@ -39,8 +39,8 @@ runPrimerTrimming args = do
                P..| P.mapC (A.parseOnly (hdralnparser <|> alnparser))
                P..| P.mapC rightOrDefault -- convert parse fails to defaultAlignment
                P..| P.mapC (trimprimersE fmp rmp)
-               P..| P.filterC checknonzeroCigMatch
-               P..| P.mapC checkCigarSeqlen
+               -- P..| P.filterC checknonzeroCigMatch
+               -- P..| P.mapC checkCigarSeqlen
                P..| P.filterC (\x -> (qname x) /= "NONE") -- remove malformed alignments
                P..| P.getZipSink
                         (P.ZipSink (printAlnStreamToFile (outfilename args))
