@@ -30,7 +30,7 @@ import GHC.Generics (Generic)
 
 {--
     2016-10-14 Jonathan Irish
-    Post-alignment primer trimming tool v0.1
+    Post-alignment primer trimming tool v0.2
 
 --}
 
@@ -69,6 +69,7 @@ data AlignedRead = AlignedRead { qname :: B.ByteString
                                , mid :: B.ByteString
                                , xmid :: B.ByteString
                                , tbed :: BedRecord
+                               , trimdToZeroLength :: Bool
                                } deriving (Eq, Show, Generic)
 
 instance Ord AlignedRead where
@@ -106,6 +107,7 @@ defaultAlignment = AlignedRead { qname = "NONE"
                                , mid = ""
                                , xmid = ""
                                , tbed = defaultBed
+                               , trimdToZeroLength = False
                                }
 
 -- 180206
@@ -1297,9 +1299,9 @@ trimalignment a
     | (fint a == []) && (rint a /= []) = rtrimdaln
     | (fint a == []) && (rint a == []) = a { trimdcigar = cigar a }
     | otherwise = a { trimdcigar = cigar a }
-         where ftrimdaln = addtrimtag $ trimfwd a
-               rtrimdaln = addtrimtag $ trimrev a
-               btrimdaln = addtrimtag $ trimboth a
+         where ftrimdaln = updateTrimdAlnFields $ trimfwd a
+               rtrimdaln = updateTrimdAlnFields $ trimrev a
+               btrimdaln = updateTrimdAlnFields $ trimboth a
 
 -- for alignments intersecting a "forward" primer only ( ref (+)-strand orientation)
 trimfwd :: AlignedRead -> AlignedRead
@@ -1311,13 +1313,14 @@ trimfwd a =
         newcig = updateCigF fdiff oldcigar
         newcigmap = exrights $ parseCigar newcig
         tpos = (if (fdiff < 0) then as else newpos)
-        newrname = nomapCigToNomapRname newcig (rname a) -- convert rname to "*" if new CIGAR is "*"
-    in a { trimdpos = tpos
-         , trimdcigar = newcig
-         , trimdcigmap = newcigmap
-         , trimdflag = if (as /= tpos) then True else False
-         , rname = newrname
-         }
+        -- newrname = nomapCigToNomapRname newcig (rname a) -- convert rname to "*" if new CIGAR is "*"
+        trimdaln = a { trimdpos = tpos
+                     , trimdcigar = newcig
+                     , trimdcigmap = newcigmap
+                     , trimdflag = if (as /= tpos) then True else False
+                     -- , rname = newrname
+                     }
+    in clearNonRealCigar trimdaln -- "clear" CIGAR and fields if entire aln is primer
 
 -- for alignments intersecting a "reverse" primer only ( ref (+)-strand orientation)
 trimrev :: AlignedRead -> AlignedRead
@@ -1329,13 +1332,14 @@ trimrev a =
         newcig = updateCigR rdiff oldcigar
         newcigmap = exrights $ parseCigar newcig
         tendpos = (if (rdiff < 0) then ae else newendpos)
-        newrname = nomapCigToNomapRname newcig (rname a) -- convert rname to "*" if new CIGAR is "*"
-    in a { trimdendpos = tendpos
-         , trimdcigar = newcig
-         , trimdcigmap = newcigmap
-         , trimdflag = if (ae /= tendpos) then True else False
-         , rname = newrname
-         }
+        -- newrname = nomapCigToNomapRname newcig (rname a) -- convert rname to "*" if new CIGAR is "*"
+        trimdaln = a { trimdendpos = tendpos
+                     , trimdcigar = newcig
+                     , trimdcigmap = newcigmap
+                     , trimdflag = if (ae /= tendpos) then True else False
+                     -- , rname = newrname
+                     }
+    in clearNonRealCigar trimdaln -- "clear" CIGAR and fields if entire aln is primer
 
 -- for alignments with primer intersections at both ends
 trimboth :: AlignedRead -> AlignedRead
@@ -1351,16 +1355,17 @@ trimboth a =
         newcigmap = exrights $ parseCigar newcig
         tpos = (if (fdiff < 0) then as else newpos)
         tendpos = (if (rdiff < 0) then ae else newendpos)
-        newrname = nomapCigToNomapRname newcig (rname a) -- convert rname to "*" if new CIGAR is "*"
-    in a { trimdpos = tpos
-         , trimdendpos = tendpos
-         , trimdcigar = newcig
-         , trimdcigmap = newcigmap
-         , trimdflag = if ((as /= tpos) || (ae /= tendpos))
-                       then True
-                       else False
-         , rname = newrname
-         }
+        -- newrname = nomapCigToNomapRname newcig (rname a) -- convert rname to "*" if new CIGAR is "*"
+        trimdaln = a { trimdpos = tpos
+                     , trimdendpos = tendpos
+                     , trimdcigar = newcig
+                     , trimdcigmap = newcigmap
+                     , trimdflag = if ((as /= tpos) || (ae /= tendpos))
+                                   then True
+                                   else False
+                     -- , rname = newrname
+                     }
+    in clearNonRealCigar trimdaln -- "clear" CIGAR and fields if entire aln is primer
 
 -- UPDATE 17-02-01 simplify CIGAR arithmetic by adjusting read coords to match
 --                 reference coords (D CIGAR chars don't increment coords, and
@@ -1559,6 +1564,60 @@ checknonzeroCigMatch a
     | (B.any (== 'M') (trimdcigar a)) = True
     | otherwise = False
 
+-- 180213 check for "no real operator" (picard) in trimmed CIGAR string
+clearNonRealCigar :: AlignedRead -> AlignedRead
+clearNonRealCigar a
+    | (any (\x -> elem x ("MIDN" :: String)) (B.unpack $ trimdcigar a)) = a
+    | otherwise = clearedCigAln
+        where clearedCigAln = a { trimdcigar = "*"
+                                , flag = zeroLenFlag
+                                , trimdpos = 0
+                                , trimdendpos = 0
+                                , rnext = "*"
+                                , pnext = -1
+                                , tlen = 0
+                                , mapqual = 0
+                                }
+              zeroLenFlag = flipSetBit 3
+                          $ flipSetBit 2
+                          $ flipClrBit 1
+                          $ flipClrBit 8 (flag a) -- no longer mapped (also indicating mate not mapped [verify?])
+
+-- 180213 update fields of AlignedRead to keep all fields consistent with
+-- trimmed CIGAR string and position value (e.g. zero-length alns after trimming)
+updateTrimdAlnFields :: AlignedRead -> AlignedRead
+updateTrimdAlnFields a
+    | (trimdflag a) && ((trimdcigar a) /= "*") = trimdAln
+    | (trimdflag a) = trimdToZero
+    | otherwise = a -- no clipping due to no primer intersections for alignment
+        where trimdAlnTag = "CO:Z:primer_trimmed" :: B.ByteString
+              trimdToZeroTag = "CO:Z:zero_alignment_length_after_primer_trim" :: B.ByteString
+              trimdAln = a { optfields = B.concat [ (optfields a)
+                                                  , "\t", trimdAlnTag
+                                                  ] }
+              trimdToZero = a { optfields = B.concat [ (optfields a)
+                                                     , "\t", trimdToZeroTag
+                                                     ] }
+                              {-- , flag = zeroLenFlag
+                              , trimdpos = 0
+                              , trimdendpos = 0
+                              , rnext = "*"
+                              , pnext = -1
+                              , tlen = 0 -- ISIZE? (picard)
+                              , mapqual = 0
+                              -- , mapped = False -- output filters?
+                              }
+              zeroLenFlag = flipSetBit 3
+                          $ flipSetBit 2
+                          $ flipClrBit 1 (flag a) -- no longer mapped (also indicating mate not mapped [verify?])
+              -- zeroLenFlag = setBit (setBit (clearBit (flag a) 1) 2) 3 -- no longer mapped (also indicating mate not mapped [verify?])
+                              --}
+
+-- flip setBit and clearBit args for clearer syntax
+flipSetBit = flip setBit
+flipClrBit = flip clearBit
+
+
 -- 180212 append CO:Z tag indicating alignment was trimmed by >= 1 base, and
 -- also a warning if trimming removed all non-clipped bases from alignment
 -- (alignment == primer sequence)
@@ -1661,13 +1720,14 @@ printAlignmentOrHdr a
               mq = B.pack $ show $ mapqual a
               c = trimdcigar a -- 170202 prints trimmed alignment CIGAR
               rnxt = rnext a
-              pnxt = B.pack $ show $ (pnext a) + 1
+              pnxt = if (rnxt == "*") then 0 else (pnext a) + 1 -- index shift handling at 0
+              pnxtBS = B.pack $ show $ pnxt -- 180213
               tl = B.pack $ show $ tlen a
               sq = refseq a
               bq = basequal a
               optfs = optfields a
               alnstr = B.intercalate "\t" [ q, f, rn, p, mq, c, rnxt,
-                                            pnxt, tl, sq, bq, optfs ]
+                                            pnxtBS, tl, sq, bq, optfs ]
               headerstr = B.reverse $ B.drop 1 $ B.reverse
                         $ B.unlines $ headerstrings a
 
@@ -1681,13 +1741,14 @@ printAlignment a =
         mq = B.pack $ show $ mapqual a
         c = trimdcigar a -- 170202 prints trimmed alignment CIGAR
         rnxt = rnext a
-        pnxt = B.pack $ show $ (pnext a) + 1
+        pnxt = if (rnxt == "*") then 0 else (pnext a) + 1 -- index shift handling at 0
+        pnxtBS = B.pack $ show $ pnxt -- 180213
         tl = B.pack $ show $ tlen a
         sq = refseq a
         bq = basequal a
         optfs = optfields a
         alnstr = B.intercalate "\t" [ q, f, rn, p, mq, c, rnxt,
-                                      pnxt, tl, sq, bq, optfs ]
+                                      pnxtBS, tl, sq, bq, optfs ]
     in alnstr
 
 -- max(0,i)
