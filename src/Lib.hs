@@ -29,7 +29,7 @@ import qualified Data.Set as S
 import GHC.Generics (Generic)
 
 {--
-    2016-10-14 Jonathan Irish
+    Jonathan Irish
     Post-alignment primer trimming tool v0.2
 
 --}
@@ -110,7 +110,7 @@ defaultAlignment = AlignedRead { qname = "NONE"
                                , trimdToZeroLength = False
                                }
 
--- 180206
+-- 180206 add BEDPE primer coordinates input file option
 data BEDPE = BEDPE { chr1 :: UChr
                    , start1 :: Integer
                    , end1 :: Integer
@@ -125,7 +125,6 @@ instance Ord BEDPE where
             <> comparing start1
 
 defaultBEDPE = BEDPE NONE 0 0 NONE 0 0 "DEFAULTBEDPE"
-
 
 data BedRecord = BedRecord { bedchr :: UChr
                            , bedstart :: Integer
@@ -215,7 +214,6 @@ type SAM = (Header, Alignments)
 type CMap = M.Map UChr BedMap
 type BedMap = I.IntMap BedRecord
 type CigarMap = [(Integer, B.ByteString)]
-
 
 -- Internal sum type for all chromosome names in both UCSC and ensembl naming
 -- schemes.
@@ -575,7 +573,6 @@ uchrparser =      (A.string "chr10" >> return Chr10)
         <|>  (A.string "NC_007605" >> return NC_007605)
         <|>  (A.string "*" >> return NONE)
 
-
 -- 180206 include option for providing primer coords in BED or BEDPE format
 -- in addition to master file
 optargs :: Parser Opts
@@ -595,8 +592,6 @@ data Opts = Opts { coordfileformat :: Bool
                  , insamfile :: String
                  , outfilename :: String
                  } deriving (Show, Eq)
-
-
 
 -- 170927 parse master file for primer and target intervals
 masterparser :: A.Parser MasterRecord
@@ -682,66 +677,14 @@ readSAM fp = do
     let parsedAlns = (A.parseOnly (hdralnparser <|> alnparser)) <$> bslines
     return $ U.rights parsedAlns
 
-getSAM2 :: FilePath -> IO SAM
-getSAM2 fp = parseSAM <$> B.lines <$> B.readFile fp
-
-parseSAM :: [B.ByteString] -> SAM
-parseSAM lns =
-    let (hdr, bdytxt) = partition (\x -> (B.head x) == '@') lns
-        alignments = parseAlns bdytxt
-    in (hdr, alignments)
-
 -- NOTE: changed to make use of U.rights to leave out parsing failures
 parseAlns :: [B.ByteString] -> Alignments
 parseAlns as = U.rights $ (A.parseOnly alnparser <$> as)
 
 parseAln as = A.parseOnly alnparser as
 
--- 170316 parse with logging of parse failures
--- BUG: mis-assignment of rname (not sure if this is the source) -- 170510 FIXED??
--- 170510 report lines which failed SAM parsing into file containing actual lines (not line numbers)
-getSAM :: FilePath -> IO SAM
-getSAM fp = do
-    flines <- B.lines <$> B.readFile fp
-    let (hdr, bdy) = partition (\x -> (B.head x) == '@') flines
-        nbdy = length bdy
-        as = parseAln <$> bdy
-        lks = [0..] :: [Int]
-        amap = M.fromList $ zip lks as
-        (succm, failm) = M.partition U.isRight amap
-        succs = U.rights $ snd <$> M.toAscList succm
-        faildlineixs = M.keys failm
-        acnt = length succs
-        failcnt = length faildlineixs
-        parsestatus = parsechkSAM nbdy acnt faildlineixs
-        parsefaildLines = B.unlines $ (bdy !!) <$> faildlineixs
-    putStrLn parsestatus
-    B.writeFile "samparsefails.log" parsefaildLines
-    writeFile "sam_parsing.log" parsestatus
-    return (hdr, succs)
-
--- read BED file into list of BedRecord (primer and target intervals)
---getBED :: FilePath -> IO BED
-getBED fp = do
-    flines <- B.lines <$> B.readFile fp
-    let nr = length flines
-        bs = parseBED <$> flines
-        lks = [0..] :: [Int]
-        bmap = M.fromList $ zip lks bs
-        (succm, failm) = M.partition U.isRight bmap
-        succs = V.fromList $ U.rights $ snd <$> M.toAscList succm
-        faildlineixs = M.keys failm
-        bcnt = V.length succs
-        failcnt = length faildlineixs
-        parsestatus = parsechkBED nr bcnt faildlineixs
-        parsefaildLines = B.unlines $ (flines !!) <$> faildlineixs
-    putStrLn parsestatus
-    B.writeFile "bedparsefails.log" parsefaildLines
-    writeFile "primer_parsing.log" parsestatus
-    return succs
-
-getBEDPE :: FilePath -> IO [BEDPE]
-getBEDPE fp = do
+readBEDPE :: FilePath -> IO [BEDPE]
+readBEDPE fp = do
     flines <- B.lines <$> B.readFile fp
     let nr = length flines
         bs = parseBEDPE <$> flines -- [BEDPE]
@@ -760,6 +703,7 @@ getBEDPE fp = do
     return succs
 
 parseBED bs = A.parseOnly bedrecparser bs
+
 parseBEDPE bs = A.parseOnly bedPEparser bs
 
 -- 170510 write parse fail lines to log file (don't print line nums to stdout)
@@ -1102,7 +1046,6 @@ parsesignedint i = floor $ exrights $ parsedbl i :: Integer
 
 spaces = A.many1 A.skipSpace
 
-
 --txtfieldp = A.takeTill A.isHorizontalSpace
 txtfieldp = A.takeTill A.isSpace
 
@@ -1243,7 +1186,6 @@ exrights2 xs
 
 getlengths seqs = fmap B.length seqs
 
-
 ------------------------------------------------------------------------------
 ----------------------  HIGH-LEVEL FUNCTIONS IN MAIN -------------------------
 ------------------------------------------------------------------------------
@@ -1288,7 +1230,7 @@ setpintflag hits
     | otherwise = False
 
 
----------- Functions to trim AlignedRead if it intersects >=1 primer ---------
+---------- Functions to trim AlignedRead if it intersects primer(s) ----------
 ------------------------------------------------------------------------------
 
 -- 180212 added addtrimtag function to append comment to optfields (CO:Z: SAM tag)
@@ -1313,12 +1255,10 @@ trimfwd a =
         newcig = updateCigF fdiff oldcigar
         newcigmap = exrights $ parseCigar newcig
         tpos = (if (fdiff < 0) then as else newpos)
-        -- newrname = nomapCigToNomapRname newcig (rname a) -- convert rname to "*" if new CIGAR is "*"
         trimdaln = a { trimdpos = tpos
                      , trimdcigar = newcig
                      , trimdcigmap = newcigmap
                      , trimdflag = if (as /= tpos) then True else False
-                     -- , rname = newrname
                      }
     in clearNonRealCigar trimdaln -- "clear" CIGAR and fields if entire aln is primer
 
@@ -1332,12 +1272,10 @@ trimrev a =
         newcig = updateCigR rdiff oldcigar
         newcigmap = exrights $ parseCigar newcig
         tendpos = (if (rdiff < 0) then ae else newendpos)
-        -- newrname = nomapCigToNomapRname newcig (rname a) -- convert rname to "*" if new CIGAR is "*"
         trimdaln = a { trimdendpos = tendpos
                      , trimdcigar = newcig
                      , trimdcigmap = newcigmap
                      , trimdflag = if (ae /= tendpos) then True else False
-                     -- , rname = newrname
                      }
     in clearNonRealCigar trimdaln -- "clear" CIGAR and fields if entire aln is primer
 
@@ -1355,7 +1293,6 @@ trimboth a =
         newcigmap = exrights $ parseCigar newcig
         tpos = (if (fdiff < 0) then as else newpos)
         tendpos = (if (rdiff < 0) then ae else newendpos)
-        -- newrname = nomapCigToNomapRname newcig (rname a) -- convert rname to "*" if new CIGAR is "*"
         trimdaln = a { trimdpos = tpos
                      , trimdendpos = tendpos
                      , trimdcigar = newcig
@@ -1363,7 +1300,6 @@ trimboth a =
                      , trimdflag = if ((as /= tpos) || (ae /= tendpos))
                                    then True
                                    else False
-                     -- , rname = newrname
                      }
     in clearNonRealCigar trimdaln -- "clear" CIGAR and fields if entire aln is primer
 
@@ -1374,9 +1310,7 @@ updateCigF :: Integer -> B.ByteString -> B.ByteString
 updateCigF fdiff cigar
     | snd (head cmap) == "*" = "*"
     | fdiffi <= 0 = cigar
-    -- | (nopadlen - fdiffi) == 0 = cigar -- 180212 debug malformed CIGAR where aln is all primer
     | ((nopadlen - fdiffi) == 0) = newcig -- 180212 zero-match CIGAR strings fail picard validation
-    -- | ((nopadlen - fdiffi) >= 0) = newcig
     | otherwise = "*"
         where cmap = mapcig cigar
               grps = B.group $ expandcigar cmap
@@ -1405,9 +1339,7 @@ updateCigR :: Integer -> B.ByteString -> B.ByteString
 updateCigR rdiff cigar
     | snd (head cmap) == "*" = "*"
     | rdiffi <= 0 = cigar
-    -- | (nopadlen - rdiffi) == 0 = cigar -- 180212 see updateCigF
     | ((nopadlen - rdiffi) == 0) = newcig -- 180212 zero-match CIGAR strings fail picard validation
-    -- | ((nopadlen - rdiffi) >= 0) = newcig
     | otherwise = "*"
         where cmap = mapcig cigar
               grps = B.group $ expandcigar cmap
@@ -1441,10 +1373,7 @@ updateCigB fdiff rdiff cigar
     | snd (head cmap) == "*" = "*"
     | fdiffi <= 0 = updateCigR rdiff cigar
     | rdiffi <= 0 = updateCigF fdiff cigar
-    -- | (nopadlen - fdiffi) == 0 = updateCigR rdiff cigar -- 180212
-    -- | (nopadlen - rdiffi) == 0 = updateCigF fdiff cigar -- 180212
     | ((nopadlen - fdiffi - rdiffi) == 0) = newcig -- 180212 zero-match CIGAR strings fail picard validation
-    -- | ((nopadlen - fdiffi - rdiffi) >= 0) = newcig
     | otherwise = "*"
         where cmap = mapcig cigar
               grps = B.group $ expandcigar cmap
@@ -1577,6 +1506,7 @@ clearNonRealCigar a
                                 , pnext = -1
                                 , tlen = 0
                                 , mapqual = 0
+                                , trimdToZeroLength = True
                                 }
               zeroLenFlag = flipSetBit 3
                           $ flipSetBit 2
@@ -1598,25 +1528,10 @@ updateTrimdAlnFields a
               trimdToZero = a { optfields = B.concat [ (optfields a)
                                                      , "\t", trimdToZeroTag
                                                      ] }
-                              {-- , flag = zeroLenFlag
-                              , trimdpos = 0
-                              , trimdendpos = 0
-                              , rnext = "*"
-                              , pnext = -1
-                              , tlen = 0 -- ISIZE? (picard)
-                              , mapqual = 0
-                              -- , mapped = False -- output filters?
-                              }
-              zeroLenFlag = flipSetBit 3
-                          $ flipSetBit 2
-                          $ flipClrBit 1 (flag a) -- no longer mapped (also indicating mate not mapped [verify?])
-              -- zeroLenFlag = setBit (setBit (clearBit (flag a) 1) 2) 3 -- no longer mapped (also indicating mate not mapped [verify?])
-                              --}
 
 -- flip setBit and clearBit args for clearer syntax
 flipSetBit = flip setBit
 flipClrBit = flip clearBit
-
 
 -- 180212 append CO:Z tag indicating alignment was trimmed by >= 1 base, and
 -- also a warning if trimming removed all non-clipped bases from alignment
@@ -1688,7 +1603,7 @@ createprimerbedmaps args = case (coordfileformat args) of
             rm = makechrbedmap $ masterToRPrimerBED m
         return (fm, rm)
     True  -> do
-        bedpe <- getBEDPE $ incoordsfile args
+        bedpe <- readBEDPE $ incoordsfile args
         let fb = bedpeToFbed <$> bedpe
             rb = bedpeToRbed <$> bedpe
             fmpFromBedPE = makechrbedmap $ V.fromList fb
