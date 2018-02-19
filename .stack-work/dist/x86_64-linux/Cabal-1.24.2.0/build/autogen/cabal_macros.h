@@ -119,13 +119,6 @@
   (major1) == 0 && (major2) <  11 || \
   (major1) == 0 && (major2) == 11 && (minor) <= 0)
 
-/* tool alex-3.2.1 */
-#define TOOL_VERSION_alex "3.2.1"
-#define MIN_TOOL_VERSION_alex(major1,major2,minor) (\
-  (major1) <  3 || \
-  (major1) == 3 && (major2) <  2 || \
-  (major1) == 3 && (major2) == 2 && (minor) <= 1)
-
 /* tool gcc-4.8 */
 #define TOOL_VERSION_gcc "4.8"
 #define MIN_TOOL_VERSION_gcc(major1,major2,minor) (\
@@ -153,13 +146,6 @@
   (major1) <  2 || \
   (major1) == 2 && (major2) <  17 || \
   (major1) == 2 && (major2) == 17 && (minor) <= 3)
-
-/* tool happy-1.19.5 */
-#define TOOL_VERSION_happy "1.19.5"
-#define MIN_TOOL_VERSION_happy(major1,major2,minor) (\
-  (major1) <  1 || \
-  (major1) == 1 && (major2) <  19 || \
-  (major1) == 1 && (major2) == 19 && (minor) <= 5)
 
 /* tool hpc-0.67 */
 #define TOOL_VERSION_hpc "0.67"

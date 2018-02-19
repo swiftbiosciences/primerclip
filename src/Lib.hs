@@ -1310,7 +1310,7 @@ updateCigF :: Integer -> B.ByteString -> B.ByteString
 updateCigF fdiff cigar
     | snd (head cmap) == "*" = "*"
     | fdiffi <= 0 = cigar
-    | ((nopadlen - fdiffi) == 0) = newcig -- 180212 zero-match CIGAR strings fail picard validation
+    | ((nopadlen - fdiffi) > 0) = newcig -- 180219 DEBUG testing
     | otherwise = "*"
         where cmap = mapcig cigar
               grps = B.group $ expandcigar cmap
@@ -1339,7 +1339,7 @@ updateCigR :: Integer -> B.ByteString -> B.ByteString
 updateCigR rdiff cigar
     | snd (head cmap) == "*" = "*"
     | rdiffi <= 0 = cigar
-    | ((nopadlen - rdiffi) == 0) = newcig -- 180212 zero-match CIGAR strings fail picard validation
+    | ((nopadlen - rdiffi) > 0) = newcig -- 180219 DEBUGGING
     | otherwise = "*"
         where cmap = mapcig cigar
               grps = B.group $ expandcigar cmap
@@ -1373,7 +1373,7 @@ updateCigB fdiff rdiff cigar
     | snd (head cmap) == "*" = "*"
     | fdiffi <= 0 = updateCigR rdiff cigar
     | rdiffi <= 0 = updateCigF fdiff cigar
-    | ((nopadlen - fdiffi - rdiffi) == 0) = newcig -- 180212 zero-match CIGAR strings fail picard validation
+    | ((nopadlen - fdiffi - rdiffi) > 0) = newcig -- 180212 zero-match CIGAR strings fail picard validation
     | otherwise = "*"
         where cmap = mapcig cigar
               grps = B.group $ expandcigar cmap
