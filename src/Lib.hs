@@ -1508,10 +1508,18 @@ clearNonRealCigar a
                                 , mapqual = 0
                                 , trimdToZeroLength = True
                                 }
-              zeroLenFlag = flipSetBit 3
-                          $ flipSetBit 2
-                          $ flipClrBit 1
-                          $ flipClrBit 8 (flag a) -- no longer mapped (also indicating mate not mapped [verify?])
+              zeroLenFlag = setZeroLengthAlnFlag $ flag a
+
+-- 180220 test paired flag bit (bit 0) before setting mate-not-mapped bit
+setZeroLengthAlnFlag :: Int -> Int
+setZeroLengthAlnFlag flag
+    | flipTstBit 1 flag = pairedZeroLengthFlag
+    | otherwise = nopairZeroLengthFlag
+        where pairedZeroLengthFlag = flipSetBit 3
+                                   $ flipSetBit 2
+                                   $ flipClrBit 1 flag
+              nopairZeroLengthFlag = flipSetBit 2
+                                   $ flipClrBit 1 flag
 
 -- 180213 update fields of AlignedRead to keep all fields consistent with
 -- trimmed CIGAR string and position value (e.g. zero-length alns after trimming)
@@ -1532,6 +1540,7 @@ updateTrimdAlnFields a
 -- flip setBit and clearBit args for clearer syntax
 flipSetBit = flip setBit
 flipClrBit = flip clearBit
+flipTstBit = flip testBit
 
 -- 180212 append CO:Z tag indicating alignment was trimmed by >= 1 base, and
 -- also a warning if trimming removed all non-clipped bases from alignment
