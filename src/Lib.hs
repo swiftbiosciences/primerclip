@@ -1515,10 +1515,12 @@ setZeroLengthAlnFlag :: Int -> Int
 setZeroLengthAlnFlag flag
     | flipTstBit 0 flag = pairedZeroLengthFlag
     | otherwise = nopairZeroLengthFlag
-        where pairedZeroLengthFlag = flipSetBit 3
+        where pairedZeroLengthFlag = flipClrBit 8
+                                   $ flipSetBit 3
                                    $ flipSetBit 2
                                    $ flipClrBit 1 flag
-              nopairZeroLengthFlag = flipSetBit 2
+              nopairZeroLengthFlag = flipClrBit 8
+                                   $ flipSetBit 2
                                    $ flipClrBit 1 flag
 
 -- 180213 update fields of AlignedRead to keep all fields consistent with

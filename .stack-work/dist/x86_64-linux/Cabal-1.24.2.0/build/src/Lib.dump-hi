@@ -1,10 +1,10 @@
 
 ==================== FINAL INTERFACE ====================
-2018-02-20 21:56:57.33374 UTC
+2018-02-20 23:23:57.980004 UTC
 
 interface primerclip-0.1.0.0-BvEEl93NsBt2YPC7rsTWdy:Lib [family instance module] 8002
-  interface hash: 6a4843e5332754f29fac7ff505acbf91
-  ABI hash: 8b3408f662e01b3d84a1b8efc558656d
+  interface hash: 0dfe21e03f1738fdf45f08d170e6733b
+  ABI hash: f0bff3b6205927eebbb43103774400c0
   export-list hash: 3428c82ed127e3e83b6ea916b0478344
   orphan hash: 188145cfdf9895c582635c2b3bb2e078
   flag hash: c700d67e8f1203d8103b9f3bfac8bb0d
@@ -15703,7 +15703,7 @@ e6b8931367dcc8465cfe065c92e19546
   {- Arity: 30,
      Strictness: <L,U><L,U(U)><L,U><L,U><L,U><L,U><L,U(U,U,U,U)><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><S,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U>,
      Inline: [0] -}
-416c0981b060ac0cbc5ec6ef02615821
+a1645b066f1d02288a3be67b36ec7853
   $wtrimboth ::
     Data.ByteString.Internal.ByteString
     -> GHC.Types.Int
@@ -15913,12 +15913,7 @@ e6b8931367dcc8465cfe065c92e19546
                    GHC.Types.False
                    -> Lib.AlignedRead
                         ww
-                        (case ww1 of wild1 { GHC.Types.I# x# ->
-                         case GHC.Prim.andI# x# 1# of wild2 {
-                           DEFAULT
-                           -> GHC.Types.I#
-                                (GHC.Prim.orI# (GHC.Prim.orI# (GHC.Prim.andI# x# -3#) 4#) 8#)
-                           0# -> GHC.Types.I# (GHC.Prim.orI# (GHC.Prim.andI# x# -3#) 4#) } })
+                        (Lib.setZeroLengthAlnFlag ww1)
                         ww2
                         ww3
                         ww4
@@ -15981,7 +15976,7 @@ e6b8931367dcc8465cfe065c92e19546
                         ww23
                         ww24
                         ww25 } }) -}
-eab0e6d64b28096fa82dd2d9feaed74a
+15856898e11df6b15241a1f1db2b272b
   $wtrimfwd ::
     Data.ByteString.Internal.ByteString
     -> GHC.Types.Int
@@ -16162,12 +16157,7 @@ eab0e6d64b28096fa82dd2d9feaed74a
                    GHC.Types.False
                    -> Lib.AlignedRead
                         ww
-                        (case ww1 of wild1 { GHC.Types.I# x# ->
-                         case GHC.Prim.andI# x# 1# of wild2 {
-                           DEFAULT
-                           -> GHC.Types.I#
-                                (GHC.Prim.orI# (GHC.Prim.orI# (GHC.Prim.andI# x# -3#) 4#) 8#)
-                           0# -> GHC.Types.I# (GHC.Prim.orI# (GHC.Prim.andI# x# -3#) 4#) } })
+                        (Lib.setZeroLengthAlnFlag ww1)
                         ww2
                         ww3
                         ww4
@@ -16230,7 +16220,7 @@ eab0e6d64b28096fa82dd2d9feaed74a
                         ww24
                         ww25
                         ww26 } }) -}
-f02737e9858c836fccf34ba9be0da0ba
+bf4901f26abb3f2cae0964046917ff0e
   $wtrimrev ::
     Data.ByteString.Internal.ByteString
     -> GHC.Types.Int
@@ -16411,12 +16401,7 @@ f02737e9858c836fccf34ba9be0da0ba
                    GHC.Types.False
                    -> Lib.AlignedRead
                         ww
-                        (case ww1 of wild1 { GHC.Types.I# x# ->
-                         case GHC.Prim.andI# x# 1# of wild2 {
-                           DEFAULT
-                           -> GHC.Types.I#
-                                (GHC.Prim.orI# (GHC.Prim.orI# (GHC.Prim.andI# x# -3#) 4#) 8#)
-                           0# -> GHC.Types.I# (GHC.Prim.orI# (GHC.Prim.andI# x# -3#) 4#) } })
+                        (Lib.setZeroLengthAlnFlag ww1)
                         ww2
                         ww3
                         ww4
@@ -19020,7 +19005,7 @@ abfef7321d5e3344fe1866dda53d7903
                  case w of ww { Lib.AlignedRead ww1 ww2 ww3 ww4 ww5 ww6 ww7 ww8 ww9 ww10 ww11 ww12 ww13 ww14 ww15 ww16 ww17 ww18 ww19 ww20 ww21 ww22 ww23 ww24 ww25 ww26 ww27 ww28 ww29 ww30 ww31 ->
                  case ww7 of ww32 { Data.ByteString.Internal.PS ww33 ww34 ww35 ww36 ->
                  Lib.$wcigseqlenHdrPassTest ww33 ww34 ww35 ww36 ww8 ww14 } }) -}
-5c2306058a14e800bd740ead56be2fe9
+a1b02ef746ffbf18752cf963dd787c9c
   clearNonRealCigar :: Lib.AlignedRead -> Lib.AlignedRead
   {- Arity: 1,
      Strictness: <S(LLLLLLLS(SLSS)LLLLLLLLLLLLLLLLLLLLLLL),1*U(U,U(U),U,U,U,U,U,U(U,U,U,U),U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U)>,
@@ -19057,12 +19042,7 @@ abfef7321d5e3344fe1866dda53d7903
                    GHC.Types.False
                    -> Lib.AlignedRead
                         ww1
-                        (case ww2 of wild1 { GHC.Types.I# x# ->
-                         case GHC.Prim.andI# x# 1# of wild2 {
-                           DEFAULT
-                           -> GHC.Types.I#
-                                (GHC.Prim.orI# (GHC.Prim.orI# (GHC.Prim.andI# x# -3#) 4#) 8#)
-                           0# -> GHC.Types.I# (GHC.Prim.orI# (GHC.Prim.andI# x# -3#) 4#) } })
+                        (Lib.setZeroLengthAlnFlag ww2)
                         ww3
                         ww4
                         ww5
@@ -24003,7 +23983,7 @@ c99bee1aadbdbd875c6189b29edaa5b3
                         `cast`
                       (Data.Attoparsec.Internal.Types.N:Pos[0]) of ww7 { GHC.Types.I# ww8 ->
                  Lib.$wseqp @ r ww1 ww2 ww3 ww4 ww5 ww6 ww8 w2 w4 } }) -}
-475f1d8f50cf42e8f848c9551cf56c65
+5ef4e620ce5d2086a1ae27e2f4cd89e7
   setZeroLengthAlnFlag :: GHC.Types.Int -> GHC.Types.Int
   {- Arity: 1, HasNoCafRefs, Strictness: <S(S),1*U(U)>m,
      Unfolding: InlineRule (1, True, False)
@@ -24012,9 +23992,14 @@ c99bee1aadbdbd875c6189b29edaa5b3
                  case GHC.Prim.andI# x# 1# of wild1 {
                    DEFAULT
                    -> GHC.Types.I#
-                        (GHC.Prim.orI# (GHC.Prim.orI# (GHC.Prim.andI# x# -3#) 4#) 8#)
+                        (GHC.Prim.andI#
+                           (GHC.Prim.orI# (GHC.Prim.orI# (GHC.Prim.andI# x# -3#) 4#) 8#)
+                           -257#)
                    0#
-                   -> GHC.Types.I# (GHC.Prim.orI# (GHC.Prim.andI# x# -3#) 4#) } }) -}
+                   -> GHC.Types.I#
+                        (GHC.Prim.andI#
+                           (GHC.Prim.orI# (GHC.Prim.andI# x# -3#) 4#)
+                           -257#) } }) -}
 88a41954a0e5a11ff3d7c7e25f223884
   setpintflag :: Data.Foldable.Foldable t => t a -> GHC.Types.Bool
   {- Arity: 2, HasNoCafRefs,
@@ -24630,7 +24615,7 @@ bd47e33c2d37ecbd02d2cacccd947935
                    ww29
                    ww30
                    ww31 }) -}
-7e6fbfa332971c329788feecf12284b6
+9dafc2bee3771f2b11f435aad90584ae
   trimboth :: Lib.AlignedRead -> Lib.AlignedRead
   {- Arity: 1,
      Strictness: <S,1*U(U,U(U),U,U,U,U,U(U,U,U,U),A,U,A,U,U,U,U,U,U,U,U,U,U,U,U,A,A,A,U,U,U,U,U,U)>,
@@ -24723,7 +24708,7 @@ cb8987c57732bd59f6b71d913b6c4111
                 (\ (ds6 :: Lib.AlignedRead) ->
                  case ds6 of wild { Lib.AlignedRead ds7 ds8 ds9 ds10 ds11 ds12 ds13 ds14 ds15 ds16 ds17 ds18 ds19 ds20 ds21 ds22 ds23 ds24 ds25 ds26 ds27 ds28 ds29 ds30 ds31 ds32 ds33 ds34 ds35 ds36 ds37 ->
                  ds30 }) -}
-157e74f632b0cef3d8c43b322b13e6c2
+294be00db2a2f9f1426374d6584316d9
   trimfwd :: Lib.AlignedRead -> Lib.AlignedRead
   {- Arity: 1,
      Strictness: <S,1*U(U,U(U),U,U,U,U,U(U,U,U,U),A,U,A,U,U,U,U,U,U,U,U,U,U,U,U,A,A,U,U,U,U,U,U,U)>,
@@ -24870,7 +24855,7 @@ e9dbc5b4d3e7606a1e996003b31bcc16
                    (GHC.ForeignPtr.PlainForeignPtr ipv1)
                    0#
                    (GHC.Prim.word2Int# ds8) } }) -}
-1866555487bf5e0e24124f86dc2245c3
+279111816642df4e720ba43fa3573038
   trimrev :: Lib.AlignedRead -> Lib.AlignedRead
   {- Arity: 1,
      Strictness: <S,1*U(U,U(U),U,U,U,U,U(U,U,U,U),A,U,A,U,U,U,U,U,U,U,U,U,U,U,U,A,U,A,U,U,U,U,U,U)>,
