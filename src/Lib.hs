@@ -1515,7 +1515,7 @@ setZeroLengthAlnFlag :: Int -> Int
 setZeroLengthAlnFlag flag
     | flipTstBit 1 flag = pairedZeroLengthFlag
     | otherwise = nopairZeroLengthFlag
-        where pairedZeroLengthFlag = flipSetBit 3
+        where pairedZeroLengthFlag = flipClrBit 3
                                    $ flipSetBit 2
                                    $ flipClrBit 1 flag
               nopairZeroLengthFlag = flipSetBit 2
