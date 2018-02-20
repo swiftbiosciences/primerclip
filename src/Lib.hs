@@ -1513,9 +1513,9 @@ clearNonRealCigar a
 -- 180220 test paired flag bit (bit 0) before setting mate-not-mapped bit
 setZeroLengthAlnFlag :: Int -> Int
 setZeroLengthAlnFlag flag
-    | flipTstBit 1 flag = pairedZeroLengthFlag
+    | flipTstBit 0 flag = pairedZeroLengthFlag
     | otherwise = nopairZeroLengthFlag
-        where pairedZeroLengthFlag = flipClrBit 3
+        where pairedZeroLengthFlag = flipSetBit 3
                                    $ flipSetBit 2
                                    $ flipClrBit 1 flag
               nopairZeroLengthFlag = flipSetBit 2
