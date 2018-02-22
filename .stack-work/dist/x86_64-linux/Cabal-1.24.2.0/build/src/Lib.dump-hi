@@ -1,11 +1,11 @@
 
 ==================== FINAL INTERFACE ====================
-2018-02-20 23:23:57.980004 UTC
+2018-02-22 18:27:46.875059 UTC
 
 interface primerclip-0.1.0.0-BvEEl93NsBt2YPC7rsTWdy:Lib [family instance module] 8002
-  interface hash: 0dfe21e03f1738fdf45f08d170e6733b
-  ABI hash: f0bff3b6205927eebbb43103774400c0
-  export-list hash: 3428c82ed127e3e83b6ea916b0478344
+  interface hash: beac32e52dafde53ae0ba85f6972d40c
+  ABI hash: 860d975c124ba32f3a7b4d861eb6e076
+  export-list hash: fbc212c0075431a8263404347d5f590a
   orphan hash: 188145cfdf9895c582635c2b3bb2e078
   flag hash: c700d67e8f1203d8103b9f3bfac8bb0d
   sig of: Nothing
@@ -152,7 +152,7 @@ exports:
   Lib.Header
   Lib.MasterRecord{Lib.MasterRecord mampname mchrom mforend mforname mforseq mforstart mrevend mrevname mrevseq mrevstart mtargetend mtargetstart}
   Lib.MidFamily{Lib.MidFamily alncount alnend alns alnstart chrom midseq negtxposdcnt postxposdcnt targetbed txposedcount}
-  Lib.Opts{Lib.Opts coordfileformat incoordsfile insamfile outfilename}
+  Lib.Opts{Lib.Opts bedpeformat incoordsfile insamfile outfilename}
   Lib.SAM
   Lib.SAMFlag{Lib.SAMFlag dupRead failedQC fstInPair intflag mateMapped mateNeg notMapped notPrimary pairNotMapped pairedRead queryPlus sndInPair}
   Lib.UChr{Lib.C1 Lib.C10 Lib.C11 Lib.C12 Lib.C13 Lib.C14 Lib.C15 Lib.C16 Lib.C17 Lib.C18 Lib.C19 Lib.C2 Lib.C20 Lib.C21 Lib.C22 Lib.C3 Lib.C4 Lib.C5 Lib.C6 Lib.C7 Lib.C8 Lib.C9 Lib.CMT Lib.CX Lib.CY Lib.Chr1 Lib.Chr10 Lib.Chr11 Lib.Chr12 Lib.Chr13 Lib.Chr14 Lib.Chr15 Lib.Chr16 Lib.Chr17 Lib.Chr18 Lib.Chr19 Lib.Chr2 Lib.Chr20 Lib.Chr21 Lib.Chr22 Lib.Chr3 Lib.Chr4 Lib.Chr5 Lib.Chr6 Lib.Chr7 Lib.Chr8 Lib.Chr9 Lib.ChrM Lib.ChrX Lib.ChrY Lib.GL000191P1 Lib.GL000192P1 Lib.GL000193P1 Lib.GL000194P1 Lib.GL000195P1 Lib.GL000196P1 Lib.GL000197P1 Lib.GL000198P1 Lib.GL000199P1 Lib.GL000200P1 Lib.GL000201P1 Lib.GL000202P1 Lib.GL000203P1 Lib.GL000204P1 Lib.GL000205P1 Lib.GL000206P1 Lib.GL000207P1 Lib.GL000208P1 Lib.GL000209P1 Lib.GL000210P1 Lib.GL000211P1 Lib.GL000212P1 Lib.GL000213P1 Lib.GL000214P1 Lib.GL000215P1 Lib.GL000216P1 Lib.GL000217P1 Lib.GL000218P1 Lib.GL000219P1 Lib.GL000220P1 Lib.GL000221P1 Lib.GL000222P1 Lib.GL000223P1 Lib.GL000224P1 Lib.GL000225P1 Lib.GL000226P1 Lib.GL000227P1 Lib.GL000228P1 Lib.GL000229P1 Lib.GL000230P1 Lib.GL000231P1 Lib.GL000232P1 Lib.GL000233P1 Lib.GL000234P1 Lib.GL000235P1 Lib.GL000236P1 Lib.GL000237P1 Lib.GL000238P1 Lib.GL000239P1 Lib.GL000240P1 Lib.GL000241P1 Lib.GL000242P1 Lib.GL000243P1 Lib.GL000244P1 Lib.GL000245P1 Lib.GL000246P1 Lib.GL000247P1 Lib.GL000248P1 Lib.GL000249P1 Lib.NC_007605 Lib.NONE}
@@ -1048,12 +1048,12 @@ beb912df8b081e469bb9f55eb2f01c44
                    ww19
                    ww20
                    ww21 } }) -}
-00d166dabdb5026b87ee256b68cca182
+fad8714a4d90eae649c6ded97bd05e2e
   $fEqOpts :: GHC.Classes.Eq Lib.Opts
   DFunId
   {- HasNoCafRefs, Strictness: m, Inline: [ALWAYS] CONLIKE,
      Unfolding: DFun:. @ Lib.Opts Lib.$fEqOpts_$c== Lib.$fEqOpts_$c/= -}
-00d166dabdb5026b87ee256b68cca182
+fad8714a4d90eae649c6ded97bd05e2e
   $fEqOpts_$c/= :: Lib.Opts -> Lib.Opts -> GHC.Types.Bool
   {- Arity: 2, HasNoCafRefs,
      Strictness: <S(SLLL),1*U(1*U,1*U,1*U,1*U)><S(SLLL),1*U(1*U,1*U,1*U,1*U)>,
@@ -1062,7 +1062,7 @@ beb912df8b081e469bb9f55eb2f01c44
                  case Lib.$fEqOpts_$c== a b of wild {
                    GHC.Types.False -> GHC.Types.True
                    GHC.Types.True -> GHC.Types.False }) -}
-00d166dabdb5026b87ee256b68cca182
+fad8714a4d90eae649c6ded97bd05e2e
   $fEqOpts_$c== :: Lib.Opts -> Lib.Opts -> GHC.Types.Bool
   {- Arity: 2, HasNoCafRefs,
      Strictness: <S(SLLL),1*U(1*U,1*U,1*U,1*U)><S(SLLL),1*U(1*U,1*U,1*U,1*U)>,
@@ -9192,7 +9192,7 @@ beb912df8b081e469bb9f55eb2f01c44
                    ww11
                    ww12
                    w2 } }) -}
-00d166dabdb5026b87ee256b68cca182
+fad8714a4d90eae649c6ded97bd05e2e
   $fShowOpts :: GHC.Show.Show Lib.Opts
   DFunId
   {- Strictness: m, Inline: [ALWAYS] CONLIKE,
@@ -9201,7 +9201,7 @@ beb912df8b081e469bb9f55eb2f01c44
                   Lib.$fShowOpts_$cshowsPrec
                   Lib.$fShowOpts_$cshow
                   Lib.$fShowOpts_$cshowList -}
-00d166dabdb5026b87ee256b68cca182
+fad8714a4d90eae649c6ded97bd05e2e
   $fShowOpts1 :: Lib.Opts -> GHC.Show.ShowS
   {- Arity: 2,
      Unfolding: (\ (w :: Lib.Opts) (w1 :: GHC.Base.String) ->
@@ -9219,10 +9219,10 @@ b68d2447b6b5e3f91ab96c38540d758c
 4fb9d72b3e4297cde00c1f04753c7a1b
   $fShowOpts5 :: [GHC.Types.Char]
   {- Unfolding: (GHC.CString.unpackCString# "incoordsfile = "#) -}
-19bfe9ea061ca75de9d29dd0ed258633
+3b95eed31dd04123c64011351947e5a8
   $fShowOpts6 :: [GHC.Types.Char]
-  {- Unfolding: (GHC.CString.unpackCString# "coordfileformat = "#) -}
-00d166dabdb5026b87ee256b68cca182
+  {- Unfolding: (GHC.CString.unpackCString# "bedpeformat = "#) -}
+fad8714a4d90eae649c6ded97bd05e2e
   $fShowOpts_$cshow :: Lib.Opts -> GHC.Base.String
   {- Arity: 1, Strictness: <S,1*U(1*U,1*U,1*U,1*U)>,
      Unfolding: InlineRule (1, True, False)
@@ -9231,11 +9231,11 @@ b68d2447b6b5e3f91ab96c38540d758c
                    GHC.Show.shows22
                    x
                    (GHC.Types.[] @ GHC.Types.Char)) -}
-00d166dabdb5026b87ee256b68cca182
+fad8714a4d90eae649c6ded97bd05e2e
   $fShowOpts_$cshowList :: [Lib.Opts] -> GHC.Show.ShowS
   {- Arity: 2,
      Unfolding: (GHC.Show.showList__ @ Lib.Opts Lib.$fShowOpts1) -}
-00d166dabdb5026b87ee256b68cca182
+fad8714a4d90eae649c6ded97bd05e2e
   $fShowOpts_$cshowsPrec ::
     GHC.Types.Int -> Lib.Opts -> GHC.Show.ShowS
   {- Arity: 3,
@@ -12224,7 +12224,7 @@ d5b2908ec976c9f7ce23fa53ac8bdf3c
   {- Arity: 12,
      Strictness: <S,U><L,1*U><L,U><L,U><L,1*U(U,U,U,U)><L,1*U><L,U><L,U><L,U><L,U><L,1*U(1*U,U,U,1*U(U,U,U,U))><L,U>,
      Inline: [0] -}
-b08835fcd953845324fc519d374a5334
+0e02be2c44df7f7da521b3bc458dfd9e
   $w$cshowsPrec5 ::
     GHC.Prim.Int#
     -> GHC.Types.Bool
@@ -16880,9 +16880,9 @@ beb912df8b081e469bb9f55eb2f01c44
                  postxposdcnt :: GHC.Integer.Type.Integer,
                  negtxposdcnt :: GHC.Integer.Type.Integer,
                  targetbed :: Lib.BedRecord}
-00d166dabdb5026b87ee256b68cca182
+fad8714a4d90eae649c6ded97bd05e2e
   data Opts
-    = Opts {coordfileformat :: GHC.Types.Bool,
+    = Opts {bedpeformat :: GHC.Types.Bool,
             incoordsfile :: GHC.Base.String,
             insamfile :: GHC.Base.String,
             outfilename :: GHC.Base.String}
@@ -18549,6 +18549,13 @@ f3ca069d52344285fba8e5907e49c556
                    (GHC.ForeignPtr.PlainForeignPtr ipv1)
                    0#
                    (GHC.Prim.word2Int# ds8) } }) -}
+9bc15f0b54670fb312995208c2379469
+  bedpeformat :: Lib.Opts -> GHC.Types.Bool
+  RecSel Left Lib.Opts
+  {- Arity: 1, HasNoCafRefs, Strictness: <S(SLLL),1*U(1*U,A,A,A)>,
+     Unfolding: InlineRule (1, True, False)
+                (\ (ds6 :: Lib.Opts) ->
+                 case ds6 of wild { Lib.Opts ds7 ds8 ds9 ds10 -> ds7 }) -}
 35814542172376ce42a89002305cfceb
   bedpename :: Lib.BEDPE -> Data.ByteString.Internal.ByteString
   RecSel Left Lib.BEDPE
@@ -19224,13 +19231,6 @@ bde2569376f15f4b8e51e2a76aa6f828
                    (GHC.ForeignPtr.PlainForeignPtr ipv1)
                    0#
                    (GHC.Prim.word2Int# ds8) } }) -}
-91c54ee8457750a7d8eff49ea4c31a8c
-  coordfileformat :: Lib.Opts -> GHC.Types.Bool
-  RecSel Left Lib.Opts
-  {- Arity: 1, HasNoCafRefs, Strictness: <S(SLLL),1*U(1*U,A,A,A)>,
-     Unfolding: InlineRule (1, True, False)
-                (\ (ds6 :: Lib.Opts) ->
-                 case ds6 of wild { Lib.Opts ds7 ds8 ds9 ds10 -> ds7 }) -}
 c05a9cdf8d1cf89563da4d0f6309ddd5
   countDs ::
     [(GHC.Integer.Type.Integer, Data.ByteString.Internal.ByteString)]
@@ -19284,7 +19284,7 @@ d0c9b3fa9ebb891eb83766d320d408cf
     [(GHC.Integer.Type.Integer, Data.ByteString.Internal.ByteString)]
     -> GHC.Integer.Type.Integer -> GHC.Integer.Type.Integer
   {- Arity: 2, Strictness: <S,1*U><S,1*U> -}
-f19dcdbfdb3c8713e4df7509c5a3063f
+0a3f86c13266295db0368d2d9202542c
   createprimerbedmaps ::
     Lib.Opts
     -> GHC.Types.IO
@@ -19301,7 +19301,7 @@ f19dcdbfdb3c8713e4df7509c5a3063f
                                    Lib.UChr (Data.IntMap.Base.IntMap Lib.BedRecord),
                                  Data.Map.Base.Map
                                    Lib.UChr (Data.IntMap.Base.IntMap Lib.BedRecord))>_R)) -}
-0d1d11c62135c978b42cc9529edfa9b2
+d556cd712ee75221179b092a738719ec
   createprimerbedmaps1 ::
     Lib.Opts
     -> GHC.Prim.State# GHC.Prim.RealWorld
@@ -20789,14 +20789,14 @@ c4b71de1dcbf28c3343faafc199bd1ef
                 (\ (ds6 :: Lib.AlignedRead) ->
                  case ds6 of wild { Lib.AlignedRead ds7 ds8 ds9 ds10 ds11 ds12 ds13 ds14 ds15 ds16 ds17 ds18 ds19 ds20 ds21 ds22 ds23 ds24 ds25 ds26 ds27 ds28 ds29 ds30 ds31 ds32 ds33 ds34 ds35 ds36 ds37 ->
                  ds32 }) -}
-5f633f525cfdb06c51b8ce13881c9dde
+4332a9227b9b9291cf8a0102ab6cce48
   incoordsfile :: Lib.Opts -> GHC.Base.String
   RecSel Left Lib.Opts
   {- Arity: 1, HasNoCafRefs, Strictness: <S(LSLL),1*U(A,1*U,A,A)>,
      Unfolding: InlineRule (1, True, False)
                 (\ (ds6 :: Lib.Opts) ->
                  case ds6 of wild { Lib.Opts ds7 ds8 ds9 ds10 -> ds8 }) -}
-caa0d3eba755312cc2c5afe896838f20
+6067a0b28bece56cce80e30d2fc95ca6
   insamfile :: Lib.Opts -> GHC.Base.String
   RecSel Left Lib.Opts
   {- Arity: 1, HasNoCafRefs, Strictness: <S(LLSL),1*U(A,A,1*U,A)>,
@@ -21835,7 +21835,7 @@ e2dbb10b74b887cbb6daaf35e348e544
                 (\ (ds6 :: Lib.SAMFlag) ->
                  case ds6 of wild { Lib.SAMFlag ds7 ds8 ds9 ds10 ds11 ds12 ds13 ds14 ds15 ds16 ds17 ds18 ->
                  ds15 }) -}
-e7c06617a6259eca4a11089890638fb6
+24e5e97a6a9e1cd40932b9195e46a590
   optargs :: Options.Applicative.Types.Parser Lib.Opts
   {- Unfolding: (Options.Applicative.Types.MultP
                    @ Lib.Opts
@@ -21867,7 +21867,7 @@ ce753c7d94fb780cd27961a44e19294c
                    (Sym (Options.Applicative.Help.Chunk.N:Chunk[0]) <Text.PrettyPrint.ANSI.Leijen.Doc>_N)
                    Lib.optargs_var1
                    (GHC.Base.Nothing @ GHC.Base.String)) -}
-0e786da910cb935a7e35742c4dfd1cec
+405a26d6971476028937458556764b6a
   optargs12 ::
     Options.Applicative.Types.Parser
       (GHC.Base.String -> GHC.Base.String -> Lib.Opts)
@@ -21907,7 +21907,7 @@ d71542feb55c611c9983f2a7d506e969
                    (Sym (Options.Applicative.Help.Chunk.N:Chunk[0]) <Text.PrettyPrint.ANSI.Leijen.Doc>_N)
                    Lib.optargs_var2
                    (GHC.Base.Nothing @ GHC.Base.String)) -}
-edc4c1ff60f44dd9888e0178bf581339
+e7f8901069ea1d146faeeae26ff7a469
   optargs17 ::
     Options.Applicative.Types.Parser
       (GHC.Base.String -> GHC.Base.String -> GHC.Base.String -> Lib.Opts)
@@ -22066,7 +22066,7 @@ f0e7df2a24d643da84ce50ca05d2c878
                                           Options.Applicative.Types.ParseError>_R
                                        <GHC.Base.String>_N))
                              (Sym (Options.Applicative.Types.N:ReadM[0]) <GHC.Base.String>_N)))) -}
-fface3a1fd82c0f1f87d7237078f2a8d
+f75da521bc5e69f2757fa428efc6452f
   optargs7 ::
     Options.Applicative.Types.Parser (GHC.Base.String -> Lib.Opts)
   {- Unfolding: (Options.Applicative.Types.MultP
@@ -22831,7 +22831,7 @@ a25b01a4df7e232288f004cd235c9525
                 (Sym (Data.Attoparsec.Internal.Types.N:Parser[0]
                           <Data.ByteString.Internal.ByteString>_N
                           <Data.ByteString.Internal.ByteString>_R)) -}
-a77ef4b843258c6aa04c7fb0d7af8956
+6c80a9e36026304e3aab430ce3249fec
   outfilename :: Lib.Opts -> GHC.Base.String
   RecSel Left Lib.Opts
   {- Arity: 1, HasNoCafRefs, Strictness: <S(LLLS),1*U(A,A,A,1*U)>,

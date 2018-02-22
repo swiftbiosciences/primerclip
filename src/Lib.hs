@@ -587,7 +587,7 @@ optargs = Opts
     <*> argument str (metavar "OUTPUT_SAM_FILENAME")
 
 -- record to store command line arguments
-data Opts = Opts { coordfileformat :: Bool
+data Opts = Opts { bedpeformat :: Bool
                  , incoordsfile :: String
                  , insamfile :: String
                  , outfilename :: String
@@ -1494,6 +1494,9 @@ checknonzeroCigMatch a
     | otherwise = False
 
 -- 180213 check for "no real operator" (picard) in trimmed CIGAR string
+-- 180222 several problems with invalid flag settings once CIGAR is cleared;
+-- thoroughly test edge cases to ensure picard does not fail due to malformed
+-- alignments
 clearNonRealCigar :: AlignedRead -> AlignedRead
 clearNonRealCigar a
     | (any (\x -> elem x ("MIDN" :: String)) (B.unpack $ trimdcigar a)) = a
@@ -1607,7 +1610,7 @@ justchrmaps mcmaps = catMaybes mcmaps
 
 createprimerbedmaps :: Opts -> IO ( M.Map UChr (I.IntMap BedRecord)
                                   , M.Map UChr (I.IntMap BedRecord) )
-createprimerbedmaps args = case (coordfileformat args) of
+createprimerbedmaps args = case (bedpeformat args) of
     False -> do
         m <- getMasterFile $ incoordsfile args
         let fm = makechrbedmap $ masterToFPrimerBED m
