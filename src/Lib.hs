@@ -1005,7 +1005,7 @@ checkCigarSeqlen a
 cigseqlenHdrPassTest :: AlignedRead -> Bool
 cigseqlenHdrPassTest a
     -- | (isheader a) = True
-    | cigar a == "*" = True
+    | (cigar a == "*") || (trimdcigar a == "*") = True -- 180222
     | (cigmatchlen == refseqlen) = True
     -- | (cigmatchlen == refseqlen) && (matchcnt > 0) = True
     | otherwise = False
