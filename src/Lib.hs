@@ -1269,18 +1269,18 @@ writeRunStats fp r = do
                              labels
                              [tot, mapd, trimd, tt0, tPct]
         outbs = B.unlines statslines
-        fnameroot = genLogFilePath fp
-    B.writeFile fp outbs
+        logfilename = genLogFilePath fp
+    B.writeFile logfilename outbs
 
 -- 180226 safely try to get name root of input SAM file to create log filename
 genLogFilePath :: FilePath -> FilePath
 genLogFilePath fp
     | (length parts) < 2 = "primerclip_runstats.log"
     | otherwise = nameroot
-        where bs = B.pack $ show fp
-              parts = B.split '_' bs -- NOTE: should we have an alternate split char e.g. '.'?
+        where bs = B.pack fp
+              parts = B.split '.' bs -- NOTE: should we have an alternate split char e.g. '.'?
               nameroot = B.unpack
-                       $ B.concat [(head parts), "_primerclip_runstats.log"]
+                       $ B.append (head parts) "_primerclip_runstats.log"
 
 -- 171017 calculate trim stats and print to stdout (TODO: print full stats to file)
 calculateTrimStats :: P.ConduitM AlignedRead c (P.ResourceT IO) Integer
@@ -1298,9 +1298,11 @@ calcRunStats = (calc <$> P.ZipSink P.lengthC
                                                    trimd
                                                    trimd2z
                                                    ((fromIntegral trimd)
-                                                    / (fromIntegral total))
+                                                    / (fromIntegral total)
+                                                    * 100.0)
                                                    ((fromIntegral mapd)
-                                                    / (fromIntegral total))
+                                                    / (fromIntegral total)
+                                                    * 100.0)
 
 calcMappedCount :: Integral i => P.ConduitM AlignedRead c (P.ResourceT IO) i
 calcMappedCount = P.filterC (\x -> (mapped x) && (not $ trimdToZeroLength x))

@@ -1,10 +1,10 @@
 
 ==================== FINAL INTERFACE ====================
-2018-02-26 16:45:02.095807 UTC
+2018-02-26 17:35:46.782412 UTC
 
 interface main@main:Main 8002
-  interface hash: 4198661d883826e54e7afd62d3459381
-  ABI hash: 7731c5261c0df3cd927533be2b9439c3
+  interface hash: 941aa7b0619f6cef63fb8b284a55a766
+  ABI hash: 3349ee9d7b697717fb2711658756427f
   export-list hash: 4d923d32dedf0c270a97be2b5f4702d2
   orphan hash: f067ff874353f9bbd5b00d2dd0f7a928
   flag hash: 38928b87a81e036a622955337ab0dabc
@@ -142,7 +142,7 @@ import  -/  ghc-prim-0.5.0.0:GHC.Types 89f8de4f08018c9177c98d979eae0e45
 import  -/  optparse-applicative-0.13.2.0@optparse-applicative-0.13.2.0-34EUj6Bj0pDLtYR0AoQs8j:Options.Applicative 3b2110c868e49e0d86cded098f24e0d2
 import  -/  optparse-applicative-0.13.2.0@optparse-applicative-0.13.2.0-34EUj6Bj0pDLtYR0AoQs8j:Options.Applicative.Builder cddcfb07a988339795d2e38d4387ac76
 import  -/  optparse-applicative-0.13.2.0@optparse-applicative-0.13.2.0-34EUj6Bj0pDLtYR0AoQs8j:Options.Applicative.Extra 149b9f0d4c43ee9476133f84e028bc40
-import  -/  primerclip-0.1.0.0@primerclip-0.1.0.0-BvEEl93NsBt2YPC7rsTWdy:Lib 34adfbac716befb0667a931871ff1700
+import  -/  primerclip-0.1.0.0@primerclip-0.1.0.0-BvEEl93NsBt2YPC7rsTWdy:Lib 720aa4764673c7339c908ad59dd6f9e0
 ffe787835a7a1860338941124400c7dd
   $s$fApplicativeResourceT ::
     GHC.Base.Applicative
@@ -379,12 +379,12 @@ a0d9e26dd15c35d4632611aa2fb98f01
     -> (# GHC.Prim.State# GHC.Prim.RealWorld, Lib.RunStats #)
   {- Arity: 5, Strictness: <S,1*U><L,U><L,U><L,U><S,U>,
      Inline: [0] -}
-958de0f236b5bcc26db16f535beb0d67
+316201e2a19c6a3705290187b63e346b
   main :: GHC.Types.IO ()
   {- Arity: 1, Strictness: <S,U>,
      Unfolding: InlineRule (0, True, True)
                 Main.main1 `cast` (Sym (GHC.Types.N:IO[0] <()>_R)) -}
-d3ab843fa61c355ed3378a58c0347e1a
+4ba6635751a0e418043b55c49b93bdfe
   main1 ::
     GHC.Prim.State# GHC.Prim.RealWorld
     -> (# GHC.Prim.State# GHC.Prim.RealWorld, () #)
@@ -411,7 +411,7 @@ d3ab843fa61c355ed3378a58c0347e1a
                         Main.main2
                         GHC.Types.True
                         ipv4 of ds3 { (#,#) ipv6 ipv7 ->
-                 Lib.writeRunStats1 ww3 ipv5 ipv6 } } } } }) -}
+                 Lib.writeRunStats1 ww4 ipv5 ipv6 } } } } }) -}
 8f623bfcdcba4ae2ba617a9755bb547d
   main2 :: [GHC.Types.Char]
   {- Unfolding: (GHC.CString.unpackCString#
@@ -468,7 +468,7 @@ f77334da6b8f00af055ee7206df77ec9
                    @ Lib.Opts
                    (Options.Applicative.Extra.helper @ Lib.Opts)
                    Lib.optargs) -}
-75fdfe101b5fa1b577a63ce08f3ff62a
+c1403d49d368fd7b906145fa72846595
   main9 ::
     GHC.Prim.State# GHC.Prim.RealWorld
     -> (# GHC.Prim.State# GHC.Prim.RealWorld, () #)

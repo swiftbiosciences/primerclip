@@ -1,10 +1,10 @@
 
 ==================== FINAL INTERFACE ====================
-2018-02-26 16:44:53.813028 UTC
+2018-02-26 17:35:38.241324 UTC
 
 interface primerclip-0.1.0.0-BvEEl93NsBt2YPC7rsTWdy:Lib [family instance module] 8002
-  interface hash: f988245c43e4889ac79073fb0c3193fd
-  ABI hash: 34adfbac716befb0667a931871ff1700
+  interface hash: 7f4e80d0de2b3af79620e13193e1b7ba
+  ABI hash: 720aa4764673c7339c908ad59dd6f9e0
   export-list hash: 4a5adda48a21a09d7e844943782b4a75
   orphan hash: ee35b78cdf3a9515cf9343cdd583edea
   flag hash: c700d67e8f1203d8103b9f3bfac8bb0d
@@ -14534,7 +14534,7 @@ e1c678fe0a2bcb6adfc6ccb2f4fa9780
                          @ (Data.IntMap.Base.IntMap Lib.BedRecord)
                          Lib.makebedmap
                          bbychr))) -}
-6c85c76994fd7ca207fdfd796faf7da9
+58e673ba0341dda9e85606c95972c577
   $wmakeprimertups ::
     Lib.UChr
     -> GHC.Integer.Type.Integer
@@ -14590,7 +14590,7 @@ e1c678fe0a2bcb6adfc6ccb2f4fa9780
                            b :: Lib.BedRecord = Lib.BedRecord ww ww1 ww2 ww3
                          } in
                          let {
-                           lvl1035 :: [Lib.BedRecord]
+                           lvl1037 :: [Lib.BedRecord]
                            = GHC.Types.: @ Lib.BedRecord b (GHC.Types.[] @ Lib.BedRecord)
                          } in
                          letrec {
@@ -14600,7 +14600,7 @@ e1c678fe0a2bcb6adfc6ccb2f4fa9780
                              case ww4 of ds6 {
                                DEFAULT
                                -> GHC.Types.: @ Lib.BedRecord b ($wxs (GHC.Prim.-# ds6 1#))
-                               1# -> lvl1035 }
+                               1# -> lvl1037 }
                          } in
                          $wxs wild } })) -}
 4a7847008857789d1faee942f6e02fe1
@@ -15200,7 +15200,7 @@ bfac3baa3e0f0b7457a71cf311e9bde8
                                 ww1
                                 ipv of s' { DEFAULT ->
                          GHC.Word.W8# ipv1 } }) }) -}
-624f584f06c8c13c5f333fbbcae2ff28
+19076d130500739cafa726c55cd4fa71
   $woptidp ::
     Data.Attoparsec.Internal.Types.State
       Data.ByteString.Internal.ByteString
@@ -15238,10 +15238,10 @@ bfac3baa3e0f0b7457a71cf311e9bde8
                             Data.ByteString.Internal.ByteString
                             r) ->
                  let {
-                   lvl1035 :: GHC.Types.Int = GHC.Types.I# ww
+                   lvl1037 :: GHC.Types.Int = GHC.Types.I# ww
                  } in
                  let {
-                   lvl1036 :: Data.Attoparsec.Internal.Types.State
+                   lvl1038 :: Data.Attoparsec.Internal.Types.State
                                 Data.ByteString.Internal.ByteString
                               -> Data.Attoparsec.Internal.Types.Pos
                               -> Data.Attoparsec.Internal.Types.More
@@ -15285,10 +15285,10 @@ bfac3baa3e0f0b7457a71cf311e9bde8
                                          <Data.ByteString.Internal.ByteString>_R)
                                       @ r
                                       w4
-                                      lvl1035 `cast` (Sym (Data.Attoparsec.Internal.Types.N:Pos[0]))
+                                      lvl1037 `cast` (Sym (Data.Attoparsec.Internal.Types.N:Pos[0]))
                                       w6
                                       w2
-                                      lvl1036) -}
+                                      lvl1038) -}
                    = \ (w4 :: Data.Attoparsec.Internal.Types.State
                                 Data.ByteString.Internal.ByteString)
                        (w5 :: Data.Attoparsec.Internal.Types.Pos)
@@ -15302,13 +15302,13 @@ bfac3baa3e0f0b7457a71cf311e9bde8
                           <Data.ByteString.Internal.ByteString>_R)
                        @ r
                        w4
-                       lvl1035 `cast` (Sym (Data.Attoparsec.Internal.Types.N:Pos[0]))
+                       lvl1037 `cast` (Sym (Data.Attoparsec.Internal.Types.N:Pos[0]))
                        w6
                        w2
-                       lvl1036
+                       lvl1038
                  } in
                  let {
-                   lvl1037 :: Data.Attoparsec.Internal.Types.State
+                   lvl1039 :: Data.Attoparsec.Internal.Types.State
                                 Data.ByteString.Internal.ByteString
                               -> Data.Attoparsec.Internal.Types.Pos
                               -> Data.Attoparsec.Internal.Types.More
@@ -15337,7 +15337,7 @@ bfac3baa3e0f0b7457a71cf311e9bde8
                       <Data.ByteString.Internal.ByteString>_R)
                    @ r
                    w
-                   lvl1035 `cast` (Sym (Data.Attoparsec.Internal.Types.N:Pos[0]))
+                   lvl1037 `cast` (Sym (Data.Attoparsec.Internal.Types.N:Pos[0]))
                    w1
                    (\ (t' :: Data.Attoparsec.Internal.Types.State
                                Data.ByteString.Internal.ByteString)
@@ -15352,10 +15352,10 @@ bfac3baa3e0f0b7457a71cf311e9bde8
                          <Data.ByteString.Internal.ByteString>_R)
                       @ r
                       t'
-                      lvl1035 `cast` (Sym (Data.Attoparsec.Internal.Types.N:Pos[0]))
+                      lvl1037 `cast` (Sym (Data.Attoparsec.Internal.Types.N:Pos[0]))
                       more'
                       lose
-                      lvl1037)
+                      lvl1039)
                    (\ (t' :: Data.Attoparsec.Internal.Types.State
                                Data.ByteString.Internal.ByteString)
                       (pos' :: Data.Attoparsec.Internal.Types.Pos)
@@ -15785,7 +15785,7 @@ dc855703d058d59a4e8adb8ea3d27288
                            @ GHC.Types.Char
                            (GHC.Types.: @ GHC.Types.Char ww5 ww6)
                            Lib.parsechkSAM1 }) }) -}
-2e02ef20f66cc2a6fab71093b9554733
+d3ab2b1e418b2402c01af9ea2fe58ad0
   $wparsemIDstring ::
     GHC.Prim.Addr#
     -> GHC.ForeignPtr.ForeignPtrContents
@@ -15802,7 +15802,7 @@ dc855703d058d59a4e8adb8ea3d27288
                    = case ww3 of ds6 {
                        DEFAULT
                        -> let {
-                            lvl1035 :: GHC.Ptr.Ptr GHC.Word.Word8
+                            lvl1037 :: GHC.Ptr.Ptr GHC.Word.Word8
                             = GHC.Ptr.Ptr @ GHC.Word.Word8 ww
                           } in
                           letrec {
@@ -15849,7 +15849,7 @@ dc855703d058d59a4e8adb8ea3d27288
                                               case w3 of fp'1 { GHC.ForeignPtr.ForeignPtr ipv2 ipv3 ->
                                               case $wsplitLoop
                                                      pred'1
-                                                     lvl1035
+                                                     lvl1037
                                                      0#
                                                      (GHC.Types.I#
                                                         (GHC.Prim.+# (GHC.Prim.+# x ww4) 1#))
@@ -15873,7 +15873,7 @@ dc855703d058d59a4e8adb8ea3d27288
                           } in
                           case $wsplitLoop
                                  Lib.parsemIDstring3
-                                 lvl1035
+                                 lvl1037
                                  0#
                                  (GHC.Types.I# ww2)
                                  ds6
@@ -19295,7 +19295,7 @@ d8565b88460af3d3c9ae7d90dbf31e1d
                              <Data.Void.Void>_N
                              <Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO>_N
                              <GHC.Integer.Type.Integer>_R))) -}
-ed889da2fe5deba3c4459d93498ec10b
+bb285687506c77892613c0ca8f19f4c6
   calcRunStats ::
     Data.Conduit.Internal.Conduit.ZipSink
       Lib.AlignedRead
@@ -19314,7 +19314,7 @@ ed889da2fe5deba3c4459d93498ec10b
                      (Sym (Data.Conduit.Internal.Conduit.N:ZipSink[0]
                                <Lib.AlignedRead>_N) <Control.Monad.Trans.Resource.Internal.ResourceT
                                                        GHC.Types.IO>_N <Lib.RunStats>_N)) -}
-316df6c8815c435d96c8b072f2b288a4
+b8f6e8e67349f12c2ecdaf624490dd43
   calcRunStats1 ::
     (Lib.RunStats
      -> Data.Conduit.Internal.Pipe.Pipe
@@ -19372,7 +19372,7 @@ ed889da2fe5deba3c4459d93498ec10b
          (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
          b1
   {- Arity: 1, Strictness: <L,C(U)> -}
-a5d2b5a9a699fad356092c002b65310f
+28af8fb84e6d15639cc43b6f368663f2
   calcRunStats3 ::
     ((GHC.Integer.Type.Integer -> Lib.RunStats)
      -> Data.Conduit.Internal.Pipe.Pipe
@@ -19431,7 +19431,7 @@ a5d2b5a9a699fad356092c002b65310f
          (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
          b1
   {- Arity: 1, Strictness: <L,C(U)> -}
-fe0672565250d3a6bda53df0093664fc
+12755f7928c47ddc2ba8ab757290b8cd
   calcRunStats5 ::
     ((GHC.Integer.Type.Integer
       -> GHC.Integer.Type.Integer -> Lib.RunStats)
@@ -19478,7 +19478,7 @@ fe0672565250d3a6bda53df0093664fc
                               -> Lib.RunStats,
                               GHC.Integer.Type.Integer)) ->
                     h (case a1 of wild { (,) x ds6 -> x ds6 }))) -}
-8f88e4b1911e1b1569d9012b0067ec04
+b094293cc226a3dd08caebba526d181d
   calcRunStats6 ::
     ((GHC.Integer.Type.Integer
       -> GHC.Integer.Type.Integer
@@ -19526,11 +19526,11 @@ fe0672565250d3a6bda53df0093664fc
                          (case GHC.Integer.Type.doubleFromInteger trimd of wild { DEFAULT ->
                           case GHC.Integer.Type.doubleFromInteger a1 of wild1 { DEFAULT ->
                           case GHC.Prim./## wild wild1 of wild2 { DEFAULT ->
-                          GHC.Types.D# wild2 } } })
+                          GHC.Types.D# (GHC.Prim.*## wild2 100.0##) } } })
                          (case GHC.Integer.Type.doubleFromInteger mapd of wild { DEFAULT ->
                           case GHC.Integer.Type.doubleFromInteger a1 of wild1 { DEFAULT ->
                           case GHC.Prim./## wild wild1 of wild2 { DEFAULT ->
-                          GHC.Types.D# wild2 } } })))) -}
+                          GHC.Types.D# (GHC.Prim.*## wild2 100.0##) } } })))) -}
 c093d7ab5ac353a88ee2a70ebd5d9129
   calcRunStats7 ::
     GHC.Integer.Type.Integer
@@ -19551,7 +19551,7 @@ c093d7ab5ac353a88ee2a70ebd5d9129
             (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
             b
   {- Arity: 2, Strictness: <S,1*U><L,C(U)> -}
-c72912c2c944c96390d76ad350f5a322
+699f4a0d8b9875c7536e94a6c6d471a5
   calcRunStats_m1 ::
     Data.Conduit.Internal.Conduit.ConduitM
       Lib.AlignedRead
@@ -19579,7 +19579,7 @@ c72912c2c944c96390d76ad350f5a322
                              <Data.Void.Void>_N
                              <Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO>_N
                              <GHC.Integer.Type.Integer>_R))) -}
-b9cc6519e9db68d2c82b1a5630fa3805
+e0f94932f4e9619baef1e6d33ee0515c
   calcRunStats_m2 ::
     Data.Conduit.Internal.Conduit.ConduitM
       Lib.AlignedRead
@@ -19610,7 +19610,7 @@ b9cc6519e9db68d2c82b1a5630fa3805
                              <Data.Void.Void>_N
                              <Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO>_N
                              <GHC.Integer.Type.Integer>_R))) -}
-ca5a670c7bea1b273e1ce9b8d6f8f498
+53eb0ecc8df3d1d6d059f81e1387d7a6
   calcRunStats_m3 ::
     Data.Conduit.Internal.Conduit.ConduitM
       Lib.AlignedRead
@@ -21246,144 +21246,9 @@ bc3eec76d841007be8aef35fb9e3ab87
                 (\ (ds6 :: Lib.SAMFlag) ->
                  case ds6 of wild { Lib.SAMFlag ds7 ds8 ds9 ds10 ds11 ds12 ds13 ds14 ds15 ds16 ds17 ds18 ->
                  ds13 }) -}
-90d8ca5011ea189e004524ecce3a8722
+088636f3b37e2b38faed4b9ea11e767f
   genLogFilePath :: GHC.IO.FilePath -> GHC.IO.FilePath
-  {- Arity: 1, Strictness: <L,1*U>,
-     Unfolding: (\ (fp :: GHC.IO.FilePath) ->
-                 let {
-                   cs :: GHC.Base.String
-                   = GHC.Show.showLitString fp Lib.genLogFilePath4
-                 } in
-                 let {
-                   cs1 :: [GHC.Types.Char]
-                   = GHC.Types.: @ GHC.Types.Char GHC.Show.shows6 cs
-                 } in
-                 case GHC.List.$wlenAcc @ GHC.Types.Char cs1 0# of ww2 { DEFAULT ->
-                 case Data.ByteString.Internal.$wunsafePackLenChars
-                        ww2
-                        cs1 of wild { Data.ByteString.Internal.PS dt dt1 dt2 dt3 ->
-                 let {
-                   parts :: [Data.ByteString.Internal.ByteString]
-                   = case dt3 of ds6 {
-                       DEFAULT
-                       -> letrec {
-                            $wloop3 :: GHC.Prim.Int# -> [Data.ByteString.Internal.ByteString]
-                              {- Arity: 1, Strictness: <S,U>, Inline: [0] -}
-                            = \ (ww :: GHC.Prim.Int#) ->
-                              case {__pkg_ccall bytestring-0.10.8.1@bytestring-0.10.8.1 memchr GHC.Prim.Addr#
-                                                                                               -> GHC.Prim.Int#
-                                                                                               -> GHC.Prim.Word#
-                                                                                               -> GHC.Prim.State#
-                                                                                                    GHC.Prim.RealWorld
-                                                                                               -> (# GHC.Prim.State#
-                                                                                                       GHC.Prim.RealWorld,
-                                                                                                     GHC.Prim.Addr# #)}
-                                     (GHC.Prim.plusAddr# dt (GHC.Prim.+# dt2 ww))
-                                     95#
-                                     (GHC.Prim.int2Word# (GHC.Prim.-# ds6 ww))
-                                     GHC.Prim.realWorld# of wild1 { (#,#) ds7 ds8 ->
-                              case GHC.Prim.touch#
-                                     @ 'GHC.Types.PtrRepLifted
-                                     @ GHC.ForeignPtr.ForeignPtrContents
-                                     dt1
-                                     ds7 of s' { DEFAULT ->
-                              case GHC.Prim.tagToEnum#
-                                     @ GHC.Types.Bool
-                                     (GHC.Prim.eqAddr# ds8 __NULL) of wild2 {
-                                GHC.Types.False
-                                -> let {
-                                     i :: GHC.Types.Int
-                                     = case GHC.Prim.touch#
-                                              @ 'GHC.Types.PtrRepLifted
-                                              @ GHC.ForeignPtr.ForeignPtrContents
-                                              dt1
-                                              GHC.Prim.realWorld# of s'1 { DEFAULT ->
-                                       GHC.Types.I#
-                                         (GHC.Prim.minusAddr# ds8 (GHC.Prim.plusAddr# dt dt2)) }
-                                   } in
-                                   GHC.Types.:
-                                     @ Data.ByteString.Internal.ByteString
-                                     (case i of wild4 { GHC.Types.I# x ->
-                                      Data.ByteString.Internal.PS
-                                        dt
-                                        dt1
-                                        (GHC.Prim.+# dt2 ww)
-                                        (GHC.Prim.-# x ww) })
-                                     (case i of wild4 { GHC.Types.I# x ->
-                                      $wloop3 (GHC.Prim.+# x 1#) })
-                                GHC.Types.True
-                                -> GHC.Types.:
-                                     @ Data.ByteString.Internal.ByteString
-                                     (Data.ByteString.Internal.PS
-                                        dt
-                                        dt1
-                                        (GHC.Prim.+# dt2 ww)
-                                        (GHC.Prim.-# ds6 ww))
-                                     (GHC.Types.[] @ Data.ByteString.Internal.ByteString) } } }
-                          } in
-                          $wloop3 0#
-                       0# -> GHC.Types.[] @ Data.ByteString.Internal.ByteString }
-                 } in
-                 case GHC.List.$wlenAcc
-                        @ Data.ByteString.Internal.ByteString
-                        parts
-                        0# of ww1 { DEFAULT ->
-                 case GHC.Prim.tagToEnum#
-                        @ GHC.Types.Bool
-                        (GHC.Prim.<# ww1 2#) of wild1 {
-                   GHC.Types.False
-                   -> case Data.ByteString.Internal.$fMonoidByteString_$cmconcat
-                             (GHC.Types.:
-                                @ Data.ByteString.Internal.ByteString
-                                (GHC.List.head @ Data.ByteString.Internal.ByteString parts)
-                                Lib.genLogFilePath2) of ww { Data.ByteString.Internal.PS ww3 ww4 ww5 ww6 ->
-                      Data.ByteString.Internal.$wunpackAppendCharsLazy
-                        ww3
-                        ww4
-                        ww5
-                        ww6
-                        (GHC.Types.[] @ GHC.Types.Char) }
-                   GHC.Types.True -> Lib.genLogFilePath1 } } } }) -}
-e47da3dffa836a53876da05dfad64103
-  genLogFilePath1 :: [GHC.Types.Char]
-  {- Unfolding: (GHC.CString.unpackCString#
-                   "primerclip_runstats.log"#) -}
-4673ba5f8cc5918e8a26ff422bf941f9
-  genLogFilePath2 :: [Data.ByteString.Internal.ByteString]
-  {- Unfolding: (GHC.Types.:
-                   @ Data.ByteString.Internal.ByteString
-                   Lib.genLogFilePath3
-                   (GHC.Types.[] @ Data.ByteString.Internal.ByteString)) -}
-55e8d00ae773d430e9e6ff60eda7b391
-  genLogFilePath3 :: Data.ByteString.Internal.ByteString
-  {- Unfolding: (case GHC.Prim.newMutVar#
-                        @ GHC.ForeignPtr.Finalizers
-                        @ GHC.Prim.RealWorld
-                        GHC.ForeignPtr.NoFinalizers
-                        GHC.Prim.realWorld# of ds6 { (#,#) ipv ipv1 ->
-                 let {
-                   addr# :: GHC.Prim.Addr# = "_primerclip_runstats.log"#
-                 } in
-                 case {__pkg_ccall bytestring-0.10.8.1@bytestring-0.10.8.1 strlen GHC.Prim.Addr#
-                                                                                  -> GHC.Prim.State#
-                                                                                       GHC.Prim.RealWorld
-                                                                                  -> (# GHC.Prim.State#
-                                                                                          GHC.Prim.RealWorld,
-                                                                                        GHC.Prim.Word# #)}
-                        addr#
-                        ipv of wild { (#,#) ds7 ds8 ->
-                 Data.ByteString.Internal.PS
-                   addr#
-                   (GHC.ForeignPtr.PlainForeignPtr ipv1)
-                   0#
-                   (GHC.Prim.word2Int# ds8) } }) -}
-4d56b991ea4005c4fca5f6e99722d13f
-  genLogFilePath4 :: [GHC.Types.Char]
-  {- HasNoCafRefs,
-     Unfolding: (GHC.Types.:
-                   @ GHC.Types.Char
-                   GHC.Show.shows6
-                   (GHC.Types.[] @ GHC.Types.Char)) -}
+  {- Arity: 1, Strictness: <S,U> -}
 99405b679332268b297b620c9305adcf
   getAlignedLength ::
     Data.ByteString.Internal.ByteString -> GHC.Integer.Type.Integer
@@ -22460,7 +22325,7 @@ e30706e45c286f6cf8d7d96de63d33f1
     -> [Data.IntMap.Base.IntMap Lib.BedRecord]
     -> [(Lib.UChr, Data.IntMap.Base.IntMap Lib.BedRecord)]
   {- Arity: 2, Strictness: <S,1*U><L,1*U> -}
-21c622136646cd112b71a3f42d99e81f
+0807393e81b0615d7b1a7747cb30bcf1
   makeprimertups :: Lib.BedRecord -> [(GHC.Types.Int, Lib.BedRecord)]
   {- Arity: 1, Strictness: <S(LSSL),U(U,U,U,U)>, Inline: INLINE[0],
      Unfolding: InlineRule (1, True, False)
@@ -23994,7 +23859,7 @@ af67612b3b5b9e2469ffa67ad4cc75fa
                    ww1
                    w4
                    w6 }) -}
-baaa8bc9f22682c681500466ed6a77f0
+fb0f43ef1e68ace05211521c8c1c3cab
   optidp ::
     Data.Attoparsec.ByteString.Internal.Parser
       Data.ByteString.Internal.ByteString
@@ -24006,7 +23871,7 @@ baaa8bc9f22682c681500466ed6a77f0
                 (Sym (Data.Attoparsec.Internal.Types.N:Parser[0]
                           <Data.ByteString.Internal.ByteString>_N
                           <Data.ByteString.Internal.ByteString>_R)) -}
-7178570d9178c2b153e29d77aed98edf
+bf0510ce97bd845052594a9bdc592319
   optidp1 ::
     Data.Attoparsec.Internal.Types.State
       Data.ByteString.Internal.ByteString
@@ -24490,7 +24355,7 @@ c73ea7ccf3cc2df5a3552d23734f0cb2
                    (Sym (Data.Attoparsec.Internal.Types.N:Parser[0]
                              <Data.ByteString.Internal.ByteString>_N
                              <GHC.Integer.Type.Integer>_R))) -}
-538f5df4fec369a87b42c95f3186fce2
+9b1a57b94c07306d14f77c6c54980ba8
   parsemIDstring ::
     Data.ByteString.Internal.ByteString
     -> Data.ByteString.Internal.ByteString
@@ -26631,22 +26496,22 @@ ab1b144a221c38d9cffd4700b8170a08
                    (GHC.ForeignPtr.PlainForeignPtr ipv1)
                    0#
                    (GHC.Prim.word2Int# ds8) } }) -}
-8f1d91190b45e957cb8de7e8b8a81df1
+7d2eb78f57013f5f215c08c889fb2188
   writeRunStats :: GHC.IO.FilePath -> Lib.RunStats -> GHC.Types.IO ()
-  {- Arity: 3, Strictness: <L,U><L,U(U,U,U,U,1*U(U),A)><S,U>,
+  {- Arity: 2, Strictness: <L,U><L,U(U,U,U,U,1*U(U),A)>,
      Unfolding: InlineRule (0, True, True)
                 Lib.writeRunStats1
                   `cast`
                 (<GHC.IO.FilePath>_R
                  ->_R <Lib.RunStats>_R
                  ->_R Sym (GHC.Types.N:IO[0] <()>_R)) -}
-8e2b5ca303859b71149a3444d778a712
+da32c745316c8b30a2ca32294b862b94
   writeRunStats1 ::
     GHC.IO.FilePath
     -> Lib.RunStats
     -> GHC.Prim.State# GHC.Prim.RealWorld
     -> (# GHC.Prim.State# GHC.Prim.RealWorld, () #)
-  {- Arity: 3, Strictness: <L,U><L,U(U,U,U,U,1*U(U),A)><S,U> -}
+  {- Arity: 2, Strictness: <L,U><L,U(U,U,U,U,1*U(U),A)> -}
 cf27dd19a463c36c77a2ac0f69a1c3c5
   xmid :: Lib.AlignedRead -> Data.ByteString.Internal.ByteString
   RecSel Left Lib.AlignedRead

@@ -27,7 +27,7 @@ main = do
     runstats <- runPrimerTrimming args
     -- putStrLn $ (show trimstats) ++ " alignments with >=1 primer bases trimmed."
     putStrLn "primer trimming complete."
-    writeRunStats (insamfile args) runstats -- 180226
+    writeRunStats (outfilename args) runstats -- 180226
 -- end main
 
 -- 180206 adapt to optional primer coords input file formats
