@@ -30,7 +30,7 @@ import GHC.Generics (Generic)
 
 {--
     Jonathan Irish
-    Post-alignment primer trimming tool v0.2
+    Post-alignment primer trimming tool v0.3
 
 --}
 
@@ -1777,27 +1777,6 @@ checkpos i
     | i < 0 = 0
     | otherwise = i
 
--- 170201 new trimming arithmetic adjusts read coords to reference
-adjustcrds :: [(Integer, B.ByteString)] -> [(Integer, B.ByteString)]
-adjustcrds cigs = scanl1 shiftcrds cigs
-
--- 180223 FIX!
--- 'H' and 'S' should be removed from CIGAR string before calling this function
--- this function adjusts read positions to align with reference (relative)
--- coordinates, allowing correct calculation of the primer-trimmed CIGAR string
-shiftcrds :: (Integer, B.ByteString) -> (Integer, B.ByteString)
-        -> (Integer, B.ByteString)
-shiftcrds a b
-    | thiscig == "I" = adjustposI
-    | thiscig == "D" = adjustposD
-    | otherwise = keeppos
-    where lastpos = fst a
-          thispos = fst b
-          thiscig = snd b
-          adjustposI = (lastpos, thiscig)
-          adjustposD = (lastpos + 2, thiscig)
-          keeppos = (lastpos + 1, thiscig)
-
 taketrim :: Integer -> [(Integer, B.ByteString)] -> [(Integer, B.ByteString)]
 taketrim cnt cs = takeWhile (\x -> (fst x) <= cnt) cs
 
@@ -1828,138 +1807,4 @@ findByQname name as = filter (\x -> (qname x) == name) as
 getNonHeaderAlns :: [AlignedRead] -> [AlignedRead]
 getNonHeaderAlns as = filter (not . isheader) as
 
-
 -- end of Library
-
--- 180223 temp storage of updateCig functions for the day
--- UPDATE 17-02-01 simplify CIGAR arithmetic by adjusting read coords to match
---                 reference coords (D CIGAR chars don't increment coords, and
---                 I chars double-increment coords)
-{--
-updateCigF :: Integer -> B.ByteString -> B.ByteString
-updateCigF fdiff cigar
-    | snd (head cmap) == "*" = "*"
-    | fdiffi <= 0 = cigar
-    | ((nopadlen - fdiffi) > 0) = newcig -- 180219 DEBUG testing
-    | otherwise = "*"
-        where cmap = mapcig cigar
-              grps = B.group $ expandcigar cmap
-              nohardgrps = B.group $ expandcigar $ filter nohardclip cmap
-              fHs = B.filter (== 'H') $ head grps -- maybe ""
-              rHs = B.filter (== 'H') $ last grps -- maybe ""
-              fSs = B.filter (== 'S') $ head nohardgrps
-              rSs = B.filter (== 'S') $ last nohardgrps
-              fdiffi = intgr2int fdiff
-              cignoclip = filter noclip cmap
-              cigexp = expandcigar2 cignoclip -- [(Int, B.ByteString)] assoc. list
-              nopadlen = length cigexp
-              adjcig = adjustcrds cigexp
-              ftrim = taketrim fdiff adjcig
-              trimDs = countDs ftrim
-              trimDcorr = intgr2int trimDs
-              adjix = (genericLength ftrim) + trimDs
-              remcigraw = drop trimDcorr $ trimrem adjix cigexp
-              newss = B.replicate (length ftrim) 'S'
-              newcigarcore = B.append newss $ B.concat $ snd <$> remcigraw
-              newcigar = B.append (B.append fSs newcigarcore) rSs
-              newfullcigar = B.append fHs (B.append newcigar rHs)
-              newcig = contractcigar newfullcigar
-
-updateCigR :: Integer -> B.ByteString -> B.ByteString
-updateCigR rdiff cigar
-    | snd (head cmap) == "*" = "*"
-    | rdiffi <= 0 = cigar
-    | ((nopadlen - rdiffi) > 0) = newcig -- 180219 DEBUGGING
-    | otherwise = "*"
-        where cmap = mapcig cigar
-              grps = B.group $ expandcigar cmap
-              nohardgrps = B.group $ expandcigar $ filter nohardclip cmap
-              fHs = B.filter (== 'H') $ head grps -- maybe ""
-              rHs = B.filter (== 'H') $ last grps -- maybe ""
-              fSs = B.filter (== 'S') $ head nohardgrps
-              rSs = B.filter (== 'S') $ last nohardgrps
-              rdiffi = intgr2int rdiff
-              cignoclip = filter noclip cmap
-              cigexpR = expandcigar2 $ reverse cignoclip
-              nopadlen = length cigexpR
-              adjcigR = adjustcrds cigexpR
-              rtrim = taketrim rdiff adjcigR
-              trimDs = countDs rtrim
-              trimDcorr = intgr2int trimDs
-              adjix = (genericLength rtrim) + trimDs
-              remcigraw = drop trimDcorr $ trimrem adjix cigexpR
-              remDs = intgr2int $ countDs remcigraw
-              remcigDadj = reverse $ drop remDs remcigraw
-              newss = B.replicate ((length rtrim)
-                                  + trimDcorr
-                                  + remDs) 'S'
-              newcigarcore = B.append (B.concat $ snd <$> remcigDadj) newss
-              newcigar = B.append fSs (B.append newcigarcore rSs)
-              newfullcigar = B.append fHs (B.append newcigar rHs)
-              newcig = contractcigar newfullcigar
-
-updateCigB :: Integer -> Integer -> B.ByteString -> B.ByteString
-updateCigB fdiff rdiff cigar
-    | snd (head cmap) == "*" = "*"
-    | fdiffi <= 0 = updateCigR rdiff cigar
-    | rdiffi <= 0 = updateCigF fdiff cigar
-    | ((nopadlen - fdiffi - rdiffi) > 0) = newcig -- 180212 zero-match CIGAR strings fail picard validation
-    | otherwise = "*"
-        where cmap = mapcig cigar
-              grps = B.group $ expandcigar cmap
-              nohardgrps = B.group $ expandcigar $ filter nohardclip cmap
-              fHs = B.filter (== 'H') $ head grps -- maybe ""
-              rHs = B.filter (== 'H') $ last grps -- maybe ""
-              fSs = B.filter (== 'S') $ head nohardgrps
-              rSs = B.filter (== 'S') $ last nohardgrps
-              fdiffi = intgr2int fdiff
-              rdiffi = intgr2int rdiff
-              -- 5p trim
-              cignoclipf = filter noclip cmap
-              cigexpf = expandcigar2 cignoclipf
-              nopadlen = length cigexpf
-              adjcigf = adjustcrds cigexpf
-              ftrim = taketrim fdiff adjcigf
-              ftrimDs = countDs ftrim
-              ftrimDcorr = intgr2int ftrimDs
-              adjixf = (genericLength ftrim) + ftrimDs
-              remcigrawf = drop ftrimDcorr $ trimrem adjixf cigexpf
-              newfss = B.replicate (length ftrim) 'S'
-              -- 3p trim3p
-              cigexpr = zipWith (\x (i, j) -> (x, j))
-                                [1..]
-                                (reverse remcigrawf)
-              adjcigr = adjustcrds cigexpr
-              rtrim = taketrim rdiff adjcigr
-              rtrimDs = countDs rtrim
-              rtrimDcorr = intgr2int rtrimDs
-              adjixr = (genericLength rtrim) + rtrimDs
-              remcigrawr = drop rtrimDcorr $ trimrem adjixr cigexpr
-              remDsr = intgr2int $ countDs remcigrawr
-              remcigrDadj = reverse $ drop remDsr remcigrawr
-              newrss = B.replicate
-                        ((length rtrim) + rtrimDcorr + remDsr + ftrimDcorr) 'S'
-              totfss = B.append fSs newfss
-              totrss = B.append rSs newrss
-              newcigarcore = B.concat $ snd <$> remcigrDadj
-              newcigar = B.append totfss (B.append newcigarcore totrss)
-              newfullcigar = B.append fHs (B.append newcigar rHs)
-              newcig = contractcigar newfullcigar
-
-
-shiftcrds :: (Integer, B.ByteString) -> (Integer, B.ByteString)
-        -> (Integer, B.ByteString)
-shiftcrds a b
-    | thiscig == "I" = adjustposI
-    | thiscig == "D" = adjustposD
-    | otherwise = keeppos
-    where lastpos = fst a
-          thispos = fst b
-          thiscig = snd b
-          adjustposI = (lastpos, thiscig)
-          adjustposD = (lastpos + 2, thiscig)
-          keeppos = (lastpos + 1, thiscig)
-
-
-
---}
