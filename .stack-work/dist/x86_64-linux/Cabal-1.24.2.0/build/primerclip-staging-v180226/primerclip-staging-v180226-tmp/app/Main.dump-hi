@@ -1,11 +1,11 @@
 
 ==================== FINAL INTERFACE ====================
-2018-02-26 17:35:46.782412 UTC
+2018-02-26 19:38:15.941134 UTC
 
 interface main@main:Main 8002
-  interface hash: 941aa7b0619f6cef63fb8b284a55a766
-  ABI hash: 3349ee9d7b697717fb2711658756427f
-  export-list hash: 4d923d32dedf0c270a97be2b5f4702d2
+  interface hash: 5da875ed4230b9f3f9bb47e51c4d48fc
+  ABI hash: bd12f4afd9d2d3aba71e9add9db0cf77
+  export-list hash: 644f655f41f342ad3540a2bcd02e3bb6
   orphan hash: f067ff874353f9bbd5b00d2dd0f7a928
   flag hash: 38928b87a81e036a622955337ab0dabc
   sig of: Nothing
@@ -47,7 +47,7 @@ package dependencies: QuickCheck-2.9.2@QuickCheck-2.9.2-Jyj4gc4JxkEIgGFLAsGhs9
                       mwc-random-0.13.5.0@mwc-random-0.13.5.0-Dp3Ri46ZxJuCFZWIowNqha
                       optparse-applicative-0.13.2.0@optparse-applicative-0.13.2.0-34EUj6Bj0pDLtYR0AoQs8j
                       pretty-1.1.3.3@pretty-1.1.3.3
-                      primerclip-0.1.0.0@primerclip-0.1.0.0-BvEEl93NsBt2YPC7rsTWdy
+                      primerclip-0.3.0.0@primerclip-0.3.0.0-INSDieWpla3JQbuaUuDA6C
                       primitive-0.6.1.0@primitive-0.6.1.0-6AbSTw9JXz141LE5p6LGH
                       process-1.4.3.0@process-1.4.3.0
                       random-1.1@random-1.1-9tceXaeYIMZ4JrKq20Egog
@@ -105,7 +105,7 @@ family instance modules: attoparsec-0.13.1.0@attoparsec-0.13.1.0-HhuV3U7exg79Uml
                          mwc-random-0.13.5.0@mwc-random-0.13.5.0-Dp3Ri46ZxJuCFZWIowNqha:System.Random.MWC
                          pretty-1.1.3.3@pretty-1.1.3.3:Text.PrettyPrint.Annotated.HughesPJ
                          pretty-1.1.3.3@pretty-1.1.3.3:Text.PrettyPrint.HughesPJ
-                         primerclip-0.1.0.0@primerclip-0.1.0.0-BvEEl93NsBt2YPC7rsTWdy:Lib
+                         primerclip-0.3.0.0@primerclip-0.3.0.0-INSDieWpla3JQbuaUuDA6C:Lib
                          primitive-0.6.1.0@primitive-0.6.1.0-6AbSTw9JXz141LE5p6LGH:Control.Monad.Primitive
                          resourcet-1.1.9@resourcet-1.1.9-Ej57FoSD8NQLck5u9CwWz8:Control.Monad.Trans.Resource.Internal
                          template-haskell-2.11.1.0:Language.Haskell.TH.Syntax
@@ -142,7 +142,7 @@ import  -/  ghc-prim-0.5.0.0:GHC.Types 89f8de4f08018c9177c98d979eae0e45
 import  -/  optparse-applicative-0.13.2.0@optparse-applicative-0.13.2.0-34EUj6Bj0pDLtYR0AoQs8j:Options.Applicative 3b2110c868e49e0d86cded098f24e0d2
 import  -/  optparse-applicative-0.13.2.0@optparse-applicative-0.13.2.0-34EUj6Bj0pDLtYR0AoQs8j:Options.Applicative.Builder cddcfb07a988339795d2e38d4387ac76
 import  -/  optparse-applicative-0.13.2.0@optparse-applicative-0.13.2.0-34EUj6Bj0pDLtYR0AoQs8j:Options.Applicative.Extra 149b9f0d4c43ee9476133f84e028bc40
-import  -/  primerclip-0.1.0.0@primerclip-0.1.0.0-BvEEl93NsBt2YPC7rsTWdy:Lib 720aa4764673c7339c908ad59dd6f9e0
+import  -/  primerclip-0.3.0.0@primerclip-0.3.0.0-INSDieWpla3JQbuaUuDA6C:Lib 13f6e3a6b4c63e7ba1194fdda405eedd
 ffe787835a7a1860338941124400c7dd
   $s$fApplicativeResourceT ::
     GHC.Base.Applicative
@@ -369,7 +369,7 @@ d6831ef04cb9301b090dfae6f7bb7ec7
   $trModule2 :: GHC.Types.TrName
   {- HasNoCafRefs, Strictness: m1,
      Unfolding: (GHC.Types.TrNameS "main"#) -}
-a0d9e26dd15c35d4632611aa2fb98f01
+ff7f1d33084f3cc9bb014ae4b8d686e0
   $wrunPrimerTrimming ::
     GHC.Types.Bool
     -> GHC.Base.String
@@ -379,12 +379,12 @@ a0d9e26dd15c35d4632611aa2fb98f01
     -> (# GHC.Prim.State# GHC.Prim.RealWorld, Lib.RunStats #)
   {- Arity: 5, Strictness: <S,1*U><L,U><L,U><L,U><S,U>,
      Inline: [0] -}
-316201e2a19c6a3705290187b63e346b
+c58a1c7d80a8ce36f4769d1f0b802995
   main :: GHC.Types.IO ()
   {- Arity: 1, Strictness: <S,U>,
      Unfolding: InlineRule (0, True, True)
                 Main.main1 `cast` (Sym (GHC.Types.N:IO[0] <()>_R)) -}
-4ba6635751a0e418043b55c49b93bdfe
+a06476ec7a3c0031a0793bc26eff4b5e
   main1 ::
     GHC.Prim.State# GHC.Prim.RealWorld
     -> (# GHC.Prim.State# GHC.Prim.RealWorld, () #)
@@ -416,7 +416,7 @@ a0d9e26dd15c35d4632611aa2fb98f01
   main2 :: [GHC.Types.Char]
   {- Unfolding: (GHC.CString.unpackCString#
                    "primer trimming complete."#) -}
-9aefeda2e2bb37bdc644c7f61fe70e55
+bc2087e885cb9936b5cd4d11dff1ed6a
   main3 :: Options.Applicative.Types.ParserInfo Lib.Opts
   {- Unfolding: (Options.Applicative.Types.ParserInfo
                    @ Lib.Opts
@@ -429,7 +429,7 @@ a0d9e26dd15c35d4632611aa2fb98f01
                    (Sym (Options.Applicative.Help.Chunk.N:Chunk[0]) <Text.PrettyPrint.ANSI.Leijen.Doc>_N)
                    Options.Applicative.Builder.info1
                    GHC.Types.True) -}
-0c782133295ea478944ea4c9e30340b5
+1a59d31d57d8dababe6366c148175aa6
   main4 ::
     Options.Applicative.Help.Chunk.Chunk
       Text.PrettyPrint.ANSI.Leijen.Doc
@@ -441,10 +441,10 @@ a0d9e26dd15c35d4632611aa2fb98f01
                      `cast`
                    (Sym (Options.Applicative.Help.Chunk.N:Chunk[0]) <Text.PrettyPrint.ANSI.Leijen.Doc>_N)
                    Main.main5) -}
-f77334da6b8f00af055ee7206df77ec9
+1fb53c52e2a0e232c8874284a13a804c
   main5 :: [GHC.Types.Char]
   {- Unfolding: (GHC.CString.unpackCStringUtf8#
-                   "primerclip -- Swift Biosciences Accel-Amplicon\\226\\132\\162 targeted panel primer trimming tool v0.2"#) -}
+                   "primerclip -- Swift Biosciences Accel-Amplicon\\226\\132\\162 targeted panel primer trimming tool v0.3"#) -}
 9c3a1d34040e56b2347596dc6313f72b
   main6 ::
     Options.Applicative.Help.Chunk.Chunk
@@ -461,14 +461,14 @@ f77334da6b8f00af055ee7206df77ec9
   main7 :: [GHC.Types.Char]
   {- Unfolding: (GHC.CString.unpackCString#
                    "Trim PCR primer sequences from aligned reads"#) -}
-1aa20553921236e7e118bfeebe86aac0
+03053df48d17afcbe5d9f5d6d2716c6c
   main8 :: Options.Applicative.Types.Parser Lib.Opts
   {- Unfolding: (Options.Applicative.Types.MultP
                    @ Lib.Opts
                    @ Lib.Opts
                    (Options.Applicative.Extra.helper @ Lib.Opts)
                    Lib.optargs) -}
-c1403d49d368fd7b906145fa72846595
+0febd11632d8a8a7b12cc9e152bc3ad6
   main9 ::
     GHC.Prim.State# GHC.Prim.RealWorld
     -> (# GHC.Prim.State# GHC.Prim.RealWorld, () #)
@@ -476,14 +476,14 @@ c1403d49d368fd7b906145fa72846595
      Unfolding: (GHC.TopHandler.runMainIO1
                    @ ()
                    Main.main1 `cast` (Sym (GHC.Types.N:IO[0] <()>_R))) -}
-ce8d2fed8fc5f03c4290e760bdae942c
+151ef2e96cfe3a9de5db7f6560af0d3a
   runPrimerTrimming :: Lib.Opts -> GHC.Types.IO Lib.RunStats
   {- Arity: 2, Strictness: <S(SLLL),1*U(1*U,U,U,U)><S,U>,
      Unfolding: InlineRule (0, True, True)
                 Main.runPrimerTrimming1
                   `cast`
                 (<Lib.Opts>_R ->_R Sym (GHC.Types.N:IO[0] <Lib.RunStats>_R)) -}
-d2066d8e2e4b1d382860d26102a7de66
+dad3eb88c92677e1a92feba4fe51a4d2
   runPrimerTrimming1 ::
     Lib.Opts
     -> GHC.Prim.State# GHC.Prim.RealWorld
