@@ -176,6 +176,16 @@ defaultMasterRec = MasterRecord { mchrom = NONE
                                 , mrevseq = "EMPTY"
                                 }
 
+-- 180226 record type to hold run stats
+data RunStats = RunStats { alnsTotal :: Integer
+                         , alnsMapped :: Integer
+                         , alnsTrimd :: Integer
+                         , alnsTrimdToZero :: Integer
+                         , trimmedPct :: Double
+                         , mappedPct :: Double
+                         } deriving (Eq, Show, Read)
+
+
 -- 170919 add MidFamily record type to group [AlignedRead] by mID
 data MidFamily = MidFamily { chrom :: UChr
                            , alnstart :: Integer
@@ -1235,9 +1245,83 @@ printAlnStreamToFile outfile = P.mapC printAlignmentOrHdr
                           P..| P.unlinesAsciiC
                           P..| P.sinkFile outfile
 
+-- 180226 write RunStats to run log file (TODO: also print to stderr to allow
+-- more flexible logging from caller of primerclip?)
+-- NOTE: leaving out % mapped (until/unless we try to report change in %
+-- mapped due to trimming alignments to zero length, resulting in change in
+-- % mapped
+writeRunStats :: FilePath -> RunStats -> IO ()
+writeRunStats fp r = do
+    let tot = B.pack $ show $ alnsTotal r
+        mapd = B.pack $ show $ alnsMapped r
+        trimd = B.pack $ show $ alnsTrimd r
+        tt0 = B.pack $ show $ alnsTrimdToZero r
+        tPct = B.pack $ show $ trimmedPct r
+        -- mPct = mappedPct r
+        labels = [ "Total alignments processed:"
+                 , "Total mapped alignments:"
+                 , "Alignments trimmed by >= 1 base:"
+                 , "Alignments trimmed to zero aligned length:"
+                 , "% Alignments trimmed by >= 1 base:"
+                 -- , "% Alignments mapped:"
+                 ] :: [B.ByteString]
+        statslines = zipWith (\l v -> B.concat [l,"\t",v])
+                             labels
+                             [tot, mapd, trimd, tt0, tPct]
+        outbs = B.unlines statslines
+        fnameroot = genLogFilePath fp
+    B.writeFile fp outbs
+
+-- 180226 safely try to get name root of input SAM file to create log filename
+genLogFilePath :: FilePath -> FilePath
+genLogFilePath fp
+    | (length parts) < 2 = "primerclip_runstats.log"
+    | otherwise = nameroot
+        where bs = B.pack $ show fp
+              parts = B.split '_' bs -- NOTE: should we have an alternate split char e.g. '.'?
+              nameroot = B.unpack
+                       $ B.concat [(head parts), "_primerclip_runstats.log"]
+
 -- 171017 calculate trim stats and print to stdout (TODO: print full stats to file)
 calculateTrimStats :: P.ConduitM AlignedRead c (P.ResourceT IO) Integer
 calculateTrimStats = P.filterC (\x -> trimdflag x) P..| P.lengthC
+
+-- 180226 use ZipSink to calculate run stats and return a RunStats record for
+-- printing to stdout, stderr, and to log file (purposely keeping the IO for
+-- the RunStats outside Conduit pipeline for now)
+calcRunStats = (calc <$> P.ZipSink P.lengthC
+                     <*> P.ZipSink calcMappedCount
+                     <*> P.ZipSink calculateTrimStats
+                     <*> P.ZipSink calcTrimdToZero)
+    where calc total mapd trimd trimd2z = RunStats total
+                                                   mapd
+                                                   trimd
+                                                   trimd2z
+                                                   ((fromIntegral trimd)
+                                                    / (fromIntegral total))
+                                                   ((fromIntegral mapd)
+                                                    / (fromIntegral total))
+
+calcMappedCount :: Integral i => P.ConduitM AlignedRead c (P.ResourceT IO) i
+calcMappedCount = P.filterC (\x -> (mapped x) && (not $ trimdToZeroLength x))
+                  P..| P.lengthC
+
+calcTrimdToZero :: Integral i => P.ConduitM AlignedRead c (P.ResourceT IO) i
+calcTrimdToZero = P.filterC (\x -> trimdToZeroLength x) P..| P.lengthC
+
+-- 180226 calculate percentage of total alignments trimmed by >=1 bases
+calcTrimmedPct :: P.Sink AlignedRead (P.ResourceT IO) Double
+calcTrimmedPct = P.getZipSink (calc <$> P.ZipSink calculateTrimStats
+                                    <*> P.ZipSink P.lengthC)
+    where calc trimdcnt totalalns = (fromIntegral trimdcnt)
+                                  / (fromIntegral totalalns) * 100.0
+
+-- 180226 calculate percentage of alignments not mapped to reference after trimming
+-- calcNotMappedPct :: P.Sink AlignedRead (P.ResourceT IO) Double
+calcNotMappedPct = P.getZipSink (calc <$> P.ZipSink calcMappedCount
+                                      <*> P.ZipSink P.lengthC)
+    where calc mapcnt total = (fromIntegral mapcnt)
+                            / (fromIntegral total) * 100.0
 
 -- 170926 calculate and populate amplicon target BED field
 addprimerints :: CMap -> CMap -> AlignedRead -> AlignedRead
@@ -1353,12 +1437,6 @@ updateCigF fdiff cigar
               cigexp = expandcigar2 cignoclip -- [(Int, B.ByteString)] assoc. list
               nopadlen = length cigexp
               (ftrimCigOps, remCigOps) = splitAt fdiffi cigexp -- 180223
-              -- adjcig = adjustcrds cigexp
-              -- ftrim = taketrim fdiff adjcig
-              -- trimDs = countDs ftrim
-              -- trimDcorr = intgr2int trimDs
-              -- adjix = (genericLength ftrim) + trimDs
-              -- remcigraw = drop trimDcorr $ trimrem adjix cigexp
               ftrimSlength = sumSoftClipCigOps ftrimCigOps
               newss = B.replicate ftrimSlength 'S'
               newcigarcore = B.append newss $ B.concat $ snd <$> remCigOps -- remcigraw
@@ -1384,17 +1462,6 @@ updateCigR rdiff cigar
               cigexpR = expandcigar2 $ reverse cignoclip
               nopadlen = length cigexpR
               (rtrimCigOps, remCigOps) = splitAt rdiffi cigexpR -- 180223
-              -- adjcigR = adjustcrds cigexpR
-              -- rtrim = taketrim rdiff adjcigR
-              -- trimDs = countDs rtrim
-              -- trimDcorr = intgr2int trimDs
-              -- adjix = (genericLength rtrim) + trimDs
-              -- remcigraw = drop trimDcorr $ trimrem adjix cigexpR
-              -- remDs = intgr2int $ countDs remcigraw
-              -- remcigDadj = reverse $ drop remDs remcigraw
-              -- newss = B.replicate ((length rtrim)
-              --                    + trimDcorr
-              --                    + remDs) 'S'
               rtrimSlength = sumSoftClipCigOps rtrimCigOps
               newss = B.replicate rtrimSlength 'S'
               newcigarcore = B.append
@@ -1425,28 +1492,8 @@ updateCigB fdiff rdiff cigar
               cigexpf = expandcigar2 cignoclipf
               nopadlen = length cigexpf
               (ftrimCigOps, fremCigOps) = splitAt fdiffi cigexpf -- 180223
-              -- adjcigf = adjustcrds cigexpf
-              -- ftrim = taketrim fdiff adjcigf
-              -- ftrimDs = countDs ftrim
-              -- ftrimDcorr = intgr2int ftrimDs
-              -- adjixf = (genericLength ftrim) + ftrimDs
-              -- remcigrawf = drop ftrimDcorr $ trimrem adjixf cigexpf
               ftrimSlength = sumSoftClipCigOps ftrimCigOps
               newfss = B.replicate ftrimSlength 'S'
-              -- 3p trim3p
-              -- cigexpr = zipWith (\x (i, j) -> (x, j))
-              --                   [1..]
-              --                   (reverse remcigrawf)
-              -- adjcigr = adjustcrds cigexpr
-              -- rtrim = taketrim rdiff adjcigr
-              -- rtrimDs = countDs rtrim
-              -- rtrimDcorr = intgr2int rtrimDs
-              -- adjixr = (genericLength rtrim) + rtrimDs
-              -- remcigrawr = drop rtrimDcorr $ trimrem adjixr cigexpr
-              -- remDsr = intgr2int $ countDs remcigrawr
-              -- remcigrDadj = reverse $ drop remDsr remcigrawr
-              -- newrss = B.replicate
-              --           ((length rtrim) + rtrimDcorr + remDsr + ftrimDcorr) 'S'
               cigexpftrimd = reverse fremCigOps
               (rtrimCigOps, rremCigOps) = splitAt rdiffi cigexpftrimd -- 180223
               rtrimSlength = sumSoftClipCigOps rtrimCigOps
