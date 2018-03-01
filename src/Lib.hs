@@ -30,7 +30,10 @@ import GHC.Generics (Generic)
 
 {--
     2016-10-14 Jonathan Irish
-    Post-alignment primer trimming tool v0.1
+    Post-alignment primer trimming tool v0.2
+
+    NOTE: reverted to last commit before CIGAR trimming code was updated, which
+    resulted in some edge case errors which require debugging.
 
 --}
 
