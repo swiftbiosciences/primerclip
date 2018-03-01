@@ -1,9 +1,9 @@
 #### Tool Versions:
-1. bedtools: v2.17.0
-2. samtools: 1.3.1
-3. gatk: 3.6-0-g89b7209
-4. lofreq: build-date-May 19 2015
-5. picard: 1.129
+bedtools: v2.17.0
+samtools: 1.3.1
+gatk: 3.6-0-g89b7209
+lofreq: build-date-May 19 2015
+picard: 1.129
 
 #### Reference Genome:
 human: Homo_sapiens_assembly19broad.fasta
@@ -23,7 +23,7 @@ human: Homo_sapiens_assembly19broad.fasta
 12. *_gatkHC.vcf = gatk variant caller vcf
 13. *_lofreq.vcf = lofreq variant caller vcf
 
-#### Convert BAM to SAM
+### Convert BAM to SAM
 ```bash
 samtools view -h -o output.sam input.bam
 ```
