@@ -1,10 +1,10 @@
 
 ==================== FINAL INTERFACE ====================
-2018-02-26 19:38:07.890771 UTC
+2018-03-08 14:31:30.255479 UTC
 
 interface primerclip-0.3.0.0-INSDieWpla3JQbuaUuDA6C:Lib [family instance module] 8002
-  interface hash: 047f096cb72d34ccc23fb68920df5e40
-  ABI hash: 13f6e3a6b4c63e7ba1194fdda405eedd
+  interface hash: 98634d09371686ecd13eb79efc584b61
+  ABI hash: d842641cf0d38098bdd61dd7e558adba
   export-list hash: eb795b608a6aec9d616cdeed562ee169
   orphan hash: 80418950aa91e122c021f4aca18c70eb
   flag hash: c700d67e8f1203d8103b9f3bfac8bb0d
@@ -14532,7 +14532,7 @@ ca38c7ebe69063c56598d765bc95a0e4
                          @ (Data.IntMap.Base.IntMap Lib.BedRecord)
                          Lib.makebedmap
                          bbychr))) -}
-61c35037098c0847a01c55376865c2f9
+a8f61c93a1c7383177cba9b236ac8d8d
   $wmakeprimertups ::
     Lib.UChr
     -> GHC.Integer.Type.Integer
@@ -14588,7 +14588,7 @@ ca38c7ebe69063c56598d765bc95a0e4
                            b :: Lib.BedRecord = Lib.BedRecord ww ww1 ww2 ww3
                          } in
                          let {
-                           lvl1035 :: [Lib.BedRecord]
+                           lvl1036 :: [Lib.BedRecord]
                            = GHC.Types.: @ Lib.BedRecord b (GHC.Types.[] @ Lib.BedRecord)
                          } in
                          letrec {
@@ -14598,7 +14598,7 @@ ca38c7ebe69063c56598d765bc95a0e4
                              case ww4 of ds6 {
                                DEFAULT
                                -> GHC.Types.: @ Lib.BedRecord b ($wxs (GHC.Prim.-# ds6 1#))
-                               1# -> lvl1035 }
+                               1# -> lvl1036 }
                          } in
                          $wxs wild } })) -}
 090ec87a57773fc1088a04b2ea20eb3f
@@ -15198,7 +15198,7 @@ f343fda212283c28fa250d26ddb7f4fd
                                 ww1
                                 ipv of s' { DEFAULT ->
                          GHC.Word.W8# ipv1 } }) }) -}
-27a1208bba6535796369222078b95627
+cebf2baf9df622b0e46899f9465b1017
   $woptidp ::
     Data.Attoparsec.Internal.Types.State
       Data.ByteString.Internal.ByteString
@@ -15236,10 +15236,10 @@ f343fda212283c28fa250d26ddb7f4fd
                             Data.ByteString.Internal.ByteString
                             r) ->
                  let {
-                   lvl1035 :: GHC.Types.Int = GHC.Types.I# ww
+                   lvl1036 :: GHC.Types.Int = GHC.Types.I# ww
                  } in
                  let {
-                   lvl1036 :: Data.Attoparsec.Internal.Types.State
+                   lvl1037 :: Data.Attoparsec.Internal.Types.State
                                 Data.ByteString.Internal.ByteString
                               -> Data.Attoparsec.Internal.Types.Pos
                               -> Data.Attoparsec.Internal.Types.More
@@ -15283,10 +15283,10 @@ f343fda212283c28fa250d26ddb7f4fd
                                          <Data.ByteString.Internal.ByteString>_R)
                                       @ r
                                       w4
-                                      lvl1035 `cast` (Sym (Data.Attoparsec.Internal.Types.N:Pos[0]))
+                                      lvl1036 `cast` (Sym (Data.Attoparsec.Internal.Types.N:Pos[0]))
                                       w6
                                       w2
-                                      lvl1036) -}
+                                      lvl1037) -}
                    = \ (w4 :: Data.Attoparsec.Internal.Types.State
                                 Data.ByteString.Internal.ByteString)
                        (w5 :: Data.Attoparsec.Internal.Types.Pos)
@@ -15300,13 +15300,13 @@ f343fda212283c28fa250d26ddb7f4fd
                           <Data.ByteString.Internal.ByteString>_R)
                        @ r
                        w4
-                       lvl1035 `cast` (Sym (Data.Attoparsec.Internal.Types.N:Pos[0]))
+                       lvl1036 `cast` (Sym (Data.Attoparsec.Internal.Types.N:Pos[0]))
                        w6
                        w2
-                       lvl1036
+                       lvl1037
                  } in
                  let {
-                   lvl1037 :: Data.Attoparsec.Internal.Types.State
+                   lvl1038 :: Data.Attoparsec.Internal.Types.State
                                 Data.ByteString.Internal.ByteString
                               -> Data.Attoparsec.Internal.Types.Pos
                               -> Data.Attoparsec.Internal.Types.More
@@ -15335,7 +15335,7 @@ f343fda212283c28fa250d26ddb7f4fd
                       <Data.ByteString.Internal.ByteString>_R)
                    @ r
                    w
-                   lvl1035 `cast` (Sym (Data.Attoparsec.Internal.Types.N:Pos[0]))
+                   lvl1036 `cast` (Sym (Data.Attoparsec.Internal.Types.N:Pos[0]))
                    w1
                    (\ (t' :: Data.Attoparsec.Internal.Types.State
                                Data.ByteString.Internal.ByteString)
@@ -15350,10 +15350,10 @@ f343fda212283c28fa250d26ddb7f4fd
                          <Data.ByteString.Internal.ByteString>_R)
                       @ r
                       t'
-                      lvl1035 `cast` (Sym (Data.Attoparsec.Internal.Types.N:Pos[0]))
+                      lvl1036 `cast` (Sym (Data.Attoparsec.Internal.Types.N:Pos[0]))
                       more'
                       lose
-                      lvl1037)
+                      lvl1038)
                    (\ (t' :: Data.Attoparsec.Internal.Types.State
                                Data.ByteString.Internal.ByteString)
                       (pos' :: Data.Attoparsec.Internal.Types.Pos)
@@ -15783,7 +15783,7 @@ c462f8d0f161e2435966fc2cdeed6cdb
                            @ GHC.Types.Char
                            (GHC.Types.: @ GHC.Types.Char ww5 ww6)
                            Lib.parsechkSAM1 }) }) -}
-797db1984f85fbaba588aec10cf51700
+50c27e63906fc10b92d015a014d4d778
   $wparsemIDstring ::
     GHC.Prim.Addr#
     -> GHC.ForeignPtr.ForeignPtrContents
@@ -15800,7 +15800,7 @@ c462f8d0f161e2435966fc2cdeed6cdb
                    = case ww3 of ds6 {
                        DEFAULT
                        -> let {
-                            lvl1035 :: GHC.Ptr.Ptr GHC.Word.Word8
+                            lvl1036 :: GHC.Ptr.Ptr GHC.Word.Word8
                             = GHC.Ptr.Ptr @ GHC.Word.Word8 ww
                           } in
                           letrec {
@@ -15847,7 +15847,7 @@ c462f8d0f161e2435966fc2cdeed6cdb
                                               case w3 of fp'1 { GHC.ForeignPtr.ForeignPtr ipv2 ipv3 ->
                                               case $wsplitLoop
                                                      pred'1
-                                                     lvl1035
+                                                     lvl1036
                                                      0#
                                                      (GHC.Types.I#
                                                         (GHC.Prim.+# (GHC.Prim.+# x ww4) 1#))
@@ -15871,7 +15871,7 @@ c462f8d0f161e2435966fc2cdeed6cdb
                           } in
                           case $wsplitLoop
                                  Lib.parsemIDstring3
-                                 lvl1035
+                                 lvl1036
                                  0#
                                  (GHC.Types.I# ww2)
                                  ds6
@@ -22286,7 +22286,7 @@ fb7854fb507daf97088c389cb951bf20
     -> [Data.IntMap.Base.IntMap Lib.BedRecord]
     -> [(Lib.UChr, Data.IntMap.Base.IntMap Lib.BedRecord)]
   {- Arity: 2, Strictness: <S,1*U><L,1*U> -}
-fca4f0c7a78265269c836197542bf708
+92996cc06d87276c0a1630db88184d33
   makeprimertups :: Lib.BedRecord -> [(GHC.Types.Int, Lib.BedRecord)]
   {- Arity: 1, Strictness: <S(LSSL),U(U,U,U,U)>, Inline: INLINE[0],
      Unfolding: InlineRule (1, True, False)
@@ -23820,7 +23820,7 @@ b58c5a7cc9f7db67b170b2ef7cbc2e8b
                    ww1
                    w4
                    w6 }) -}
-63108853d02b4b3b0b3dc85d8889877d
+821bf631f52fbdc5061787e57182b6b7
   optidp ::
     Data.Attoparsec.ByteString.Internal.Parser
       Data.ByteString.Internal.ByteString
@@ -23832,7 +23832,7 @@ b58c5a7cc9f7db67b170b2ef7cbc2e8b
                 (Sym (Data.Attoparsec.Internal.Types.N:Parser[0]
                           <Data.ByteString.Internal.ByteString>_N
                           <Data.ByteString.Internal.ByteString>_R)) -}
-8d476f1e9cd4c63bd3d61fee135cd68b
+bfec0f957787a663da050c3c5b5cab62
   optidp1 ::
     Data.Attoparsec.Internal.Types.State
       Data.ByteString.Internal.ByteString
@@ -24316,7 +24316,7 @@ b66240b7ef33ac046a2de133dcc56e48
                    (Sym (Data.Attoparsec.Internal.Types.N:Parser[0]
                              <Data.ByteString.Internal.ByteString>_N
                              <GHC.Integer.Type.Integer>_R))) -}
-5d0f2961dc9e61bd4d7d4e277909d60d
+cf080ddd7338f6a1335e234802534da9
   parsemIDstring ::
     Data.ByteString.Internal.ByteString
     -> Data.ByteString.Internal.ByteString
@@ -26440,22 +26440,22 @@ dd06f564f10a0cd67985f8e8d7cd8718
                    (GHC.ForeignPtr.PlainForeignPtr ipv1)
                    0#
                    (GHC.Prim.word2Int# ds8) } }) -}
-19deeb05070fa21f04984fbbeb6cebce
+ec884de73d85bcb5f9a530454b481e9a
   writeRunStats :: GHC.IO.FilePath -> Lib.RunStats -> GHC.Types.IO ()
-  {- Arity: 2, Strictness: <L,U><L,U(U,U,U,U,1*U(U),A)>,
+  {- Arity: 2, Strictness: <L,U><L,U(U,U,U,U,1*U(U),1*U(U))>,
      Unfolding: InlineRule (0, True, True)
                 Lib.writeRunStats1
                   `cast`
                 (<GHC.IO.FilePath>_R
                  ->_R <Lib.RunStats>_R
                  ->_R Sym (GHC.Types.N:IO[0] <()>_R)) -}
-dae74b8f6ea4f5b4e27899f29935d136
+94cc5312927b8884e097dfe9f1c3fe0e
   writeRunStats1 ::
     GHC.IO.FilePath
     -> Lib.RunStats
     -> GHC.Prim.State# GHC.Prim.RealWorld
     -> (# GHC.Prim.State# GHC.Prim.RealWorld, () #)
-  {- Arity: 2, Strictness: <L,U><L,U(U,U,U,U,1*U(U),A)> -}
+  {- Arity: 2, Strictness: <L,U><L,U(U,U,U,U,1*U(U),1*U(U))> -}
 4c407a40902e7670262526061ca06a95
   xmid :: Lib.AlignedRead -> Data.ByteString.Internal.ByteString
   RecSel Left Lib.AlignedRead

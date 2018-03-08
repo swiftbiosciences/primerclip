@@ -1,10 +1,10 @@
 
 ==================== FINAL INTERFACE ====================
-2018-02-26 19:33:44.689272 UTC
+2018-03-08 14:31:39.4432 UTC
 
 interface main@main:Main 8002
-  interface hash: 5da875ed4230b9f3f9bb47e51c4d48fc
-  ABI hash: bd12f4afd9d2d3aba71e9add9db0cf77
+  interface hash: 2aaf1472e7fadd20a7fbda22cb7f9084
+  ABI hash: be08707e5b958a277a607b2491e81d26
   export-list hash: 644f655f41f342ad3540a2bcd02e3bb6
   orphan hash: f067ff874353f9bbd5b00d2dd0f7a928
   flag hash: 66804b90927a79b298b6a1d676d20b5f
@@ -142,7 +142,7 @@ import  -/  ghc-prim-0.5.0.0:GHC.Types 89f8de4f08018c9177c98d979eae0e45
 import  -/  optparse-applicative-0.13.2.0@optparse-applicative-0.13.2.0-34EUj6Bj0pDLtYR0AoQs8j:Options.Applicative 3b2110c868e49e0d86cded098f24e0d2
 import  -/  optparse-applicative-0.13.2.0@optparse-applicative-0.13.2.0-34EUj6Bj0pDLtYR0AoQs8j:Options.Applicative.Builder cddcfb07a988339795d2e38d4387ac76
 import  -/  optparse-applicative-0.13.2.0@optparse-applicative-0.13.2.0-34EUj6Bj0pDLtYR0AoQs8j:Options.Applicative.Extra 149b9f0d4c43ee9476133f84e028bc40
-import  -/  primerclip-0.3.0.0@primerclip-0.3.0.0-INSDieWpla3JQbuaUuDA6C:Lib 13f6e3a6b4c63e7ba1194fdda405eedd
+import  -/  primerclip-0.3.0.0@primerclip-0.3.0.0-INSDieWpla3JQbuaUuDA6C:Lib d842641cf0d38098bdd61dd7e558adba
 ffe787835a7a1860338941124400c7dd
   $s$fApplicativeResourceT ::
     GHC.Base.Applicative
@@ -379,12 +379,12 @@ ff7f1d33084f3cc9bb014ae4b8d686e0
     -> (# GHC.Prim.State# GHC.Prim.RealWorld, Lib.RunStats #)
   {- Arity: 5, Strictness: <S,1*U><L,U><L,U><L,U><S,U>,
      Inline: [0] -}
-c58a1c7d80a8ce36f4769d1f0b802995
+276cd39a1198f4621762616838b9b573
   main :: GHC.Types.IO ()
   {- Arity: 1, Strictness: <S,U>,
      Unfolding: InlineRule (0, True, True)
                 Main.main1 `cast` (Sym (GHC.Types.N:IO[0] <()>_R)) -}
-a06476ec7a3c0031a0793bc26eff4b5e
+dd3639c23a3a0e50d6e70c43c8e476ba
   main1 ::
     GHC.Prim.State# GHC.Prim.RealWorld
     -> (# GHC.Prim.State# GHC.Prim.RealWorld, () #)
@@ -468,7 +468,7 @@ bc2087e885cb9936b5cd4d11dff1ed6a
                    @ Lib.Opts
                    (Options.Applicative.Extra.helper @ Lib.Opts)
                    Lib.optargs) -}
-0febd11632d8a8a7b12cc9e152bc3ad6
+a5f5f33c1ece3efcaabf2151f97a140b
   main9 ::
     GHC.Prim.State# GHC.Prim.RealWorld
     -> (# GHC.Prim.State# GHC.Prim.RealWorld, () #)
