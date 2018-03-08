@@ -1257,17 +1257,17 @@ writeRunStats fp r = do
         trimd = B.pack $ show $ alnsTrimd r
         tt0 = B.pack $ show $ alnsTrimdToZero r
         tPct = B.pack $ show $ trimmedPct r
-        -- mPct = mappedPct r
+        mPct = B.pack $ show $ mappedPct r
         labels = [ "Total alignments processed:"
                  , "Total mapped alignments:"
                  , "Alignments trimmed by >= 1 base:"
                  , "Alignments trimmed to zero aligned length:"
                  , "% Alignments trimmed by >= 1 base:"
-                 -- , "% Alignments mapped:"
+                 , "% Alignments mapped after trimming:"
                  ] :: [B.ByteString]
         statslines = zipWith (\l v -> B.concat [l,"\t",v])
                              labels
-                             [tot, mapd, trimd, tt0, tPct]
+                             [tot, mapd, trimd, tt0, tPct, mPct]
         outbs = B.unlines statslines
         logfilename = genLogFilePath fp
     B.writeFile logfilename outbs
