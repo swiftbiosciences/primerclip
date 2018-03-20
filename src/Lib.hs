@@ -1377,7 +1377,7 @@ trimfwd a =
                      , trimdcigmap = newcigmap
                      , trimdflag = if (as /= tpos) then True else False
                      }
-    in clearNonRealCigar trimdaln -- "clear" CIGAR and fields if entire aln is primer
+    in trimdaln
 
 -- for alignments intersecting a "reverse" primer only ( ref (+)-strand orientation)
 trimrev :: AlignedRead -> AlignedRead
@@ -1394,7 +1394,7 @@ trimrev a =
                      , trimdcigmap = newcigmap
                      , trimdflag = if (ae /= tendpos) then True else False
                      }
-    in clearNonRealCigar trimdaln -- "clear" CIGAR and fields if entire aln is primer
+    in trimdaln
 
 -- for alignments with primer intersections at both ends
 trimboth :: AlignedRead -> AlignedRead
@@ -1418,14 +1418,15 @@ trimboth a =
                                    then True
                                    else False
                      }
-    in clearNonRealCigar trimdaln -- "clear" CIGAR and fields if entire aln is primer
+    in trimdaln -- 180320 keep trim-to-zero-length alns w/ CIGAR all 'S'
+    -- in clearNonRealCigar trimdaln -- "clear" CIGAR and fields if entire aln is primer
 
 -- UPDATE 18-02-23 Fix broken CIGAR accounting for trimmed alignments
 updateCigF :: Integer -> B.ByteString -> B.ByteString
 updateCigF fdiff cigar
     | snd (head cmap) == "*" = "*"
     | fdiffi <= 0 = cigar
-    | ((nopadlen - fdiffi) > 0) = newcig -- 180219 DEBUG testing
+    | ((nopadlen - fdiffi) >= 0) = newcig -- 180320
     | otherwise = "*"
         where cmap = mapcig cigar
               grps = B.group $ expandcigar cmap
@@ -1450,8 +1451,8 @@ updateCigR :: Integer -> B.ByteString -> B.ByteString
 updateCigR rdiff cigar
     | snd (head cmap) == "*" = "*"
     | rdiffi <= 0 = cigar
-    | ((nopadlen - rdiffi) > 0) = newcig -- 180219 DEBUGGING
-    | otherwise = "*"
+    | ((nopadlen - rdiffi) >= 0) = newcig -- 180320 DEBUGGING
+    | otherwise = "*" -- 180320 allow all 'S' trimmed CIGAR (diff == nopadlen)
         where cmap = mapcig cigar
               grps = B.group $ expandcigar cmap
               nohardgrps = B.group $ expandcigar $ filter nohardclip cmap
@@ -1478,7 +1479,7 @@ updateCigB fdiff rdiff cigar
     | snd (head cmap) == "*" = "*"
     | fdiffi <= 0 = updateCigR rdiff cigar
     | rdiffi <= 0 = updateCigF fdiff cigar
-    | ((nopadlen - fdiffi - rdiffi) > 0) = newcig -- 180212 zero-match CIGAR strings fail picard validation
+    | ((nopadlen - fdiffi - rdiffi) >= 0) = newcig -- 180320
     | otherwise = "*"
         where cmap = mapcig cigar
               grps = B.group $ expandcigar cmap
@@ -1619,11 +1620,13 @@ setZeroLengthAlnFlag flag
                                    $ flipSetBit 2
                                    $ flipClrBit 1 flag
 
--- 180213 update fields of AlignedRead to keep all fields consistent with
--- trimmed CIGAR string and position value (e.g. zero-length alns after trimming)
+
+-- 180320 test keeping all 'S' CIGAR for trimd-to-zero-length alns
 updateTrimdAlnFields :: AlignedRead -> AlignedRead
 updateTrimdAlnFields a
-    | (trimdflag a) && ((trimdcigar a) /= "*") = trimdAln
+    | (any (\x -> elem x ("MIDN" :: String)) (B.unpack $ trimdcigar a))
+        = trimdAln
+    -- | (trimdflag a) && ((trimdcigar a) /= "*") = trimdAln
     | (trimdflag a) = trimdToZero
     | otherwise = a -- no clipping due to no primer intersections for alignment
         where trimdAlnTag = "CO:Z:primer_trimmed" :: B.ByteString
@@ -1633,7 +1636,8 @@ updateTrimdAlnFields a
                                                   ] }
               trimdToZero = a { optfields = B.concat [ (optfields a)
                                                      , "\t", trimdToZeroTag
-                                                     ] }
+                                                     ]
+                              , trimdToZeroLength = True }
 
 -- flip setBit and clearBit args for clearer syntax
 flipSetBit = flip setBit
