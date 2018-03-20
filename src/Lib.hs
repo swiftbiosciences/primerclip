@@ -1604,16 +1604,18 @@ clearNonRealCigar a
                                 }
               zeroLenFlag = setZeroLengthAlnFlag $ flag a
 
--- 180220 test paired flag bit (bit 0) before setting mate-not-mapped bit
+-- 180320 clear supp. alignment bit
 setZeroLengthAlnFlag :: Int -> Int
 setZeroLengthAlnFlag flag
     | flipTstBit 0 flag = pairedZeroLengthFlag
     | otherwise = nopairZeroLengthFlag
-        where pairedZeroLengthFlag = flipClrBit 8
+        where pairedZeroLengthFlag = flipClrBit 11
+                                   $ flipClrBit 8
                                    $ flipSetBit 3
                                    $ flipSetBit 2
                                    $ flipClrBit 1 flag
-              nopairZeroLengthFlag = flipClrBit 8
+              nopairZeroLengthFlag = flipClrBit 11
+                                   $ flipClrBit 8
                                    $ flipSetBit 2
                                    $ flipClrBit 1 flag
 
