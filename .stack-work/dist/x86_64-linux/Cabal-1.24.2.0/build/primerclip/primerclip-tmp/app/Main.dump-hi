@@ -1,10 +1,10 @@
 
 ==================== FINAL INTERFACE ====================
-2018-03-08 14:31:39.4432 UTC
+2018-03-20 17:23:17.399293 UTC
 
 interface main@main:Main 8002
-  interface hash: 2aaf1472e7fadd20a7fbda22cb7f9084
-  ABI hash: be08707e5b958a277a607b2491e81d26
+  interface hash: eee4ae465b9c4e2509a6e5429d074e69
+  ABI hash: 2cefe568a8937801857bdc8aed806047
   export-list hash: 644f655f41f342ad3540a2bcd02e3bb6
   orphan hash: f067ff874353f9bbd5b00d2dd0f7a928
   flag hash: 66804b90927a79b298b6a1d676d20b5f
@@ -142,7 +142,7 @@ import  -/  ghc-prim-0.5.0.0:GHC.Types 89f8de4f08018c9177c98d979eae0e45
 import  -/  optparse-applicative-0.13.2.0@optparse-applicative-0.13.2.0-34EUj6Bj0pDLtYR0AoQs8j:Options.Applicative 3b2110c868e49e0d86cded098f24e0d2
 import  -/  optparse-applicative-0.13.2.0@optparse-applicative-0.13.2.0-34EUj6Bj0pDLtYR0AoQs8j:Options.Applicative.Builder cddcfb07a988339795d2e38d4387ac76
 import  -/  optparse-applicative-0.13.2.0@optparse-applicative-0.13.2.0-34EUj6Bj0pDLtYR0AoQs8j:Options.Applicative.Extra 149b9f0d4c43ee9476133f84e028bc40
-import  -/  primerclip-0.3.0.0@primerclip-0.3.0.0-INSDieWpla3JQbuaUuDA6C:Lib d842641cf0d38098bdd61dd7e558adba
+import  -/  primerclip-0.3.0.0@primerclip-0.3.0.0-INSDieWpla3JQbuaUuDA6C:Lib d8d46f8abbf9dfea8bbd900c990ea1d2
 ffe787835a7a1860338941124400c7dd
   $s$fApplicativeResourceT ::
     GHC.Base.Applicative
@@ -379,12 +379,12 @@ ff7f1d33084f3cc9bb014ae4b8d686e0
     -> (# GHC.Prim.State# GHC.Prim.RealWorld, Lib.RunStats #)
   {- Arity: 5, Strictness: <S,1*U><L,U><L,U><L,U><S,U>,
      Inline: [0] -}
-276cd39a1198f4621762616838b9b573
+20a5d819230427142ce55cdf90fa800a
   main :: GHC.Types.IO ()
   {- Arity: 1, Strictness: <S,U>,
      Unfolding: InlineRule (0, True, True)
                 Main.main1 `cast` (Sym (GHC.Types.N:IO[0] <()>_R)) -}
-dd3639c23a3a0e50d6e70c43c8e476ba
+b27a62b903195cc10de94c338b484fd9
   main1 ::
     GHC.Prim.State# GHC.Prim.RealWorld
     -> (# GHC.Prim.State# GHC.Prim.RealWorld, () #)
@@ -416,7 +416,7 @@ dd3639c23a3a0e50d6e70c43c8e476ba
   main2 :: [GHC.Types.Char]
   {- Unfolding: (GHC.CString.unpackCString#
                    "primer trimming complete."#) -}
-bc2087e885cb9936b5cd4d11dff1ed6a
+7a2db4dad56cf40fb8e8b4cac39aa1b7
   main3 :: Options.Applicative.Types.ParserInfo Lib.Opts
   {- Unfolding: (Options.Applicative.Types.ParserInfo
                    @ Lib.Opts
@@ -461,14 +461,14 @@ bc2087e885cb9936b5cd4d11dff1ed6a
   main7 :: [GHC.Types.Char]
   {- Unfolding: (GHC.CString.unpackCString#
                    "Trim PCR primer sequences from aligned reads"#) -}
-03053df48d17afcbe5d9f5d6d2716c6c
+6c44788c566d14e3d953f37d7e3859cd
   main8 :: Options.Applicative.Types.Parser Lib.Opts
   {- Unfolding: (Options.Applicative.Types.MultP
                    @ Lib.Opts
                    @ Lib.Opts
                    (Options.Applicative.Extra.helper @ Lib.Opts)
                    Lib.optargs) -}
-a5f5f33c1ece3efcaabf2151f97a140b
+c6367ebe7cb4cc010c0060da0ad9e760
   main9 ::
     GHC.Prim.State# GHC.Prim.RealWorld
     -> (# GHC.Prim.State# GHC.Prim.RealWorld, () #)
@@ -476,14 +476,14 @@ a5f5f33c1ece3efcaabf2151f97a140b
      Unfolding: (GHC.TopHandler.runMainIO1
                    @ ()
                    Main.main1 `cast` (Sym (GHC.Types.N:IO[0] <()>_R))) -}
-151ef2e96cfe3a9de5db7f6560af0d3a
+46a6e33265810c36dc95d057b9385348
   runPrimerTrimming :: Lib.Opts -> GHC.Types.IO Lib.RunStats
   {- Arity: 2, Strictness: <S(SLLL),1*U(1*U,U,U,U)><S,U>,
      Unfolding: InlineRule (0, True, True)
                 Main.runPrimerTrimming1
                   `cast`
                 (<Lib.Opts>_R ->_R Sym (GHC.Types.N:IO[0] <Lib.RunStats>_R)) -}
-dad3eb88c92677e1a92feba4fe51a4d2
+f62fd0ad8c17f4981bd06536af7b8eae
   runPrimerTrimming1 ::
     Lib.Opts
     -> GHC.Prim.State# GHC.Prim.RealWorld
