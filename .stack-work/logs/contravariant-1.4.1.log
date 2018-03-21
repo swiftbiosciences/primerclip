@@ -1,0 +1,9 @@
+Configuring contravariant-1.4.1...
+Preprocessing library for contravariant-1.4.1..
+Building library for contravariant-1.4.1..
+[1 of 4] Compiling Data.Functor.Contravariant ( src/Data/Functor/Contravariant.hs, .stack-work/dist/x86_64-linux/Cabal-2.0.1.0/build/Data/Functor/Contravariant.o )
+[2 of 4] Compiling Data.Functor.Contravariant.Divisible ( src/Data/Functor/Contravariant/Divisible.hs, .stack-work/dist/x86_64-linux/Cabal-2.0.1.0/build/Data/Functor/Contravariant/Divisible.o )
+[3 of 4] Compiling Data.Functor.Contravariant.Compose ( src/Data/Functor/Contravariant/Compose.hs, .stack-work/dist/x86_64-linux/Cabal-2.0.1.0/build/Data/Functor/Contravariant/Compose.o )
+[4 of 4] Compiling Data.Functor.Contravariant.Generic ( src/Data/Functor/Contravariant/Generic.hs, .stack-work/dist/x86_64-linux/Cabal-2.0.1.0/build/Data/Functor/Contravariant/Generic.o )
+Installing library in /home/irish/.stack/snapshots/x86_64-linux/lts-11.0/8.2.2/lib/x86_64-linux-ghc-8.2.2/contravariant-1.4.1-8E6WUUTr4KUeVyUAaFXO6
+Registering library for contravariant-1.4.1..

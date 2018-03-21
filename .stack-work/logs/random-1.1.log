@@ -1,0 +1,13 @@
+Configuring random-1.1...
+Preprocessing library for random-1.1..
+Building library for random-1.1..
+[1 of 1] Compiling System.Random    ( System/Random.hs, .stack-work/dist/x86_64-linux/Cabal-2.0.1.0/build/System/Random.o )
+
+[;1mSystem/Random.hs:43:1: [;1m[35mwarning:[0m[0m[;1m [[;1m[35m-Wtabs[0m[0m[;1m][0m[0m[;1m
+    Tab character found here, and in 74 further locations.
+    Please use spaces instead.[0m[0m
+[;1m[34m   |[0m[0m
+[;1m[34m43 |[0m[0m [;1m[35m        [0m[0m(
+[;1m[34m   |[0m[0m[;1m[35m ^^^^^^^^[0m[0m
+[0m[0m[0mInstalling library in /home/irish/.stack/snapshots/x86_64-linux/lts-11.0/8.2.2/lib/x86_64-linux-ghc-8.2.2/random-1.1-LLUGZ7T9DqQ5vN0Jbcd0We
+Registering library for random-1.1..

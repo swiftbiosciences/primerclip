@@ -1,0 +1,11 @@
+Configuring mono-traversable-1.0.8.1...
+Preprocessing library for mono-traversable-1.0.8.1..
+Building library for mono-traversable-1.0.8.1..
+[1 of 6] Compiling Data.MonoTraversable ( src/Data/MonoTraversable.hs, .stack-work/dist/x86_64-linux/Cabal-2.0.1.0/build/Data/MonoTraversable.o )
+[2 of 6] Compiling Data.Containers  ( src/Data/Containers.hs, .stack-work/dist/x86_64-linux/Cabal-2.0.1.0/build/Data/Containers.o )
+[3 of 6] Compiling Data.MonoTraversable.Unprefixed ( src/Data/MonoTraversable/Unprefixed.hs, .stack-work/dist/x86_64-linux/Cabal-2.0.1.0/build/Data/MonoTraversable/Unprefixed.o )
+[4 of 6] Compiling Data.Sequences   ( src/Data/Sequences.hs, .stack-work/dist/x86_64-linux/Cabal-2.0.1.0/build/Data/Sequences.o )
+[5 of 6] Compiling Data.NonNull     ( src/Data/NonNull.hs, .stack-work/dist/x86_64-linux/Cabal-2.0.1.0/build/Data/NonNull.o )
+[6 of 6] Compiling Paths_mono_traversable ( .stack-work/dist/x86_64-linux/Cabal-2.0.1.0/build/autogen/Paths_mono_traversable.hs, .stack-work/dist/x86_64-linux/Cabal-2.0.1.0/build/Paths_mono_traversable.o )
+Installing library in /home/irish/.stack/snapshots/x86_64-linux/lts-11.0/8.2.2/lib/x86_64-linux-ghc-8.2.2/mono-traversable-1.0.8.1-9BKbsLnAeJEK4ktbvOC2Yo
+Registering library for mono-traversable-1.0.8.1..

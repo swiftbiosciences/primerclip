@@ -1,0 +1,10 @@
+[1 of 2] Compiling Main             ( /tmp/stack63129/distributive-0.5.3/Setup.lhs, /tmp/stack63129/distributive-0.5.3/.stack-work/dist/x86_64-linux/Cabal-2.0.1.0/setup/Main.o )
+[2 of 2] Compiling StackSetupShim   ( /home/irish/.stack/setup-exe-src/setup-shim-mPHDZzAJ.hs, /tmp/stack63129/distributive-0.5.3/.stack-work/dist/x86_64-linux/Cabal-2.0.1.0/setup/StackSetupShim.o )
+Linking /tmp/stack63129/distributive-0.5.3/.stack-work/dist/x86_64-linux/Cabal-2.0.1.0/setup/setup ...
+Configuring distributive-0.5.3...
+Preprocessing library for distributive-0.5.3..
+Building library for distributive-0.5.3..
+[1 of 2] Compiling Data.Distributive ( src/Data/Distributive.hs, .stack-work/dist/x86_64-linux/Cabal-2.0.1.0/build/Data/Distributive.o )
+[2 of 2] Compiling Data.Distributive.Generic ( src/Data/Distributive/Generic.hs, .stack-work/dist/x86_64-linux/Cabal-2.0.1.0/build/Data/Distributive/Generic.o )
+Installing library in /home/irish/.stack/snapshots/x86_64-linux/lts-11.0/8.2.2/lib/x86_64-linux-ghc-8.2.2/distributive-0.5.3-F6z9Ydi0AiA6rP8AS0blTR
+Registering library for distributive-0.5.3..

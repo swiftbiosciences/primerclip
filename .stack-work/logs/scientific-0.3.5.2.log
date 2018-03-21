@@ -1,0 +1,10 @@
+Configuring scientific-0.3.5.2...
+Preprocessing library for scientific-0.3.5.2..
+Building library for scientific-0.3.5.2..
+[1 of 5] Compiling GHC.Integer.Compat ( src/GHC/Integer/Compat.hs, .stack-work/dist/x86_64-linux/Cabal-2.0.1.0/build/GHC/Integer/Compat.o )
+[2 of 5] Compiling Utils            ( src/Utils.hs, .stack-work/dist/x86_64-linux/Cabal-2.0.1.0/build/Utils.o )
+[3 of 5] Compiling Data.Scientific  ( src/Data/Scientific.hs, .stack-work/dist/x86_64-linux/Cabal-2.0.1.0/build/Data/Scientific.o )
+[4 of 5] Compiling Data.Text.Lazy.Builder.Scientific ( src/Data/Text/Lazy/Builder/Scientific.hs, .stack-work/dist/x86_64-linux/Cabal-2.0.1.0/build/Data/Text/Lazy/Builder/Scientific.o )
+[5 of 5] Compiling Data.ByteString.Builder.Scientific ( src/Data/ByteString/Builder/Scientific.hs, .stack-work/dist/x86_64-linux/Cabal-2.0.1.0/build/Data/ByteString/Builder/Scientific.o )
+Installing library in /home/irish/.stack/snapshots/x86_64-linux/lts-11.0/8.2.2/lib/x86_64-linux-ghc-8.2.2/scientific-0.3.5.2-I0OyywXlh5T1ucLy9hEJvl
+Registering library for scientific-0.3.5.2..

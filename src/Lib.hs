@@ -110,6 +110,15 @@ defaultAlignment = AlignedRead { qname = "NONE"
                                , trimdToZeroLength = False
                                }
 
+
+data ReadPair = ReadPair { read1 :: AlignedRead
+                         , read2 :: AlignedRead
+                         } deriving (Eq, Show, Generic)
+
+instance Ord ReadPair where
+    compare = comparing read1
+           <> comparing read2
+
 -- 180206 add BEDPE primer coordinates input file option
 data BEDPE = BEDPE { chr1 :: UChr
                    , start1 :: Integer
@@ -693,6 +702,33 @@ parseAlns as = U.rights $ (A.parseOnly alnparser <$> as)
 
 parseAln as = A.parseOnly alnparser as
 
+-- 180321 parse SAM input as continuous text (do not split into lines) so that
+-- paired alignments can be parsed into ReadPair records
+parseReadPairsFromSAM :: B.ByteString -> [ReadPair]
+parseReadPairsFromSAM bs = U.fromRight [] $ parsePairedAlns bs
+
+-- 180321
+samtxtparser = do
+    h <- parseHdrToPairedAln
+    as <- A.many1 parsePairedAln
+    return $ h : as
+
+parsePairedAlns = A.parseOnly samtxtparser
+                -- $ A.many1 (parseHdrToPairedAln <|> parsePairedAln)
+
+-- 180321 hack to read header lines into read1 of ReadPair TODO: create distinct
+-- type for SAM header lines
+parseHdrToPairedAln = do
+    h <- hdralnparserEOL
+    return $ ReadPair h defaultAlignment
+
+parsePairedAln = do
+    r1 <- alnparser
+    A.endOfLine
+    r2 <- alnparser
+    A.endOfLine
+    return $ ReadPair r1 r2
+
 readBEDPE :: FilePath -> IO [BEDPE]
 readBEDPE fp = do
     flines <- B.lines <$> B.readFile fp
@@ -862,7 +898,8 @@ alnparser = do
     A.space
     qual <- txtfieldp
     A.space
-    optfs <- optfieldsp -- optfieldpEOL : only for use with conduitParserEither
+    optfs <- optfieldstotalp -- optfieldsp
+    -- A.endOfLine -- 180321 for parsing alignment pairs
     let flag = f
         strand = case testBit flag 4 of
             True  -> B.pack "-"
@@ -872,8 +909,8 @@ alnparser = do
         tln = floor $ tl
         cigm = exrights $ parseCigar cig
         end = (sumMatches cigm) + p -- 180223 NOTE: previous CIGAR accounting inverted "D" and "I" (!)
-        optfieldstr = B.intercalate "\t" optfs -- B.pack optfs
-        midstr = parsemIDstring optfieldstr
+        -- optfieldstr = B.intercalate "\t" optfs -- B.pack optfs
+        midstr = parsemIDstring optfs -- optfieldstr
         a = defaultAlignment { qname = qn
                              , flag = f
                              , rname = chr
@@ -889,13 +926,22 @@ alnparser = do
                              , tlen = tln
                              , refseq = seq
                              , basequal = qual
-                             , optfields = optfieldstr
+                             , optfields = optfs -- optfieldstr
                              , strand = strand
                              , paired = prd
                              , mapped = mapd
                              , mid = midstr
                              }
     return a
+
+-- 180321 parse line ending
+hdralnparserEOL :: A.Parser AlignedRead
+hdralnparserEOL = do
+    hlines <- A.many1 samhdrparserEOL
+    return $ defaultAlignment { headerstrings = hlines
+                              , isheader = True
+                              , qname = "HEADERLINE"
+                              }
 
 -- 171017 header parser more suited for conduit and parsing header into AlignedRead
 hdralnparser :: A.Parser AlignedRead
@@ -1091,6 +1137,8 @@ spaces = A.many1 A.skipSpace
 txtfieldp = A.takeTill A.isSpace
 
 optfieldsp = A.sepBy' txtfieldp A.space -- parses correctly
+
+optfieldstotalp = A.takeTill (A.inClass "\r\n")
 
 -- 171017 prevent entire SAM file being parsed into optional fields field of
 -- first AlignedRead
