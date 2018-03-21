@@ -110,14 +110,23 @@ defaultAlignment = AlignedRead { qname = "NONE"
                                , trimdToZeroLength = False
                                }
 
+-- 180321 organize aligned reads by name, with read1 and read2 organized by
+-- primary and secondary Alignments
+-- NOTE: this requires the input SAM file to be name sorted, and enables the
+-- update of the mate-related flag bits and mate alignment start positions
+-- for each trimmed alignment
+-- (this should remove most if not all ValidateSamFile errors)
+data PairedAln = PairedAln { r1prim :: AlignedRead
+                           , r2prim :: AlignedRead
+                           , r1alns :: [AlignedRead]
+                           , r2alns :: [AlignedRead]
+                           } deriving (Eq, Show, Generic)
 
-data ReadPair = ReadPair { read1 :: AlignedRead
-                         , read2 :: AlignedRead
-                         } deriving (Eq, Show, Generic)
+instance Ord PairedAln where
+    compare = comparing r1prim
+           <> comparing r2prim
 
-instance Ord ReadPair where
-    compare = comparing read1
-           <> comparing read2
+defaultPairedAln = PairedAln defaultAlignment defaultAlignment [] []
 
 -- 180206 add BEDPE primer coordinates input file option
 data BEDPE = BEDPE { chr1 :: UChr
@@ -689,6 +698,31 @@ bedPEparser = do
 ------------------------------------------------------------------------------
 ------------------------------------------------------------------------------
 
+-- 180321 parse SAM file into PairedAln records to group alignments by read name
+-- NOTE: first approach will be to filter for alignments intersecting one or
+-- more primer intervals, and only running those alignments through the trimming.
+readSAMtoPairedAlns :: FilePath -> IO (AlignedRead, [PairedAln])
+readSAMtoPairedAlns fp = do
+    parsedAlns <- readSAMnameset fp
+    let hdr = safegetheader parsedAlns
+        pairsets = alnsToPairedAln <$> (tail parsedAlns)
+    return (hdr, pairsets)
+
+alnsToPairedAln :: [AlignedRead] -> PairedAln
+alnsToPairedAln [] = defaultPairedAln
+alnsToPairedAln as =
+    let (r1s, r2s) = partition read1filter as
+        r1p = headsafeAln $ filter primaryR1filter as
+        r2p = headsafeAln $ filter primaryR2filter as
+    in PairedAln r1p r2p r1s r2s
+
+
+-- 180321 non-conduit read name-set SAM file reading function
+readSAMnameset :: FilePath -> IO [[AlignedRead]]
+readSAMnameset fp = do
+    txt <- B.readFile fp
+    return $ parseReadsetsFromSAM txt
+
 -- 180212 non-conduit latest SAM parsing function for debugging
 readSAM :: FilePath -> IO [AlignedRead]
 readSAM fp = do
@@ -703,31 +737,83 @@ parseAlns as = U.rights $ (A.parseOnly alnparser <$> as)
 parseAln as = A.parseOnly alnparser as
 
 -- 180321 parse SAM input as continuous text (do not split into lines) so that
--- paired alignments can be parsed into ReadPair records
-parseReadPairsFromSAM :: B.ByteString -> [ReadPair]
-parseReadPairsFromSAM bs = U.fromRight [] $ parsePairedAlns bs
+-- the lists of reads (grouped by read name) can be organized into paired alignments
+parseReadsetsFromSAM :: B.ByteString -> [[AlignedRead]]
+parseReadsetsFromSAM bs = U.fromRight [] $ A.parseOnly parsePairedAlns bs
 
--- 180321
-samtxtparser = do
-    h <- parseHdrToPairedAln
-    as <- A.many1 parsePairedAln
-    return $ h : as
-
-parsePairedAlns = A.parseOnly samtxtparser
-                -- $ A.many1 (parseHdrToPairedAln <|> parsePairedAln)
-
--- 180321 hack to read header lines into read1 of ReadPair TODO: create distinct
--- type for SAM header lines
-parseHdrToPairedAln = do
+parsePairedAlns = do
     h <- hdralnparserEOL
-    return $ ReadPair h defaultAlignment
+    rsets <- A.many1 alignmentsetparser
+    return $ [h] : rsets
 
-parsePairedAln = do
+-- 180321 try out a sort of backref for unknown number of secondary alignments
+alignmentsetparser = do
     r1 <- alnparser
     A.endOfLine
-    r2 <- alnparser
-    A.endOfLine
-    return $ ReadPair r1 r2
+    let setname = qname r1
+    secrs <- A.many1 ((secalnp setname) <* A.endOfLine)
+    return $ r1 : secrs
+
+secalnp :: B.ByteString -> A.Parser AlignedRead
+secalnp setqname = do
+    qn <- A.string setqname
+    A.space
+    f <- A.decimal
+    A.space
+    chr <- uchrparser
+    A.space
+    p <- A.decimal
+    A.space
+    mpscore <- A.decimal
+    A.space
+    cig <- txtfieldp
+    A.space
+    nchr <- txtfieldp
+    A.space
+    pn <- A.decimal
+    A.space
+    tl <- A.double
+    A.space
+    seq <- txtfieldp
+    A.space
+    qual <- txtfieldp
+    A.space
+    optfs <- optfieldstotalp -- optfieldsp
+    -- A.endOfLine -- 180321 for parsing alignment pairs
+    let flag = f
+        strand = case testBit flag 4 of
+            True  -> B.pack "-"
+            False -> B.pack "+"
+        prd = testBit flag 0
+        mapd = not $ testBit flag 2
+        tln = floor $ tl
+        cigm = exrights $ parseCigar cig
+        end = (sumMatches cigm) + p -- 180223 NOTE: previous CIGAR accounting inverted "D" and "I" (!)
+        -- optfieldstr = B.intercalate "\t" optfs -- B.pack optfs
+        midstr = parsemIDstring optfs -- optfieldstr
+        a = defaultAlignment { qname = qn
+                             , flag = f
+                             , rname = chr
+                             , pos = p - 1 --  SAM to BED/BAM numbering
+                             , trimdpos = p - 1 --  SAM to BED/BAM numbering
+                             , endpos = end - 1 --  SAM to BED/BAM numbering
+                             , trimdendpos = end - 1 --  SAM to BED/BAM numbering
+                             , mapqual = mpscore
+                             , cigar = cig
+                             , cigmap = cigm
+                             , rnext = nchr
+                             , pnext = pn - 1 -- SAM to BED/BAM
+                             , tlen = tln
+                             , refseq = seq
+                             , basequal = qual
+                             , optfields = optfs -- optfieldstr
+                             , strand = strand
+                             , paired = prd
+                             , mapped = mapd
+                             , mid = midstr
+                             }
+    return a
+
 
 readBEDPE :: FilePath -> IO [BEDPE]
 readBEDPE fp = do
@@ -978,6 +1064,19 @@ samhdrparserEOL = do
     A.endOfLine
     let hdrln = B.append "@" fields
     return hdrln
+
+-- 180321 safely get header AlignedRead from [[AlignedRead]]
+safegetheader :: [[AlignedRead]] -> AlignedRead
+safegetheader as
+    | null $ join as = error "[!] SAM header parse error: check header in input SAM file" -- defaultAlignment
+    | isheader hdr   = hdr
+    | otherwise      = error "[!] SAM header missing: check header in input SAM file" -- defaultAlignment
+        where hdr = head $ head as
+
+headsafeAln :: [AlignedRead] -> AlignedRead
+headsafeAln as
+    | null as = error "[!] SAM header missing: check header in input SAM file"
+    | otherwise = head as
 
 -- 171204 Attoparsec version of getRight (below)
 -- use of Conduit to read input alignment file precludes use of "rights" in Data.Either
@@ -1255,6 +1354,19 @@ readSAMFlag flag =
                , dupRead = testBit flag 10
                , intflag = flag
                }
+
+-- filter alignments by flag bit(s)
+
+read1filter :: AlignedRead -> Bool
+read1filter a = testBit (flag a) 6
+
+primaryR1filter :: AlignedRead -> Bool
+primaryR1filter a = (not $ testBit (flag a) 8)
+                 && (read1filter a)
+
+primaryR2filter :: AlignedRead -> Bool
+primaryR2filter a =  (not $ testBit (flag a) 8)
+                 && (not $ read1filter a)
 
 -- select element of nested vector
 getcol :: Int -> V.Vector (V.Vector a) -> V.Vector a
