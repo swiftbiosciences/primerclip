@@ -1,9 +1,9 @@
 
 ==================== FINAL INTERFACE ====================
-2018-03-20 17:23:17.399293 UTC
+2018-03-21 15:27:02.646427 UTC
 
 interface main@main:Main 8002
-  interface hash: eee4ae465b9c4e2509a6e5429d074e69
+  interface hash: 537efa0909f597fd499428eaef8f815e
   ABI hash: 2cefe568a8937801857bdc8aed806047
   export-list hash: 644f655f41f342ad3540a2bcd02e3bb6
   orphan hash: f067ff874353f9bbd5b00d2dd0f7a928
@@ -142,7 +142,7 @@ import  -/  ghc-prim-0.5.0.0:GHC.Types 89f8de4f08018c9177c98d979eae0e45
 import  -/  optparse-applicative-0.13.2.0@optparse-applicative-0.13.2.0-34EUj6Bj0pDLtYR0AoQs8j:Options.Applicative 3b2110c868e49e0d86cded098f24e0d2
 import  -/  optparse-applicative-0.13.2.0@optparse-applicative-0.13.2.0-34EUj6Bj0pDLtYR0AoQs8j:Options.Applicative.Builder cddcfb07a988339795d2e38d4387ac76
 import  -/  optparse-applicative-0.13.2.0@optparse-applicative-0.13.2.0-34EUj6Bj0pDLtYR0AoQs8j:Options.Applicative.Extra 149b9f0d4c43ee9476133f84e028bc40
-import  -/  primerclip-0.3.0.0@primerclip-0.3.0.0-INSDieWpla3JQbuaUuDA6C:Lib d8d46f8abbf9dfea8bbd900c990ea1d2
+import  -/  primerclip-0.3.0.0@primerclip-0.3.0.0-INSDieWpla3JQbuaUuDA6C:Lib c3c5aa59a179a58327398b80cf90a4fa
 ffe787835a7a1860338941124400c7dd
   $s$fApplicativeResourceT ::
     GHC.Base.Applicative
