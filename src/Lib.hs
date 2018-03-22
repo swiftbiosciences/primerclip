@@ -118,8 +118,8 @@ defaultAlignment = AlignedRead { qname = "NONE"
 -- (this should remove most if not all ValidateSamFile errors)
 data PairedAln = PairedAln { r1prim :: AlignedRead
                            , r2prim :: AlignedRead
-                           , r1alns :: [AlignedRead]
-                           , r2alns :: [AlignedRead]
+                           , r1secs :: [AlignedRead]
+                           , r2secs :: [AlignedRead]
                            } deriving (Eq, Show, Generic)
 
 instance Ord PairedAln where
@@ -202,7 +202,6 @@ data RunStats = RunStats { alnsTotal :: Integer
                          , trimmedPct :: Double
                          , mappedPct :: Double
                          } deriving (Eq, Show, Read)
-
 
 -- 170919 add MidFamily record type to group [AlignedRead] by mID
 data MidFamily = MidFamily { chrom :: UChr
@@ -712,10 +711,11 @@ alnsToPairedAln :: [AlignedRead] -> PairedAln
 alnsToPairedAln [] = defaultPairedAln
 alnsToPairedAln as =
     let (r1s, r2s) = partition read1filter as
-        r1p = headsafeAln $ filter primaryR1filter as
-        r2p = headsafeAln $ filter primaryR2filter as
-    in PairedAln r1p r2p r1s r2s
-
+        (r1pl, r1secs) = partition primaryR1filter r1s
+        (r2pl, r2secs) = partition primaryR2filter r2s
+        r1p = headsafeAln r1pl
+        r2p = headsafeAln r2pl
+    in PairedAln r1p r2p r1secs r2secs
 
 -- 180321 non-conduit read name-set SAM file reading function
 readSAMnameset :: FilePath -> IO [[AlignedRead]]
@@ -1356,7 +1356,7 @@ readSAMFlag flag =
                }
 
 -- filter alignments by flag bit(s)
-
+-- 180321
 read1filter :: AlignedRead -> Bool
 read1filter a = testBit (flag a) 6
 
@@ -1367,6 +1367,18 @@ primaryR1filter a = (not $ testBit (flag a) 8)
 primaryR2filter :: AlignedRead -> Bool
 primaryR2filter a =  (not $ testBit (flag a) 8)
                  && (not $ read1filter a)
+
+-- 180322 filter PairedAln for records containing at least one alignment with
+-- an intersection to at least one primer interval
+collectPrimIntAlns :: [PairedAln] -> [PairedAln]
+collectPrimIntAlns ps = filter anyPrimerIntAln ps
+
+anyPrimerIntAln :: PairedAln -> Bool
+anyPrimerIntAln p = (pintflag $ r1prim p)
+                 || (pintflag $ r2prim p)
+                 || (any pintflag $ r1secs p)
+                 || (any pintflag $ r2secs p)
+
 
 -- select element of nested vector
 getcol :: Int -> V.Vector (V.Vector a) -> V.Vector a
@@ -1485,6 +1497,18 @@ calcNotMappedPct = P.getZipSink (calc <$> P.ZipSink calcMappedCount
     where calc mapcnt total = (fromIntegral mapcnt)
                             / (fromIntegral total) * 100.0
 
+
+-- 180322 add primer intersections to AlignedRead as part of PairedAln record
+-- NOTE: define instance of Functor for PairedAln type to define fmap??
+addprimerintsPairedAln :: CMap -> CMap -> PairedAln -> PairedAln
+addprimerintsPairedAln fpmap rpmap pa =
+    let addpints = addprimerints fpmap rpmap
+    in pa { r1prim = addpints $ r1prim pa
+          , r2prim = addpints $ r2prim pa
+          , r1secs = addpints <$> (r1secs pa)
+          , r2secs = addpints <$> (r2secs pa)
+          }
+
 -- 170926 calculate and populate amplicon target BED field
 addprimerints :: CMap -> CMap -> AlignedRead -> AlignedRead
 addprimerints fpmap rpmap aln =
@@ -1509,6 +1533,36 @@ setpintflag hits
 
 ---------- Functions to trim AlignedRead if it intersects primer(s) ----------
 ------------------------------------------------------------------------------
+
+{--
+-- 180322 update flag, rnext, and pnext field for each alignment in a PairedAln
+-- record based on result of any primer trimming of that read's mate
+updateTrimdPairFields :: PairedAln -> PairedAln
+updateTrimdAlnFields pa
+    | primaryR1trimd = updateR2nextfields pa
+    | primaryR2trimd = updateR1nextfields pa
+    | otherwise = pa
+        where primaryR1trimd = trimdflag $ r1prim pa
+              primaryR2trimd = trimdflag $ r2prim pa
+
+-- called on PairedAln records where R2 primary alignment was trimmed
+updateR1nextfields :: PairedAln -> PairedAln
+updateR1nextfields pa =
+    let trimdaln = r2prim pa
+        trimdposR2 = trimdpos trimdaln
+        trimdflagR2 = flag trimdaln
+        nxtalns = (r1prim pa) : (r1secs pa)
+        (newpr1:newsecr1s) = (\x -> x { pnext = trimdposR2 }) <$> nxtalns -- update pnext
+        -- does TLEN need to be updated ??? TODO: check standard (new vs. old for TLEN)
+--}
+
+
+-- 180322 trim each alignment in PairedAln record
+trimPairedAlns :: PairedAln -> PairedAln
+trimPairedAlns pa = PairedAln (trimalignment $ r1prim pa)
+                              (trimalignment $ r2prim pa)
+                              (trimalignment <$> (r1secs pa))
+                              (trimalignment <$> (r2secs pa))
 
 -- 180212 added addtrimtag function to append comment to optfields (CO:Z: SAM tag)
 trimalignment :: AlignedRead -> AlignedRead
@@ -1537,7 +1591,8 @@ trimfwd a =
                      , trimdcigmap = newcigmap
                      , trimdflag = if (as /= tpos) then True else False
                      }
-    in trimdaln
+    -- in trimdaln
+    in clearNonRealCigar trimdaln -- "clear" CIGAR and fields if entire aln is primer
 
 -- for alignments intersecting a "reverse" primer only ( ref (+)-strand orientation)
 trimrev :: AlignedRead -> AlignedRead
@@ -1554,7 +1609,8 @@ trimrev a =
                      , trimdcigmap = newcigmap
                      , trimdflag = if (ae /= tendpos) then True else False
                      }
-    in trimdaln
+    -- in trimdaln
+    in clearNonRealCigar trimdaln -- "clear" CIGAR and fields if entire aln is primer
 
 -- for alignments with primer intersections at both ends
 trimboth :: AlignedRead -> AlignedRead
@@ -1578,15 +1634,15 @@ trimboth a =
                                    then True
                                    else False
                      }
-    in trimdaln -- 180320 keep trim-to-zero-length alns w/ CIGAR all 'S'
-    -- in clearNonRealCigar trimdaln -- "clear" CIGAR and fields if entire aln is primer
+    -- in trimdaln -- 180320 keep trim-to-zero-length alns w/ CIGAR all 'S'
+    in clearNonRealCigar trimdaln -- "clear" CIGAR and fields if entire aln is primer
 
 -- UPDATE 18-02-23 Fix broken CIGAR accounting for trimmed alignments
 updateCigF :: Integer -> B.ByteString -> B.ByteString
 updateCigF fdiff cigar
     | snd (head cmap) == "*" = "*"
     | fdiffi <= 0 = cigar
-    | ((nopadlen - fdiffi) >= 0) = newcig -- 180320
+    | ((nopadlen - fdiffi) > 0) = newcig -- 180320
     | otherwise = "*"
         where cmap = mapcig cigar
               grps = B.group $ expandcigar cmap
@@ -1611,7 +1667,7 @@ updateCigR :: Integer -> B.ByteString -> B.ByteString
 updateCigR rdiff cigar
     | snd (head cmap) == "*" = "*"
     | rdiffi <= 0 = cigar
-    | ((nopadlen - rdiffi) >= 0) = newcig -- 180320 DEBUGGING
+    | ((nopadlen - rdiffi) > 0) = newcig -- 180320 DEBUGGING
     | otherwise = "*" -- 180320 allow all 'S' trimmed CIGAR (diff == nopadlen)
         where cmap = mapcig cigar
               grps = B.group $ expandcigar cmap
@@ -1639,7 +1695,7 @@ updateCigB fdiff rdiff cigar
     | snd (head cmap) == "*" = "*"
     | fdiffi <= 0 = updateCigR rdiff cigar
     | rdiffi <= 0 = updateCigF fdiff cigar
-    | ((nopadlen - fdiffi - rdiffi) >= 0) = newcig -- 180320
+    | ((nopadlen - fdiffi - rdiffi) > 0) = newcig -- 180320
     | otherwise = "*"
         where cmap = mapcig cigar
               grps = B.group $ expandcigar cmap
@@ -1754,7 +1810,7 @@ clearNonRealCigar a
     | (any (\x -> elem x ("MIDN" :: String)) (B.unpack $ trimdcigar a)) = a
     | otherwise = clearedCigAln
         where clearedCigAln = a { trimdcigar = "*"
-                                , flag = zeroLenFlag
+                                -- , flag = zeroLenFlag
                                 , trimdpos = 0
                                 , trimdendpos = 0
                                 , rnext = "*"
@@ -1763,7 +1819,7 @@ clearNonRealCigar a
                                 , mapqual = 0
                                 , trimdToZeroLength = True
                                 }
-              zeroLenFlag = setZeroLengthAlnFlag $ flag a
+              -- zeroLenFlag = setZeroLengthAlnFlag $ flag a
 
 -- 180320 clear supp. alignment bit
 setZeroLengthAlnFlag :: Int -> Int
@@ -1779,7 +1835,6 @@ setZeroLengthAlnFlag flag
                                    $ flipClrBit 8
                                    $ flipSetBit 2
                                    $ flipClrBit 1 flag
-
 
 -- 180320 test keeping all 'S' CIGAR for trimd-to-zero-length alns
 updateTrimdAlnFields :: AlignedRead -> AlignedRead
