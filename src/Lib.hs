@@ -1403,6 +1403,20 @@ getlengths seqs = fmap B.length seqs
 ----------------------  HIGH-LEVEL FUNCTIONS IN MAIN -------------------------
 ------------------------------------------------------------------------------
 
+-- 180328 trim primers as paired alignment sets
+trimprimerPairsE :: CMap -> CMap -> PairedAln -> PairedAln
+trimprimerPairsE fmap rmap p =
+    let intpaln = addprimerintsPairedAln fmap rmap p
+    in updateZeroTrimdPairFlags
+     $ updateTrimdPairFields
+     $ trimPairedAlns p
+
+trimprimerPairs :: CMap -> CMap -> [PairedAln] -> [PairedAln]
+trimprimerPairs fmap rmap ps =
+    let intpalns = (addprimerintsPairedAln fmap rmap) <$> ps
+    in updateZeroTrimdPairFlags
+        <$> (updateTrimdPairFields <$> (trimPairedAlns <$> ps))
+
 -- element (single alignment)-wise primer trimming (for use with conduit)
 trimprimersE :: CMap -> CMap -> AlignedRead -> AlignedRead
 trimprimersE fmap rmap a =
@@ -1534,16 +1548,23 @@ setpintflag hits
 ---------- Functions to trim AlignedRead if it intersects primer(s) ----------
 ------------------------------------------------------------------------------
 
-{--
+-- {--
 -- 180322 update flag, rnext, and pnext field for each alignment in a PairedAln
 -- record based on result of any primer trimming of that read's mate
 updateTrimdPairFields :: PairedAln -> PairedAln
-updateTrimdAlnFields pa
+updateTrimdPairFields pa
+    | bothPrimaryTrimd = updateR1nextfields $ updateR2nextfields pa
     | primaryR1trimd = updateR2nextfields pa
     | primaryR2trimd = updateR1nextfields pa
     | otherwise = pa
-        where primaryR1trimd = trimdflag $ r1prim pa
-              primaryR2trimd = trimdflag $ r2prim pa
+        where r1p = r1prim pa
+              r2p = r2prim pa
+              bothPrimaryTrimd = (trimdflag r1p)
+                              && (trimdflag r2p)
+                              && (mapped r1p)
+                              && (mapped r2p)
+              primaryR1trimd = (trimdflag r1p) && (mapped r1p)
+              primaryR2trimd = (trimdflag r2p) && (mapped r2p)
 
 -- called on PairedAln records where R2 primary alignment was trimmed
 updateR1nextfields :: PairedAln -> PairedAln
@@ -1554,8 +1575,17 @@ updateR1nextfields pa =
         nxtalns = (r1prim pa) : (r1secs pa)
         (newpr1:newsecr1s) = (\x -> x { pnext = trimdposR2 }) <$> nxtalns -- update pnext
         -- does TLEN need to be updated ??? TODO: check standard (new vs. old for TLEN)
---}
+    in pa { r1prim = newpr1, r1secs = newsecr1s }
 
+updateR2nextfields :: PairedAln -> PairedAln
+updateR2nextfields pa =
+    let trimdaln = r1prim pa
+        trimdposR1 = trimdpos trimdaln
+        trimdflagR1 = flag trimdaln
+        nxtalns = (r2prim pa) : (r2secs pa)
+        (newpr2:newsecr2s) = (\x -> x { pnext = trimdposR1 }) <$> nxtalns -- update pnext
+    in pa { r2prim = newpr2, r2secs = newsecr2s }
+--}
 
 -- 180322 trim each alignment in PairedAln record
 trimPairedAlns :: PairedAln -> PairedAln
@@ -1642,6 +1672,7 @@ updateCigF :: Integer -> B.ByteString -> B.ByteString
 updateCigF fdiff cigar
     | snd (head cmap) == "*" = "*"
     | fdiffi <= 0 = cigar
+    | ((nopadlen - fdiffi) == 0) = "*" -- 180320
     | ((nopadlen - fdiffi) > 0) = newcig -- 180320
     | otherwise = "*"
         where cmap = mapcig cigar
@@ -1667,6 +1698,7 @@ updateCigR :: Integer -> B.ByteString -> B.ByteString
 updateCigR rdiff cigar
     | snd (head cmap) == "*" = "*"
     | rdiffi <= 0 = cigar
+    | ((nopadlen - rdiffi) == 0) = "*" -- 180320 DEBUGGING
     | ((nopadlen - rdiffi) > 0) = newcig -- 180320 DEBUGGING
     | otherwise = "*" -- 180320 allow all 'S' trimmed CIGAR (diff == nopadlen)
         where cmap = mapcig cigar
@@ -1695,6 +1727,7 @@ updateCigB fdiff rdiff cigar
     | snd (head cmap) == "*" = "*"
     | fdiffi <= 0 = updateCigR rdiff cigar
     | rdiffi <= 0 = updateCigF fdiff cigar
+    | ((nopadlen - fdiffi - rdiffi) == 0) = "*" -- 180320
     | ((nopadlen - fdiffi - rdiffi) > 0) = newcig -- 180320
     | otherwise = "*"
         where cmap = mapcig cigar
@@ -1814,12 +1847,62 @@ clearNonRealCigar a
                                 , trimdpos = 0
                                 , trimdendpos = 0
                                 , rnext = "*"
-                                , pnext = -1
+                                -- , pnext = -1
                                 , tlen = 0
                                 , mapqual = 0
                                 , trimdToZeroLength = True
+                                , mapped = False
                                 }
               -- zeroLenFlag = setZeroLengthAlnFlag $ flag a
+
+--{--
+-- 180328 handle all permutations of trimmed-to-zero length read pairs
+-- NOTE: if either read in a pair is trimmed to zero-length, then all alignment
+-- pairs are unmapped and their map flags cleared
+updateZeroTrimdPairFlags :: PairedAln -> PairedAln
+updateZeroTrimdPairFlags pa
+    | somenonmapped = zeroedflags
+    | otherwise = pa
+        where somenonmapped = any (\x -> (trimdToZeroLength x))
+                                  (r1p : r2p : (r1s ++ r2s))
+              (r1p, r2p, r1s, r2s) = ( (r1prim pa)
+                                     , (r2prim pa)
+                                     , (r1secs pa)
+                                     , (r2secs pa) )
+              zeroedflags = pa { r1prim = r1pZ
+                               , r2prim = r2pZ
+                               , r1secs = r1Zs
+                               , r2secs = r2Zs
+                               }
+              clrFlagMapBits x = x { flag = setZeroLengthAlnFlag (flag x)
+                                   , mapped = False
+                                   , rname = NONE
+                                   , rnext = "*"
+                                   , trimdpos = 0
+                                   , trimdendpos = 0
+                                   , pnext = -1
+                                   }
+              r1pZ = clrFlagMapBits r1p
+              r2pZ = clrFlagMapBits r2p
+              r1Zs = clrFlagMapBits <$> r1s
+              r2Zs = clrFlagMapBits <$> r2s
+
+--}
+
+-- functions to set each flag bit after alignment trimming
+-- 180328
+{--
+-- set flag if R2 in pair no longer mapped after trimming
+clearPairMappedR1 :: PairedAln -> PairedAln
+clearPairMappedR1 p =
+    let r2p = r2prim p
+        r1s = (r1prim p) : (r1secs p)
+        r2pstatus = (mapped r2p) && (trimdToZeroLength r2p) -- Bool
+--}
+
+
+
+
 
 -- 180320 clear supp. alignment bit
 setZeroLengthAlnFlag :: Int -> Int
