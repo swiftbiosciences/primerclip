@@ -14,6 +14,7 @@ import Data.Either (isRight, rights)
 import qualified Conduit as P
 import qualified Data.Conduit.Binary as CB
 import qualified Data.Attoparsec.ByteString.Char8 as A
+import qualified Data.Conduit.Attoparsec as CA
 
 -- main
 main :: IO ()
@@ -26,12 +27,34 @@ main = do
     args <- execParser opts
     runstats <- runPrimerTrimming args
     putStrLn "primer trimming complete."
-    writeRunStats (outfilename args) runstats -- 180226
+    -- writeRunStats (outfilename args) runstats -- 180226
 -- end main
 
--- 180206 adapt to optional primer coords input file formats
-runPrimerTrimming :: Opts -> IO RunStats
+-- {--
+-- 180329 parse and trim as PairedAln sets
+runPrimerTrimming :: Opts -> IO [PairedAln]
 runPrimerTrimming args = do
+    (fmp, rmp) <- createprimerbedmaps args
+    runstats <- P.runConduitRes
+              $ P.sourceFile (insamfile args)
+              -- P..| CB.lines
+              P..| CA.conduitParserEither parsePairedAlnsOrHdr
+              -- P..| P.mapC (A.parseOnly (hdralnparser <|> alnparser))
+              P..| P.mapC rightOrDefaultPaird -- convert parse fails to defaultAlignment
+              P..| P.mapCE (trimprimerPairsE fmp rmp)
+              -- P..| P.filterC (\x -> (qname x) /= "NONE") -- remove dummy alignments
+              {-- P..| P.getZipSink
+                       (P.ZipSink (printAlnStreamToFile (outfilename args))
+                    *> calcRunStats) -- 180226 --}
+              -- P..| P.mapC (B.pack . show)
+              P..| P.concatC
+              P..| P.sinkList
+    return runstats
+--}
+
+-- 180206 adapt to optional primer coords input file formats
+runPrimerTrimming2 :: Opts -> IO RunStats
+runPrimerTrimming2 args = do
     (fmp, rmp) <- createprimerbedmaps args
     runstats <- P.runConduitRes
               $ P.sourceFile (insamfile args)

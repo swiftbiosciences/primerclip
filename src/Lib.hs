@@ -18,6 +18,7 @@ import Data.List
 import qualified Data.ByteString.Char8 as B
 import qualified Data.Attoparsec.ByteString.Char8 as A
 import qualified Conduit as P
+import qualified Data.Conduit.Attoparsec as CA
 import qualified Data.Vector as V
 import Data.Bits
 import Data.Digits
@@ -736,13 +737,31 @@ parseAlns as = U.rights $ (A.parseOnly alnparser <$> as)
 
 parseAln as = A.parseOnly alnparser as
 
--- 180321 parse SAM input as continuous text (do not split into lines) so that
--- the lists of reads (grouped by read name) can be organized into paired alignments
-parseReadsetsFromSAM :: B.ByteString -> [[AlignedRead]]
-parseReadsetsFromSAM bs = U.fromRight [] $ A.parseOnly parsePairedAlns bs
+-- 180329 parse to PairedAln directly
+parsePairedAlnsFromSAM :: B.ByteString -> Either String [PairedAln]
+parsePairedAlnsFromSAM bs = A.parseOnly parsePairedAlns bs
+
+parsePairedAlnsOrHdr = A.many1 (hdralnparserEOL <|> pairedalnparser)
 
 parsePairedAlns = do
     h <- hdralnparserEOL
+    pairsets <- A.many1 pairedalnparser
+    return $ h : pairsets
+
+pairedalnparser = do
+    r1 <- alnparser
+    A.endOfLine
+    let setname = qname r1
+    secrs <- A.many1 ((secalnp setname) <* A.endOfLine)
+    return $ alnsToPairedAln (r1 : secrs)
+
+-- 180321 parse SAM input as continuous text (do not split into lines) so that
+-- the lists of reads (grouped by read name) can be organized into paired alignments
+parseReadsetsFromSAM :: B.ByteString -> [[AlignedRead]]
+parseReadsetsFromSAM bs = U.fromRight [] $ A.parseOnly parsePairedAlns' bs
+
+parsePairedAlns' = do
+    h <- hdralnparserEOL'
     rsets <- A.many1 alignmentsetparser
     return $ [h] : rsets
 
@@ -1020,9 +1039,18 @@ alnparser = do
                              }
     return a
 
--- 180321 parse line ending
-hdralnparserEOL :: A.Parser AlignedRead
+-- 180329 keep homogenous type throughout conduit stream
+hdralnparserEOL :: A.Parser PairedAln
 hdralnparserEOL = do
+    hlines <- A.many1 samhdrparserEOL
+    let hdraln = defaultAlignment { headerstrings = hlines
+                                  , isheader = True
+                                  , qname = "HEADERLINE"
+                                  }
+    return $ defaultPairedAln { r1prim = hdraln }
+
+hdralnparserEOL' :: A.Parser AlignedRead
+hdralnparserEOL' = do
     hlines <- A.many1 samhdrparserEOL
     return $ defaultAlignment { headerstrings = hlines
                               , isheader = True
@@ -1085,6 +1113,12 @@ rightOrDefault :: Either String AlignedRead -> AlignedRead
 rightOrDefault e = case e of
     Left _ -> defaultAlignment
     Right a -> a
+
+rightOrDefaultPaird :: Either CA.ParseError (CA.PositionRange, [PairedAln])
+                    -> [PairedAln]
+rightOrDefaultPaird e = case e of
+    Left _ -> [] -- defaultPairedAln
+    Right a -> snd a
 
 -- 171017 extract parse success from Either (as singleton, for conduit)
 getRight :: Either t (a, AlignedRead) -> AlignedRead
@@ -1402,14 +1436,36 @@ getlengths seqs = fmap B.length seqs
 ------------------------------------------------------------------------------
 ----------------------  HIGH-LEVEL FUNCTIONS IN MAIN -------------------------
 ------------------------------------------------------------------------------
+{--
+--parseTrimSAM :: P.MonadResource m => B.ByteString -> P.ConduitM 
+parseTrimSAM outfile = do
+    pe <- CA.conduitParserEither hdralnparserEOL'
+    let defltPosRang = CA.PositionRange (CA.Position 0 0 0) (CA.Position 0 0 0)
+        (d, p) = U.fromRight (defltPosRang, defaultAlignment) pe
+    -- B.writeFile outfile $ printAlignmentOrHdr p
+    -- P.sinkList -- pass remainder of stream through function
+    return p
+--}
+
+--{--
+-- 180329 try bundling parsing and trimming into one function
+parseAndTrimPairSet :: CMap -> CMap -> B.ByteString -> [AlignedRead]
+parseAndTrimPairSet fmp rmp bs =
+    -- assumes header already parsed from the stream
+    let pdaln = U.fromRight defaultPairedAln $ A.parseOnly pairedalnparser bs
+        trimd = trimprimerPairsE fmp rmp pdaln
+    in sort $ (r1prim trimd)
+            : (r2prim trimd)
+            : ((r1secs trimd) ++ (r2secs trimd))
+--}
 
 -- 180328 trim primers as paired alignment sets
 trimprimerPairsE :: CMap -> CMap -> PairedAln -> PairedAln
 trimprimerPairsE fmap rmap p =
     let intpaln = addprimerintsPairedAln fmap rmap p
     in updateZeroTrimdPairFlags
-     $ updateTrimdPairFields
-     $ trimPairedAlns p
+        $ updateTrimdPairFields
+        $ trimPairedAlns p
 
 trimprimerPairs :: CMap -> CMap -> [PairedAln] -> [PairedAln]
 trimprimerPairs fmap rmap ps =
@@ -1586,6 +1642,14 @@ updateR2nextfields pa =
         (newpr2:newsecr2s) = (\x -> x { pnext = trimdposR1 }) <$> nxtalns -- update pnext
     in pa { r2prim = newpr2, r2secs = newsecr2s }
 --}
+
+-- 180402 test whether paired alignment start is correctly updated for
+-- primer-trimmed alignments
+-- NOTE: use only on PairedAln w/ >=1 AlignedRead where trimdflag == True
+validateTrimdPairAlnStart :: PairedAln -> Bool
+validateTrimdPairAlnStart p = ((pnext $ r2prim p) == (trimdpos $ r1prim p))
+                           && ((pnext $ r1prim p) == (trimdpos $ r2prim p))
+
 
 -- 180322 trim each alignment in PairedAln record
 trimPairedAlns :: PairedAln -> PairedAln
@@ -1875,12 +1939,13 @@ updateZeroTrimdPairFlags pa
                                , r2secs = r2Zs
                                }
               clrFlagMapBits x = x { flag = setZeroLengthAlnFlag (flag x)
+                                   {-- should be handled by updateTrimdAlnFields
                                    , mapped = False
                                    , rname = NONE
                                    , rnext = "*"
                                    , trimdpos = 0
                                    , trimdendpos = 0
-                                   , pnext = -1
+                                   , pnext = -1 --}
                                    }
               r1pZ = clrFlagMapBits r1p
               r2pZ = clrFlagMapBits r2p
@@ -1935,7 +2000,13 @@ updateTrimdAlnFields a
               trimdToZero = a { optfields = B.concat [ (optfields a)
                                                      , "\t", trimdToZeroTag
                                                      ]
-                              , trimdToZeroLength = True }
+                              , trimdToZeroLength = True
+                              , rname = NONE
+                              , trimdcigar = "*"
+                              , trimdpos = 0
+                              , trimdendpos = 0
+                              , rnext = "*"
+                              , pnext = 0 }
 
 -- flip setBit and clearBit args for clearer syntax
 flipSetBit = flip setBit
