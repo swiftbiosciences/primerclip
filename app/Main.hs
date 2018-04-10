@@ -27,28 +27,27 @@ main = do
     args <- execParser opts
     runstats <- runPrimerTrimming args
     putStrLn "primer trimming complete."
-    -- writeRunStats (outfilename args) runstats -- 180226
+    writeRunStats (outfilename args) runstats -- 180226
 -- end main
 
 -- {--
 -- 180329 parse and trim as PairedAln sets
-runPrimerTrimming :: Opts -> IO [PairedAln]
+runPrimerTrimming :: Opts -> IO RunStats
 runPrimerTrimming args = do
     (fmp, rmp) <- createprimerbedmaps args
     runstats <- P.runConduitRes
               $ P.sourceFile (insamfile args)
-              -- P..| CB.lines
               P..| CA.conduitParserEither parsePairedAlnsOrHdr
-              -- P..| P.mapC (A.parseOnly (hdralnparser <|> alnparser))
               P..| P.mapC rightOrDefaultPaird -- convert parse fails to defaultAlignment
-              P..| P.mapCE (trimprimerPairsE fmp rmp)
-              -- P..| P.filterC (\x -> (qname x) /= "NONE") -- remove dummy alignments
-              {-- P..| P.getZipSink
-                       (P.ZipSink (printAlnStreamToFile (outfilename args))
-                    *> calcRunStats) -- 180226 --}
-              -- P..| P.mapC (B.pack . show)
               P..| P.concatC
-              P..| P.sinkList
+              P..| P.mapC (trimprimerPairsE fmp rmp)
+              P..| P.mapC flattenPairedAln
+              P..| P.concatC
+              P..| P.filterC (\x -> (qname x) /= "NONE") -- remove dummy alignments
+              P..| P.getZipSink
+                       (P.ZipSink (printAlnStreamToFile (outfilename args))
+                                *> calcRunStats) -- 180226 --}
+              -- P..| P.sinkList
     return runstats
 --}
 
@@ -68,3 +67,20 @@ runPrimerTrimming2 args = do
                     *> calcRunStats) -- 180226
     return runstats
 
+-- {--
+-- 180329 parse and trim as PairedAln sets
+runPrimerTrimmingTest :: Opts -> IO [AlignedRead]
+runPrimerTrimmingTest args = do
+    (fmp, rmp) <- createprimerbedmaps args
+    trimdalns <- P.runConduitRes
+              $ P.sourceFile (insamfile args)
+              P..| CA.conduitParserEither parsePairedAlnsOrHdr
+              P..| P.mapC rightOrDefaultPaird -- convert parse fails to defaultAlignment
+              P..| P.concatC
+              P..| P.mapC (trimprimerPairsE fmp rmp)
+              P..| P.mapC flattenPairedAln
+              P..| P.concatC
+              P..| P.filterC (\x -> (qname x) /= "NONE") -- remove dummy alignments
+              P..| P.sinkList
+    return trimdalns
+--}
