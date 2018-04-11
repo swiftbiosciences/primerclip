@@ -1683,6 +1683,7 @@ trimPairedAlns pa = PairedAln (trimalignment $ r1prim pa)
                               (trimalignment <$> (r1secs pa))
                               (trimalignment <$> (r2secs pa))
 
+-- 180411 remove updateTrimdAlnFields and apply after MRNM resolution for 0-trimd alns
 -- 180212 added addtrimtag function to append comment to optfields (CO:Z: SAM tag)
 trimalignment :: AlignedRead -> AlignedRead
 trimalignment a
@@ -1691,9 +1692,9 @@ trimalignment a
     | (fint a == []) && (rint a /= []) = rtrimdaln
     | (fint a == []) && (rint a == []) = a { trimdcigar = cigar a }
     | otherwise = a { trimdcigar = cigar a }
-         where ftrimdaln = updateTrimdAlnFields $ trimfwd a
-               rtrimdaln = updateTrimdAlnFields $ trimrev a
-               btrimdaln = updateTrimdAlnFields $ trimboth a
+         where ftrimdaln = trimfwd a
+               rtrimdaln = trimrev a
+               btrimdaln = trimboth a
 
 -- for alignments intersecting a "forward" primer only ( ref (+)-strand orientation)
 trimfwd :: AlignedRead -> AlignedRead
@@ -1705,13 +1706,14 @@ trimfwd a =
         newcig = updateCigF fdiff oldcigar
         newcigmap = exrights $ parseCigar newcig
         tpos = (if (fdiff < 0) then as else newpos)
+        zerolengthflag = boolZeroLengthCigar newcig -- 180411
         trimdaln = a { trimdpos = tpos
                      , trimdcigar = newcig
                      , trimdcigmap = newcigmap
                      , trimdflag = if (as /= tpos) then True else False
+                     , trimdToZeroLength = zerolengthflag
                      }
-    -- in trimdaln
-    in clearNonRealCigar trimdaln -- "clear" CIGAR and fields if entire aln is primer
+    in trimdaln
 
 -- for alignments intersecting a "reverse" primer only ( ref (+)-strand orientation)
 trimrev :: AlignedRead -> AlignedRead
@@ -1723,13 +1725,14 @@ trimrev a =
         newcig = updateCigR rdiff oldcigar
         newcigmap = exrights $ parseCigar newcig
         tendpos = (if (rdiff < 0) then ae else newendpos)
+        zerolengthflag = boolZeroLengthCigar newcig -- 180411
         trimdaln = a { trimdendpos = tendpos
                      , trimdcigar = newcig
                      , trimdcigmap = newcigmap
                      , trimdflag = if (ae /= tendpos) then True else False
+                     , trimdToZeroLength = zerolengthflag
                      }
-    -- in trimdaln
-    in clearNonRealCigar trimdaln -- "clear" CIGAR and fields if entire aln is primer
+    in trimdaln
 
 -- for alignments with primer intersections at both ends
 trimboth :: AlignedRead -> AlignedRead
@@ -1745,6 +1748,7 @@ trimboth a =
         newcigmap = exrights $ parseCigar newcig
         tpos = (if (fdiff < 0) then as else newpos)
         tendpos = (if (rdiff < 0) then ae else newendpos)
+        zerolengthflag = boolZeroLengthCigar newcig -- 180411
         trimdaln = a { trimdpos = tpos
                      , trimdendpos = tendpos
                      , trimdcigar = newcig
@@ -1752,9 +1756,9 @@ trimboth a =
                      , trimdflag = if ((as /= tpos) || (ae /= tendpos))
                                    then True
                                    else False
+                     , trimdToZeroLength = zerolengthflag
                      }
-    -- in trimdaln -- 180320 keep trim-to-zero-length alns w/ CIGAR all 'S'
-    in clearNonRealCigar trimdaln -- "clear" CIGAR and fields if entire aln is primer
+    in trimdaln
 
 -- UPDATE 18-02-23 Fix broken CIGAR accounting for trimmed alignments
 updateCigF :: Integer -> B.ByteString -> B.ByteString
@@ -2034,6 +2038,7 @@ clearR1primNextFields p =
     let r1p = r1prim p
         newr1prim = r1p { rnext = "*"
                         , pnext = 0
+                        , tlen = 0
                         }
     in p { r1prim = newr1prim }
 
@@ -2042,6 +2047,7 @@ clearR2primNextFields p =
     let r2p = r2prim p
         newr2prim = r2p { rnext = "*"
                         , pnext = 0
+                        , tlen = 0
                         }
     in p { r2prim = newr2prim }
 --}
@@ -2050,23 +2056,28 @@ clearR2primNextFields p =
 -- modifications
 -- TODO: consolidate ad-hoc updates to trimmed alignments
 makeTrimmedUpdates :: PairedAln -> PairedAln
-makeTrimmedUpdates pa = makeMRNMexplicit
+makeTrimmedUpdates pa = updatePairedAlnTrimdFields
                       $ updateZeroTrimdPairFields
                       $ updateZeroTrimdPairFlags
-                      $ updateTrimdPairFields pa
+                      $ updateTrimdPairFields
+                      $ makeMRNMexplicit pa
 
 -- {--
 makeMRNMexplicit :: PairedAln -> PairedAln
 makeMRNMexplicit p
-    | r1zerotrimdR2mapped = explicitR1MRNM
-    | r2zerotrimdR1mapped = explicitR2MRNM
+    | r1zerotrimdR2mapped || r2zerotrimdR1mapped = explicitMRNM
+    -- | r2zerotrimdR1mapped = explicitR2MRNM
     | otherwise = p
         where r1zerotrimdR2mapped = (trimdToZeroLength $ r1prim p)
                                  || (any (\x -> trimdToZeroLength x) (r1secs p))
               r2zerotrimdR1mapped = (trimdToZeroLength $ r2prim p)
                                  || (any (\x -> trimdToZeroLength x) (r2secs p))
-              explicitR1MRNM = p { r1prim = newr1p, r1secs = newr1s }
-              explicitR2MRNM = p { r2prim = newr2p, r2secs = newr2s }
+              explicitMRNM = p { r1prim = newr1p
+                               , r1secs = newr1s
+                               , r2prim = newr2p
+                               , r2secs = newr2s
+                               }
+              -- explicitR2MRNM = p { r2prim = newr2p, r2secs = newr2s }
               newr1p = r1p { rnext = r2pRNAME }
               newr2p = r2p { rnext = r1pRNAME }
               newr1s = (\x -> x { rnext = r2pRNAME }) <$> r1s
@@ -2109,12 +2120,23 @@ setZeroLengthAlnFlag flag
 setZeroLengthPairFlag :: Int -> Int
 setZeroLengthPairFlag flag = flipSetBit 3 flag
 
--- 180320 test keeping all 'S' CIGAR for trimd-to-zero-length alns
+-- 180411 test for zero-trimmed alignment based on trimmed CIGAR
+-- NOTE: prior to converting zero-match CIGAR to "*"
+boolZeroLengthCigar :: B.ByteString -> Bool
+boolZeroLengthCigar cigar = not
+    $ any (\x -> elem x ("MIDN" :: String)) (B.unpack cigar)
+
+-- 180411 apply updateTrimdAlnFields to all alignments in PairedAln
+updatePairedAlnTrimdFields :: PairedAln -> PairedAln
+updatePairedAlnTrimdFields p = PairedAln (updateTrimdAlnFields $ r1prim p)
+                                         (updateTrimdAlnFields $ r2prim p)
+                                         (updateTrimdAlnFields <$> r1secs p)
+                                         (updateTrimdAlnFields <$> r2secs p)
+
 updateTrimdAlnFields :: AlignedRead -> AlignedRead
 updateTrimdAlnFields a
     | (any (\x -> elem x ("MIDN" :: String)) (B.unpack $ trimdcigar a))
         = trimdAln
-    -- | (trimdflag a) && ((trimdcigar a) /= "*") = trimdAln
     | (trimdflag a) = trimdToZero
     | otherwise = a -- no clipping due to no primer intersections for alignment
         where trimdAlnTag = "CO:Z:primer_trimmed" :: B.ByteString
@@ -2125,7 +2147,7 @@ updateTrimdAlnFields a
               trimdToZero = a { optfields = B.concat [ (optfields a)
                                                      , "\t", trimdToZeroTag
                                                      ]
-                              , trimdToZeroLength = True
+                              -- , trimdToZeroLength = True
                               , rname = NONE
                               , trimdcigar = "*"
                               , trimdpos = -1
@@ -2133,6 +2155,7 @@ updateTrimdAlnFields a
                               -- , rnext = "*"
                               -- , pnext = 0
                               , mapqual = 0
+                              , mapped = False
                               , flag = setZeroLengthAlnFlag (flag a) -- 180409
                               }
 

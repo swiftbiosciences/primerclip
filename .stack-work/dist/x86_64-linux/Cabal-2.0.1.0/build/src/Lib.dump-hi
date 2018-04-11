@@ -1,11 +1,11 @@
 
 ==================== FINAL INTERFACE ====================
-2018-04-10 04:24:58.540681 UTC
+2018-04-11 21:27:35.354134 UTC
 
 interface primerclip-0.3.0.0-KnrbWyjwLjFDOJPGn4qWDr:Lib [family instance module] 8022
-  interface hash: f651c4e2f80d2cd0c8d3096f651530c1
-  ABI hash: 59d2affc476af2c0e6bd319fcc22a79d
-  export-list hash: d1d8f4793e86b879d34f55d9ee4c9767
+  interface hash: ed4a67481c4c68e63c8bf86eebe1bf0c
+  ABI hash: f028de68b3eb844225fc63e10404f6c6
+  export-list hash: acff2b5dd52440d207fc4d9dc38628ad
   orphan hash: cc6b455a225f7c08e23fc21faf0f4df1
   flag hash: ec690ec25aa83b76b88f0ff85134ee97
   sig of: Nothing
@@ -26,6 +26,7 @@ exports:
   Lib.bedpeToFbed
   Lib.bedpeToRbed
   Lib.bedrecparser
+  Lib.boolZeroLengthCigar
   Lib.calcMappedCount
   Lib.calcNotMappedPct
   Lib.calcRunStats
@@ -184,6 +185,7 @@ exports:
   Lib.updateCigB
   Lib.updateCigF
   Lib.updateCigR
+  Lib.updatePairedAlnTrimdFields
   Lib.updateR1nextfields
   Lib.updateR2nextfields
   Lib.updateTrimdAlnFields
@@ -13832,6 +13834,25 @@ ca7173c4aef118bf5231d34d95ea91cd
   {- Arity: 10,
      Strictness: <S,U><L,U><S,U><S,U><S,U><S,U><S,U><L,U><L,C(C1(C1(C1(C1(U)))))><L,C(C1(C1(C1(U))))>,
      Inline: [0] -}
+23a03dab15fb6a9fbe361d3112153310
+  $wboolZeroLengthCigar ::
+    GHC.Prim.Addr#
+    -> GHC.ForeignPtr.ForeignPtrContents
+    -> GHC.Prim.Int#
+    -> GHC.Prim.Int#
+    -> GHC.Types.Bool
+  {- Arity: 4, Strictness: <S,U><L,U><S,U><S,U>, Inline: [0],
+     Unfolding: (\ (ww :: GHC.Prim.Addr#)
+                   (ww1 :: GHC.ForeignPtr.ForeignPtrContents)
+                   (ww2 :: GHC.Prim.Int#)
+                   (ww3 :: GHC.Prim.Int#) ->
+                 Lib.boolZeroLengthCigar_go
+                   (Data.ByteString.Internal.$wunpackAppendCharsLazy
+                      ww
+                      ww1
+                      ww2
+                      ww3
+                      (GHC.Types.[] @ GHC.Types.Char))) -}
 e885ebd05c53e317ab64acd552363a5c
   $wcheckChromNameMatchStatus ::
     Lib.Header
@@ -14396,7 +14417,7 @@ fd8f4937448462e3d7755fb0f292b7a4
                                                                      Lib.BedRecord>_R))))) }) of ds7 { (#,#) ipv2 ipv3 ->
                           case ipv3 of ww2 { Data.Vector.Vector ww3 ww4 ww5 ->
                           Lib.$wmakechrbedmap ww3 ww4 ww5 } }) #) } }) -}
-276b72c464a0f0f0ef2a86076d941072
+69603bfa46785d314f7ba8f4c1561023
   $wds ::
     ((GHC.Integer.Type.Integer
       -> GHC.Integer.Type.Integer
@@ -14443,7 +14464,7 @@ fd8f4937448462e3d7755fb0f292b7a4
                    @ b1
                    (\ (a1 :: GHC.Integer.Type.Integer) ->
                     let {
-                      lvl1011 :: GHC.Types.Double
+                      lvl1009 :: GHC.Types.Double
                       = case GHC.Integer.Type.doubleFromInteger a1 of wild2 { DEFAULT ->
                         GHC.Types.D# wild2 }
                     } in
@@ -14457,11 +14478,11 @@ fd8f4937448462e3d7755fb0f292b7a4
                          trimd2z
                          (case GHC.Integer.Type.doubleFromInteger
                                  trimd of wild2 { DEFAULT ->
-                          case lvl1011 of wild3 { GHC.Types.D# y ->
+                          case lvl1009 of wild3 { GHC.Types.D# y ->
                           case GHC.Prim./## wild2 y of wild4 { DEFAULT ->
                           GHC.Types.D# (GHC.Prim.*## wild4 100.0##) } } })
                          (case GHC.Integer.Type.doubleFromInteger mapd of wild2 { DEFAULT ->
-                          case lvl1011 of wild3 { GHC.Types.D# y ->
+                          case lvl1009 of wild3 { GHC.Types.D# y ->
                           case GHC.Prim./## wild2 y of wild4 { DEFAULT ->
                           GHC.Types.D# (GHC.Prim.*## wild4 100.0##) } } })))) -}
 2a51bfdaa7a62be190f27e2b567ba36e
@@ -15868,6 +15889,43 @@ da7130b514e896b1e08be6d1ddb9950e
   {- Arity: 10,
      Strictness: <L,U><L,U><L,U><S,U><L,U><L,U><S,U><L,U><L,C(C1(C1(C1(C1(U)))))><L,C(C1(C1(C1(U))))>,
      Inline: [0] -}
+ba82ca35b89da5720f7d18e6c19e83c2
+  $wmakeTrimmedUpdates ::
+    Lib.PairedAln
+    -> (# Lib.AlignedRead, Lib.AlignedRead, [Lib.AlignedRead],
+          [Lib.AlignedRead] #)
+  {- Arity: 1,
+     Strictness: <L,1*U(U(U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U),U(U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U),U,U)>,
+     Inline: [0],
+     Unfolding: (\ (w :: Lib.PairedAln) ->
+                 let {
+                   w1 :: Lib.PairedAln
+                   = case Lib.updateZeroTrimdPairFlags
+                            (Lib.updateTrimdPairFields
+                               (Lib.makeMRNMexplicit w)) of ww { Lib.PairedAln ww1 ww2 ww3 ww4 ->
+                     case Lib.$wupdateZeroTrimdPairFields
+                            ww1
+                            ww2
+                            ww3
+                            ww4 of ww5 { (#,,,#) ww6 ww7 ww8 ww9 ->
+                     Lib.PairedAln ww6 ww7 ww8 ww9 } }
+                 } in
+                 (# case w1 of wild { Lib.PairedAln ds6 ds7 ds8 ds9 ->
+                    Lib.updateTrimdAlnFields ds6 },
+                    case w1 of wild { Lib.PairedAln ds6 ds7 ds8 ds9 ->
+                    Lib.updateTrimdAlnFields ds7 },
+                    case w1 of wild { Lib.PairedAln ds6 ds7 ds8 ds9 ->
+                    GHC.Base.map
+                      @ Lib.AlignedRead
+                      @ Lib.AlignedRead
+                      Lib.updateTrimdAlnFields
+                      ds8 },
+                    case w1 of wild { Lib.PairedAln ds6 ds7 ds8 ds9 ->
+                    GHC.Base.map
+                      @ Lib.AlignedRead
+                      @ Lib.AlignedRead
+                      Lib.updateTrimdAlnFields
+                      ds9 } #)) -}
 1819f35ff9ad15d31b454dc0075428d9
   $wmakechrbedmap ::
     GHC.Prim.Int#
@@ -15910,7 +15968,7 @@ da7130b514e896b1e08be6d1ddb9950e
                          @ (Data.IntMap.Internal.IntMap Lib.BedRecord)
                          Lib.makebedmap
                          bbychr))) -}
-b22bdedd31852357e713e360b486187e
+0e103302a55dc225dc4b544fb806d69d
   $wmakeprimertups ::
     Lib.UChr
     -> GHC.Integer.Type.Integer
@@ -15964,7 +16022,7 @@ b22bdedd31852357e713e360b486187e
                            b :: Lib.BedRecord = Lib.BedRecord ww ww1 ww2 ww3
                          } in
                          let {
-                           lvl1011 :: [Lib.BedRecord]
+                           lvl1009 :: [Lib.BedRecord]
                            = GHC.Types.: @ Lib.BedRecord b (GHC.Types.[] @ Lib.BedRecord)
                          } in
                          letrec {
@@ -15974,7 +16032,7 @@ b22bdedd31852357e713e360b486187e
                              case ww4 of ds6 {
                                DEFAULT
                                -> GHC.Types.: @ Lib.BedRecord b ($wxs (GHC.Prim.-# ds6 1#))
-                               1# -> lvl1011 }
+                               1# -> lvl1009 }
                          } in
                          $wxs wild } })) -}
 8d40a52cced2506c46f58977b31efacd
@@ -16713,7 +16771,7 @@ e38a40a2c197efdb8be625d4fbd7adb0
   {- Arity: 9,
      Strictness: <S,U><L,U><S,U><S,U><L,U><L,U><S,U><L,U><L,C(C1(C1(C1(U))))>,
      Inline: [0] -}
-2ff6e39bdcb9aa47b4e942dda5afc9c3
+46d8be3bd38f18ec603f3f19b1116043
   $woptidp ::
     Data.Attoparsec.Internal.Types.State
       Data.ByteString.Internal.ByteString
@@ -16754,7 +16812,7 @@ e38a40a2c197efdb8be625d4fbd7adb0
                    nt :: GHC.Types.Int = GHC.Types.I# ww
                  } in
                  let {
-                   lvl1011 :: Data.Attoparsec.Internal.Types.State
+                   lvl1009 :: Data.Attoparsec.Internal.Types.State
                                 Data.ByteString.Internal.ByteString
                               -> Data.Attoparsec.Internal.Types.Pos
                               -> Data.Attoparsec.Internal.Types.More
@@ -16791,7 +16849,7 @@ e38a40a2c197efdb8be625d4fbd7adb0
                        Lib.optidp_v2 }
                  } in
                  let {
-                   lvl1012 :: Data.Attoparsec.Internal.Types.State
+                   lvl1010 :: Data.Attoparsec.Internal.Types.State
                                 Data.ByteString.Internal.ByteString
                               -> Data.Attoparsec.Internal.Types.Pos
                               -> Data.Attoparsec.Internal.Types.More
@@ -16851,7 +16909,7 @@ e38a40a2c197efdb8be625d4fbd7adb0
                                       nt `cast` (Sym (Data.Attoparsec.Internal.Types.N:Pos[0]))
                                       more'
                                       w2
-                                      lvl1012) -}
+                                      lvl1010) -}
                    = \ (t' :: Data.Attoparsec.Internal.Types.State
                                 Data.ByteString.Internal.ByteString)
                        (_pos' :: Data.Attoparsec.Internal.Types.Pos)
@@ -16868,7 +16926,7 @@ e38a40a2c197efdb8be625d4fbd7adb0
                        nt `cast` (Sym (Data.Attoparsec.Internal.Types.N:Pos[0]))
                        more'
                        w2
-                       lvl1012
+                       lvl1010
                  } in
                  Lib.optidp_m1
                    `cast`
@@ -16895,7 +16953,7 @@ e38a40a2c197efdb8be625d4fbd7adb0
                       nt `cast` (Sym (Data.Attoparsec.Internal.Types.N:Pos[0]))
                       more'
                       lose
-                      lvl1011)
+                      lvl1009)
                    (\ (t' :: Data.Attoparsec.Internal.Types.State
                                Data.ByteString.Internal.ByteString)
                       (pos' :: Data.Attoparsec.Internal.Types.Pos)
@@ -17771,7 +17829,7 @@ c4662e331f089b83810eb408413de381
                            @ GHC.Types.Char
                            (GHC.Types.: @ GHC.Types.Char ww5 ww6)
                            Lib.parsechkSAM1 }) }) -}
-2458729b786f67244eacaa10ce804aa6
+c2e3863fce64702978b43d3faff753dc
   $wparsemIDstring ::
     GHC.Prim.Addr#
     -> GHC.ForeignPtr.ForeignPtrContents
@@ -17788,7 +17846,7 @@ c4662e331f089b83810eb408413de381
                    = case ww3 of ds6 {
                        DEFAULT
                        -> let {
-                            lvl1011 :: GHC.Ptr.Ptr GHC.Word.Word8
+                            lvl1009 :: GHC.Ptr.Ptr GHC.Word.Word8
                             = GHC.Ptr.Ptr @ GHC.Word.Word8 ww
                           } in
                           letrec {
@@ -17835,7 +17893,7 @@ c4662e331f089b83810eb408413de381
                                               case w3 of fp'1 { GHC.ForeignPtr.ForeignPtr ipv2 ipv3 ->
                                               case $wsplitLoop
                                                      pred'1
-                                                     lvl1011
+                                                     lvl1009
                                                      0#
                                                      (GHC.Types.I#
                                                         (GHC.Prim.+# (GHC.Prim.+# x1 ww4) 1#))
@@ -17859,7 +17917,7 @@ c4662e331f089b83810eb408413de381
                           } in
                           case $wsplitLoop
                                  Lib.parsemIDstring2
-                                 lvl1011
+                                 lvl1009
                                  0#
                                  (GHC.Types.I# ww2)
                                  ds6
@@ -17883,7 +17941,7 @@ c4662e331f089b83810eb408413de381
                    GHC.Types.False
                    -> GHC.List.head @ Data.ByteString.Internal.ByteString midvals
                    GHC.Types.True -> Lib.parsemIDstring1 } }) -}
-11c026f8ccbb5541ac951e8a555d1622
+3feced608f665467021d76cb7b8faaf3
   $wparsesignedint ::
     GHC.Prim.Addr#
     -> GHC.ForeignPtr.ForeignPtrContents
@@ -17927,7 +17985,7 @@ c4662e331f089b83810eb408413de381
                    -> case ds7 of wild1 { DEFAULT ->
                       case GHC.List.badHead ret_ty GHC.Integer.Type.Integer of {} }
                    Data.Attoparsec.Internal.Types.Partial ipv
-                   -> case Lib.parsesignedint2 ret_ty GHC.Integer.Type.Integer of {}
+                   -> case Lib.parsesignedint1 ret_ty GHC.Integer.Type.Integer of {}
                    Data.Attoparsec.Internal.Types.Done ds6 a1
                    -> case a1 of wild1 { GHC.Types.D# x ->
                       case GHC.Integer.Type.decodeDoubleInteger
@@ -17952,7 +18010,7 @@ c4662e331f089b83810eb408413de381
                                        Lib.defaultBed2 of wild4 { DEFAULT ->
                                 case GHC.Prim.tagToEnum# @ GHC.Types.Bool wild4 of wild5 {
                                   GHC.Types.False -> Lib.defaultBed2
-                                  GHC.Types.True -> Lib.parsesignedint1 } } } } } } }) -}
+                                  GHC.Types.True -> Lib.updateTrimdAlnFields1 } } } } } } }) -}
 80ee3d730fa6303b22729fcdb3cb95d0
   $wpoly_go1 ::
     GHC.Prim.Int#
@@ -18173,19 +18231,6 @@ b19f154ab33c6342a48619a2186fb276
   {- Arity: 10,
      Strictness: <L,U><L,U><L,U><S,U><L,U><L,U><S,U><L,U><L,C(C1(C1(C1(C1(U)))))><L,C(C1(C1(C1(U))))>,
      Inline: [0] -}
-b9b3517ebc35f150dca35be010752908
-  $wtrimprimerPairsE ::
-    Lib.CMap
-    -> Lib.CMap
-    -> Lib.AlignedRead
-    -> Lib.AlignedRead
-    -> [Lib.AlignedRead]
-    -> [Lib.AlignedRead]
-    -> (# Lib.AlignedRead, Lib.AlignedRead, [Lib.AlignedRead],
-          [Lib.AlignedRead] #)
-  {- Arity: 6,
-     Strictness: <L,U><L,U><S,1*U(U,U,U,U,U,U,U(U,U,U,U),A,U,U,U,U,U,U,U,U,U,U,U,A,A,A,U,U,U,U,U,U,U,U,U)><L,1*U(U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,A,A,A,U,U,U,U,U,U,U,U,U)><L,1*U><L,1*U>,
-     Inline: [0] -}
 ac10560c0aaa6aad9cb14b045c28a822
   $wtxtfieldp ::
     GHC.Prim.Addr#
@@ -18264,7 +18309,7 @@ c48fe1039e9b8ce76b8e9a7946ff6464
     -> Data.ByteString.Internal.ByteString
   {- Arity: 5, Strictness: <L,1*U><S,U><L,U><S,U><S,U>,
      Inline: [0] -}
-ba7928ff576e54e904dcbf241772ebc5
+de7c917463c1b927908f0dc88fbefbf9
   $wupdateZeroTrimdPairFields ::
     Lib.AlignedRead
     -> Lib.AlignedRead
@@ -18280,7 +18325,7 @@ ba7928ff576e54e904dcbf241772ebc5
                    (ww2 :: [Lib.AlignedRead])
                    (ww3 :: [Lib.AlignedRead]) ->
                  let {
-                   lvl1011 :: Lib.AlignedRead
+                   lvl1009 :: Lib.AlignedRead
                    = case ww1 of wild { Lib.AlignedRead ds6 ds7 ds8 ds9 ds10 ds11 ds12 ds13 ds14 ds15 ds16 ds17 ds18 ds19 ds20 ds21 ds22 ds23 ds24 ds25 ds26 ds27 ds28 ds29 ds30 ds31 ds32 ds33 ds34 ds35 ds36 ->
                      Lib.AlignedRead
                        ds6
@@ -18295,7 +18340,7 @@ ba7928ff576e54e904dcbf241772ebc5
                        ds15
                        Lib.addtrimtag5
                        Lib.defaultBed2
-                       ds18
+                       Lib.defaultBed2
                        ds19
                        ds20
                        ds21
@@ -18320,7 +18365,7 @@ ba7928ff576e54e904dcbf241772ebc5
                             [Lib.AlignedRead] #)
                      <join 0>
                    = let {
-                       lvl1012 :: Lib.AlignedRead
+                       lvl1010 :: Lib.AlignedRead
                        = case ww of wild { Lib.AlignedRead ds6 ds7 ds8 ds9 ds10 ds11 ds12 ds13 ds14 ds15 ds16 ds17 ds18 ds19 ds20 ds21 ds22 ds23 ds24 ds25 ds26 ds27 ds28 ds29 ds30 ds31 ds32 ds33 ds34 ds35 ds36 ->
                          Lib.AlignedRead
                            ds6
@@ -18335,7 +18380,7 @@ ba7928ff576e54e904dcbf241772ebc5
                            ds15
                            Lib.addtrimtag5
                            Lib.defaultBed2
-                           ds18
+                           Lib.defaultBed2
                            ds19
                            ds20
                            ds21
@@ -18367,7 +18412,7 @@ ba7928ff576e54e904dcbf241772ebc5
                            -> case y of wild1 { Lib.AlignedRead ds7 ds8 ds9 ds10 ds11 ds12 ds13 ds14 ds15 ds16 ds17 ds18 ds19 ds20 ds21 ds22 ds23 ds24 ds25 ds26 ds27 ds28 ds29 ds30 ds31 ds32 ds33 ds34 ds35 ds36 ds37 ->
                               case ds37 of wild2 {
                                 GHC.Types.False -> go19 ys
-                                GHC.Types.True -> (# lvl1012, ww1, ww2, ww3 #) } } }
+                                GHC.Types.True -> (# lvl1010, ww1, ww2, ww3 #) } } }
                      } in
                      go19 (GHC.Types.: @ Lib.AlignedRead ww1 ww3)
                  } in
@@ -18383,7 +18428,7 @@ ba7928ff576e54e904dcbf241772ebc5
                        -> case y of wild1 { Lib.AlignedRead ds7 ds8 ds9 ds10 ds11 ds12 ds13 ds14 ds15 ds16 ds17 ds18 ds19 ds20 ds21 ds22 ds23 ds24 ds25 ds26 ds27 ds28 ds29 ds30 ds31 ds32 ds33 ds34 ds35 ds36 ds37 ->
                           case ds37 of wild2 {
                             GHC.Types.False -> go19 ys
-                            GHC.Types.True -> (# ww, lvl1011, ww2, ww3 #) } } }
+                            GHC.Types.True -> (# ww, lvl1009, ww2, ww3 #) } } }
                  } in
                  go19 (GHC.Types.: @ Lib.AlignedRead ww ww2)) -}
 04da8549f01a264efa35ffc11021ffef
@@ -19836,7 +19881,7 @@ a6fa6ac1c389124cb92cd0079d59a429
     | GL000192P1
     | NC_007605
     | NONE
-4bc2518386358872c980e714b98a1906
+bb9442e1bebbe2cb91a42ce18a2e2228
   addprimerints ::
     Lib.CMap -> Lib.CMap -> Lib.AlignedRead -> Lib.AlignedRead
   {- Arity: 3, HasNoCafRefs,
@@ -19853,12 +19898,12 @@ a6fa6ac1c389124cb92cd0079d59a429
                           @ (Data.IntMap.Internal.IntMap Lib.BedRecord)
                           @ (GHC.Base.Maybe Lib.BedRecord)
                           (let {
-                             lvl1011 :: GHC.Types.Int
+                             lvl1009 :: GHC.Types.Int
                              = case GHC.Integer.Type.integerToInt ds9 of wild1 { DEFAULT ->
                                GHC.Types.I# wild1 }
                            } in
                            \ (bmap :: Data.IntMap.Internal.IntMap Lib.BedRecord) ->
-                           Data.IntMap.Internal.lookup @ Lib.BedRecord lvl1011 bmap)
+                           Data.IntMap.Internal.lookup @ Lib.BedRecord lvl1009 bmap)
                           (Data.Maybe.catMaybes1
                              @ (Data.IntMap.Internal.IntMap Lib.BedRecord)
                              (GHC.Types.:
@@ -19879,12 +19924,12 @@ a6fa6ac1c389124cb92cd0079d59a429
                           @ (Data.IntMap.Internal.IntMap Lib.BedRecord)
                           @ (GHC.Base.Maybe Lib.BedRecord)
                           (let {
-                             lvl1011 :: GHC.Types.Int
+                             lvl1009 :: GHC.Types.Int
                              = case GHC.Integer.Type.integerToInt ds10 of wild1 { DEFAULT ->
                                GHC.Types.I# wild1 }
                            } in
                            \ (bmap :: Data.IntMap.Internal.IntMap Lib.BedRecord) ->
-                           Data.IntMap.Internal.lookup @ Lib.BedRecord lvl1011 bmap)
+                           Data.IntMap.Internal.lookup @ Lib.BedRecord lvl1009 bmap)
                           (Data.Maybe.catMaybes1
                              @ (Data.IntMap.Internal.IntMap Lib.BedRecord)
                              (GHC.Types.:
@@ -19936,7 +19981,7 @@ a6fa6ac1c389124cb92cd0079d59a429
                    ds34
                    ds35
                    ds36 }) -}
-808dfeec91e015858cc5e6f8bbbcd6f3
+dd746b7f5eb88f9792824de0ece190aa
   addprimerintsPairedAln ::
     Lib.CMap -> Lib.CMap -> Lib.PairedAln -> Lib.PairedAln
   {- Arity: 3, HasNoCafRefs,
@@ -20828,6 +20873,17 @@ ef48de97e2a348e54a66170596bed6fc
      Unfolding: InlineRule (1, True, False)
                 (\ (ds6 :: Lib.BedRecord) ->
                  case ds6 of wild { Lib.BedRecord ds7 ds8 ds9 ds10 -> ds8 }) -}
+ed725b8c75c8130b51b2507ae8ceccd9
+  boolZeroLengthCigar ::
+    Data.ByteString.Internal.ByteString -> GHC.Types.Bool
+  {- Arity: 1, Strictness: <S(SLSS),1*U(U,U,U,U)>, Inline: [0],
+     Unfolding: InlineRule (1, True, False)
+                (\ (w :: Data.ByteString.Internal.ByteString) ->
+                 case w of ww { Data.ByteString.Internal.PS ww1 ww2 ww3 ww4 ->
+                 Lib.$wboolZeroLengthCigar ww1 ww2 ww3 ww4 }) -}
+b3f72a36ead13f09e3c1b3e2d42981a1
+  boolZeroLengthCigar_go :: [GHC.Types.Char] -> GHC.Types.Bool
+  {- Arity: 1, Strictness: <S,1*U> -}
 6e596f979bf3ec995bdf2b7b50c2cfc1
   calcMappedCount ::
     GHC.Real.Integral i =>
@@ -20977,7 +21033,7 @@ b90eff071d3892e7b534768fe50a6d49
          (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
          b1
   {- Arity: 1, Strictness: <L,C(U)> -}
-78998756e1bb56080b86fdde03fe2609
+c3ea226a82074b7a1f18634ba3d0b627
   calcRunStats ::
     Data.Conduit.Internal.Conduit.ZipSink
       Lib.AlignedRead
@@ -20996,7 +21052,7 @@ b90eff071d3892e7b534768fe50a6d49
                      (Sym (Data.Conduit.Internal.Conduit.N:ZipSink[0]
                                <Lib.AlignedRead>_N) <Control.Monad.Trans.Resource.Internal.ResourceT
                                                        GHC.Types.IO>_N <Lib.RunStats>_N)) -}
-6a7f9c2e41b440c2441751f5c4c30645
+9c2726e74519f55a53f7517cabd536f6
   calcRunStats1 ::
     (Lib.RunStats
      -> Data.Conduit.Internal.Pipe.Pipe
@@ -21065,7 +21121,7 @@ b90eff071d3892e7b534768fe50a6d49
          (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
          b1
   {- Arity: 1, Strictness: <L,C(U)> -}
-1e293edab9d062313e97a29f7e8e7f3d
+44d103fe3cfb42bd778b1515a2f58ce4
   calcRunStats3 ::
     ((GHC.Integer.Type.Integer -> Lib.RunStats)
      -> Data.Conduit.Internal.Pipe.Pipe
@@ -21137,7 +21193,7 @@ b90eff071d3892e7b534768fe50a6d49
          (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
          b1
   {- Arity: 1, Strictness: <L,C(U)> -}
-3b3cd745452e70ddc57fcb68875b0c09
+dddc4a9557f4fd99ce3a314ee1ff7d1c
   calcRunStats5 ::
     ((GHC.Integer.Type.Integer
       -> GHC.Integer.Type.Integer -> Lib.RunStats)
@@ -21199,7 +21255,7 @@ b90eff071d3892e7b534768fe50a6d49
                               -> Lib.RunStats,
                               GHC.Integer.Type.Integer)) ->
                     eta (case a1 of wild { (,) x ds6 -> x ds6 }))) -}
-672fe9d6c2bc45a4f7d13b9be77c5ce7
+8ce5438322c7943d763fef3ffda04124
   calcRunStats6 ::
     ((GHC.Integer.Type.Integer
       -> GHC.Integer.Type.Integer
@@ -21721,10 +21777,10 @@ cba5b980e4a4c947e581900445ba00e1
 ca8a8d35409214c12b46bdd19d59ab5d
   clearNonRealCigar2 :: GHC.Prim.Addr#
   {- HasNoCafRefs, Unfolding: ("MIDN"#) -}
-1e5bb6598e0c81ffc91d9735fce0ecc3
+26481fae60d978a081625d2ff13bf04e
   clearR1primNextFields :: Lib.PairedAln -> Lib.PairedAln
   {- Arity: 1,
-     Strictness: <S,1*U(1*U(U,U,U,U,U,U,U,U,U,U,A,A,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U),U,U,U)>m,
+     Strictness: <S,1*U(1*U(U,U,U,U,U,U,U,U,U,U,A,A,A,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U),U,U,U)>m,
      Unfolding: InlineRule (1, True, False)
                 (\ (p :: Lib.PairedAln) ->
                  case p of wild { Lib.PairedAln ds6 ds7 ds8 ds9 ->
@@ -21743,7 +21799,7 @@ ca8a8d35409214c12b46bdd19d59ab5d
                       ds19
                       Lib.addtrimtag5
                       Lib.defaultBed2
-                      ds22
+                      Lib.defaultBed2
                       ds23
                       ds24
                       ds25
@@ -21765,10 +21821,10 @@ ca8a8d35409214c12b46bdd19d59ab5d
                    ds7
                    ds8
                    ds9 }) -}
-ab2ec7e4b6f11570ea19744f18e975bb
+5c778031f9f6c30a9cbbcde9f0846515
   clearR2primNextFields :: Lib.PairedAln -> Lib.PairedAln
   {- Arity: 1,
-     Strictness: <S,1*U(U,1*U(U,U,U,U,U,U,U,U,U,U,A,A,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U),U,U)>m,
+     Strictness: <S,1*U(U,1*U(U,U,U,U,U,U,U,U,U,U,A,A,A,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U),U,U)>m,
      Unfolding: InlineRule (1, True, False)
                 (\ (p :: Lib.PairedAln) ->
                  case p of wild { Lib.PairedAln ds6 ds7 ds8 ds9 ->
@@ -21788,7 +21844,7 @@ ab2ec7e4b6f11570ea19744f18e975bb
                       ds19
                       Lib.addtrimtag5
                       Lib.defaultBed2
-                      ds22
+                      Lib.defaultBed2
                       ds23
                       ds24
                       ds25
@@ -22922,7 +22978,7 @@ e17f1b6592e7ee3f9b8998c39841acf5
                   `cast`
                 (<GHC.IO.FilePath>_R
                  ->_R Sym (GHC.Types.N:IO[0] <[Lib.MasterRecord]>_R)) -}
-f132918c014b5fb235b6df9c000454a3
+565ccc3f5b8c603d2e6bcd96211679c3
   getNclips ::
     [Data.ByteString.Internal.ByteString]
     -> GHC.Types.Char -> [Data.ByteString.Internal.ByteString]
@@ -22972,7 +23028,7 @@ f132918c014b5fb235b6df9c000454a3
                                               = GHC.ForeignPtr.PlainPtr ipv1
                                             } in
                                             let {
-                                              lvl1011 :: Data.ByteString.Internal.ByteString
+                                              lvl1009 :: Data.ByteString.Internal.ByteString
                                               = Data.ByteString.Internal.PS ipv2 ipv3 0# dt3
                                             } in
                                             letrec {
@@ -23097,7 +23153,7 @@ f132918c014b5fb235b6df9c000454a3
                                                                  @ GHC.ForeignPtr.ForeignPtrContents
                                                                  ipv3
                                                                  s'1 of s'2 { DEFAULT ->
-                                                          (# s'2, lvl1011 #) } } } }
+                                                          (# s'2, lvl1009 #) } } } }
                                             } in
                                             $wgo45
                                               (GHC.Prim.plusAddr# dt dt2)
@@ -23810,7 +23866,7 @@ c7857bbf5e7b535eba12c8de6ccd3ef2
                         `cast`
                       (Data.Attoparsec.Internal.Types.N:Pos[0]) of ww7 { GHC.Types.I# ww8 ->
                  Lib.$wmIDp @ r ww1 ww2 ww3 ww4 ww5 ww6 ww8 w2 w3 w4 } }) -}
-6ec2bab12f175340699e717f4f235dae
+67c202218c74033c8a989d8f15fe7b70
   makeMRNMexplicit :: Lib.PairedAln -> Lib.PairedAln
   {- Arity: 1,
      Strictness: <S(S(LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLS)LLL),1*U(U(U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U),U(U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U),U,U)>m,
@@ -23827,6 +23883,14 @@ c7857bbf5e7b535eba12c8de6ccd3ef2
                          } in
                          case GHC.List.$wlenAcc @ GHC.Types.Char cs 0# of ww { DEFAULT ->
                          Data.ByteString.Internal.$wunsafePackLenChars ww cs } }
+                     } in
+                     let {
+                       r1pRNAME :: Data.ByteString.Internal.ByteString
+                       = let {
+                           cs :: [GHC.Types.Char] = Lib.$fShowUChr_$cshow ds12
+                         } in
+                         case GHC.List.$wlenAcc @ GHC.Types.Char cs 0# of ww { DEFAULT ->
+                         Data.ByteString.Internal.$wunsafePackLenChars ww cs }
                      } in
                      Lib.PairedAln
                        (Lib.AlignedRead
@@ -23861,7 +23925,39 @@ c7857bbf5e7b535eba12c8de6ccd3ef2
                           ds38
                           ds39
                           ds40)
-                       ds7
+                       (case ds7 of wild2 { Lib.AlignedRead ds41 ds42 ds43 ds44 ds45 ds46 ds47 ds48 ds49 ds50 ds51 ds52 ds53 ds54 ds55 ds56 ds57 ds58 ds59 ds60 ds61 ds62 ds63 ds64 ds65 ds66 ds67 ds68 ds69 ds70 ds71 ->
+                        Lib.AlignedRead
+                          ds41
+                          ds42
+                          ds43
+                          ds44
+                          ds45
+                          ds46
+                          ds47
+                          ds48
+                          ds49
+                          ds50
+                          r1pRNAME
+                          ds52
+                          ds53
+                          ds54
+                          ds55
+                          ds56
+                          ds57
+                          ds58
+                          ds59
+                          ds60
+                          ds61
+                          ds62
+                          ds63
+                          ds64
+                          ds65
+                          ds66
+                          ds67
+                          ds68
+                          ds69
+                          ds70
+                          ds71 })
                        (GHC.Base.map
                           @ Lib.AlignedRead
                           @ Lib.AlignedRead
@@ -23900,97 +23996,50 @@ c7857bbf5e7b535eba12c8de6ccd3ef2
                              ds70
                              ds71 })
                           ds8)
-                       ds9
+                       (GHC.Base.map
+                          @ Lib.AlignedRead
+                          @ Lib.AlignedRead
+                          (\ (x :: Lib.AlignedRead) ->
+                           case x of wild2 { Lib.AlignedRead ds41 ds42 ds43 ds44 ds45 ds46 ds47 ds48 ds49 ds50 ds51 ds52 ds53 ds54 ds55 ds56 ds57 ds58 ds59 ds60 ds61 ds62 ds63 ds64 ds65 ds66 ds67 ds68 ds69 ds70 ds71 ->
+                           Lib.AlignedRead
+                             ds41
+                             ds42
+                             ds43
+                             ds44
+                             ds45
+                             ds46
+                             ds47
+                             ds48
+                             ds49
+                             ds50
+                             r1pRNAME
+                             ds52
+                             ds53
+                             ds54
+                             ds55
+                             ds56
+                             ds57
+                             ds58
+                             ds59
+                             ds60
+                             ds61
+                             ds62
+                             ds63
+                             ds64
+                             ds65
+                             ds66
+                             ds67
+                             ds68
+                             ds69
+                             ds70
+                             ds71 })
+                          ds9)
                  } in
                  case ds40 of wild2 {
                    GHC.Types.False
                    -> let {
                         $j1 :: Lib.PairedAln <join 0> {- Strictness: m -}
                         = case ds7 of wild3 { Lib.AlignedRead ds41 ds42 ds43 ds44 ds45 ds46 ds47 ds48 ds49 ds50 ds51 ds52 ds53 ds54 ds55 ds56 ds57 ds58 ds59 ds60 ds61 ds62 ds63 ds64 ds65 ds66 ds67 ds68 ds69 ds70 ds71 ->
-                          let {
-                            $j2 :: Lib.PairedAln <join 0> {- Strictness: m -}
-                            = let {
-                                r1pRNAME :: Data.ByteString.Internal.ByteString
-                                = let {
-                                    cs :: [GHC.Types.Char] = Lib.$fShowUChr_$cshow ds12
-                                  } in
-                                  case GHC.List.$wlenAcc @ GHC.Types.Char cs 0# of ww { DEFAULT ->
-                                  Data.ByteString.Internal.$wunsafePackLenChars ww cs }
-                              } in
-                              Lib.PairedAln
-                                wild1
-                                (Lib.AlignedRead
-                                   ds41
-                                   ds42
-                                   ds43
-                                   ds44
-                                   ds45
-                                   ds46
-                                   ds47
-                                   ds48
-                                   ds49
-                                   ds50
-                                   r1pRNAME
-                                   ds52
-                                   ds53
-                                   ds54
-                                   ds55
-                                   ds56
-                                   ds57
-                                   ds58
-                                   ds59
-                                   ds60
-                                   ds61
-                                   ds62
-                                   ds63
-                                   ds64
-                                   ds65
-                                   ds66
-                                   ds67
-                                   ds68
-                                   ds69
-                                   ds70
-                                   ds71)
-                                ds8
-                                (GHC.Base.map
-                                   @ Lib.AlignedRead
-                                   @ Lib.AlignedRead
-                                   (\ (x :: Lib.AlignedRead) ->
-                                    case x of wild4 { Lib.AlignedRead ds72 ds73 ds74 ds75 ds76 ds77 ds78 ds79 ds80 ds81 ds82 ds83 ds84 ds85 ds86 ds87 ds88 ds89 ds90 ds91 ds92 ds93 ds94 ds95 ds96 ds97 ds98 ds99 ds100 ds101 ds102 ->
-                                    Lib.AlignedRead
-                                      ds72
-                                      ds73
-                                      ds74
-                                      ds75
-                                      ds76
-                                      ds77
-                                      ds78
-                                      ds79
-                                      ds80
-                                      ds81
-                                      r1pRNAME
-                                      ds83
-                                      ds84
-                                      ds85
-                                      ds86
-                                      ds87
-                                      ds88
-                                      ds89
-                                      ds90
-                                      ds91
-                                      ds92
-                                      ds93
-                                      ds94
-                                      ds95
-                                      ds96
-                                      ds97
-                                      ds98
-                                      ds99
-                                      ds100
-                                      ds101
-                                      ds102 })
-                                   ds9)
-                          } in
                           case ds71 of wild4 {
                             GHC.Types.False
                             -> letrec {
@@ -24002,10 +24051,10 @@ c7857bbf5e7b535eba12c8de6ccd3ef2
                                      : y ys
                                      -> case y of wild6 { Lib.AlignedRead ds73 ds74 ds75 ds76 ds77 ds78 ds79 ds80 ds81 ds82 ds83 ds84 ds85 ds86 ds87 ds88 ds89 ds90 ds91 ds92 ds93 ds94 ds95 ds96 ds97 ds98 ds99 ds100 ds101 ds102 ds103 ->
                                         case ds103 of wild7 {
-                                          GHC.Types.False -> go19 ys GHC.Types.True -> $j2 } } }
+                                          GHC.Types.False -> go19 ys GHC.Types.True -> $j } } }
                                } in
                                go19 ds9
-                            GHC.Types.True -> $j2 } }
+                            GHC.Types.True -> $j } }
                       } in
                       letrec {
                         go19 :: [Lib.AlignedRead] -> Lib.PairedAln
@@ -24020,15 +24069,15 @@ c7857bbf5e7b535eba12c8de6ccd3ef2
                       } in
                       go19 ds8
                    GHC.Types.True -> $j } } }) -}
-71db93d077017cdd308ac04151db7e57
+60a143a4a4aab61400ffa375750b0f50
   makeTrimmedUpdates :: Lib.PairedAln -> Lib.PairedAln
   {- Arity: 1,
-     Strictness: <S(S(LLLLLLLLLLLLLLLLLLLLLLSLLLLLLLL)LLL),1*U(U(U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U),U(U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U),U,U)>m,
+     Strictness: <L,1*U(U(U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U),U(U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U),U,U)>m,
+     Inline: [0],
      Unfolding: InlineRule (1, True, False)
-                (\ (pa :: Lib.PairedAln) ->
-                 Lib.makeMRNMexplicit
-                   (Lib.updateZeroTrimdPairFields
-                      (Lib.updateZeroTrimdPairFlags (Lib.updateTrimdPairFields pa)))) -}
+                (\ (w :: Lib.PairedAln) ->
+                 case Lib.$wmakeTrimmedUpdates w of ww { (#,,,#) ww1 ww2 ww3 ww4 ->
+                 Lib.PairedAln ww1 ww2 ww3 ww4 }) -}
 9d00f0e35193929ea445b52c273c747c
   makebedmap ::
     [Lib.BedRecord] -> Data.IntMap.Internal.IntMap Lib.BedRecord
@@ -24052,7 +24101,7 @@ c7857bbf5e7b535eba12c8de6ccd3ef2
                 (\ (w :: Lib.BED) ->
                  case w of ww { Data.Vector.Vector ww1 ww2 ww3 ->
                  Lib.$wmakechrbedmap ww1 ww2 ww3 }) -}
-4635e563473b47892a1c3df0249e0ca2
+0a73a2bcb538d237f789c1abbeaa4e1f
   makeprimertups :: Lib.BedRecord -> [(GHC.Types.Int, Lib.BedRecord)]
   {- Arity: 1, Strictness: <S(LSSL),1*U(U,U,U,U)>, Inline: [0],
      Unfolding: InlineRule (1, True, False)
@@ -25541,7 +25590,7 @@ cd72c1232638c520ac892891f4dfab99
                         `cast`
                       (Data.Attoparsec.Internal.Types.N:Pos[0]) of ww7 { GHC.Types.I# ww8 ->
                  Lib.$woptfieldstotalp @ r ww1 ww2 ww3 ww4 ww5 ww6 ww8 w2 w4 } }) -}
-9a937a8d084d495f5ab1897e732f5c76
+36d7872c2cdd5072c634c2d98eba122f
   optidp ::
     Data.Attoparsec.ByteString.Internal.Parser
       Data.ByteString.Internal.ByteString
@@ -25553,7 +25602,7 @@ cd72c1232638c520ac892891f4dfab99
                 (Sym (Data.Attoparsec.Internal.Types.N:Parser[0]
                           <Data.ByteString.Internal.ByteString>_N
                           <Data.ByteString.Internal.ByteString>_R)) -}
-e67036217a978431f15f57ef33aee933
+3c89b68944f82f91bceef38f555ed78c
   optidp1 ::
     Data.Attoparsec.Internal.Types.State
       Data.ByteString.Internal.ByteString
@@ -26346,7 +26395,7 @@ c2bd2bcc29c56f7bea0dea4f006d1fd9
                    (Sym (Data.Attoparsec.Internal.Types.N:Parser[0]
                              <Data.ByteString.Internal.ByteString>_N
                              <GHC.Integer.Type.Integer>_R))) -}
-c3ed9e50006f50de948139925bc1c70b
+c03d92162734cf326585c6ba70772b14
   parsemIDstring ::
     Data.ByteString.Internal.ByteString
     -> Data.ByteString.Internal.ByteString
@@ -26395,7 +26444,7 @@ e550cb38f1b4e12a29ee95f0efb64b63
     [Data.ByteString.Internal.ByteString]
     -> [Data.ByteString.Internal.ByteString]
   {- Arity: 1, Strictness: <S,1*U> -}
-f92d437a43eb87562aeb217f95602900
+fa527df2bb777f486ab3e15c48c974fb
   parsesignedint ::
     Data.ByteString.Internal.ByteString -> GHC.Integer.Type.Integer
   {- Arity: 1, Strictness: <S(SLSS),1*U(U,U,U,U)>, Inline: [0],
@@ -26403,11 +26452,8 @@ f92d437a43eb87562aeb217f95602900
                 (\ (w :: Data.ByteString.Internal.ByteString) ->
                  case w of ww { Data.ByteString.Internal.PS ww1 ww2 ww3 ww4 ->
                  Lib.$wparsesignedint ww1 ww2 ww3 ww4 }) -}
-422046af38bc64396dc77e9118d98159
-  parsesignedint1 :: GHC.Integer.Type.Integer
-  {- HasNoCafRefs, Unfolding: (-1) -}
-ab9eb224ce866db06f8dfb13af558caa
-  parsesignedint2 ::
+6ef197b5b627a785b335797ca7a8b2f0
+  parsesignedint1 ::
     Data.Either.Either GHC.Base.String GHC.Types.Double
   {- Strictness: x -}
 5baf5aecf2bf4a26647c2dc6e53d46a0
@@ -27901,7 +27947,7 @@ f0a4e4249b954a10a9530009ecf12f99
 8a4d6c063e77e27ee8dce70b52dd5576
   toBin_go :: [GHC.Types.Int] -> [GHC.Types.Char]
   {- Arity: 1, HasNoCafRefs, Strictness: <S,1*U> -}
-101adb8cf9264c671fe0837ed436bbe0
+f2b22d62e6b79af3932a76955b600e39
   trimPairedAlns :: Lib.PairedAln -> Lib.PairedAln
   {- Arity: 1,
      Strictness: <L,U(1*U(U,U,U,U,U,U,U(U,U,U,U),A,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U),1*U(U,U,U,U,U,U,U(U,U,U,U),A,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U),1*U,1*U)>m,
@@ -27925,7 +27971,7 @@ f0a4e4249b954a10a9530009ecf12f99
                       @ Lib.AlignedRead
                       Lib.trimalignment
                       ds9 })) -}
-408a94cbe78e7f925370d7deb5db7bb6
+caa46a884a9254646f05420cd5062145
   trimalignment :: Lib.AlignedRead -> Lib.AlignedRead
   {- Arity: 1,
      Strictness: <S(LLLLLLLLLLLLLLLLLLLSLLLLLLLLLLL),1*U(U,U,U,U,U,U,U(U,U,U,U),A,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U)>,
@@ -28026,8 +28072,7 @@ f0a4e4249b954a10a9530009ecf12f99
                                      Lib.$fEqBedRecord
                                      ds26
                                      (GHC.Types.[] @ Lib.BedRecord) of wild2 {
-                                GHC.Types.False -> Lib.updateTrimdAlnFields (Lib.trimrev wild)
-                                GHC.Types.True -> $j2 } }
+                                GHC.Types.False -> Lib.trimrev wild GHC.Types.True -> $j2 } }
                      } in
                      case GHC.Classes.$fEq[]_$c==
                             @ Lib.BedRecord
@@ -28040,8 +28085,7 @@ f0a4e4249b954a10a9530009ecf12f99
                                  Lib.$fEqBedRecord
                                  ds26
                                  (GHC.Types.[] @ Lib.BedRecord) of wild2 {
-                            GHC.Types.False -> $j1
-                            GHC.Types.True -> Lib.updateTrimdAlnFields (Lib.trimfwd wild) }
+                            GHC.Types.False -> $j1 GHC.Types.True -> Lib.trimfwd wild }
                        GHC.Types.True -> $j1 }
                  } in
                  case GHC.Classes.$fEq[]_$c==
@@ -28055,16 +28099,14 @@ f0a4e4249b954a10a9530009ecf12f99
                              Lib.$fEqBedRecord
                              ds26
                              (GHC.Types.[] @ Lib.BedRecord) of wild2 {
-                        GHC.Types.False -> Lib.updateTrimdAlnFields (Lib.trimboth wild)
-                        GHC.Types.True -> $j }
+                        GHC.Types.False -> Lib.trimboth wild GHC.Types.True -> $j }
                    GHC.Types.True -> $j } }) -}
-f3de8e748e7fca84c06e8e7db42d2f28
+57bdf0870f8f597633f238708ed95bd2
   trimboth :: Lib.AlignedRead -> Lib.AlignedRead
   {- Arity: 1,
-     Strictness: <S(LLLLLLS(SLSS)LLLLLLLLLLLLLLLLLLLLLLLL),1*U(U,U,U,U,U,U,1*U(U,U,U,U),A,U,A,U,U,U,U,U,U,U,U,U,U,U,U,A,A,A,U,U,U,U,U,U)>,
+     Strictness: <S,1*U(U,U,U,U,U,U,U(U,U,U,U),A,U,A,U,U,U,U,U,U,U,U,U,U,U,U,A,A,A,U,U,U,U,U,A)>,
      Unfolding: (\ (a :: Lib.AlignedRead) ->
                  case a of wild { Lib.AlignedRead ds6 ds7 ds8 ds9 ds10 ds11 ds12 ds13 ds14 ds15 ds16 ds17 ds18 ds19 ds20 ds21 ds22 ds23 ds24 ds25 ds26 ds27 ds28 ds29 ds30 ds31 ds32 ds33 ds34 ds35 ds36 ->
-                 case ds12 of ww { Data.ByteString.Internal.PS ww1 ww2 ww3 ww4 ->
                  let {
                    newendpos :: GHC.Integer.Type.Integer
                    = case ds26 of wild1 {
@@ -28077,6 +28119,14 @@ f3de8e748e7fca84c06e8e7db42d2f28
                    = GHC.Integer.Type.minusInteger ds10 newendpos
                  } in
                  let {
+                   tendpos :: GHC.Integer.Type.Integer
+                   = case GHC.Integer.Type.ltInteger#
+                            rdiff
+                            Lib.defaultBed2 of wild1 { DEFAULT ->
+                     case GHC.Prim.tagToEnum# @ GHC.Types.Bool wild1 of wild2 {
+                       GHC.Types.False -> newendpos GHC.Types.True -> ds10 } }
+                 } in
+                 let {
                    newpos :: GHC.Integer.Type.Integer
                    = case ds25 of wild1 {
                        [] -> case GHC.List.badHead ret_ty GHC.Integer.Type.Integer of {}
@@ -28087,20 +28137,10 @@ f3de8e748e7fca84c06e8e7db42d2f28
                    fdiff :: GHC.Integer.Type.Integer
                    = GHC.Integer.Type.minusInteger newpos ds9
                  } in
-                 case Lib.$wupdateCigB
-                        fdiff
-                        rdiff
-                        ww1
-                        ww2
-                        ww3
-                        ww4 of ww5 { Data.ByteString.Internal.PS ww6 ww7 ww8 ww9 ->
                  let {
-                   tendpos :: GHC.Integer.Type.Integer
-                   = case GHC.Integer.Type.ltInteger#
-                            rdiff
-                            Lib.defaultBed2 of wild1 { DEFAULT ->
-                     case GHC.Prim.tagToEnum# @ GHC.Types.Bool wild1 of wild2 {
-                       GHC.Types.False -> newendpos GHC.Types.True -> ds10 } }
+                   newcig :: Data.ByteString.Internal.ByteString
+                   = case ds12 of ww { Data.ByteString.Internal.PS ww1 ww2 ww3 ww4 ->
+                     Lib.$wupdateCigB fdiff rdiff ww1 ww2 ww3 ww4 }
                  } in
                  let {
                    tpos :: GHC.Integer.Type.Integer
@@ -28110,85 +28150,85 @@ f3de8e748e7fca84c06e8e7db42d2f28
                      case GHC.Prim.tagToEnum# @ GHC.Types.Bool wild1 of wild2 {
                        GHC.Types.False -> newpos GHC.Types.True -> ds9 } }
                  } in
-                 Lib.clearNonRealCigar
-                   (Lib.AlignedRead
-                      ds6
-                      ds7
-                      ds8
-                      ds9
-                      ds10
-                      ds11
-                      ww
-                      ww5
-                      ds14
-                      (case Lib.$wparseCigar
-                              @ [(GHC.Integer.Type.Integer, Data.ByteString.Internal.ByteString)]
-                              ww6
-                              ww7
-                              ww8
-                              ww9
-                              ww9
-                              0#
-                              0#
-                              Data.Attoparsec.Internal.Types.Complete
-                              (Data.Attoparsec.ByteString.Internal.failK
-                                 @ [(GHC.Integer.Type.Integer,
-                                     Data.ByteString.Internal.ByteString)])
-                                `cast`
-                              (Sub (Sym (Data.Attoparsec.Internal.Types.D:R:StateByteString[0]))
-                               ->_R <Data.Attoparsec.Internal.Types.Pos
-                                     -> Data.Attoparsec.Internal.Types.More
-                                     -> [GHC.Base.String]
-                                     -> GHC.Base.String
-                                     -> Data.Attoparsec.Internal.Types.IResult
-                                          Data.ByteString.Internal.ByteString
-                                          [(GHC.Integer.Type.Integer,
-                                            Data.ByteString.Internal.ByteString)]>_R)
-                              (Data.Attoparsec.ByteString.Internal.successK
-                                 @ [(GHC.Integer.Type.Integer,
-                                     Data.ByteString.Internal.ByteString)])
-                                `cast`
-                              (Sub (Sym (Data.Attoparsec.Internal.Types.D:R:StateByteString[0]))
-                               ->_R <Data.Attoparsec.Internal.Types.Pos
-                                     -> Data.Attoparsec.Internal.Types.More
-                                     -> [(GHC.Integer.Type.Integer,
-                                          Data.ByteString.Internal.ByteString)]
-                                     -> Data.Attoparsec.Internal.Types.IResult
-                                          Data.ByteString.Internal.ByteString
-                                          [(GHC.Integer.Type.Integer,
-                                            Data.ByteString.Internal.ByteString)]>_R) of wild1 {
-                         Data.Attoparsec.Internal.Types.Fail ds37 ds38 err
-                         -> case ds38 of wild2 { DEFAULT ->
-                            GHC.List.badHead
+                 Lib.AlignedRead
+                   ds6
+                   ds7
+                   ds8
+                   ds9
+                   ds10
+                   ds11
+                   ds12
+                   newcig
+                   ds14
+                   (case newcig of wild1 { Data.ByteString.Internal.PS dt dt1 dt2 dt3 ->
+                    case Lib.$wparseCigar
+                           @ [(GHC.Integer.Type.Integer, Data.ByteString.Internal.ByteString)]
+                           dt
+                           dt1
+                           dt2
+                           dt3
+                           dt3
+                           0#
+                           0#
+                           Data.Attoparsec.Internal.Types.Complete
+                           (Data.Attoparsec.ByteString.Internal.failK
                               @ [(GHC.Integer.Type.Integer,
-                                  Data.ByteString.Internal.ByteString)] }
-                         Data.Attoparsec.Internal.Types.Partial ipv
-                         -> case Lib.checkCigarSeqlen1 ret_ty Lib.CigarMap of {}
-                         Data.Attoparsec.Internal.Types.Done ds37 a1 -> a1 })
-                      ds16
-                      ds17
-                      ds18
-                      ds19
-                      ds20
-                      ds21
-                      ds22
-                      ds23
-                      ds24
-                      ds25
-                      ds26
-                      ds27
-                      (case GHC.Integer.Type.neqInteger# ds9 tpos of wild1 { DEFAULT ->
-                       case GHC.Prim.tagToEnum# @ GHC.Types.Bool wild1 of wild2 {
-                         GHC.Types.False -> GHC.Integer.Type.neqInteger ds10 tendpos
-                         GHC.Types.True -> GHC.Types.True } })
-                      tpos
-                      tendpos
-                      ds31
-                      ds32
-                      ds33
-                      ds34
-                      ds35
-                      ds36) } } }) -}
+                                  Data.ByteString.Internal.ByteString)])
+                             `cast`
+                           (Sub (Sym (Data.Attoparsec.Internal.Types.D:R:StateByteString[0]))
+                            ->_R <Data.Attoparsec.Internal.Types.Pos
+                                  -> Data.Attoparsec.Internal.Types.More
+                                  -> [GHC.Base.String]
+                                  -> GHC.Base.String
+                                  -> Data.Attoparsec.Internal.Types.IResult
+                                       Data.ByteString.Internal.ByteString
+                                       [(GHC.Integer.Type.Integer,
+                                         Data.ByteString.Internal.ByteString)]>_R)
+                           (Data.Attoparsec.ByteString.Internal.successK
+                              @ [(GHC.Integer.Type.Integer,
+                                  Data.ByteString.Internal.ByteString)])
+                             `cast`
+                           (Sub (Sym (Data.Attoparsec.Internal.Types.D:R:StateByteString[0]))
+                            ->_R <Data.Attoparsec.Internal.Types.Pos
+                                  -> Data.Attoparsec.Internal.Types.More
+                                  -> [(GHC.Integer.Type.Integer,
+                                       Data.ByteString.Internal.ByteString)]
+                                  -> Data.Attoparsec.Internal.Types.IResult
+                                       Data.ByteString.Internal.ByteString
+                                       [(GHC.Integer.Type.Integer,
+                                         Data.ByteString.Internal.ByteString)]>_R) of wild2 {
+                      Data.Attoparsec.Internal.Types.Fail ds37 ds38 err
+                      -> case ds38 of wild3 { DEFAULT ->
+                         GHC.List.badHead
+                           @ [(GHC.Integer.Type.Integer,
+                               Data.ByteString.Internal.ByteString)] }
+                      Data.Attoparsec.Internal.Types.Partial ipv
+                      -> case Lib.checkCigarSeqlen1 ret_ty Lib.CigarMap of {}
+                      Data.Attoparsec.Internal.Types.Done ds37 a1 -> a1 } })
+                   ds16
+                   ds17
+                   ds18
+                   ds19
+                   ds20
+                   ds21
+                   ds22
+                   ds23
+                   ds24
+                   ds25
+                   ds26
+                   ds27
+                   (case GHC.Integer.Type.neqInteger# ds9 tpos of wild1 { DEFAULT ->
+                    case GHC.Prim.tagToEnum# @ GHC.Types.Bool wild1 of wild2 {
+                      GHC.Types.False -> GHC.Integer.Type.neqInteger ds10 tendpos
+                      GHC.Types.True -> GHC.Types.True } })
+                   tpos
+                   tendpos
+                   ds31
+                   ds32
+                   ds33
+                   ds34
+                   ds35
+                   (Lib.boolZeroLengthCigar newcig) }) -}
 5baf5aecf2bf4a26647c2dc6e53d46a0
   trimdToZeroLength :: Lib.AlignedRead -> GHC.Types.Bool
   RecSel Left Lib.AlignedRead
@@ -28244,13 +28284,12 @@ f3de8e748e7fca84c06e8e7db42d2f28
                 (\ (ds6 :: Lib.AlignedRead) ->
                  case ds6 of wild { Lib.AlignedRead ds7 ds8 ds9 ds10 ds11 ds12 ds13 ds14 ds15 ds16 ds17 ds18 ds19 ds20 ds21 ds22 ds23 ds24 ds25 ds26 ds27 ds28 ds29 ds30 ds31 ds32 ds33 ds34 ds35 ds36 ds37 ->
                  ds30 }) -}
-dbf811b160258742df229f8e64e692aa
+a6c0129e9ac9b9e70f0773300b17b91e
   trimfwd :: Lib.AlignedRead -> Lib.AlignedRead
   {- Arity: 1,
-     Strictness: <S(LLLLLLS(SLSS)LLLLLLLLLLLLLLLLLLLLLLLL),1*U(U,U,U,U,U,U,1*U(U,U,U,U),A,U,A,U,U,U,U,U,U,U,U,U,U,U,U,A,A,U,U,U,U,U,U,U)>,
+     Strictness: <S,1*U(U,U,U,U,U,U,U(U,U,U,U),A,U,A,U,U,U,U,U,U,U,U,U,U,U,U,A,A,U,U,U,U,U,U,A)>,
      Unfolding: (\ (a :: Lib.AlignedRead) ->
                  case a of wild { Lib.AlignedRead ds6 ds7 ds8 ds9 ds10 ds11 ds12 ds13 ds14 ds15 ds16 ds17 ds18 ds19 ds20 ds21 ds22 ds23 ds24 ds25 ds26 ds27 ds28 ds29 ds30 ds31 ds32 ds33 ds34 ds35 ds36 ->
-                 case ds12 of ww { Data.ByteString.Internal.PS ww1 ww2 ww3 ww4 ->
                  let {
                    newpos :: GHC.Integer.Type.Integer
                    = case ds25 of wild1 {
@@ -28262,12 +28301,11 @@ dbf811b160258742df229f8e64e692aa
                    fdiff :: GHC.Integer.Type.Integer
                    = GHC.Integer.Type.minusInteger newpos ds9
                  } in
-                 case Lib.$wupdateCigF
-                        fdiff
-                        ww1
-                        ww2
-                        ww3
-                        ww4 of ww5 { Data.ByteString.Internal.PS ww6 ww7 ww8 ww9 ->
+                 let {
+                   newcig :: Data.ByteString.Internal.ByteString
+                   = case ds12 of ww { Data.ByteString.Internal.PS ww1 ww2 ww3 ww4 ->
+                     Lib.$wupdateCigF fdiff ww1 ww2 ww3 ww4 }
+                 } in
                  let {
                    tpos :: GHC.Integer.Type.Integer
                    = case GHC.Integer.Type.ltInteger#
@@ -28276,83 +28314,83 @@ dbf811b160258742df229f8e64e692aa
                      case GHC.Prim.tagToEnum# @ GHC.Types.Bool wild1 of wild2 {
                        GHC.Types.False -> newpos GHC.Types.True -> ds9 } }
                  } in
-                 Lib.clearNonRealCigar
-                   (Lib.AlignedRead
-                      ds6
-                      ds7
-                      ds8
-                      ds9
-                      ds10
-                      ds11
-                      ww
-                      ww5
-                      ds14
-                      (case Lib.$wparseCigar
-                              @ [(GHC.Integer.Type.Integer, Data.ByteString.Internal.ByteString)]
-                              ww6
-                              ww7
-                              ww8
-                              ww9
-                              ww9
-                              0#
-                              0#
-                              Data.Attoparsec.Internal.Types.Complete
-                              (Data.Attoparsec.ByteString.Internal.failK
-                                 @ [(GHC.Integer.Type.Integer,
-                                     Data.ByteString.Internal.ByteString)])
-                                `cast`
-                              (Sub (Sym (Data.Attoparsec.Internal.Types.D:R:StateByteString[0]))
-                               ->_R <Data.Attoparsec.Internal.Types.Pos
-                                     -> Data.Attoparsec.Internal.Types.More
-                                     -> [GHC.Base.String]
-                                     -> GHC.Base.String
-                                     -> Data.Attoparsec.Internal.Types.IResult
-                                          Data.ByteString.Internal.ByteString
-                                          [(GHC.Integer.Type.Integer,
-                                            Data.ByteString.Internal.ByteString)]>_R)
-                              (Data.Attoparsec.ByteString.Internal.successK
-                                 @ [(GHC.Integer.Type.Integer,
-                                     Data.ByteString.Internal.ByteString)])
-                                `cast`
-                              (Sub (Sym (Data.Attoparsec.Internal.Types.D:R:StateByteString[0]))
-                               ->_R <Data.Attoparsec.Internal.Types.Pos
-                                     -> Data.Attoparsec.Internal.Types.More
-                                     -> [(GHC.Integer.Type.Integer,
-                                          Data.ByteString.Internal.ByteString)]
-                                     -> Data.Attoparsec.Internal.Types.IResult
-                                          Data.ByteString.Internal.ByteString
-                                          [(GHC.Integer.Type.Integer,
-                                            Data.ByteString.Internal.ByteString)]>_R) of wild1 {
-                         Data.Attoparsec.Internal.Types.Fail ds37 ds38 err
-                         -> case ds38 of wild2 { DEFAULT ->
-                            GHC.List.badHead
+                 Lib.AlignedRead
+                   ds6
+                   ds7
+                   ds8
+                   ds9
+                   ds10
+                   ds11
+                   ds12
+                   newcig
+                   ds14
+                   (case newcig of wild1 { Data.ByteString.Internal.PS dt dt1 dt2 dt3 ->
+                    case Lib.$wparseCigar
+                           @ [(GHC.Integer.Type.Integer, Data.ByteString.Internal.ByteString)]
+                           dt
+                           dt1
+                           dt2
+                           dt3
+                           dt3
+                           0#
+                           0#
+                           Data.Attoparsec.Internal.Types.Complete
+                           (Data.Attoparsec.ByteString.Internal.failK
                               @ [(GHC.Integer.Type.Integer,
-                                  Data.ByteString.Internal.ByteString)] }
-                         Data.Attoparsec.Internal.Types.Partial ipv
-                         -> case Lib.checkCigarSeqlen1 ret_ty Lib.CigarMap of {}
-                         Data.Attoparsec.Internal.Types.Done ds37 a1 -> a1 })
-                      ds16
-                      ds17
-                      ds18
-                      ds19
-                      ds20
-                      ds21
-                      ds22
-                      ds23
-                      ds24
-                      ds25
-                      ds26
-                      ds27
-                      (case GHC.Integer.Type.neqInteger# ds9 tpos of wild1 { DEFAULT ->
-                       GHC.Prim.tagToEnum# @ GHC.Types.Bool wild1 })
-                      tpos
-                      ds30
-                      ds31
-                      ds32
-                      ds33
-                      ds34
-                      ds35
-                      ds36) } } }) -}
+                                  Data.ByteString.Internal.ByteString)])
+                             `cast`
+                           (Sub (Sym (Data.Attoparsec.Internal.Types.D:R:StateByteString[0]))
+                            ->_R <Data.Attoparsec.Internal.Types.Pos
+                                  -> Data.Attoparsec.Internal.Types.More
+                                  -> [GHC.Base.String]
+                                  -> GHC.Base.String
+                                  -> Data.Attoparsec.Internal.Types.IResult
+                                       Data.ByteString.Internal.ByteString
+                                       [(GHC.Integer.Type.Integer,
+                                         Data.ByteString.Internal.ByteString)]>_R)
+                           (Data.Attoparsec.ByteString.Internal.successK
+                              @ [(GHC.Integer.Type.Integer,
+                                  Data.ByteString.Internal.ByteString)])
+                             `cast`
+                           (Sub (Sym (Data.Attoparsec.Internal.Types.D:R:StateByteString[0]))
+                            ->_R <Data.Attoparsec.Internal.Types.Pos
+                                  -> Data.Attoparsec.Internal.Types.More
+                                  -> [(GHC.Integer.Type.Integer,
+                                       Data.ByteString.Internal.ByteString)]
+                                  -> Data.Attoparsec.Internal.Types.IResult
+                                       Data.ByteString.Internal.ByteString
+                                       [(GHC.Integer.Type.Integer,
+                                         Data.ByteString.Internal.ByteString)]>_R) of wild2 {
+                      Data.Attoparsec.Internal.Types.Fail ds37 ds38 err
+                      -> case ds38 of wild3 { DEFAULT ->
+                         GHC.List.badHead
+                           @ [(GHC.Integer.Type.Integer,
+                               Data.ByteString.Internal.ByteString)] }
+                      Data.Attoparsec.Internal.Types.Partial ipv
+                      -> case Lib.checkCigarSeqlen1 ret_ty Lib.CigarMap of {}
+                      Data.Attoparsec.Internal.Types.Done ds37 a1 -> a1 } })
+                   ds16
+                   ds17
+                   ds18
+                   ds19
+                   ds20
+                   ds21
+                   ds22
+                   ds23
+                   ds24
+                   ds25
+                   ds26
+                   ds27
+                   (case GHC.Integer.Type.neqInteger# ds9 tpos of wild1 { DEFAULT ->
+                    GHC.Prim.tagToEnum# @ GHC.Types.Bool wild1 })
+                   tpos
+                   ds30
+                   ds31
+                   ds32
+                   ds33
+                   ds34
+                   ds35
+                   (Lib.boolZeroLengthCigar newcig) }) -}
 62ea2734247d04d45437158390094670
   trimmedPct :: Lib.RunStats -> GHC.Types.Double
   RecSel Left Lib.RunStats
@@ -28362,24 +28400,16 @@ dbf811b160258742df229f8e64e692aa
                 (\ (ds6 :: Lib.RunStats) ->
                  case ds6 of wild { Lib.RunStats ds7 ds8 ds9 ds10 ds11 ds12 ->
                  ds11 }) -}
-4d8473d870f5d88f49ebd4de5524df66
+678c08bda8734288d0eb02bb97e35f3c
   trimprimerPairsE ::
     Lib.CMap -> Lib.CMap -> Lib.PairedAln -> Lib.PairedAln
   {- Arity: 3,
-     Strictness: <L,U><L,U><S(SLLL),1*U(1*U(U,U,U,U,U,U,U(U,U,U,U),A,U,U,U,U,U,U,U,U,U,U,U,A,A,A,U,U,U,U,U,U,U,U,U),1*U(U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,A,A,A,U,U,U,U,U,U,U,U,U),1*U,1*U)>m,
-     Inline: [0],
+     Strictness: <L,U><L,U><L,1*U(1*U(U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,A,A,A,U,U,U,U,U,U,U,U,U),1*U(U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,A,A,A,U,U,U,U,U,U,U,U,U),1*U,1*U)>m,
      Unfolding: InlineRule (3, True, False)
-                (\ (w :: Lib.CMap) (w1 :: Lib.CMap) (w2 :: Lib.PairedAln) ->
-                 case w2 of ww { Lib.PairedAln ww1 ww2 ww3 ww4 ->
-                 case Lib.$wtrimprimerPairsE
-                        w
-                        w1
-                        ww1
-                        ww2
-                        ww3
-                        ww4 of ww5 { (#,,,#) ww6 ww7 ww8 ww9 ->
-                 Lib.PairedAln ww6 ww7 ww8 ww9 } }) -}
-81b50916a77acb93efb541f811c17afc
+                (\ (fmap :: Lib.CMap) (rmap :: Lib.CMap) (p :: Lib.PairedAln) ->
+                 Lib.makeTrimmedUpdates
+                   (Lib.trimPairedAlns (Lib.addprimerintsPairedAln fmap rmap p))) -}
+6e8adf0549c7088ca592331d560475e2
   trimprimersE ::
     Lib.CMap -> Lib.CMap -> Lib.AlignedRead -> Lib.AlignedRead
   {- Arity: 3,
@@ -28464,13 +28494,12 @@ dbf811b160258742df229f8e64e692aa
                    -> GHC.Types.[]
                         @ (GHC.Integer.Type.Integer,
                            Data.ByteString.Internal.ByteString) }) -}
-18f42d34cb9a575b29c98c3492347770
+0ec50da20a9d8bd58949f8c5d3644c8c
   trimrev :: Lib.AlignedRead -> Lib.AlignedRead
   {- Arity: 1,
-     Strictness: <S(LLLLLLS(SLSS)LLLLLLLLLLLLLLLLLLLLLLLL),1*U(U,U,U,U,U,U,1*U(U,U,U,U),A,U,A,U,U,U,U,U,U,U,U,U,U,U,U,A,U,A,U,U,U,U,U,U)>,
+     Strictness: <S,1*U(U,U,U,U,U,U,U(U,U,U,U),A,U,A,U,U,U,U,U,U,U,U,U,U,U,U,A,U,A,U,U,U,U,U,A)>,
      Unfolding: (\ (a :: Lib.AlignedRead) ->
                  case a of wild { Lib.AlignedRead ds6 ds7 ds8 ds9 ds10 ds11 ds12 ds13 ds14 ds15 ds16 ds17 ds18 ds19 ds20 ds21 ds22 ds23 ds24 ds25 ds26 ds27 ds28 ds29 ds30 ds31 ds32 ds33 ds34 ds35 ds36 ->
-                 case ds12 of ww { Data.ByteString.Internal.PS ww1 ww2 ww3 ww4 ->
                  let {
                    newendpos :: GHC.Integer.Type.Integer
                    = case ds26 of wild1 {
@@ -28482,12 +28511,11 @@ dbf811b160258742df229f8e64e692aa
                    rdiff :: GHC.Integer.Type.Integer
                    = GHC.Integer.Type.minusInteger ds10 newendpos
                  } in
-                 case Lib.$wupdateCigR
-                        rdiff
-                        ww1
-                        ww2
-                        ww3
-                        ww4 of ww5 { Data.ByteString.Internal.PS ww6 ww7 ww8 ww9 ->
+                 let {
+                   newcig :: Data.ByteString.Internal.ByteString
+                   = case ds12 of ww { Data.ByteString.Internal.PS ww1 ww2 ww3 ww4 ->
+                     Lib.$wupdateCigR rdiff ww1 ww2 ww3 ww4 }
+                 } in
                  let {
                    tendpos :: GHC.Integer.Type.Integer
                    = case GHC.Integer.Type.ltInteger#
@@ -28496,85 +28524,85 @@ dbf811b160258742df229f8e64e692aa
                      case GHC.Prim.tagToEnum# @ GHC.Types.Bool wild1 of wild2 {
                        GHC.Types.False -> newendpos GHC.Types.True -> ds10 } }
                  } in
-                 Lib.clearNonRealCigar
-                   (Lib.AlignedRead
-                      ds6
-                      ds7
-                      ds8
-                      ds9
-                      ds10
-                      ds11
-                      ww
-                      ww5
-                      ds14
-                      (case Lib.$wparseCigar
-                              @ [(GHC.Integer.Type.Integer, Data.ByteString.Internal.ByteString)]
-                              ww6
-                              ww7
-                              ww8
-                              ww9
-                              ww9
-                              0#
-                              0#
-                              Data.Attoparsec.Internal.Types.Complete
-                              (Data.Attoparsec.ByteString.Internal.failK
-                                 @ [(GHC.Integer.Type.Integer,
-                                     Data.ByteString.Internal.ByteString)])
-                                `cast`
-                              (Sub (Sym (Data.Attoparsec.Internal.Types.D:R:StateByteString[0]))
-                               ->_R <Data.Attoparsec.Internal.Types.Pos
-                                     -> Data.Attoparsec.Internal.Types.More
-                                     -> [GHC.Base.String]
-                                     -> GHC.Base.String
-                                     -> Data.Attoparsec.Internal.Types.IResult
-                                          Data.ByteString.Internal.ByteString
-                                          [(GHC.Integer.Type.Integer,
-                                            Data.ByteString.Internal.ByteString)]>_R)
-                              (Data.Attoparsec.ByteString.Internal.successK
-                                 @ [(GHC.Integer.Type.Integer,
-                                     Data.ByteString.Internal.ByteString)])
-                                `cast`
-                              (Sub (Sym (Data.Attoparsec.Internal.Types.D:R:StateByteString[0]))
-                               ->_R <Data.Attoparsec.Internal.Types.Pos
-                                     -> Data.Attoparsec.Internal.Types.More
-                                     -> [(GHC.Integer.Type.Integer,
-                                          Data.ByteString.Internal.ByteString)]
-                                     -> Data.Attoparsec.Internal.Types.IResult
-                                          Data.ByteString.Internal.ByteString
-                                          [(GHC.Integer.Type.Integer,
-                                            Data.ByteString.Internal.ByteString)]>_R) of wild1 {
-                         Data.Attoparsec.Internal.Types.Fail ds37 ds38 err
-                         -> case ds38 of wild2 { DEFAULT ->
-                            GHC.List.badHead
+                 Lib.AlignedRead
+                   ds6
+                   ds7
+                   ds8
+                   ds9
+                   ds10
+                   ds11
+                   ds12
+                   newcig
+                   ds14
+                   (case newcig of wild1 { Data.ByteString.Internal.PS dt dt1 dt2 dt3 ->
+                    case Lib.$wparseCigar
+                           @ [(GHC.Integer.Type.Integer, Data.ByteString.Internal.ByteString)]
+                           dt
+                           dt1
+                           dt2
+                           dt3
+                           dt3
+                           0#
+                           0#
+                           Data.Attoparsec.Internal.Types.Complete
+                           (Data.Attoparsec.ByteString.Internal.failK
                               @ [(GHC.Integer.Type.Integer,
-                                  Data.ByteString.Internal.ByteString)] }
-                         Data.Attoparsec.Internal.Types.Partial ipv
-                         -> case Lib.checkCigarSeqlen1 ret_ty Lib.CigarMap of {}
-                         Data.Attoparsec.Internal.Types.Done ds37 a1 -> a1 })
-                      ds16
-                      ds17
-                      ds18
-                      ds19
-                      ds20
-                      ds21
-                      ds22
-                      ds23
-                      ds24
-                      ds25
-                      ds26
-                      ds27
-                      (case GHC.Integer.Type.neqInteger#
-                              ds10
-                              tendpos of wild1 { DEFAULT ->
-                       GHC.Prim.tagToEnum# @ GHC.Types.Bool wild1 })
-                      ds29
-                      tendpos
-                      ds31
-                      ds32
-                      ds33
-                      ds34
-                      ds35
-                      ds36) } } }) -}
+                                  Data.ByteString.Internal.ByteString)])
+                             `cast`
+                           (Sub (Sym (Data.Attoparsec.Internal.Types.D:R:StateByteString[0]))
+                            ->_R <Data.Attoparsec.Internal.Types.Pos
+                                  -> Data.Attoparsec.Internal.Types.More
+                                  -> [GHC.Base.String]
+                                  -> GHC.Base.String
+                                  -> Data.Attoparsec.Internal.Types.IResult
+                                       Data.ByteString.Internal.ByteString
+                                       [(GHC.Integer.Type.Integer,
+                                         Data.ByteString.Internal.ByteString)]>_R)
+                           (Data.Attoparsec.ByteString.Internal.successK
+                              @ [(GHC.Integer.Type.Integer,
+                                  Data.ByteString.Internal.ByteString)])
+                             `cast`
+                           (Sub (Sym (Data.Attoparsec.Internal.Types.D:R:StateByteString[0]))
+                            ->_R <Data.Attoparsec.Internal.Types.Pos
+                                  -> Data.Attoparsec.Internal.Types.More
+                                  -> [(GHC.Integer.Type.Integer,
+                                       Data.ByteString.Internal.ByteString)]
+                                  -> Data.Attoparsec.Internal.Types.IResult
+                                       Data.ByteString.Internal.ByteString
+                                       [(GHC.Integer.Type.Integer,
+                                         Data.ByteString.Internal.ByteString)]>_R) of wild2 {
+                      Data.Attoparsec.Internal.Types.Fail ds37 ds38 err
+                      -> case ds38 of wild3 { DEFAULT ->
+                         GHC.List.badHead
+                           @ [(GHC.Integer.Type.Integer,
+                               Data.ByteString.Internal.ByteString)] }
+                      Data.Attoparsec.Internal.Types.Partial ipv
+                      -> case Lib.checkCigarSeqlen1 ret_ty Lib.CigarMap of {}
+                      Data.Attoparsec.Internal.Types.Done ds37 a1 -> a1 } })
+                   ds16
+                   ds17
+                   ds18
+                   ds19
+                   ds20
+                   ds21
+                   ds22
+                   ds23
+                   ds24
+                   ds25
+                   ds26
+                   ds27
+                   (case GHC.Integer.Type.neqInteger#
+                           ds10
+                           tendpos of wild1 { DEFAULT ->
+                    GHC.Prim.tagToEnum# @ GHC.Types.Bool wild1 })
+                   ds29
+                   tendpos
+                   ds31
+                   ds32
+                   ds33
+                   ds34
+                   ds35
+                   (Lib.boolZeroLengthCigar newcig) }) -}
 cba5b980e4a4c947e581900445ba00e1
   txposedcount :: Lib.MidFamily -> GHC.Integer.Type.Integer
   RecSel Left Lib.MidFamily
@@ -28688,6 +28716,30 @@ cba5b980e4a4c947e581900445ba00e1
                    (w1 :: Data.ByteString.Internal.ByteString) ->
                  case w1 of ww { Data.ByteString.Internal.PS ww1 ww2 ww3 ww4 ->
                  Lib.$wupdateCigR w ww1 ww2 ww3 ww4 }) -}
+1e292df88cb25c3cf31cac2a4e1c54a0
+  updatePairedAlnTrimdFields :: Lib.PairedAln -> Lib.PairedAln
+  {- Arity: 1,
+     Strictness: <L,U(1*U(U,U(U),U,U,U,U,U,U(U,U,U,U),U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U),1*U(U,U(U),U,U,U,U,U,U(U,U,U,U),U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U),1*U,1*U)>m,
+     Inline: [0],
+     Unfolding: InlineRule (1, True, False)
+                (\ (w :: Lib.PairedAln) ->
+                 Lib.PairedAln
+                   (case w of wild { Lib.PairedAln ds6 ds7 ds8 ds9 ->
+                    Lib.updateTrimdAlnFields ds6 })
+                   (case w of wild { Lib.PairedAln ds6 ds7 ds8 ds9 ->
+                    Lib.updateTrimdAlnFields ds7 })
+                   (case w of wild { Lib.PairedAln ds6 ds7 ds8 ds9 ->
+                    GHC.Base.map
+                      @ Lib.AlignedRead
+                      @ Lib.AlignedRead
+                      Lib.updateTrimdAlnFields
+                      ds8 })
+                   (case w of wild { Lib.PairedAln ds6 ds7 ds8 ds9 ->
+                    GHC.Base.map
+                      @ Lib.AlignedRead
+                      @ Lib.AlignedRead
+                      Lib.updateTrimdAlnFields
+                      ds9 })) -}
 334a2f9644ce4de222b02234563eb32e
   updateR1nextfields :: Lib.PairedAln -> Lib.PairedAln
   {- Arity: 1,
@@ -28810,7 +28862,7 @@ cba5b980e4a4c947e581900445ba00e1
                    (case ds6 of ds7 { (,) newpr2 newsecr2s -> newpr2 })
                    ww3
                    (case ds6 of ds7 { (,) newpr2 newsecr2s -> newsecr2s }) }) -}
-a1e979351a5b1fcef3237068629a2248
+54c845e55f94cbfcc5ded77fb4a93125
   updateTrimdAlnFields :: Lib.AlignedRead -> Lib.AlignedRead
   {- Arity: 1,
      Strictness: <S(LLLLLLLS(SLSS)LLLLLLLLLLLLLLLLLLLLLLL),1*U(U,U(U),U,U,U,U,U,U(U,U,U,U),U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U)>,
@@ -28884,19 +28936,19 @@ a1e979351a5b1fcef3237068629a2248
                                   Lib.addtrimtag6))
                             ds22
                             ds23
-                            ds24
+                            GHC.Types.False
                             ds25
                             ds26
                             ds27
                             GHC.Types.True
-                            Lib.parsesignedint1
+                            Lib.updateTrimdAlnFields1
                             Lib.defaultBed2
                             ds31
                             ds32
                             ds33
                             ds34
                             ds35
-                            GHC.Types.True }
+                            ds36 }
                  } in
                  letrec {
                    go19 :: [GHC.Types.Char] -> Lib.AlignedRead
@@ -28919,6 +28971,9 @@ a1e979351a5b1fcef3237068629a2248
                       ww3
                       ww4
                       (GHC.Types.[] @ GHC.Types.Char)) } }) -}
+c87af38eeed230527cc19b531da8328c
+  updateTrimdAlnFields1 :: GHC.Integer.Type.Integer
+  {- HasNoCafRefs, Unfolding: (-1) -}
 0b8fa6a6f6a8424547a11709a818ffae
   updateTrimdPairFields :: Lib.PairedAln -> Lib.PairedAln
   {- Arity: 1,
@@ -29161,7 +29216,7 @@ a1e979351a5b1fcef3237068629a2248
 88b4a81b23220636e5d96075327359f1
   updateTrimdPairFields2 :: (Lib.AlignedRead, [Lib.AlignedRead])
   {- Strictness: x -}
-8109d4c7428a080c7131acb3db319a81
+a67d6f74f748537c6ccfee38ac7feca9
   updateZeroTrimdPairFields :: Lib.PairedAln -> Lib.PairedAln
   {- Arity: 1,
      Strictness: <S,1*U(U(U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U),U(U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U),U,U)>m,
@@ -29175,7 +29230,7 @@ a1e979351a5b1fcef3237068629a2248
                         ww3
                         ww4 of ww5 { (#,,,#) ww6 ww7 ww8 ww9 ->
                  Lib.PairedAln ww6 ww7 ww8 ww9 } }) -}
-25caa632f93307fa07d25f99a0e6e78a
+737a676dd48c6635d86df55054ea105e
   updateZeroTrimdPairFlags :: Lib.PairedAln -> Lib.PairedAln
   {- Arity: 1,
      Strictness: <S(S(LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLS)LLL),1*U(U(U,U(U),U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U),U(U,U(U),U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U),U,U)>m,
@@ -29228,7 +29283,7 @@ a1e979351a5b1fcef3237068629a2248
                                 GHC.Types.False)
                              wild3
                              (let {
-                                lvl1011 :: Data.ByteString.Internal.ByteString
+                                lvl1009 :: Data.ByteString.Internal.ByteString
                                 = let {
                                     cs :: [GHC.Types.Char] = Lib.$fShowUChr_$cshow ds43
                                   } in
@@ -29252,7 +29307,7 @@ a1e979351a5b1fcef3237068629a2248
                                    ds79
                                    ds80
                                    ds81
-                                   lvl1011
+                                   lvl1009
                                    ds83
                                    ds84
                                    ds85
@@ -29318,7 +29373,7 @@ a1e979351a5b1fcef3237068629a2248
                            ds71 })
                         ds8
                         (let {
-                           lvl1011 :: Data.ByteString.Internal.ByteString
+                           lvl1009 :: Data.ByteString.Internal.ByteString
                            = let {
                                cs :: [GHC.Types.Char] = Lib.$fShowUChr_$cshow ds12
                              } in
@@ -29342,7 +29397,7 @@ a1e979351a5b1fcef3237068629a2248
                               ds48
                               ds49
                               ds50
-                              lvl1011
+                              lvl1009
                               ds52
                               ds53
                               ds54
