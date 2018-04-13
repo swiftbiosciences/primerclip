@@ -1956,11 +1956,17 @@ clearNonRealCigar a
 -- TODO: set mate MRNM of trimmed-to-zero-length alignments to 
 updateZeroTrimdPairFlags :: PairedAln -> PairedAln
 updateZeroTrimdPairFlags pa
+    | (r1zerotrimd && r2zerotrimd) = clearedBothNextmapflags
     | r1zerotrimd = clearedR2nextmapflags
     | r2zerotrimd = clearedR1nextmapflags
     | otherwise = pa
         where r1zerotrimd = (trimdToZeroLength r1p)
               r2zerotrimd = (trimdToZeroLength r2p)
+              clearedBothNextmapflags = pa { r1prim = r1pZ
+                                           , r2prim = r2pZ
+                                           , r1secs = r1Zs
+                                           , r2secs = r2Zs
+                                           }
               clearedR1nextmapflags = pa { r1prim = r1pZ
                                          , r1secs = r1Zs
                                          }
@@ -2023,6 +2029,8 @@ updateZeroTrimdPairFlags' pa
 -- 180409 clear RNEXT and PNEXT for (primary) pair if trimmed to 0-length
 updateZeroTrimdPairFields :: PairedAln -> PairedAln
 updateZeroTrimdPairFields p
+    | (anyR1zerotrimmed && anyR2zerotrimmed) = clearR2primNextFields
+                                             $ clearR1primNextFields p
     | anyR1zerotrimmed = clearR2primNextFields p
     | anyR2zerotrimmed = clearR1primNextFields p
     | otherwise = p
@@ -2116,7 +2124,7 @@ setZeroLengthAlnFlag flag
                                    $ flipSetBit 2
                                    $ flipClrBit 1 flag
 
--- 180409 clear mate map bit
+-- 180409 set mate not mapped bit
 setZeroLengthPairFlag :: Int -> Int
 setZeroLengthPairFlag flag = flipSetBit 3 flag
 
