@@ -20,7 +20,7 @@ email: TechSupport@swiftbiosci.com
 phone: 734 330 2568
 
 #### Accel-Amplicon Trimming and Analysis Files for each Panel
-Please visit https://swiftbiosci.com/protected-content/protected-content_amplicon-bed-files/
+Please visit [Swift Biosciences Accel-Amplicon™ trim and analysis files](https://swiftbiosci.com/protected-content/protected-content_amplicon-bed-files/)
 to download the files needed for trimming primers with primerclip and performing
 targeted variant calling.
 
