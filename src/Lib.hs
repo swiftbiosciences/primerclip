@@ -28,6 +28,7 @@ import qualified Data.IntMap.Strict as I
 import Data.Maybe
 import qualified Data.Set as S
 import GHC.Generics (Generic)
+-- import Crypto.Hash
 
 {--
     Jonathan Irish
@@ -1642,10 +1643,10 @@ updateTrimdPairFields pa
               r2p = r2prim pa
               bothPrimaryTrimd = (trimdflag r1p)
                               && (trimdflag r2p)
-                              && (mapped r1p)
-                              && (mapped r2p)
-              primaryR1trimd = (trimdflag r1p) && (mapped r1p)
-              primaryR2trimd = (trimdflag r2p) && (mapped r2p)
+                              -- && (mapped r1p)
+                              -- && (mapped r2p)
+              primaryR1trimd = (trimdflag r1p) -- && (mapped r1p)
+              primaryR2trimd = (trimdflag r2p) -- && (mapped r2p)
 
 -- called on PairedAln records where R2 primary alignment was trimmed
 updateR1nextfields :: PairedAln -> PairedAln
@@ -1655,7 +1656,6 @@ updateR1nextfields pa =
         trimdflagR2 = flag trimdaln
         nxtalns = (r1prim pa) : (r1secs pa)
         (newpr1:newsecr1s) = (\x -> x { pnext = trimdposR2 }) <$> nxtalns -- update pnext
-        -- does TLEN need to be updated ??? TODO: check standard (new vs. old for TLEN)
     in pa { r1prim = newpr1, r1secs = newsecr1s }
 
 updateR2nextfields :: PairedAln -> PairedAln
@@ -1982,12 +1982,51 @@ updateZeroTrimdPairFlags pa
               r2pZ = clrFlagMapBits r2pMRNM
               r1Zs = clrFlagMapBits <$> r1sMRNMs
               r2Zs = clrFlagMapBits <$> r2sMRNMs
-              r1pMRNM = setMateRname r1p r2p
-              r2pMRNM = setMateRname r2p r1p
-              r1sMRNMs = (flip setMateRname r2p) <$> r1s
-              r2sMRNMs = (flip setMateRname r1p) <$> r2s
-              setMateRname r m = r { rnext = (B.pack $ show $ rname m) }
+              r1pMRNM = r1prim newMRNMp
+              r2pMRNM = r2prim newMRNMp
+              r1sMRNMs = r1secs newMRNMp
+              r2sMRNMs = r2secs newMRNMp
+              newMRNMp = setMateRname pa
+              -- r1pMRNM = setMateRname r1p r2p
+              -- r2pMRNM = setMateRname r2p r1p
+              -- r1sMRNMs = (flip setMateRname r2p) <$> r1s
+              -- r2sMRNMs = (flip setMateRname r1p) <$> r2s
+              -- setMateRname r m = r { rnext = (B.pack $ show $ rname m) }
 --}
+
+-- 180416 setMateRname must only update RNAME when mate was mapped in input SAM
+setMateRname :: PairedAln -> PairedAln
+setMateRname p
+    | (r1mateorigmapped && r2mateorigmapped) = newMRNMprdaln
+    | r1mateorigmapped = newr1MRNM
+    | r2mateorigmapped = newr2MRNM
+    | otherwise = p
+        where r1mateorigmapped = not $ flipTstBit 2 (flag r2p)
+              r2mateorigmapped = not $ flipTstBit 2 (flag r1p)
+              newr1MRNM = p { r1prim = newr1p, r1secs = newr1secs }
+              newr2MRNM = p { r2prim = newr2p, r2secs = newr2secs }
+              newMRNMprdaln = p { r1prim = newr1p
+                                , r2prim = newr2p
+                                , r1secs = newr1secs
+                                , r2secs = newr2secs
+                                }
+              newr1p = setRname r1p r2p
+              newr2p = setRname r2p r1p
+              newr1secs = (flip setRname r2p) <$> r1s
+              newr2secs = (flip setRname r1p) <$> r2s
+              setRname r m = r { rnext = (B.pack $ show $ rname m) }
+              (r1p, r2p, r1s, r2s) = ( (r1prim p)
+                                     , (r2prim p)
+                                     , (r1secs p)
+                                     , (r2secs p) )
+
+
+setMateRname' :: AlignedRead -> AlignedRead -> AlignedRead
+setMateRname' r m
+    | mateorigmapped = newMRNMaln
+    | otherwise = r
+        where mateorigmapped = not $ flipTstBit 2 (flag m)
+              newMRNMaln = r { rnext = (B.pack $ show $ rname m) }
 
 
 -- 180328 handle all permutations of trimmed-to-zero length read pairs
@@ -2026,9 +2065,22 @@ updateZeroTrimdPairFlags' pa
 --}
 
 -- {--
--- 180409 clear RNEXT and PNEXT for (primary) pair if trimmed to 0-length
+-- 180416 clear RNEXT and PNEXT for (primary) pair if primary trimmed to 0-length
 updateZeroTrimdPairFields :: PairedAln -> PairedAln
 updateZeroTrimdPairFields p
+    | (primR1zerotrimmed && primR2zerotrimmed) = clearR2primNextFields
+                                               $ clearR1primNextFields p
+    | primR1zerotrimmed = clearR2primNextFields p
+    | primR2zerotrimmed = clearR1primNextFields p
+    | otherwise = p
+        where primR1zerotrimmed = trimdToZeroLength $ r1prim p
+              primR2zerotrimmed = trimdToZeroLength $ r2prim p
+--}
+
+-- {--
+-- 180409 clear RNEXT and PNEXT for (primary) pair if trimmed to 0-length
+updateZeroTrimdPairFields' :: PairedAln -> PairedAln
+updateZeroTrimdPairFields' p
     | (anyR1zerotrimmed && anyR2zerotrimmed) = clearR2primNextFields
                                              $ clearR1primNextFields p
     | anyR1zerotrimmed = clearR2primNextFields p
@@ -2067,8 +2119,8 @@ makeTrimmedUpdates :: PairedAln -> PairedAln
 makeTrimmedUpdates pa = updatePairedAlnTrimdFields
                       $ updateZeroTrimdPairFields
                       $ updateZeroTrimdPairFlags
-                      $ updateTrimdPairFields
-                      $ makeMRNMexplicit pa
+                      $ updateTrimdPairFields pa
+                      -- $ makeMRNMexplicit pa
 
 -- {--
 makeMRNMexplicit :: PairedAln -> PairedAln
