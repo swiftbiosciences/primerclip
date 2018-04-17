@@ -1486,11 +1486,14 @@ parseAndTrimPairSet fmp rmp bs =
 flattenPairedAln :: PairedAln -> [AlignedRead]
 flattenPairedAln p = sort $ (r1prim p) : (r2prim p) : ((r1secs p) ++ (r2secs p))
 
--- 180409 add function to update RNEXT and PNEXT of alns w/ 0-trimmed pair
+-- 180409 add function to update RNEXT and PNEXT of alns w/ 0-trimmed
+-- 180417 try removing any secondary alignments which are 0-trimmed
 trimprimerPairsE :: CMap -> CMap -> PairedAln -> PairedAln
 trimprimerPairsE fmap rmap p =
     let intpaln = addprimerintsPairedAln fmap rmap p
-    in makeTrimmedUpdates $ trimPairedAlns intpaln
+        updated = makeTrimmedUpdates $ trimPairedAlns intpaln
+        nonprimZeroLengthRemoved = removeNonPrimaryZeroLengthAlignments updated
+    in nonprimZeroLengthRemoved
 
 {--
 trimprimerPairs :: CMap -> CMap -> [PairedAln] -> [PairedAln]
@@ -1685,16 +1688,18 @@ trimPairedAlns pa = PairedAln (trimalignment $ r1prim pa)
 
 -- 180411 remove updateTrimdAlnFields and apply after MRNM resolution for 0-trimd alns
 -- 180212 added addtrimtag function to append comment to optfields (CO:Z: SAM tag)
+-- 180417 check alignment mapped before trying to trim (check mapped flag bit)
 trimalignment :: AlignedRead -> AlignedRead
 trimalignment a
-    | (fint a /= []) && (rint a /= []) = btrimdaln
-    | (fint a /= []) && (rint a == []) = ftrimdaln
-    | (fint a == []) && (rint a /= []) = rtrimdaln
+    | (fint a /= []) && (rint a /= []) && mapdaln = btrimdaln
+    | (fint a /= []) && (rint a == []) && mapdaln = ftrimdaln
+    | (fint a == []) && (rint a /= []) && mapdaln = rtrimdaln
     | (fint a == []) && (rint a == []) = a { trimdcigar = cigar a }
     | otherwise = a { trimdcigar = cigar a }
          where ftrimdaln = trimfwd a
                rtrimdaln = trimrev a
                btrimdaln = trimboth a
+               mapdaln = not $ flipTstBit 2 (flag a)
 
 -- for alignments intersecting a "forward" primer only ( ref (+)-strand orientation)
 trimfwd :: AlignedRead -> AlignedRead
@@ -1968,9 +1973,13 @@ updateZeroTrimdPairFlags pa
                                            , r2secs = r2Zs
                                            }
               clearedR1nextmapflags = pa { r1prim = r1pZ
+                                         , r2prim = r2pMRNM
                                          , r1secs = r1Zs
+                                         , r2secs = r2sMRNMs
                                          }
-              clearedR2nextmapflags = pa { r2prim = r2pZ
+              clearedR2nextmapflags = pa { r1prim = r1pMRNM
+                                         , r2prim = r2pZ
+                                         , r1secs = r1sMRNMs
                                          , r2secs = r2Zs
                                          }
               (r1p, r2p, r1s, r2s) = ( (r1prim pa)
@@ -2120,7 +2129,6 @@ makeTrimmedUpdates pa = updatePairedAlnTrimdFields
                       $ updateZeroTrimdPairFields
                       $ updateZeroTrimdPairFlags
                       $ updateTrimdPairFields pa
-                      -- $ makeMRNMexplicit pa
 
 -- {--
 makeMRNMexplicit :: PairedAln -> PairedAln
@@ -2177,8 +2185,10 @@ setZeroLengthAlnFlag flag
                                    $ flipClrBit 1 flag
 
 -- 180409 set mate not mapped bit
+-- 180417 clear bit 1 (read mapped in proper pair)
 setZeroLengthPairFlag :: Int -> Int
-setZeroLengthPairFlag flag = flipSetBit 3 flag
+setZeroLengthPairFlag flag = flipSetBit 3
+                           $ flipClrBit 1 flag
 
 -- 180411 test for zero-trimmed alignment based on trimmed CIGAR
 -- NOTE: prior to converting zero-match CIGAR to "*"
@@ -2207,17 +2217,24 @@ updateTrimdAlnFields a
               trimdToZero = a { optfields = B.concat [ (optfields a)
                                                      , "\t", trimdToZeroTag
                                                      ]
-                              -- , trimdToZeroLength = True
                               , rname = NONE
                               , trimdcigar = "*"
                               , trimdpos = -1
                               , trimdendpos = 0
-                              -- , rnext = "*"
-                              -- , pnext = 0
                               , mapqual = 0
                               , mapped = False
                               , flag = setZeroLengthAlnFlag (flag a) -- 180409
                               }
+
+-- 180417 remove any secondary alignments which are trimmed to zero-length
+-- TODO: handle this inside makeTrimmedUpdates once we know we're keeping this step
+removeNonPrimaryZeroLengthAlignments :: PairedAln -> PairedAln
+removeNonPrimaryZeroLengthAlignments p =
+    let (r1s, r2s) = ((r1secs p), (r2secs p))
+        newr1s = filter (\x -> not $ trimdToZeroLength x) r1s
+        newr2s = filter (\x -> not $ trimdToZeroLength x) r2s
+    in p { r1secs = newr1s, r2secs = newr2s }
+
 
 -- flip setBit and clearBit args for clearer syntax
 flipSetBit = flip setBit
