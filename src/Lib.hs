@@ -1495,13 +1495,6 @@ trimprimerPairsE fmap rmap p =
         nonprimZeroLengthRemoved = removeNonPrimaryZeroLengthAlignments updated
     in nonprimZeroLengthRemoved
 
-{--
-trimprimerPairs :: CMap -> CMap -> [PairedAln] -> [PairedAln]
-trimprimerPairs fmap rmap ps =
-    let intpalns = (addprimerintsPairedAln fmap rmap) <$> ps
-    in makeTrimmedUpdates (trimPairedAlns <$> intpalns)
---}
-
 -- element (single alignment)-wise primer trimming (for use with conduit)
 trimprimersE :: CMap -> CMap -> AlignedRead -> AlignedRead
 trimprimersE fmap rmap a =
@@ -1953,7 +1946,6 @@ clearNonRealCigar a
                                 }
               -- zeroLenFlag = setZeroLengthAlnFlag $ flag a
 
---{--
 
 -- {--
 -- 180409 clear flags only on trimmed-to-zero-length Alignments
@@ -1996,11 +1988,6 @@ updateZeroTrimdPairFlags pa
               r1sMRNMs = r1secs newMRNMp
               r2sMRNMs = r2secs newMRNMp
               newMRNMp = setMateRname pa
-              -- r1pMRNM = setMateRname r1p r2p
-              -- r2pMRNM = setMateRname r2p r1p
-              -- r1sMRNMs = (flip setMateRname r2p) <$> r1s
-              -- r2sMRNMs = (flip setMateRname r1p) <$> r2s
-              -- setMateRname r m = r { rnext = (B.pack $ show $ rname m) }
 --}
 
 -- 180416 setMateRname must only update RNAME when mate was mapped in input SAM
@@ -2029,50 +2016,6 @@ setMateRname p
                                      , (r1secs p)
                                      , (r2secs p) )
 
-
-setMateRname' :: AlignedRead -> AlignedRead -> AlignedRead
-setMateRname' r m
-    | mateorigmapped = newMRNMaln
-    | otherwise = r
-        where mateorigmapped = not $ flipTstBit 2 (flag m)
-              newMRNMaln = r { rnext = (B.pack $ show $ rname m) }
-
-
--- 180328 handle all permutations of trimmed-to-zero length read pairs
--- NOTE: if either read in a pair is trimmed to zero-length, then all alignment
--- pairs are unmapped and their map flags cleared
--- UPDATE: as of 180409 avoid unmapping mapped pairs (TESTING)
-updateZeroTrimdPairFlags' :: PairedAln -> PairedAln
-updateZeroTrimdPairFlags' pa
-    | somenonmapped = zeroedflags
-    | otherwise = pa
-        where somenonmapped = any (\x -> (trimdToZeroLength x))
-                                  (r1p : r2p : (r1s ++ r2s))
-              (r1p, r2p, r1s, r2s) = ( (r1prim pa)
-                                     , (r2prim pa)
-                                     , (r1secs pa)
-                                     , (r2secs pa) )
-              zeroedflags = pa { r1prim = r1pZ
-                               , r2prim = r2pZ
-                               , r1secs = r1Zs
-                               , r2secs = r2Zs
-                               }
-              clrFlagMapBits x = x { flag = setZeroLengthAlnFlag (flag x)
-                                   {-- should be handled by updateTrimdAlnFields
-                                   , mapped = False
-                                   , rname = NONE
-                                   , rnext = "*"
-                                   , trimdpos = 0
-                                   , trimdendpos = 0
-                                   , pnext = -1 --}
-                                   }
-              r1pZ = clrFlagMapBits r1p
-              r2pZ = clrFlagMapBits r2p
-              r1Zs = clrFlagMapBits <$> r1s
-              r2Zs = clrFlagMapBits <$> r2s
-
---}
-
 -- {--
 -- 180416 clear RNEXT and PNEXT for (primary) pair if primary trimmed to 0-length
 updateZeroTrimdPairFields :: PairedAln -> PairedAln
@@ -2084,21 +2027,6 @@ updateZeroTrimdPairFields p
     | otherwise = p
         where primR1zerotrimmed = trimdToZeroLength $ r1prim p
               primR2zerotrimmed = trimdToZeroLength $ r2prim p
---}
-
--- {--
--- 180409 clear RNEXT and PNEXT for (primary) pair if trimmed to 0-length
-updateZeroTrimdPairFields' :: PairedAln -> PairedAln
-updateZeroTrimdPairFields' p
-    | (anyR1zerotrimmed && anyR2zerotrimmed) = clearR2primNextFields
-                                             $ clearR1primNextFields p
-    | anyR1zerotrimmed = clearR2primNextFields p
-    | anyR2zerotrimmed = clearR1primNextFields p
-    | otherwise = p
-        where anyR1zerotrimmed = any (\x -> trimdToZeroLength x) r1alns
-              anyR2zerotrimmed = any (\x -> trimdToZeroLength x) r2alns
-              r1alns = (r1prim p) : (r1secs p)
-              r2alns = (r2prim p) : (r2secs p)
 --}
 
 -- {--
@@ -2121,11 +2049,13 @@ clearR2primNextFields p =
     in p { r2prim = newr2prim }
 --}
 
--- 180409 apply all updates to trimmed alignments (mostly trimmed-to-zero-length)
+-- 180423 add setProperInsertSizeRange step (TESTING)
 -- modifications
--- TODO: consolidate ad-hoc updates to trimmed alignments
+-- TODO: consolidate ad-hoc updates to trimmed alignments,
+--       and make setProperInsertSizeRange and range limits cmd line options
 makeTrimmedUpdates :: PairedAln -> PairedAln
-makeTrimmedUpdates pa = updatePairedAlnTrimdFields
+makeTrimmedUpdates pa = setProperInsertSizeRange 90 296
+                      $ updatePairedAlnTrimdFields
                       $ updateZeroTrimdPairFields
                       $ updateZeroTrimdPairFlags
                       $ updateTrimdPairFields pa
@@ -2134,7 +2064,6 @@ makeTrimmedUpdates pa = updatePairedAlnTrimdFields
 makeMRNMexplicit :: PairedAln -> PairedAln
 makeMRNMexplicit p
     | r1zerotrimdR2mapped || r2zerotrimdR1mapped = explicitMRNM
-    -- | r2zerotrimdR1mapped = explicitR2MRNM
     | otherwise = p
         where r1zerotrimdR2mapped = (trimdToZeroLength $ r1prim p)
                                  || (any (\x -> trimdToZeroLength x) (r1secs p))
@@ -2158,37 +2087,29 @@ makeMRNMexplicit p
               r2pRNAME = B.pack $ show $ rname $ r2prim p
 --}
 
--- functions to set each flag bit after alignment trimming
--- 180328
-{--
--- set flag if R2 in pair no longer mapped after trimming
-clearPairMappedR1 :: PairedAln -> PairedAln
-clearPairMappedR1 p =
-    let r2p = r2prim p
-        r1s = (r1prim p) : (r1secs p)
-        r2pstatus = (mapped r2p) && (trimdToZeroLength r2p) -- Bool
---}
-
 -- 180320 clear supp. alignment bit
 setZeroLengthAlnFlag :: Int -> Int
-setZeroLengthAlnFlag flag
-    | flipTstBit 0 flag = pairedZeroLengthFlag
+setZeroLengthAlnFlag flg
+    | flipTstBit 0 flg = pairedZeroLengthFlag
     | otherwise = nopairZeroLengthFlag
         where pairedZeroLengthFlag = flipClrBit 11
                                    $ flipClrBit 8
-                                   -- $ flipSetBit 3 -- set pair map flags independently
                                    $ flipSetBit 2
-                                   $ flipClrBit 1 flag
+                                   $ flipClrBit 1 flg
               nopairZeroLengthFlag = flipClrBit 11
                                    $ flipClrBit 8
                                    $ flipSetBit 2
-                                   $ flipClrBit 1 flag
+                                   $ flipClrBit 1 flg
 
 -- 180409 set mate not mapped bit
 -- 180417 clear bit 1 (read mapped in proper pair)
 setZeroLengthPairFlag :: Int -> Int
-setZeroLengthPairFlag flag = flipSetBit 3
-                           $ flipClrBit 1 flag
+setZeroLengthPairFlag flg = flipSetBit 3
+                           $ flipClrBit 1 flg
+
+-- 180423 set/confirm bit 1 (read mapped in proper pair)
+setProperPairMapFlagBit :: Int -> Int
+setProperPairMapFlagBit flg = flipSetBit 1 flg
 
 -- 180411 test for zero-trimmed alignment based on trimmed CIGAR
 -- NOTE: prior to converting zero-match CIGAR to "*"
@@ -2235,6 +2156,41 @@ removeNonPrimaryZeroLengthAlignments p =
         newr2s = filter (\x -> not $ trimdToZeroLength x) r2s
     in p { r1secs = newr1s, r2secs = newr2s }
 
+-- 180423 ensure flag bit 1 is set if trimmed PairedAln aligned insert size
+-- is within specific range
+-- TODO: make command line switch to enable/disable this option, and an arg
+-- to specify the insert size range to use for keeping bit 1 set
+-- NOTE: this function checks that bit 1 (read mapped in proper pair) is set
+-- for PairedAln where both reads are mapped and insert size range is between
+-- min and max (to ensure super-amplicon reads are included in variant calling).
+setProperInsertSizeRange :: Integer -> Integer -> PairedAln -> PairedAln
+setProperInsertSizeRange minsz maxsz p
+    | inrange && pairmapped = ensureBit1Set
+    | otherwise = p
+        where ensureBit1Set = setMapdProperPairBit p
+              inrange = checkInsertSize minsz maxsz p
+              pairmapped = ((mapped $ r1prim p) && (mapped $ r2prim p))
+                        -- || ((mapped $ r1prim p) && (any mapped (r2secs p))
+                        -- || ((any mapped (r1secs p)) && (mapped $ r2prim p)
+
+-- we're assuming that both R1 and R2 primary alignments are mapped after trimming.
+-- TODO: test whether, after trimming, there are pairs where a secondary alignment
+-- is mapped, but the primary alignment for that read is not mapped (presumably
+-- due to trimming-to-zero-length...)
+setMapdProperPairBit :: PairedAln -> PairedAln
+setMapdProperPairBit p =
+    let (r1p, r2p, _, _) = pairedAlnToTuple p
+        newr1p = r1p { flag = (setProperPairMapFlagBit $ flag r1p) }
+        newr2p = r2p { flag = (setProperPairMapFlagBit $ flag r2p) }
+    in p { r1prim = newr1p, r2prim = newr2p }
+
+checkInsertSize :: Integer -> Integer -> PairedAln -> Bool
+checkInsertSize minsz maxsz p
+    | (pairedmin >= minsz) && (pairedmax <= maxsz) = True
+    | otherwise = False
+        where pairedmin = minimum $ tlen <$> alns
+              pairedmax = maximum $ tlen <$> alns
+              alns = (r1prim p) : (r2prim p) : (join [(r1secs p), (r2secs p)])
 
 -- flip setBit and clearBit args for clearer syntax
 flipSetBit = flip setBit
@@ -2409,5 +2365,10 @@ findByQname name as = filter (\x -> (qname x) == name) as
 
 getNonHeaderAlns :: [AlignedRead] -> [AlignedRead]
 getNonHeaderAlns as = filter (not . isheader) as
+
+-- 180423 PairedAln to (r1primary, r2primary, r1seconds, r2seconds) 4-tuple
+pairedAlnToTuple :: PairedAln ->
+    (AlignedRead, AlignedRead, [AlignedRead], [AlignedRead])
+pairedAlnToTuple p = ((r1prim p), (r2prim p), (r1secs p), (r2secs p))
 
 -- end of Library
