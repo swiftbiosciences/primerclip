@@ -28,7 +28,6 @@ import qualified Data.IntMap.Strict as I
 import Data.Maybe
 import qualified Data.Set as S
 import GHC.Generics (Generic)
--- import Crypto.Hash
 
 {--
     Jonathan Irish

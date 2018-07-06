@@ -51,7 +51,7 @@ runPrimerTrimming args = do
     return runstats
 --}
 
--- 180206 adapt to optional primer coords input file formats
+-- 180206 
 runPrimerTrimming2 :: Opts -> IO RunStats
 runPrimerTrimming2 args = do
     (fmp, rmp) <- createprimerbedmaps args
