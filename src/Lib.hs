@@ -31,7 +31,7 @@ import GHC.Generics (Generic)
 
 {--
     Jonathan Irish
-    Post-alignment primer trimming tool v0.3
+    Post-alignment primer trimming tool v0.3.1
 
 --}
 
@@ -1660,6 +1660,7 @@ updateR2nextfields pa =
         trimdflagR1 = flag trimdaln
         nxtalns = (r2prim pa) : (r2secs pa)
         (newpr2:newsecr2s) = (\x -> x { pnext = trimdposR1 }) <$> nxtalns -- update pnext
+        -- NOTE: should MRNM be kept "*" for trimmed-to-0-length with mate still mapped???
     in pa { r2prim = newpr2, r2secs = newsecr2s }
 --}
 
@@ -1949,7 +1950,9 @@ clearNonRealCigar a
 -- {--
 -- 180409 clear flags only on trimmed-to-zero-length Alignments
 -- (NOT their mapped pairs)
--- TODO: set mate MRNM of trimmed-to-zero-length alignments to 
+-- TODO: set mate MRNM of trimmed-to-zero-length alignments to ... ?
+-- 180726 check case of one read not mapped pre-primerclip, and other read
+-- trimmed to zero-length alignment
 updateZeroTrimdPairFlags :: PairedAln -> PairedAln
 updateZeroTrimdPairFlags pa
     | (r1zerotrimd && r2zerotrimd) = clearedBothNextmapflags
@@ -2029,6 +2032,51 @@ updateZeroTrimdPairFields p
 --}
 
 -- {--
+-- 180726 IFF (mate read not mapped by bwa && read is trimmed to 0-length)
+-- then clear RNAME, POS, RNEXT (MRNM), and PNEXT for both reads
+clearR1primNextFields :: PairedAln -> PairedAln
+clearR1primNextFields p
+    | not $ mapped $ r1prim p = clearNamesAndPositions p
+    | otherwise = clearedNextFields
+        where r1p = r1prim p
+              newr1prim = r1p { rnext = "*"
+                              , pnext = 0
+                              , tlen = 0
+                              }
+              clearedNextFields = p { r1prim = newr1prim }
+
+clearR2primNextFields :: PairedAln -> PairedAln
+clearR2primNextFields p
+    | not $ mapped $ r2prim p = clearNamesAndPositions p
+    | otherwise = clearedNextFields
+        where r2p = r2prim p
+              newr2prim = r2p { rnext = "*"
+                              , pnext = 0
+                              , tlen = 0
+                              }
+              clearedNextFields = p { r2prim = newr2prim }
+
+clearNamesAndPositions :: PairedAln -> PairedAln
+clearNamesAndPositions p =
+    let r1p = r1prim p
+        r2p = r2prim p
+        newr1p = r1p { rname = NONE
+                     , pos = 0
+                     , rnext = "*"
+                     , pnext = 0
+                     , tlen = 0
+                     }
+        newr2p = r2p { rname = NONE
+                     , pos = 0
+                     , rnext = "*"
+                     , pnext = 0
+                     , tlen = 0
+                     }
+    in p { r1prim = newr1p, r2prim = newr2p }
+
+--}
+
+{--
 clearR1primNextFields :: PairedAln -> PairedAln
 clearR1primNextFields p =
     let r1p = r1prim p
