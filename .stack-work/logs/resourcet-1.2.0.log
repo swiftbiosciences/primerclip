@@ -1,0 +1,10 @@
+Configuring resourcet-1.2.0...
+Preprocessing library for resourcet-1.2.0..
+Building library for resourcet-1.2.0..
+[1 of 5] Compiling Data.Acquire.Internal ( Data/Acquire/Internal.hs, .stack-work/dist/x86_64-linux/Cabal-2.0.1.0/build/Data/Acquire/Internal.o )
+[2 of 5] Compiling Control.Monad.Trans.Resource.Internal ( Control/Monad/Trans/Resource/Internal.hs, .stack-work/dist/x86_64-linux/Cabal-2.0.1.0/build/Control/Monad/Trans/Resource/Internal.o )
+[3 of 5] Compiling Data.Acquire     ( Data/Acquire.hs, .stack-work/dist/x86_64-linux/Cabal-2.0.1.0/build/Data/Acquire.o )
+[4 of 5] Compiling Control.Monad.Trans.Resource ( Control/Monad/Trans/Resource.hs, .stack-work/dist/x86_64-linux/Cabal-2.0.1.0/build/Control/Monad/Trans/Resource.o )
+[5 of 5] Compiling UnliftIO.Resource ( UnliftIO/Resource.hs, .stack-work/dist/x86_64-linux/Cabal-2.0.1.0/build/UnliftIO/Resource.o )
+Installing library in /home/irish/.stack/snapshots/x86_64-linux/lts-11.0/8.2.2/lib/x86_64-linux-ghc-8.2.2/resourcet-1.2.0-FaeDJxDhKGX7f0ZDO14jZO
+Registering library for resourcet-1.2.0..

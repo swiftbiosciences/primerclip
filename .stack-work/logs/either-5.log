@@ -1,0 +1,7 @@
+Configuring either-5...
+Preprocessing library for either-5..
+Building library for either-5..
+[1 of 2] Compiling Data.Either.Combinators ( src/Data/Either/Combinators.hs, .stack-work/dist/x86_64-linux/Cabal-2.0.1.0/build/Data/Either/Combinators.o )
+[2 of 2] Compiling Data.Either.Validation ( src/Data/Either/Validation.hs, .stack-work/dist/x86_64-linux/Cabal-2.0.1.0/build/Data/Either/Validation.o )
+Installing library in /home/irish/.stack/snapshots/x86_64-linux/lts-11.0/8.2.2/lib/x86_64-linux-ghc-8.2.2/either-5-9shn4GTjB134COvJRjhDFi
+Registering library for either-5..

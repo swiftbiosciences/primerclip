@@ -1,0 +1,21 @@
+Configuring optparse-applicative-0.14.2.0...
+Preprocessing library for optparse-applicative-0.14.2.0..
+Building library for optparse-applicative-0.14.2.0..
+[ 1 of 16] Compiling Options.Applicative.Help.Levenshtein ( Options/Applicative/Help/Levenshtein.hs, .stack-work/dist/x86_64-linux/Cabal-2.0.1.0/build/Options/Applicative/Help/Levenshtein.o )
+[ 2 of 16] Compiling Options.Applicative.Help.Pretty ( Options/Applicative/Help/Pretty.hs, .stack-work/dist/x86_64-linux/Cabal-2.0.1.0/build/Options/Applicative/Help/Pretty.o )
+[ 3 of 16] Compiling Options.Applicative.Help.Chunk ( Options/Applicative/Help/Chunk.hs, .stack-work/dist/x86_64-linux/Cabal-2.0.1.0/build/Options/Applicative/Help/Chunk.o )
+[ 4 of 16] Compiling Options.Applicative.Help.Types ( Options/Applicative/Help/Types.hs, .stack-work/dist/x86_64-linux/Cabal-2.0.1.0/build/Options/Applicative/Help/Types.o )
+[ 5 of 16] Compiling Options.Applicative.Types ( Options/Applicative/Types.hs, .stack-work/dist/x86_64-linux/Cabal-2.0.1.0/build/Options/Applicative/Types.o )
+[ 6 of 16] Compiling Options.Applicative.Internal ( Options/Applicative/Internal.hs, .stack-work/dist/x86_64-linux/Cabal-2.0.1.0/build/Options/Applicative/Internal.o )
+[ 7 of 16] Compiling Options.Applicative.Common ( Options/Applicative/Common.hs, .stack-work/dist/x86_64-linux/Cabal-2.0.1.0/build/Options/Applicative/Common.o )
+[ 8 of 16] Compiling Options.Applicative.Help.Core ( Options/Applicative/Help/Core.hs, .stack-work/dist/x86_64-linux/Cabal-2.0.1.0/build/Options/Applicative/Help/Core.o )
+[ 9 of 16] Compiling Options.Applicative.Help ( Options/Applicative/Help.hs, .stack-work/dist/x86_64-linux/Cabal-2.0.1.0/build/Options/Applicative/Help.o )
+[10 of 16] Compiling Options.Applicative.Builder.Internal ( Options/Applicative/Builder/Internal.hs, .stack-work/dist/x86_64-linux/Cabal-2.0.1.0/build/Options/Applicative/Builder/Internal.o )
+[11 of 16] Compiling Options.Applicative.Builder.Completer ( Options/Applicative/Builder/Completer.hs, .stack-work/dist/x86_64-linux/Cabal-2.0.1.0/build/Options/Applicative/Builder/Completer.o )
+[12 of 16] Compiling Options.Applicative.Builder ( Options/Applicative/Builder.hs, .stack-work/dist/x86_64-linux/Cabal-2.0.1.0/build/Options/Applicative/Builder.o )
+[13 of 16] Compiling Options.Applicative.BashCompletion ( Options/Applicative/BashCompletion.hs, .stack-work/dist/x86_64-linux/Cabal-2.0.1.0/build/Options/Applicative/BashCompletion.o )
+[14 of 16] Compiling Options.Applicative.Extra ( Options/Applicative/Extra.hs, .stack-work/dist/x86_64-linux/Cabal-2.0.1.0/build/Options/Applicative/Extra.o )
+[15 of 16] Compiling Options.Applicative ( Options/Applicative.hs, .stack-work/dist/x86_64-linux/Cabal-2.0.1.0/build/Options/Applicative.o )
+[16 of 16] Compiling Options.Applicative.Arrows ( Options/Applicative/Arrows.hs, .stack-work/dist/x86_64-linux/Cabal-2.0.1.0/build/Options/Applicative/Arrows.o )
+Installing library in /home/irish/.stack/snapshots/x86_64-linux/lts-11.0/8.2.2/lib/x86_64-linux-ghc-8.2.2/optparse-applicative-0.14.2.0-7h0T7ONTR6AFGPMJCLb5iD
+Registering library for optparse-applicative-0.14.2.0..

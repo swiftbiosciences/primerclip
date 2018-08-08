@@ -1,11 +1,20 @@
 
 ==================== FINAL INTERFACE ====================
+<<<<<<< HEAD
 2018-03-21 15:26:54.274691 UTC
 
 interface primerclip-0.3.0.0-INSDieWpla3JQbuaUuDA6C:Lib [family instance module] 8002
   interface hash: 407b8da57fcb1384204a1c28e774affa
   ABI hash: c3c5aa59a179a58327398b80cf90a4fa
   export-list hash: 479934250a3b1d3c89dcf10b3ab062d0
+=======
+2018-03-20 21:30:25.442055 UTC
+
+interface primerclip-0.3.0.0-INSDieWpla3JQbuaUuDA6C:Lib [family instance module] 8002
+  interface hash: b31a84c1d47f198938bf9101507e7543
+  ABI hash: 54884153d5e5f2e6915286e93dd62ff9
+  export-list hash: eb795b608a6aec9d616cdeed562ee169
+>>>>>>> isizeflag
   orphan hash: 80418950aa91e122c021f4aca18c70eb
   flag hash: c700d67e8f1203d8103b9f3bfac8bb0d
   sig of: Nothing
@@ -16101,7 +16110,11 @@ b660bd34d4090d1ba42ce019e5c379de
   {- Arity: 10,
      Strictness: <L,U><L,U><L,U><S,U><L,U><L,U><S,U><L,U><L,C(C1(C1(C1(C1(U)))))><L,C(C1(C1(C1(U))))>,
      Inline: [0] -}
+<<<<<<< HEAD
 ec4b58b272e235425402653deef8f066
+=======
+6022f626669854dd731ea232eb0d8da3
+>>>>>>> isizeflag
   $wtrimalignment ::
     Data.ByteString.Internal.ByteString
     -> GHC.Types.Int
@@ -16135,9 +16148,13 @@ ec4b58b272e235425402653deef8f066
     -> GHC.Types.Bool
     -> Lib.AlignedRead
   {- Arity: 30,
-     Strictness: <L,U><L,U(U)><L,U><L,U><L,U><L,U><L,U(U,U,U,U)><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><S,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U>,
+     Strictness: <L,U><L,U><L,U><L,U><L,U><L,U><L,U(U,U,U,U)><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><S,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U>,
      Inline: [0] -}
+<<<<<<< HEAD
 1c7152b339514db606101799a7ec6e5d
+=======
+a70550c6124e106a909b3b4c509ffcad
+>>>>>>> isizeflag
   $wtrimboth ::
     Data.ByteString.Internal.ByteString
     -> GHC.Types.Int
@@ -16167,7 +16184,7 @@ ec4b58b272e235425402653deef8f066
     -> GHC.Types.Bool
     -> Lib.AlignedRead
   {- Arity: 26,
-     Strictness: <L,U><L,U(U)><L,U><L,U><L,U><L,U><L,U(U,U,U,U)><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U>,
+     Strictness: <L,U><L,U><L,U><L,U><L,U><L,U><L,U(U,U,U,U)><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U>,
      Inline: [0],
      Unfolding: (\ (ww :: Data.ByteString.Internal.ByteString)
                    (ww1 :: GHC.Types.Int)
@@ -16207,6 +16224,14 @@ ec4b58b272e235425402653deef8f066
                    = GHC.Integer.Type.minusInteger ww4 newendpos
                  } in
                  let {
+                   tendpos :: GHC.Integer.Type.Integer
+                   = case GHC.Integer.Type.ltInteger#
+                            rdiff
+                            Lib.calcNotMappedPct3 of wild { DEFAULT ->
+                     case GHC.Prim.tagToEnum# @ GHC.Types.Bool wild of wild1 {
+                       GHC.Types.False -> newendpos GHC.Types.True -> ww4 } }
+                 } in
+                 let {
                    newpos :: GHC.Integer.Type.Integer
                    = case ww17 of wild {
                        [] -> case GHC.List.badHead ret_ty GHC.Integer.Type.Integer of {}
@@ -16217,17 +16242,9 @@ ec4b58b272e235425402653deef8f066
                    fdiff :: GHC.Integer.Type.Integer
                    = GHC.Integer.Type.minusInteger newpos ww3
                  } in
-                 case Lib.updateCigB
-                        fdiff
-                        rdiff
-                        ww6 of ww26 { Data.ByteString.Internal.PS ww27 ww28 ww29 ww30 ->
                  let {
-                   tendpos :: GHC.Integer.Type.Integer
-                   = case GHC.Integer.Type.ltInteger#
-                            rdiff
-                            Lib.calcNotMappedPct3 of wild { DEFAULT ->
-                     case GHC.Prim.tagToEnum# @ GHC.Types.Bool wild of wild1 {
-                       GHC.Types.False -> newendpos GHC.Types.True -> ww4 } }
+                   newcig :: Data.ByteString.Internal.ByteString
+                   = Lib.updateCigB fdiff rdiff ww6
                  } in
                  let {
                    tpos :: GHC.Integer.Type.Integer
@@ -16237,6 +16254,7 @@ ec4b58b272e235425402653deef8f066
                      case GHC.Prim.tagToEnum# @ GHC.Types.Bool wild of wild1 {
                        GHC.Types.False -> newpos GHC.Types.True -> ww3 } }
                  } in
+<<<<<<< HEAD
                  let {
                    ww31 :: GHC.Types.Bool
                    = case GHC.Integer.Type.neqInteger# ww3 tpos of wild { DEFAULT ->
@@ -16411,6 +16429,128 @@ ec4b58b272e235425402653deef8f066
                         ww24
                         ww25 } }) -}
 513c7a209f03faea41be10e328dd310e
+=======
+                 Lib.AlignedRead
+                   ww
+                   ww1
+                   ww2
+                   ww3
+                   ww4
+                   ww5
+                   ww6
+                   newcig
+                   ww7
+                   (case Data.Either.rights1
+                           @ GHC.Base.String
+                           @ [(GHC.Integer.Type.Integer, Data.ByteString.Internal.ByteString)]
+                           (GHC.Types.:
+                              @ (Data.Either.Either
+                                   GHC.Base.String
+                                   [(GHC.Integer.Type.Integer,
+                                     Data.ByteString.Internal.ByteString)])
+                              (case newcig of wild { Data.ByteString.Internal.PS dt dt1 dt2 dt3 ->
+                               case Lib.$wparseCigar
+                                      @ [(GHC.Integer.Type.Integer,
+                                          Data.ByteString.Internal.ByteString)]
+                                      dt
+                                      dt1
+                                      dt2
+                                      dt3
+                                      dt3
+                                      0#
+                                      0#
+                                      Data.Attoparsec.Internal.Types.Complete
+                                      (Data.Attoparsec.ByteString.Internal.failK
+                                         @ [(GHC.Integer.Type.Integer,
+                                             Data.ByteString.Internal.ByteString)])
+                                        `cast`
+                                      (Sub (Sym (Data.Attoparsec.Internal.Types.D:R:StateByteString[0]))
+                                       ->_R <Data.Attoparsec.Internal.Types.Pos
+                                             -> Data.Attoparsec.Internal.Types.More
+                                             -> [GHC.Base.String]
+                                             -> GHC.Base.String
+                                             -> Data.Attoparsec.Internal.Types.IResult
+                                                  Data.ByteString.Internal.ByteString
+                                                  [(GHC.Integer.Type.Integer,
+                                                    Data.ByteString.Internal.ByteString)]>_R)
+                                      (Data.Attoparsec.ByteString.Internal.successK
+                                         @ [(GHC.Integer.Type.Integer,
+                                             Data.ByteString.Internal.ByteString)])
+                                        `cast`
+                                      (Sub (Sym (Data.Attoparsec.Internal.Types.D:R:StateByteString[0]))
+                                       ->_R <Data.Attoparsec.Internal.Types.Pos
+                                             -> Data.Attoparsec.Internal.Types.More
+                                             -> [(GHC.Integer.Type.Integer,
+                                                  Data.ByteString.Internal.ByteString)]
+                                             -> Data.Attoparsec.Internal.Types.IResult
+                                                  Data.ByteString.Internal.ByteString
+                                                  [(GHC.Integer.Type.Integer,
+                                                    Data.ByteString.Internal.ByteString)]>_R) of wild1 {
+                                 Data.Attoparsec.Internal.Types.Fail ds6 ds7 err
+                                 -> case ds7 of wild2 {
+                                      []
+                                      -> Data.Either.Left
+                                           @ GHC.Base.String
+                                           @ [(GHC.Integer.Type.Integer,
+                                               Data.ByteString.Internal.ByteString)]
+                                           err
+                                      : ipv ipv1
+                                      -> Data.Either.Left
+                                           @ [GHC.Types.Char]
+                                           @ [(GHC.Integer.Type.Integer,
+                                               Data.ByteString.Internal.ByteString)]
+                                           (GHC.Base.++
+                                              @ GHC.Types.Char
+                                              (Data.OldList.intercalate_$spoly_go
+                                                 @ GHC.Types.Char
+                                                 ipv
+                                                 (Data.OldList.prependToAll
+                                                    @ [GHC.Types.Char]
+                                                    Lib.safemapcig2
+                                                    ipv1))
+                                              (GHC.CString.unpackAppendCString# ": "# err)) }
+                                 Data.Attoparsec.Internal.Types.Partial ipv -> Lib.safemapcig1
+                                 Data.Attoparsec.Internal.Types.Done ds6 a1
+                                 -> Data.Either.Right
+                                      @ GHC.Base.String
+                                      @ [(GHC.Integer.Type.Integer,
+                                          Data.ByteString.Internal.ByteString)]
+                                      a1 } })
+                              (GHC.Types.[]
+                                 @ (Data.Either.Either
+                                      GHC.Base.String
+                                      [(GHC.Integer.Type.Integer,
+                                        Data.ByteString.Internal.ByteString)]))) of wild {
+                      []
+                      -> GHC.List.badHead
+                           @ [(GHC.Integer.Type.Integer, Data.ByteString.Internal.ByteString)]
+                      : x ds6 -> x })
+                   ww8
+                   ww9
+                   ww10
+                   ww11
+                   ww12
+                   ww13
+                   ww14
+                   ww15
+                   ww16
+                   ww17
+                   ww18
+                   ww19
+                   (case GHC.Integer.Type.neqInteger# ww3 tpos of wild { DEFAULT ->
+                    case GHC.Prim.tagToEnum# @ GHC.Types.Bool wild of wild1 {
+                      GHC.Types.False -> GHC.Integer.Type.neqInteger ww4 tendpos
+                      GHC.Types.True -> GHC.Types.True } })
+                   tpos
+                   tendpos
+                   ww20
+                   ww21
+                   ww22
+                   ww23
+                   ww24
+                   ww25) -}
+2293264682443d090f52684532f53917
+>>>>>>> isizeflag
   $wtrimfwd ::
     Data.ByteString.Internal.ByteString
     -> GHC.Types.Int
@@ -16441,7 +16581,7 @@ ec4b58b272e235425402653deef8f066
     -> GHC.Types.Bool
     -> Lib.AlignedRead
   {- Arity: 27,
-     Strictness: <L,U><L,U(U)><L,U><L,U><L,U><L,U><L,U(U,U,U,U)><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U>,
+     Strictness: <L,U><L,U><L,U><L,U><L,U><L,U><L,U(U,U,U,U)><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U>,
      Inline: [0],
      Unfolding: (\ (ww :: Data.ByteString.Internal.ByteString)
                    (ww1 :: GHC.Types.Int)
@@ -16481,95 +16621,9 @@ ec4b58b272e235425402653deef8f066
                    fdiff :: GHC.Integer.Type.Integer
                    = GHC.Integer.Type.minusInteger newpos ww3
                  } in
-                 case Lib.updateCigF
-                        fdiff
-                        ww6 of ww27 { Data.ByteString.Internal.PS ww28 ww29 ww30 ww31 ->
                  let {
-                   ww32 :: Lib.CigarMap
-                   = case Data.Either.rights1
-                            @ GHC.Base.String
-                            @ [(GHC.Integer.Type.Integer, Data.ByteString.Internal.ByteString)]
-                            (GHC.Types.:
-                               @ (Data.Either.Either
-                                    GHC.Base.String
-                                    [(GHC.Integer.Type.Integer,
-                                      Data.ByteString.Internal.ByteString)])
-                               (case Lib.$wparseCigar
-                                       @ [(GHC.Integer.Type.Integer,
-                                           Data.ByteString.Internal.ByteString)]
-                                       ww28
-                                       ww29
-                                       ww30
-                                       ww31
-                                       ww31
-                                       0#
-                                       0#
-                                       Data.Attoparsec.Internal.Types.Complete
-                                       (Data.Attoparsec.ByteString.Internal.failK
-                                          @ [(GHC.Integer.Type.Integer,
-                                              Data.ByteString.Internal.ByteString)])
-                                         `cast`
-                                       (Sub (Sym (Data.Attoparsec.Internal.Types.D:R:StateByteString[0]))
-                                        ->_R <Data.Attoparsec.Internal.Types.Pos
-                                              -> Data.Attoparsec.Internal.Types.More
-                                              -> [GHC.Base.String]
-                                              -> GHC.Base.String
-                                              -> Data.Attoparsec.Internal.Types.IResult
-                                                   Data.ByteString.Internal.ByteString
-                                                   [(GHC.Integer.Type.Integer,
-                                                     Data.ByteString.Internal.ByteString)]>_R)
-                                       (Data.Attoparsec.ByteString.Internal.successK
-                                          @ [(GHC.Integer.Type.Integer,
-                                              Data.ByteString.Internal.ByteString)])
-                                         `cast`
-                                       (Sub (Sym (Data.Attoparsec.Internal.Types.D:R:StateByteString[0]))
-                                        ->_R <Data.Attoparsec.Internal.Types.Pos
-                                              -> Data.Attoparsec.Internal.Types.More
-                                              -> [(GHC.Integer.Type.Integer,
-                                                   Data.ByteString.Internal.ByteString)]
-                                              -> Data.Attoparsec.Internal.Types.IResult
-                                                   Data.ByteString.Internal.ByteString
-                                                   [(GHC.Integer.Type.Integer,
-                                                     Data.ByteString.Internal.ByteString)]>_R) of wild {
-                                  Data.Attoparsec.Internal.Types.Fail ds6 ds7 err
-                                  -> case ds7 of wild1 {
-                                       []
-                                       -> Data.Either.Left
-                                            @ GHC.Base.String
-                                            @ [(GHC.Integer.Type.Integer,
-                                                Data.ByteString.Internal.ByteString)]
-                                            err
-                                       : ipv ipv1
-                                       -> Data.Either.Left
-                                            @ [GHC.Types.Char]
-                                            @ [(GHC.Integer.Type.Integer,
-                                                Data.ByteString.Internal.ByteString)]
-                                            (GHC.Base.++
-                                               @ GHC.Types.Char
-                                               (Data.OldList.intercalate_$spoly_go
-                                                  @ GHC.Types.Char
-                                                  ipv
-                                                  (Data.OldList.prependToAll
-                                                     @ [GHC.Types.Char]
-                                                     Lib.safemapcig2
-                                                     ipv1))
-                                               (GHC.CString.unpackAppendCString# ": "# err)) }
-                                  Data.Attoparsec.Internal.Types.Partial ipv -> Lib.safemapcig1
-                                  Data.Attoparsec.Internal.Types.Done ds6 a1
-                                  -> Data.Either.Right
-                                       @ GHC.Base.String
-                                       @ [(GHC.Integer.Type.Integer,
-                                           Data.ByteString.Internal.ByteString)]
-                                       a1 })
-                               (GHC.Types.[]
-                                  @ (Data.Either.Either
-                                       GHC.Base.String
-                                       [(GHC.Integer.Type.Integer,
-                                         Data.ByteString.Internal.ByteString)]))) of wild {
-                       []
-                       -> GHC.List.badHead
-                            @ [(GHC.Integer.Type.Integer, Data.ByteString.Internal.ByteString)]
-                       : x ds6 -> x }
+                   newcig :: Data.ByteString.Internal.ByteString
+                   = Lib.updateCigF fdiff ww6
                  } in
                  let {
                    tpos :: GHC.Integer.Type.Integer
@@ -16579,6 +16633,7 @@ ec4b58b272e235425402653deef8f066
                      case GHC.Prim.tagToEnum# @ GHC.Types.Bool wild of wild1 {
                        GHC.Types.False -> newpos GHC.Types.True -> ww3 } }
                  } in
+<<<<<<< HEAD
                  case (Lib.trimfwd_go
                          (Data.ByteString.Internal.$wunpackAppendCharsLazy
                             ww28
@@ -16655,6 +16710,125 @@ ec4b58b272e235425402653deef8f066
                         ww25
                         ww26 } }) -}
 0c2831a37a7f842e196182e9947a8f13
+=======
+                 Lib.AlignedRead
+                   ww
+                   ww1
+                   ww2
+                   ww3
+                   ww4
+                   ww5
+                   ww6
+                   newcig
+                   ww7
+                   (case Data.Either.rights1
+                           @ GHC.Base.String
+                           @ [(GHC.Integer.Type.Integer, Data.ByteString.Internal.ByteString)]
+                           (GHC.Types.:
+                              @ (Data.Either.Either
+                                   GHC.Base.String
+                                   [(GHC.Integer.Type.Integer,
+                                     Data.ByteString.Internal.ByteString)])
+                              (case newcig of wild { Data.ByteString.Internal.PS dt dt1 dt2 dt3 ->
+                               case Lib.$wparseCigar
+                                      @ [(GHC.Integer.Type.Integer,
+                                          Data.ByteString.Internal.ByteString)]
+                                      dt
+                                      dt1
+                                      dt2
+                                      dt3
+                                      dt3
+                                      0#
+                                      0#
+                                      Data.Attoparsec.Internal.Types.Complete
+                                      (Data.Attoparsec.ByteString.Internal.failK
+                                         @ [(GHC.Integer.Type.Integer,
+                                             Data.ByteString.Internal.ByteString)])
+                                        `cast`
+                                      (Sub (Sym (Data.Attoparsec.Internal.Types.D:R:StateByteString[0]))
+                                       ->_R <Data.Attoparsec.Internal.Types.Pos
+                                             -> Data.Attoparsec.Internal.Types.More
+                                             -> [GHC.Base.String]
+                                             -> GHC.Base.String
+                                             -> Data.Attoparsec.Internal.Types.IResult
+                                                  Data.ByteString.Internal.ByteString
+                                                  [(GHC.Integer.Type.Integer,
+                                                    Data.ByteString.Internal.ByteString)]>_R)
+                                      (Data.Attoparsec.ByteString.Internal.successK
+                                         @ [(GHC.Integer.Type.Integer,
+                                             Data.ByteString.Internal.ByteString)])
+                                        `cast`
+                                      (Sub (Sym (Data.Attoparsec.Internal.Types.D:R:StateByteString[0]))
+                                       ->_R <Data.Attoparsec.Internal.Types.Pos
+                                             -> Data.Attoparsec.Internal.Types.More
+                                             -> [(GHC.Integer.Type.Integer,
+                                                  Data.ByteString.Internal.ByteString)]
+                                             -> Data.Attoparsec.Internal.Types.IResult
+                                                  Data.ByteString.Internal.ByteString
+                                                  [(GHC.Integer.Type.Integer,
+                                                    Data.ByteString.Internal.ByteString)]>_R) of wild1 {
+                                 Data.Attoparsec.Internal.Types.Fail ds6 ds7 err
+                                 -> case ds7 of wild2 {
+                                      []
+                                      -> Data.Either.Left
+                                           @ GHC.Base.String
+                                           @ [(GHC.Integer.Type.Integer,
+                                               Data.ByteString.Internal.ByteString)]
+                                           err
+                                      : ipv ipv1
+                                      -> Data.Either.Left
+                                           @ [GHC.Types.Char]
+                                           @ [(GHC.Integer.Type.Integer,
+                                               Data.ByteString.Internal.ByteString)]
+                                           (GHC.Base.++
+                                              @ GHC.Types.Char
+                                              (Data.OldList.intercalate_$spoly_go
+                                                 @ GHC.Types.Char
+                                                 ipv
+                                                 (Data.OldList.prependToAll
+                                                    @ [GHC.Types.Char]
+                                                    Lib.safemapcig2
+                                                    ipv1))
+                                              (GHC.CString.unpackAppendCString# ": "# err)) }
+                                 Data.Attoparsec.Internal.Types.Partial ipv -> Lib.safemapcig1
+                                 Data.Attoparsec.Internal.Types.Done ds6 a1
+                                 -> Data.Either.Right
+                                      @ GHC.Base.String
+                                      @ [(GHC.Integer.Type.Integer,
+                                          Data.ByteString.Internal.ByteString)]
+                                      a1 } })
+                              (GHC.Types.[]
+                                 @ (Data.Either.Either
+                                      GHC.Base.String
+                                      [(GHC.Integer.Type.Integer,
+                                        Data.ByteString.Internal.ByteString)]))) of wild {
+                      []
+                      -> GHC.List.badHead
+                           @ [(GHC.Integer.Type.Integer, Data.ByteString.Internal.ByteString)]
+                      : x ds6 -> x })
+                   ww8
+                   ww9
+                   ww10
+                   ww11
+                   ww12
+                   ww13
+                   ww14
+                   ww15
+                   ww16
+                   ww17
+                   ww18
+                   ww19
+                   (GHC.Integer.Type.neqInteger ww3 tpos)
+                   tpos
+                   ww20
+                   ww21
+                   ww22
+                   ww23
+                   ww24
+                   ww25
+                   ww26) -}
+461e8e2367aa87883af7b324f3428ed5
+>>>>>>> isizeflag
   $wtrimrev ::
     Data.ByteString.Internal.ByteString
     -> GHC.Types.Int
@@ -16685,7 +16859,7 @@ ec4b58b272e235425402653deef8f066
     -> GHC.Types.Bool
     -> Lib.AlignedRead
   {- Arity: 27,
-     Strictness: <L,U><L,U(U)><L,U><L,U><L,U><L,U><L,U(U,U,U,U)><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U>,
+     Strictness: <L,U><L,U><L,U><L,U><L,U><L,U><L,U(U,U,U,U)><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U><L,U>,
      Inline: [0],
      Unfolding: (\ (ww :: Data.ByteString.Internal.ByteString)
                    (ww1 :: GHC.Types.Int)
@@ -16725,95 +16899,9 @@ ec4b58b272e235425402653deef8f066
                    rdiff :: GHC.Integer.Type.Integer
                    = GHC.Integer.Type.minusInteger ww4 newendpos
                  } in
-                 case Lib.updateCigR
-                        rdiff
-                        ww6 of ww27 { Data.ByteString.Internal.PS ww28 ww29 ww30 ww31 ->
                  let {
-                   ww32 :: Lib.CigarMap
-                   = case Data.Either.rights1
-                            @ GHC.Base.String
-                            @ [(GHC.Integer.Type.Integer, Data.ByteString.Internal.ByteString)]
-                            (GHC.Types.:
-                               @ (Data.Either.Either
-                                    GHC.Base.String
-                                    [(GHC.Integer.Type.Integer,
-                                      Data.ByteString.Internal.ByteString)])
-                               (case Lib.$wparseCigar
-                                       @ [(GHC.Integer.Type.Integer,
-                                           Data.ByteString.Internal.ByteString)]
-                                       ww28
-                                       ww29
-                                       ww30
-                                       ww31
-                                       ww31
-                                       0#
-                                       0#
-                                       Data.Attoparsec.Internal.Types.Complete
-                                       (Data.Attoparsec.ByteString.Internal.failK
-                                          @ [(GHC.Integer.Type.Integer,
-                                              Data.ByteString.Internal.ByteString)])
-                                         `cast`
-                                       (Sub (Sym (Data.Attoparsec.Internal.Types.D:R:StateByteString[0]))
-                                        ->_R <Data.Attoparsec.Internal.Types.Pos
-                                              -> Data.Attoparsec.Internal.Types.More
-                                              -> [GHC.Base.String]
-                                              -> GHC.Base.String
-                                              -> Data.Attoparsec.Internal.Types.IResult
-                                                   Data.ByteString.Internal.ByteString
-                                                   [(GHC.Integer.Type.Integer,
-                                                     Data.ByteString.Internal.ByteString)]>_R)
-                                       (Data.Attoparsec.ByteString.Internal.successK
-                                          @ [(GHC.Integer.Type.Integer,
-                                              Data.ByteString.Internal.ByteString)])
-                                         `cast`
-                                       (Sub (Sym (Data.Attoparsec.Internal.Types.D:R:StateByteString[0]))
-                                        ->_R <Data.Attoparsec.Internal.Types.Pos
-                                              -> Data.Attoparsec.Internal.Types.More
-                                              -> [(GHC.Integer.Type.Integer,
-                                                   Data.ByteString.Internal.ByteString)]
-                                              -> Data.Attoparsec.Internal.Types.IResult
-                                                   Data.ByteString.Internal.ByteString
-                                                   [(GHC.Integer.Type.Integer,
-                                                     Data.ByteString.Internal.ByteString)]>_R) of wild {
-                                  Data.Attoparsec.Internal.Types.Fail ds6 ds7 err
-                                  -> case ds7 of wild1 {
-                                       []
-                                       -> Data.Either.Left
-                                            @ GHC.Base.String
-                                            @ [(GHC.Integer.Type.Integer,
-                                                Data.ByteString.Internal.ByteString)]
-                                            err
-                                       : ipv ipv1
-                                       -> Data.Either.Left
-                                            @ [GHC.Types.Char]
-                                            @ [(GHC.Integer.Type.Integer,
-                                                Data.ByteString.Internal.ByteString)]
-                                            (GHC.Base.++
-                                               @ GHC.Types.Char
-                                               (Data.OldList.intercalate_$spoly_go
-                                                  @ GHC.Types.Char
-                                                  ipv
-                                                  (Data.OldList.prependToAll
-                                                     @ [GHC.Types.Char]
-                                                     Lib.safemapcig2
-                                                     ipv1))
-                                               (GHC.CString.unpackAppendCString# ": "# err)) }
-                                  Data.Attoparsec.Internal.Types.Partial ipv -> Lib.safemapcig1
-                                  Data.Attoparsec.Internal.Types.Done ds6 a1
-                                  -> Data.Either.Right
-                                       @ GHC.Base.String
-                                       @ [(GHC.Integer.Type.Integer,
-                                           Data.ByteString.Internal.ByteString)]
-                                       a1 })
-                               (GHC.Types.[]
-                                  @ (Data.Either.Either
-                                       GHC.Base.String
-                                       [(GHC.Integer.Type.Integer,
-                                         Data.ByteString.Internal.ByteString)]))) of wild {
-                       []
-                       -> GHC.List.badHead
-                            @ [(GHC.Integer.Type.Integer, Data.ByteString.Internal.ByteString)]
-                       : x ds6 -> x }
+                   newcig :: Data.ByteString.Internal.ByteString
+                   = Lib.updateCigR rdiff ww6
                  } in
                  let {
                    tendpos :: GHC.Integer.Type.Integer
@@ -16823,6 +16911,7 @@ ec4b58b272e235425402653deef8f066
                      case GHC.Prim.tagToEnum# @ GHC.Types.Bool wild of wild1 {
                        GHC.Types.False -> newendpos GHC.Types.True -> ww4 } }
                  } in
+<<<<<<< HEAD
                  case (Lib.trimrev_go
                          (Data.ByteString.Internal.$wunpackAppendCharsLazy
                             ww28
@@ -16898,6 +16987,124 @@ ec4b58b272e235425402653deef8f066
                         ww24
                         ww25
                         ww26 } }) -}
+=======
+                 Lib.AlignedRead
+                   ww
+                   ww1
+                   ww2
+                   ww3
+                   ww4
+                   ww5
+                   ww6
+                   newcig
+                   ww7
+                   (case Data.Either.rights1
+                           @ GHC.Base.String
+                           @ [(GHC.Integer.Type.Integer, Data.ByteString.Internal.ByteString)]
+                           (GHC.Types.:
+                              @ (Data.Either.Either
+                                   GHC.Base.String
+                                   [(GHC.Integer.Type.Integer,
+                                     Data.ByteString.Internal.ByteString)])
+                              (case newcig of wild { Data.ByteString.Internal.PS dt dt1 dt2 dt3 ->
+                               case Lib.$wparseCigar
+                                      @ [(GHC.Integer.Type.Integer,
+                                          Data.ByteString.Internal.ByteString)]
+                                      dt
+                                      dt1
+                                      dt2
+                                      dt3
+                                      dt3
+                                      0#
+                                      0#
+                                      Data.Attoparsec.Internal.Types.Complete
+                                      (Data.Attoparsec.ByteString.Internal.failK
+                                         @ [(GHC.Integer.Type.Integer,
+                                             Data.ByteString.Internal.ByteString)])
+                                        `cast`
+                                      (Sub (Sym (Data.Attoparsec.Internal.Types.D:R:StateByteString[0]))
+                                       ->_R <Data.Attoparsec.Internal.Types.Pos
+                                             -> Data.Attoparsec.Internal.Types.More
+                                             -> [GHC.Base.String]
+                                             -> GHC.Base.String
+                                             -> Data.Attoparsec.Internal.Types.IResult
+                                                  Data.ByteString.Internal.ByteString
+                                                  [(GHC.Integer.Type.Integer,
+                                                    Data.ByteString.Internal.ByteString)]>_R)
+                                      (Data.Attoparsec.ByteString.Internal.successK
+                                         @ [(GHC.Integer.Type.Integer,
+                                             Data.ByteString.Internal.ByteString)])
+                                        `cast`
+                                      (Sub (Sym (Data.Attoparsec.Internal.Types.D:R:StateByteString[0]))
+                                       ->_R <Data.Attoparsec.Internal.Types.Pos
+                                             -> Data.Attoparsec.Internal.Types.More
+                                             -> [(GHC.Integer.Type.Integer,
+                                                  Data.ByteString.Internal.ByteString)]
+                                             -> Data.Attoparsec.Internal.Types.IResult
+                                                  Data.ByteString.Internal.ByteString
+                                                  [(GHC.Integer.Type.Integer,
+                                                    Data.ByteString.Internal.ByteString)]>_R) of wild1 {
+                                 Data.Attoparsec.Internal.Types.Fail ds6 ds7 err
+                                 -> case ds7 of wild2 {
+                                      []
+                                      -> Data.Either.Left
+                                           @ GHC.Base.String
+                                           @ [(GHC.Integer.Type.Integer,
+                                               Data.ByteString.Internal.ByteString)]
+                                           err
+                                      : ipv ipv1
+                                      -> Data.Either.Left
+                                           @ [GHC.Types.Char]
+                                           @ [(GHC.Integer.Type.Integer,
+                                               Data.ByteString.Internal.ByteString)]
+                                           (GHC.Base.++
+                                              @ GHC.Types.Char
+                                              (Data.OldList.intercalate_$spoly_go
+                                                 @ GHC.Types.Char
+                                                 ipv
+                                                 (Data.OldList.prependToAll
+                                                    @ [GHC.Types.Char]
+                                                    Lib.safemapcig2
+                                                    ipv1))
+                                              (GHC.CString.unpackAppendCString# ": "# err)) }
+                                 Data.Attoparsec.Internal.Types.Partial ipv -> Lib.safemapcig1
+                                 Data.Attoparsec.Internal.Types.Done ds6 a1
+                                 -> Data.Either.Right
+                                      @ GHC.Base.String
+                                      @ [(GHC.Integer.Type.Integer,
+                                          Data.ByteString.Internal.ByteString)]
+                                      a1 } })
+                              (GHC.Types.[]
+                                 @ (Data.Either.Either
+                                      GHC.Base.String
+                                      [(GHC.Integer.Type.Integer,
+                                        Data.ByteString.Internal.ByteString)]))) of wild {
+                      []
+                      -> GHC.List.badHead
+                           @ [(GHC.Integer.Type.Integer, Data.ByteString.Internal.ByteString)]
+                      : x ds6 -> x })
+                   ww8
+                   ww9
+                   ww10
+                   ww11
+                   ww12
+                   ww13
+                   ww14
+                   ww15
+                   ww16
+                   ww17
+                   ww18
+                   ww19
+                   (GHC.Integer.Type.neqInteger ww4 tendpos)
+                   ww20
+                   tendpos
+                   ww21
+                   ww22
+                   ww23
+                   ww24
+                   ww25
+                   ww26) -}
+>>>>>>> isizeflag
 e2d78affd31b272aa65931c5894c04bc
   $wtxtfieldp ::
     GHC.Prim.Addr#
@@ -16919,7 +17126,11 @@ e2d78affd31b272aa65931c5894c04bc
   {- Arity: 9,
      Strictness: <S,U><L,U><S,U><S,U><L,U><L,U><S,U><L,U><L,C(C1(C1(C1(U))))>,
      Inline: [0] -}
+<<<<<<< HEAD
 2a76802060c502455d6cc098e5c902eb
+=======
+00664812542471fa9a7172605718ea64
+>>>>>>> isizeflag
   $wuchrparser ::
     GHC.Prim.Addr#
     -> GHC.ForeignPtr.ForeignPtrContents
@@ -16945,6 +17156,7 @@ e2d78affd31b272aa65931c5894c04bc
   {- Arity: 10,
      Strictness: <L,U><L,U><L,U><S,U><L,U><L,U><S,U><L,U><L,C(C1(C1(C1(C1(U)))))><L,C(C1(C1(C1(U))))>,
      Inline: [0] -}
+<<<<<<< HEAD
 8ce9ed89bdb7608f5c6c666ea8086aaf
   $wupdateTrimdAlnFields ::
     Data.ByteString.Internal.ByteString
@@ -17226,6 +17438,9 @@ e2d78affd31b272aa65931c5894c04bc
                              ww29
                              ww30 } } } }) -}
 928599341104993b15d7bd5168ad01c7
+=======
+63e29deddd8fe383ca25190153b8f3fb
+>>>>>>> isizeflag
   data AlignedRead
     = AlignedRead {qname :: Data.ByteString.Internal.ByteString,
                    flag :: GHC.Types.Int,
@@ -20136,7 +20351,11 @@ ace7d249e3f8d931412be3b88b7e0e1d
                  case w of ww { Lib.AlignedRead ww1 ww2 ww3 ww4 ww5 ww6 ww7 ww8 ww9 ww10 ww11 ww12 ww13 ww14 ww15 ww16 ww17 ww18 ww19 ww20 ww21 ww22 ww23 ww24 ww25 ww26 ww27 ww28 ww29 ww30 ww31 ->
                  case ww7 of ww32 { Data.ByteString.Internal.PS ww33 ww34 ww35 ww36 ->
                  Lib.$wcigseqlenHdrPassTest ww33 ww34 ww35 ww36 ww8 ww14 } }) -}
+<<<<<<< HEAD
 7140699a06197ed2882e33cfea87996f
+=======
+a9c293a81d7df54b7f5729b947ce0845
+>>>>>>> isizeflag
   clearNonRealCigar :: Lib.AlignedRead -> Lib.AlignedRead
   {- Arity: 1,
      Strictness: <S(LLLLLLLS(SLSS)LLLLLLLLLLLLLLLLLLLLLLL),1*U(U,U(U),U,U,U,U,U,U(U,U,U,U),U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U)>,
@@ -25896,10 +26115,14 @@ d7e261dc60bbde1fecc3ee7264f53a22
 ddcfe8895063bf37a7fb6e427f2d7f03
   toBin_go :: [GHC.Types.Int] -> [GHC.Types.Char]
   {- Arity: 1, HasNoCafRefs, Strictness: <S,1*U> -}
+<<<<<<< HEAD
 bc101295c5fe66cfca30b496b3b22fbc
+=======
+85efe579fda97da17e9eb133753c482a
+>>>>>>> isizeflag
   trimalignment :: Lib.AlignedRead -> Lib.AlignedRead
   {- Arity: 1,
-     Strictness: <S(LLLLLLLLLLLLLLLLLLLSLLLLLLLLLLL),1*U(U,U(U),U,U,U,U,U(U,U,U,U),A,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U)>,
+     Strictness: <S(LLLLLLLLLLLLLLLLLLLSLLLLLLLLLLL),1*U(U,U,U,U,U,U,U(U,U,U,U),A,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U)>,
      Inline: INLINE[0],
      Unfolding: InlineRule (1, True, False)
                 (\ (w :: Lib.AlignedRead) ->
@@ -25935,10 +26158,14 @@ bc101295c5fe66cfca30b496b3b22fbc
                    ww29
                    ww30
                    ww31 }) -}
+<<<<<<< HEAD
 c22a44ff58ff975d66ae5aa1570871fe
+=======
+db689b3e839cd95f997a0062b1ca29ff
+>>>>>>> isizeflag
   trimboth :: Lib.AlignedRead -> Lib.AlignedRead
   {- Arity: 1,
-     Strictness: <S,1*U(U,U(U),U,U,U,U,U(U,U,U,U),A,U,A,U,U,U,U,U,U,U,U,U,U,U,U,A,A,A,U,U,U,U,U,U)>,
+     Strictness: <S,1*U(U,U,U,U,U,U,U(U,U,U,U),A,U,A,U,U,U,U,U,U,U,U,U,U,U,U,A,A,A,U,U,U,U,U,U)>,
      Inline: INLINE[0],
      Unfolding: InlineRule (1, True, False)
                 (\ (w :: Lib.AlignedRead) ->
@@ -25970,10 +26197,14 @@ c22a44ff58ff975d66ae5aa1570871fe
                    ww29
                    ww30
                    ww31 }) -}
+<<<<<<< HEAD
 40d201ef1b759a14de6e82ed08200b5b
   trimboth_go :: [GHC.Types.Char] -> Data.Monoid.Any
   {- Arity: 1, Strictness: <S,1*U> -}
 1847d1699a0213416fee912106992219
+=======
+2b8432c26ec44dab38c06c3e9d46e7b3
+>>>>>>> isizeflag
   trimdToZeroLength :: Lib.AlignedRead -> GHC.Types.Bool
   RecSel Left Lib.AlignedRead
   {- Arity: 1, HasNoCafRefs,
@@ -26028,10 +26259,14 @@ e2ecf88dd5486d189e54f3a49570c523
                 (\ (ds6 :: Lib.AlignedRead) ->
                  case ds6 of wild { Lib.AlignedRead ds7 ds8 ds9 ds10 ds11 ds12 ds13 ds14 ds15 ds16 ds17 ds18 ds19 ds20 ds21 ds22 ds23 ds24 ds25 ds26 ds27 ds28 ds29 ds30 ds31 ds32 ds33 ds34 ds35 ds36 ds37 ->
                  ds30 }) -}
+<<<<<<< HEAD
 893e127536c94a2b1c7ab38f095429d1
+=======
+1442f8dd64cf69244cb4da093b5c4ee8
+>>>>>>> isizeflag
   trimfwd :: Lib.AlignedRead -> Lib.AlignedRead
   {- Arity: 1,
-     Strictness: <S,1*U(U,U(U),U,U,U,U,U(U,U,U,U),A,U,A,U,U,U,U,U,U,U,U,U,U,U,U,A,A,U,U,U,U,U,U,U)>,
+     Strictness: <S,1*U(U,U,U,U,U,U,U(U,U,U,U),A,U,A,U,U,U,U,U,U,U,U,U,U,U,U,A,A,U,U,U,U,U,U,U)>,
      Inline: INLINE[0],
      Unfolding: InlineRule (1, True, False)
                 (\ (w :: Lib.AlignedRead) ->
@@ -26064,9 +26299,6 @@ e2ecf88dd5486d189e54f3a49570c523
                    ww29
                    ww30
                    ww31 }) -}
-dda6a1b454eafbbb5515dfe39b20dd4c
-  trimfwd_go :: [GHC.Types.Char] -> Data.Monoid.Any
-  {- Arity: 1, Strictness: <S,1*U> -}
 2c455f6ace9255073b4f18f28b975944
   trimmedPct :: Lib.RunStats -> GHC.Types.Double
   RecSel Left Lib.RunStats
@@ -26076,7 +26308,11 @@ dda6a1b454eafbbb5515dfe39b20dd4c
                 (\ (ds6 :: Lib.RunStats) ->
                  case ds6 of wild { Lib.RunStats ds7 ds8 ds9 ds10 ds11 ds12 ->
                  ds11 }) -}
+<<<<<<< HEAD
 51810aaf26992f374e4d6f298bdf239b
+=======
+edcc4270a224eb7d7120ed2e5cb62d35
+>>>>>>> isizeflag
   trimprimersE ::
     Lib.CMap -> Lib.CMap -> Lib.AlignedRead -> Lib.AlignedRead
   {- Arity: 3,
@@ -26184,10 +26420,14 @@ c1ac52c40aa8632fd229a777d12c8e01
                    (GHC.ForeignPtr.PlainForeignPtr ipv1)
                    0#
                    (GHC.Prim.word2Int# ds8) } }) -}
+<<<<<<< HEAD
 e4eee2d5767f85bbbfbe7958e295e22a
+=======
+53cf7d8f3d7432a245cb6e38d565637d
+>>>>>>> isizeflag
   trimrev :: Lib.AlignedRead -> Lib.AlignedRead
   {- Arity: 1,
-     Strictness: <S,1*U(U,U(U),U,U,U,U,U(U,U,U,U),A,U,A,U,U,U,U,U,U,U,U,U,U,U,U,A,U,A,U,U,U,U,U,U)>,
+     Strictness: <S,1*U(U,U,U,U,U,U,U(U,U,U,U),A,U,A,U,U,U,U,U,U,U,U,U,U,U,U,A,U,A,U,U,U,U,U,U)>,
      Inline: INLINE[0],
      Unfolding: InlineRule (1, True, False)
                 (\ (w :: Lib.AlignedRead) ->
@@ -26220,10 +26460,14 @@ e4eee2d5767f85bbbfbe7958e295e22a
                    ww29
                    ww30
                    ww31 }) -}
+<<<<<<< HEAD
 cbc0f655a1871c793a1738ab4141689e
   trimrev_go :: [GHC.Types.Char] -> Data.Monoid.Any
   {- Arity: 1, Strictness: <S,1*U> -}
 7eb4fda2d43b6ed44afd08b6b7f2d7ed
+=======
+4766d5c8508774aa8b8cc62275a2df57
+>>>>>>> isizeflag
   txposedcount :: Lib.MidFamily -> GHC.Integer.Type.Integer
   RecSel Left Lib.MidFamily
   {- Arity: 1, HasNoCafRefs,
@@ -26316,60 +26560,152 @@ be6dd59fc915509adaad67a5dcf5ef27
     GHC.Integer.Type.Integer
     -> Data.ByteString.Internal.ByteString
     -> Data.ByteString.Internal.ByteString
+<<<<<<< HEAD
   {- Arity: 2, Strictness: <L,U><L,U(U,U,U,U)> -}
 9866283da6689b1a8bb1006cc0aa667f
+=======
+  {- Arity: 2, Strictness: <L,1*U><L,U(U,U,U,U)> -}
+01e954607957e4976bf7efbbad901504
+>>>>>>> isizeflag
   updateTrimdAlnFields :: Lib.AlignedRead -> Lib.AlignedRead
   {- Arity: 1,
-     Strictness: <S(LLLLLLLLLLLLLLLLLLLLLLSLLLLLLLL),1*U(U,U,U,U,U,U,U,U(U,U,U,U),U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U)>,
+     Strictness: <S(LLLLLLLS(SLSS)LLLLLLLLLLLLLLLLLLLLLLL),1*U(U,U,U,U,U,U,U,U(U,U,U,U),U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U)>,
      Inline: INLINE[0],
      Unfolding: InlineRule (1, True, False)
                 (\ (w :: Lib.AlignedRead) ->
                  case w of ww { Lib.AlignedRead ww1 ww2 ww3 ww4 ww5 ww6 ww7 ww8 ww9 ww10 ww11 ww12 ww13 ww14 ww15 ww16 ww17 ww18 ww19 ww20 ww21 ww22 ww23 ww24 ww25 ww26 ww27 ww28 ww29 ww30 ww31 ->
-                 Lib.$wupdateTrimdAlnFields
-                   ww1
-                   ww2
-                   ww3
-                   ww4
-                   ww5
-                   ww6
-                   ww7
-                   ww8
-                   ww9
-                   ww10
-                   ww11
-                   ww12
-                   ww13
-                   ww14
-                   ww15
-                   ww16
-                   ww17
-                   ww18
-                   ww19
-                   ww20
-                   ww21
-                   ww22
-                   ww23
-                   ww24
-                   ww25
-                   ww26
-                   ww27
-                   ww28
-                   ww29
-                   ww30
-                   ww31 }) -}
-1af88e5056e5e535de77be736bf07612
+                 case ww8 of ww32 { Data.ByteString.Internal.PS ww33 ww34 ww35 ww36 ->
+                 case (Lib.updateTrimdAlnFields_go
+                         (Data.ByteString.Internal.$wunpackAppendCharsLazy
+                            ww33
+                            ww34
+                            ww35
+                            ww36
+                            (GHC.Types.[] @ GHC.Types.Char)))
+                        `cast`
+                      (Data.Monoid.N:Any[0]) of wild {
+                   GHC.Types.False
+                   -> case ww23 of wild1 {
+                        GHC.Types.False
+                        -> Lib.AlignedRead
+                             ww1
+                             ww2
+                             ww3
+                             ww4
+                             ww5
+                             ww6
+                             ww7
+                             (Data.ByteString.Internal.PS ww33 ww34 ww35 ww36)
+                             ww9
+                             ww10
+                             ww11
+                             ww12
+                             ww13
+                             ww14
+                             ww15
+                             ww16
+                             ww17
+                             ww18
+                             ww19
+                             ww20
+                             ww21
+                             ww22
+                             GHC.Types.False
+                             ww24
+                             ww25
+                             ww26
+                             ww27
+                             ww28
+                             ww29
+                             ww30
+                             ww31
+                        GHC.Types.True
+                        -> Lib.AlignedRead
+                             ww1
+                             ww2
+                             ww3
+                             ww4
+                             ww5
+                             ww6
+                             ww7
+                             (Data.ByteString.Internal.PS ww33 ww34 ww35 ww36)
+                             ww9
+                             ww10
+                             ww11
+                             ww12
+                             ww13
+                             ww14
+                             ww15
+                             (Data.ByteString.Internal.$fMonoidByteString_$cmconcat
+                                (GHC.Types.:
+                                   @ Data.ByteString.Internal.ByteString
+                                   ww16
+                                   Lib.updateTrimdAlnFields5))
+                             ww17
+                             ww18
+                             ww19
+                             ww20
+                             ww21
+                             ww22
+                             GHC.Types.True
+                             ww24
+                             ww25
+                             ww26
+                             ww27
+                             ww28
+                             ww29
+                             ww30
+                             GHC.Types.True }
+                   GHC.Types.True
+                   -> Lib.AlignedRead
+                        ww1
+                        ww2
+                        ww3
+                        ww4
+                        ww5
+                        ww6
+                        ww7
+                        (Data.ByteString.Internal.PS ww33 ww34 ww35 ww36)
+                        ww9
+                        ww10
+                        ww11
+                        ww12
+                        ww13
+                        ww14
+                        ww15
+                        (Data.ByteString.Internal.$fMonoidByteString_$cmconcat
+                           (GHC.Types.:
+                              @ Data.ByteString.Internal.ByteString
+                              ww16
+                              Lib.updateTrimdAlnFields1))
+                        ww17
+                        ww18
+                        ww19
+                        ww20
+                        ww21
+                        ww22
+                        ww23
+                        ww24
+                        ww25
+                        ww26
+                        ww27
+                        ww28
+                        ww29
+                        ww30
+                        ww31 } } }) -}
+3bd7fe19684add3ae6f67b9c7b535b8d
   updateTrimdAlnFields1 :: [Data.ByteString.Internal.ByteString]
   {- Unfolding: (GHC.Types.:
                    @ Data.ByteString.Internal.ByteString
                    Lib.updateTrimdAlnFields4
                    Lib.updateTrimdAlnFields2) -}
-1ac410e4af39345b04ef9140a28c405b
+2d9aa631c2d933a17d7024d7eaf609fb
   updateTrimdAlnFields2 :: [Data.ByteString.Internal.ByteString]
   {- Unfolding: (GHC.Types.:
                    @ Data.ByteString.Internal.ByteString
                    Lib.updateTrimdAlnFields3
                    (GHC.Types.[] @ Data.ByteString.Internal.ByteString)) -}
-dd2137b92bca57f4b9f10893b76e5a3b
+5fbb9e2a1ea898860e4a4007ef6ca533
   updateTrimdAlnFields3 :: Data.ByteString.Internal.ByteString
   {- Unfolding: (case GHC.Prim.newMutVar#
                         @ GHC.ForeignPtr.Finalizers
@@ -26377,8 +26713,7 @@ dd2137b92bca57f4b9f10893b76e5a3b
                         GHC.ForeignPtr.NoFinalizers
                         GHC.Prim.realWorld# of ds6 { (#,#) ipv ipv1 ->
                  let {
-                   addr# :: GHC.Prim.Addr#
-                   = "CO:Z:zero_alignment_length_after_primer_trim"#
+                   addr# :: GHC.Prim.Addr# = "CO:Z:primer_trimmed"#
                  } in
                  case {__pkg_ccall bytestring-0.10.8.1@bytestring-0.10.8.1 strlen GHC.Prim.Addr#
                                                                                   -> GHC.Prim.State#
@@ -26416,19 +26751,19 @@ dd2137b92bca57f4b9f10893b76e5a3b
                    (GHC.ForeignPtr.PlainForeignPtr ipv1)
                    0#
                    (GHC.Prim.word2Int# ds8) } }) -}
-d325697fc18ca1a11ddbe1b8490104b5
+6b375f54717d148f552b4995b515247b
   updateTrimdAlnFields5 :: [Data.ByteString.Internal.ByteString]
   {- Unfolding: (GHC.Types.:
                    @ Data.ByteString.Internal.ByteString
                    Lib.updateTrimdAlnFields8
                    Lib.updateTrimdAlnFields6) -}
-279db39f91495cba769379991871f195
+c791adfcd18c6ceaa41e13bbbc9f626b
   updateTrimdAlnFields6 :: [Data.ByteString.Internal.ByteString]
   {- Unfolding: (GHC.Types.:
                    @ Data.ByteString.Internal.ByteString
                    Lib.updateTrimdAlnFields7
                    (GHC.Types.[] @ Data.ByteString.Internal.ByteString)) -}
-6861a2efa01da5ad7e549fdf12199d8b
+df297cfd6b357eb0252fabb65349c4f0
   updateTrimdAlnFields7 :: Data.ByteString.Internal.ByteString
   {- Unfolding: (case GHC.Prim.newMutVar#
                         @ GHC.ForeignPtr.Finalizers
@@ -26436,7 +26771,8 @@ d325697fc18ca1a11ddbe1b8490104b5
                         GHC.ForeignPtr.NoFinalizers
                         GHC.Prim.realWorld# of ds6 { (#,#) ipv ipv1 ->
                  let {
-                   addr# :: GHC.Prim.Addr# = "CO:Z:primer_trimmed"#
+                   addr# :: GHC.Prim.Addr#
+                   = "CO:Z:zero_alignment_length_after_primer_trim"#
                  } in
                  case {__pkg_ccall bytestring-0.10.8.1@bytestring-0.10.8.1 strlen GHC.Prim.Addr#
                                                                                   -> GHC.Prim.State#
@@ -26474,29 +26810,9 @@ dd06f564f10a0cd67985f8e8d7cd8718
                    (GHC.ForeignPtr.PlainForeignPtr ipv1)
                    0#
                    (GHC.Prim.word2Int# ds8) } }) -}
-110826cf5f33bb2a6f56517346be63d6
-  updateTrimdAlnFields9 :: Data.ByteString.Internal.ByteString
-  {- Unfolding: (case GHC.Prim.newMutVar#
-                        @ GHC.ForeignPtr.Finalizers
-                        @ GHC.Prim.RealWorld
-                        GHC.ForeignPtr.NoFinalizers
-                        GHC.Prim.realWorld# of ds6 { (#,#) ipv ipv1 ->
-                 let {
-                   addr# :: GHC.Prim.Addr# = "*"#
-                 } in
-                 case {__pkg_ccall bytestring-0.10.8.1@bytestring-0.10.8.1 strlen GHC.Prim.Addr#
-                                                                                  -> GHC.Prim.State#
-                                                                                       GHC.Prim.RealWorld
-                                                                                  -> (# GHC.Prim.State#
-                                                                                          GHC.Prim.RealWorld,
-                                                                                        GHC.Prim.Word# #)}
-                        addr#
-                        ipv of wild { (#,#) ds7 ds8 ->
-                 Data.ByteString.Internal.PS
-                   addr#
-                   (GHC.ForeignPtr.PlainForeignPtr ipv1)
-                   0#
-                   (GHC.Prim.word2Int# ds8) } }) -}
+a97adb72386b74b6a8e0ab5110a43a5d
+  updateTrimdAlnFields_go :: [GHC.Types.Char] -> Data.Monoid.Any
+  {- Arity: 1, Strictness: <S,1*U> -}
 ec884de73d85bcb5f9a530454b481e9a
   writeRunStats :: GHC.IO.FilePath -> Lib.RunStats -> GHC.Types.IO ()
   {- Arity: 2, Strictness: <L,U><L,U(U,U,U,U,1*U(U),1*U(U))>,

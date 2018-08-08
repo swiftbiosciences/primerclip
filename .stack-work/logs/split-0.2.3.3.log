@@ -1,0 +1,7 @@
+Configuring split-0.2.3.3...
+Preprocessing library for split-0.2.3.3..
+Building library for split-0.2.3.3..
+[1 of 2] Compiling Data.List.Split.Internals ( src/Data/List/Split/Internals.hs, .stack-work/dist/x86_64-linux/Cabal-2.0.1.0/build/Data/List/Split/Internals.o )
+[2 of 2] Compiling Data.List.Split  ( src/Data/List/Split.hs, .stack-work/dist/x86_64-linux/Cabal-2.0.1.0/build/Data/List/Split.o )
+Installing library in /home/irish/.stack/snapshots/x86_64-linux/lts-11.0/8.2.2/lib/x86_64-linux-ghc-8.2.2/split-0.2.3.3-69JBPqG5rhJEaFzFyiVOGW
+Registering library for split-0.2.3.3..

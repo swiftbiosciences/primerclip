@@ -1,0 +1,9 @@
+Configuring integer-logarithms-1.0.2.1...
+Preprocessing library for integer-logarithms-1.0.2.1..
+Building library for integer-logarithms-1.0.2.1..
+[1 of 4] Compiling GHC.Integer.Logarithms.Compat ( src/GHC/Integer/Logarithms/Compat.hs, .stack-work/dist/x86_64-linux/Cabal-2.0.1.0/build/GHC/Integer/Logarithms/Compat.o )
+[2 of 4] Compiling Math.NumberTheory.Logarithms ( src/Math/NumberTheory/Logarithms.hs, .stack-work/dist/x86_64-linux/Cabal-2.0.1.0/build/Math/NumberTheory/Logarithms.o )
+[3 of 4] Compiling Math.NumberTheory.Powers.Integer ( src/Math/NumberTheory/Powers/Integer.hs, .stack-work/dist/x86_64-linux/Cabal-2.0.1.0/build/Math/NumberTheory/Powers/Integer.o )
+[4 of 4] Compiling Math.NumberTheory.Powers.Natural ( src/Math/NumberTheory/Powers/Natural.hs, .stack-work/dist/x86_64-linux/Cabal-2.0.1.0/build/Math/NumberTheory/Powers/Natural.o )
+Installing library in /home/irish/.stack/snapshots/x86_64-linux/lts-11.0/8.2.2/lib/x86_64-linux-ghc-8.2.2/integer-logarithms-1.0.2.1-KAhnLbvomfTHb5G0xy3U7G
+Registering library for integer-logarithms-1.0.2.1..

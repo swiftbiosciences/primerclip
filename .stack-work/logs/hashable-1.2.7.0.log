@@ -1,0 +1,9 @@
+Configuring hashable-1.2.7.0...
+Preprocessing library for hashable-1.2.7.0..
+Building library for hashable-1.2.7.0..
+[1 of 4] Compiling Data.Hashable.Class ( Data/Hashable/Class.hs, .stack-work/dist/x86_64-linux/Cabal-2.0.1.0/build/Data/Hashable/Class.o )
+[2 of 4] Compiling Data.Hashable.Generic ( Data/Hashable/Generic.hs, .stack-work/dist/x86_64-linux/Cabal-2.0.1.0/build/Data/Hashable/Generic.o )
+[3 of 4] Compiling Data.Hashable    ( Data/Hashable.hs, .stack-work/dist/x86_64-linux/Cabal-2.0.1.0/build/Data/Hashable.o )
+[4 of 4] Compiling Data.Hashable.Lifted ( Data/Hashable/Lifted.hs, .stack-work/dist/x86_64-linux/Cabal-2.0.1.0/build/Data/Hashable/Lifted.o )
+Installing library in /home/irish/.stack/snapshots/x86_64-linux/lts-11.0/8.2.2/lib/x86_64-linux-ghc-8.2.2/hashable-1.2.7.0-LmYYwdRyxeo1gZdEWccp3y
+Registering library for hashable-1.2.7.0..
