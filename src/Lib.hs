@@ -1763,13 +1763,8 @@ updateCigF :: Integer -> B.ByteString -> B.ByteString
 updateCigF fdiff cigar
     | snd (head cmap) == "*" = "*"
     | fdiffi <= 0 = cigar
-<<<<<<< HEAD
-    | (nopadlen - fdiffi) == 0 = cigar
-    | ((nopadlen - fdiffi) > 0) = newcig
-=======
     | ((nopadlen - fdiffi) == 0) = "*" -- 180320
     | ((nopadlen - fdiffi) > 0) = newcig -- 180320
->>>>>>> isizeflag
     | otherwise = "*"
         where cmap = mapcig cigar
               grps = B.group $ expandcigar cmap
@@ -1798,15 +1793,9 @@ updateCigR :: Integer -> B.ByteString -> B.ByteString
 updateCigR rdiff cigar
     | snd (head cmap) == "*" = "*"
     | rdiffi <= 0 = cigar
-<<<<<<< HEAD
-    | (nopadlen - rdiffi) == 0 = cigar
-    | ((nopadlen - rdiffi) > 0) = newcig
-    | otherwise = "*"
-=======
     | ((nopadlen - rdiffi) == 0) = "*" -- 180320 DEBUGGING
     | ((nopadlen - rdiffi) > 0) = newcig -- 180320 DEBUGGING
     | otherwise = "*" -- 180320 allow all 'S' trimmed CIGAR (diff == nopadlen)
->>>>>>> isizeflag
         where cmap = mapcig cigar
               grps = B.group $ expandcigar cmap
               nohardgrps = B.group $ expandcigar $ filter nohardclip cmap
@@ -1839,14 +1828,8 @@ updateCigB fdiff rdiff cigar
     | snd (head cmap) == "*" = "*"
     | fdiffi <= 0 = updateCigR rdiff cigar
     | rdiffi <= 0 = updateCigF fdiff cigar
-<<<<<<< HEAD
-    | (nopadlen - fdiffi) == 0 = updateCigR rdiff cigar
-    | (nopadlen - rdiffi) == 0 = updateCigF fdiff cigar
-    | ((nopadlen - fdiffi - rdiffi) > 0) = newcig
-=======
     | ((nopadlen - fdiffi - rdiffi) == 0) = "*" -- 180320
     | ((nopadlen - fdiffi - rdiffi) > 0) = newcig -- 180320
->>>>>>> isizeflag
     | otherwise = "*"
         where cmap = mapcig cigar
               grps = B.group $ expandcigar cmap
@@ -2183,14 +2166,8 @@ setZeroLengthAlnFlag flg
     | otherwise = nopairZeroLengthFlag
         where pairedZeroLengthFlag = flipClrBit 11
                                    $ flipClrBit 8
-<<<<<<< HEAD
-                                   $ flipSetBit 3
-                                   $ flipSetBit 2
-                                   $ flipClrBit 1 flag
-=======
                                    $ flipSetBit 2
                                    $ flipClrBit 1 flg
->>>>>>> isizeflag
               nopairZeroLengthFlag = flipClrBit 11
                                    $ flipClrBit 8
                                    $ flipSetBit 2
