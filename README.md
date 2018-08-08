@@ -55,6 +55,7 @@ NOTE: although the pre-compiled binary is statically linked, it will still
       ("ldd --version" to check), you will need to build from source
       (see instructions below).
 
+
 __USAGE:__
 
     primerclip masterfile.txt alignmentfile.sam outputfilename.sam
@@ -123,12 +124,3 @@ The primerclip binary has been tested on the following operating systems:
 * Ubuntu 16.04
 * macOS Sierra
 
-__KNOWN ISSUES__
-
-There is a known issue with primerclip losing the file handle when a network-
-attached drive (NAS drive) is used as the source or destination of input/output
-files. To avoid issues, please run primerclip with input and output file paths
-that point to files on a local storage drive if possible.
-We are working on resolving this issue as soon as possible.
-NOTE: this bug does not appear to affect EBS volumes on EC2 instances, however
-s3 has not yet been tested.
