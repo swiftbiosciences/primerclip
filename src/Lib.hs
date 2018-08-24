@@ -2126,7 +2126,7 @@ clearR2primNextFields p =
 -- TODO: consolidate ad-hoc updates to trimmed alignments,
 --       and make setProperInsertSizeRange and range limits cmd line options
 makeTrimmedUpdates :: PairedAln -> PairedAln
-makeTrimmedUpdates pa = setProperInsertSizeRange 90 296
+makeTrimmedUpdates pa = setProperInsertSizeRange (-1200) (1200)
                       $ updatePairedAlnTrimdFields
                       $ updateZeroTrimdPairFields
                       $ updateZeroTrimdPairFlags

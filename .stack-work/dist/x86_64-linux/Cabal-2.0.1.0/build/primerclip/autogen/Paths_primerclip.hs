@@ -26,14 +26,14 @@ catchIO :: IO a -> (Exception.IOException -> IO a) -> IO a
 catchIO = Exception.catch
 
 version :: Version
-version = Version [0,3,1,0] []
+version = Version [0,3,2,0] []
 bindir, libdir, dynlibdir, datadir, libexecdir, sysconfdir :: FilePath
 
 bindir     = "/home/irish/github/primerclip/.stack-work/install/x86_64-linux/lts-11.0/8.2.2/bin"
-libdir     = "/home/irish/github/primerclip/.stack-work/install/x86_64-linux/lts-11.0/8.2.2/lib/x86_64-linux-ghc-8.2.2/primerclip-0.3.1.0-G3MhHrCeWZjF9zDGm8M4qX-primerclip"
+libdir     = "/home/irish/github/primerclip/.stack-work/install/x86_64-linux/lts-11.0/8.2.2/lib/x86_64-linux-ghc-8.2.2/primerclip-0.3.2.0-6KdywfC4h2xCOJg5bQU7bS-primerclip"
 dynlibdir  = "/home/irish/github/primerclip/.stack-work/install/x86_64-linux/lts-11.0/8.2.2/lib/x86_64-linux-ghc-8.2.2"
-datadir    = "/home/irish/github/primerclip/.stack-work/install/x86_64-linux/lts-11.0/8.2.2/share/x86_64-linux-ghc-8.2.2/primerclip-0.3.1.0"
-libexecdir = "/home/irish/github/primerclip/.stack-work/install/x86_64-linux/lts-11.0/8.2.2/libexec/x86_64-linux-ghc-8.2.2/primerclip-0.3.1.0"
+datadir    = "/home/irish/github/primerclip/.stack-work/install/x86_64-linux/lts-11.0/8.2.2/share/x86_64-linux-ghc-8.2.2/primerclip-0.3.2.0"
+libexecdir = "/home/irish/github/primerclip/.stack-work/install/x86_64-linux/lts-11.0/8.2.2/libexec/x86_64-linux-ghc-8.2.2/primerclip-0.3.2.0"
 sysconfdir = "/home/irish/github/primerclip/.stack-work/install/x86_64-linux/lts-11.0/8.2.2/etc"
 
 getBinDir, getLibDir, getDynLibDir, getDataDir, getLibexecDir, getSysconfDir :: IO FilePath
