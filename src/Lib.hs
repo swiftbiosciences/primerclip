@@ -1423,6 +1423,23 @@ primaryR2filter :: AlignedRead -> Bool
 primaryR2filter a =  (not $ testBit (flag a) 8)
                  && (not $ read1filter a)
 
+-- 180824
+properPairFilter :: AlignedRead -> Bool
+properPairFilter a = testBit (flag a) 1
+
+-- 180824
+properPairedAlnFilter :: PairedAln -> Bool
+properPairedAlnFilter p
+    |    (properPairFilter $ r1prim p)
+      && (properPairFilter $ r2prim p) = True
+    | otherwise = False
+
+filterProperPairedAlndReads :: [AlignedRead] -> [AlignedRead]
+filterProperPairedAlndReads as = filter properPairFilter as
+
+filterProperPairPrdAlns :: [PairedAln] -> [PairedAln]
+filterProperPairPrdAlns pas = filter properPairedAlnFilter pas
+
 -- 180322 filter PairedAln for records containing at least one alignment with
 -- an intersection to at least one primer interval
 collectPrimIntAlns :: [PairedAln] -> [PairedAln]
@@ -2101,7 +2118,7 @@ clearR2primNextFields p =
 -- TODO: consolidate ad-hoc updates to trimmed alignments,
 --       and make setProperInsertSizeRange and range limits cmd line options
 makeTrimmedUpdates :: PairedAln -> PairedAln
-makeTrimmedUpdates pa = setProperInsertSizeRange 90 296
+makeTrimmedUpdates pa = setProperInsertSizeRange (-1200) 1200
                       $ updatePairedAlnTrimdFields
                       $ updateZeroTrimdPairFields
                       $ updateZeroTrimdPairFlags
@@ -2152,7 +2169,7 @@ setZeroLengthAlnFlag flg
 -- 180417 clear bit 1 (read mapped in proper pair)
 setZeroLengthPairFlag :: Int -> Int
 setZeroLengthPairFlag flg = flipSetBit 3
-                           $ flipClrBit 1 flg
+                          $ flipClrBit 1 flg
 
 -- 180423 set/confirm bit 1 (read mapped in proper pair)
 setProperPairMapFlagBit :: Int -> Int
@@ -2233,7 +2250,7 @@ setMapdProperPairBit p =
 
 checkInsertSize :: Integer -> Integer -> PairedAln -> Bool
 checkInsertSize minsz maxsz p
-    | (pairedmin >= minsz) && (pairedmax <= maxsz) = True
+    | (pairedmin >= minsz) && (pairedmax <= maxsz) = True -- 180824
     | otherwise = False
         where pairedmin = minimum $ tlen <$> alns
               pairedmax = maximum $ tlen <$> alns

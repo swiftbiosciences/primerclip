@@ -1,11 +1,11 @@
 
 ==================== FINAL INTERFACE ====================
-2018-07-27 19:27:14.098958 UTC
+2018-08-24 20:09:49.542536 UTC
 
 interface primerclip-0.3.1.0-5c3HlOybro165zxw25Gu42:Lib [family instance module] 8022
-  interface hash: f0ebbbab29fb10935f547db06d2b1a2f
-  ABI hash: 15c5ce04789f566a979b827e36dcad45
-  export-list hash: aa8d56398297872f8b415007dc51bbf4
+  interface hash: 280cc132f860b81be3d75330c95c7d40
+  ABI hash: 194e7c3b16fba739b16931124645d7a1
+  export-list hash: 2756d50d829b715e2cf3c7aeb9f64c4e
   orphan hash: d868c18b4971c2fce3056eb07e5df089
   flag hash: ec690ec25aa83b76b88f0ff85134ee97
   sig of: Nothing
@@ -60,6 +60,8 @@ exports:
   Lib.expandcigar2
   Lib.exrights
   Lib.exrights2
+  Lib.filterProperPairPrdAlns
+  Lib.filterProperPairedAlndReads
   Lib.filtpadassoc
   Lib.filtpadcmap
   Lib.findByQname
@@ -143,6 +145,8 @@ exports:
   Lib.printAlignment
   Lib.printAlignmentOrHdr
   Lib.printAlnStreamToFile
+  Lib.properPairFilter
+  Lib.properPairedAlnFilter
   Lib.rdint
   Lib.read1filter
   Lib.readBEDPE
@@ -15896,7 +15900,7 @@ c33ba9f6479f627efa365b6a78804c31
   {- Arity: 10,
      Strictness: <L,U><L,U><L,U><S,U><L,U><L,U><S,U><L,U><L,C(C1(C1(C1(C1(U)))))><L,C(C1(C1(C1(U))))>,
      Inline: [0] -}
-01d0580ea258587b514ba6926d0e47c6
+28c3da713f19ff4d34adf32fa59921bd
   $wmakeTrimmedUpdates ::
     Lib.PairedAln
     -> (# Lib.AlignedRead, Lib.AlignedRead, [Lib.AlignedRead],
@@ -18118,6 +18122,20 @@ dbcfc6d1bef7400306f0a78e2c767065
     -> [(Lib.UChr, a)]
     -> Data.Map.Internal.Map Lib.UChr a
   {- Arity: 3, Strictness: <L,U><S,1*U><S,1*U>, Inline: [0] -}
+423a7ff7e5136ee633d7ee5516cb8e80
+  $wproperPairedAlnFilter ::
+    GHC.Prim.Int# -> Lib.AlignedRead -> GHC.Types.Bool
+  {- Arity: 2, HasNoCafRefs,
+     Strictness: <S,U><L,1*U(A,1*U(U),A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A)>,
+     Inline: [0],
+     Unfolding: (\ (ww :: GHC.Prim.Int#) (ww1 :: Lib.AlignedRead) ->
+                 case GHC.Prim.andI# ww 2# of wild {
+                   DEFAULT
+                   -> case ww1 of wild1 { Lib.AlignedRead ds6 ds7 ds8 ds9 ds10 ds11 ds12 ds13 ds14 ds15 ds16 ds17 ds18 ds19 ds20 ds21 ds22 ds23 ds24 ds25 ds26 ds27 ds28 ds29 ds30 ds31 ds32 ds33 ds34 ds35 ds36 ->
+                      case ds7 of wild2 { GHC.Types.I# x# ->
+                      case GHC.Prim.andI# x# 2# of wild3 {
+                        DEFAULT -> GHC.Types.True 0# -> GHC.Types.False } } }
+                   0# -> GHC.Types.False }) -}
 0891865f3677928bea51a7be581ab808
   $wsafemapcig ::
     GHC.Prim.Addr#
@@ -18324,7 +18342,7 @@ dbcfc6d1bef7400306f0a78e2c767065
   {- Arity: 10,
      Strictness: <L,U><L,U><L,U><S,U><L,U><L,U><S,U><L,U><L,C(C1(C1(C1(C1(U)))))><L,C(C1(C1(C1(U))))>,
      Inline: [0] -}
-98ae777d86a803edd58097272d828fb2
+9c95a0e2c884af044b3380673b84c25c
   $wtrimprimerPairsE ::
     Lib.CMap
     -> Lib.CMap
@@ -22777,6 +22795,43 @@ c249f597a2ef87fa6fd331e40b9816d4
                 (\ (ds6 :: Lib.SAMFlag) ->
                  case ds6 of wild { Lib.SAMFlag ds7 ds8 ds9 ds10 ds11 ds12 ds13 ds14 ds15 ds16 ds17 ds18 ->
                  ds16 }) -}
+318630fe20dd8229bbe2ae59613de243
+  filterProperPairPrdAlns :: [Lib.PairedAln] -> [Lib.PairedAln]
+  {- Arity: 1, HasNoCafRefs, Strictness: <S,1*U>,
+     Unfolding: InlineRule (1, True, False)
+                (\ (pas :: [Lib.PairedAln]) ->
+                 GHC.Base.build
+                   @ Lib.PairedAln
+                   (\ @ b
+                      (c2 :: Lib.PairedAln -> b -> b)[OneShot]
+                      (n :: b)[OneShot] ->
+                    GHC.Base.foldr
+                      @ Lib.PairedAln
+                      @ b
+                      (GHC.List.filterFB
+                         @ Lib.PairedAln
+                         @ b
+                         c2
+                         Lib.properPairedAlnFilter)
+                      n
+                      pas)) -}
+f9c269b806564560d1a753d4801d88fd
+  filterProperPairedAlndReads ::
+    [Lib.AlignedRead] -> [Lib.AlignedRead]
+  {- Arity: 1, HasNoCafRefs, Strictness: <S,1*U>,
+     Unfolding: InlineRule (1, True, False)
+                (\ (as :: [Lib.AlignedRead]) ->
+                 GHC.Base.build
+                   @ Lib.AlignedRead
+                   (\ @ b
+                      (c2 :: Lib.AlignedRead -> b -> b)[OneShot]
+                      (n :: b)[OneShot] ->
+                    GHC.Base.foldr
+                      @ Lib.AlignedRead
+                      @ b
+                      (GHC.List.filterFB @ Lib.AlignedRead @ b c2 Lib.properPairFilter)
+                      n
+                      as)) -}
 cc0379435b0a1fdf330288c80a6e06a4
   filtpadassoc ::
     [(GHC.Types.Int, Data.ByteString.Internal.ByteString)]
@@ -24211,7 +24266,7 @@ eb3050da9abb8c74675eae25e820446c
                       } in
                       go19 ds8
                    GHC.Types.True -> $j } } }) -}
-68a92917af3b7875333635e4c69dc89f
+415c7553aa1b9666ca20166103876785
   makeTrimmedUpdates :: Lib.PairedAln -> Lib.PairedAln
   {- Arity: 1,
      Strictness: <L,1*U(U(U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U),U(U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U),U,U)>m,
@@ -24220,12 +24275,12 @@ eb3050da9abb8c74675eae25e820446c
                 (\ (w :: Lib.PairedAln) ->
                  case Lib.$wmakeTrimmedUpdates w of ww { (#,,,#) ww1 ww2 ww3 ww4 ->
                  Lib.PairedAln ww1 ww2 ww3 ww4 }) -}
-1d1b8557ff5d535bfbd29ef9b2f49256
+3814716b600d528b3be9473aa3f6e394
   makeTrimmedUpdates1 :: GHC.Integer.Type.Integer
-  {- HasNoCafRefs, Unfolding: (296) -}
-5f6733373e1fadfbb35c609dd25b64a7
+  {- HasNoCafRefs, Unfolding: (1200) -}
+a5b2dc9008b1a5c37b63dc85bce28066
   makeTrimmedUpdates2 :: GHC.Integer.Type.Integer
-  {- HasNoCafRefs, Unfolding: (90) -}
+  {- HasNoCafRefs, Unfolding: (-1200) -}
 1d67f94edaca765930e6759124cd7795
   makebedmap ::
     [Lib.BedRecord] -> Data.IntMap.Internal.IntMap Lib.BedRecord
@@ -26695,6 +26750,27 @@ d55e618601198230ec2c7bd8e8ba8ca8
     -> Data.Conduit.Internal.Conduit.ConduitM Lib.AlignedRead c m ()
   {- Arity: 2,
      Strictness: <L,U(U(U(A,C(C1(U)),A,C(U),A),C(U)),C(U))><L,U> -}
+cb98c04d0bc0717eb123e2554ce2dffd
+  properPairFilter :: Lib.AlignedRead -> GHC.Types.Bool
+  {- Arity: 1, HasNoCafRefs,
+     Strictness: <S(LS(S)LLLLLLLLLLLLLLLLLLLLLLLLLLLLL),1*U(A,1*U(U),A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A)>,
+     Unfolding: InlineRule (1, True, False)
+                (\ (a :: Lib.AlignedRead) ->
+                 case a of wild { Lib.AlignedRead ds6 ds7 ds8 ds9 ds10 ds11 ds12 ds13 ds14 ds15 ds16 ds17 ds18 ds19 ds20 ds21 ds22 ds23 ds24 ds25 ds26 ds27 ds28 ds29 ds30 ds31 ds32 ds33 ds34 ds35 ds36 ->
+                 case ds7 of wild1 { GHC.Types.I# x# ->
+                 case GHC.Prim.andI# x# 2# of wild2 {
+                   DEFAULT -> GHC.Types.True 0# -> GHC.Types.False } } }) -}
+fb878ab1cac439a19f230e5115a37310
+  properPairedAlnFilter :: Lib.PairedAln -> GHC.Types.Bool
+  {- Arity: 1, HasNoCafRefs,
+     Strictness: <S(S(LS(S)LLLLLLLLLLLLLLLLLLLLLLLLLLLLL)LLL),1*U(1*U(A,1*U(U),A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A),1*U(A,1*U(U),A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A),A,A)>,
+     Inline: [0],
+     Unfolding: InlineRule (1, True, False)
+                (\ (w :: Lib.PairedAln) ->
+                 case w of ww { Lib.PairedAln ww1 ww2 ww3 ww4 ->
+                 case ww1 of ww5 { Lib.AlignedRead ww6 ww7 ww8 ww9 ww10 ww11 ww12 ww13 ww14 ww15 ww16 ww17 ww18 ww19 ww20 ww21 ww22 ww23 ww24 ww25 ww26 ww27 ww28 ww29 ww30 ww31 ww32 ww33 ww34 ww35 ww36 ->
+                 case ww7 of ww37 { GHC.Types.I# ww38 ->
+                 Lib.$wproperPairedAlnFilter ww38 ww2 } } }) -}
 a2a50fa0050c39a2550d317956dbb7b4
   qname :: Lib.AlignedRead -> Data.ByteString.Internal.ByteString
   RecSel Left Lib.AlignedRead
@@ -29083,7 +29159,7 @@ c23d9e065d742ed656a6e9e30f242fce
                 (\ (ds6 :: Lib.RunStats) ->
                  case ds6 of wild { Lib.RunStats ds7 ds8 ds9 ds10 ds11 ds12 ->
                  ds11 }) -}
-c98e17e15afeabe982928d1907b430ad
+fa52e3b088ff08efab7474668b741dd5
   trimprimerPairsE ::
     Lib.CMap -> Lib.CMap -> Lib.PairedAln -> Lib.PairedAln
   {- Arity: 3,
