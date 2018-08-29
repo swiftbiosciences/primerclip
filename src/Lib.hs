@@ -1763,8 +1763,7 @@ updateCigF :: Integer -> B.ByteString -> B.ByteString
 updateCigF fdiff cigar
     | snd (head cmap) == "*" = "*"
     | fdiffi <= 0 = cigar
-    | ((nopadlen - fdiffi) == 0) = "*" -- 180320
-    | ((nopadlen - fdiffi) > 0) = newcig -- 180320
+    | ((nopadlen - fdiffi) > 0) = newcig -- 180219 DEBUG testing
     | otherwise = "*"
         where cmap = mapcig cigar
               grps = B.group $ expandcigar cmap
@@ -1777,14 +1776,10 @@ updateCigF fdiff cigar
               cignoclip = filter noclip cmap
               cigexp = expandcigar2 cignoclip -- [(Int, B.ByteString)] assoc. list
               nopadlen = length cigexp
-              adjcig = adjustcrds cigexp
-              ftrim = taketrim fdiff adjcig
-              trimDs = countDs ftrim
-              trimDcorr = intgr2int trimDs
-              adjix = (genericLength ftrim) + trimDs
-              remcigraw = drop trimDcorr $ trimrem adjix cigexp
-              newss = B.replicate (length ftrim) 'S'
-              newcigarcore = B.append newss $ B.concat $ snd <$> remcigraw
+              (ftrimCigOps, remCigOps) = splitAt fdiffi cigexp -- 180223
+              ftrimSlength = sumSoftClipCigOps ftrimCigOps
+              newss = B.replicate ftrimSlength 'S'
+              newcigarcore = B.append newss $ B.concat $ snd <$> remCigOps -- remcigraw
               newcigar = B.append (B.append fSs newcigarcore) rSs
               newfullcigar = B.append fHs (B.append newcigar rHs)
               newcig = contractcigar newfullcigar
@@ -1793,9 +1788,8 @@ updateCigR :: Integer -> B.ByteString -> B.ByteString
 updateCigR rdiff cigar
     | snd (head cmap) == "*" = "*"
     | rdiffi <= 0 = cigar
-    | ((nopadlen - rdiffi) == 0) = "*" -- 180320 DEBUGGING
-    | ((nopadlen - rdiffi) > 0) = newcig -- 180320 DEBUGGING
-    | otherwise = "*" -- 180320 allow all 'S' trimmed CIGAR (diff == nopadlen)
+    | ((nopadlen - rdiffi) > 0) = newcig -- 180219 DEBUGGING
+    | otherwise = "*"
         where cmap = mapcig cigar
               grps = B.group $ expandcigar cmap
               nohardgrps = B.group $ expandcigar $ filter nohardclip cmap
@@ -1807,18 +1801,12 @@ updateCigR rdiff cigar
               cignoclip = filter noclip cmap
               cigexpR = expandcigar2 $ reverse cignoclip
               nopadlen = length cigexpR
-              adjcigR = adjustcrds cigexpR
-              rtrim = taketrim rdiff adjcigR
-              trimDs = countDs rtrim
-              trimDcorr = intgr2int trimDs
-              adjix = (genericLength rtrim) + trimDs
-              remcigraw = drop trimDcorr $ trimrem adjix cigexpR
-              remDs = intgr2int $ countDs remcigraw
-              remcigDadj = reverse $ drop remDs remcigraw
-              newss = B.replicate ((length rtrim)
-                                  + trimDcorr
-                                  + remDs) 'S'
-              newcigarcore = B.append (B.concat $ snd <$> remcigDadj) newss
+              (rtrimCigOps, remCigOps) = splitAt rdiffi cigexpR -- 180223
+              rtrimSlength = sumSoftClipCigOps rtrimCigOps
+              newss = B.replicate rtrimSlength 'S'
+              newcigarcore = B.append
+                            (B.concat $ snd <$> (reverse remCigOps))
+                             newss
               newcigar = B.append fSs (B.append newcigarcore rSs)
               newfullcigar = B.append fHs (B.append newcigar rHs)
               newcig = contractcigar newfullcigar
@@ -1828,8 +1816,7 @@ updateCigB fdiff rdiff cigar
     | snd (head cmap) == "*" = "*"
     | fdiffi <= 0 = updateCigR rdiff cigar
     | rdiffi <= 0 = updateCigF fdiff cigar
-    | ((nopadlen - fdiffi - rdiffi) == 0) = "*" -- 180320
-    | ((nopadlen - fdiffi - rdiffi) > 0) = newcig -- 180320
+    | ((nopadlen - fdiffi - rdiffi) > 0) = newcig -- 180212 zero-match CIGAR strings fail picard validation
     | otherwise = "*"
         where cmap = mapcig cigar
               grps = B.group $ expandcigar cmap
@@ -1844,34 +1831,19 @@ updateCigB fdiff rdiff cigar
               cignoclipf = filter noclip cmap
               cigexpf = expandcigar2 cignoclipf
               nopadlen = length cigexpf
-              adjcigf = adjustcrds cigexpf
-              ftrim = taketrim fdiff adjcigf
-              ftrimDs = countDs ftrim
-              ftrimDcorr = intgr2int ftrimDs
-              adjixf = (genericLength ftrim) + ftrimDs
-              remcigrawf = drop ftrimDcorr $ trimrem adjixf cigexpf
-              newfss = B.replicate (length ftrim) 'S'
-              -- 3p trim3p
-              cigexpr = zipWith (\x (i, j) -> (x, j))
-                                [1..]
-                                (reverse remcigrawf)
-              adjcigr = adjustcrds cigexpr
-              rtrim = taketrim rdiff adjcigr
-              rtrimDs = countDs rtrim
-              rtrimDcorr = intgr2int rtrimDs
-              adjixr = (genericLength rtrim) + rtrimDs
-              remcigrawr = drop rtrimDcorr $ trimrem adjixr cigexpr
-              remDsr = intgr2int $ countDs remcigrawr
-              remcigrDadj = reverse $ drop remDsr remcigrawr
-              newrss = B.replicate
-                        ((length rtrim) + rtrimDcorr + remDsr + ftrimDcorr) 'S'
+              (ftrimCigOps, fremCigOps) = splitAt fdiffi cigexpf -- 180223
+              ftrimSlength = sumSoftClipCigOps ftrimCigOps
+              newfss = B.replicate ftrimSlength 'S'
+              cigexpftrimd = reverse fremCigOps
+              (rtrimCigOps, rremCigOps) = splitAt rdiffi cigexpftrimd -- 180223
+              rtrimSlength = sumSoftClipCigOps rtrimCigOps
+              newrss = B.replicate rtrimSlength 'S'
               totfss = B.append fSs newfss
               totrss = B.append rSs newrss
-              newcigarcore = B.concat $ snd <$> remcigrDadj
+              newcigarcore = B.concat $ snd <$> (reverse rremCigOps)
               newcigar = B.append totfss (B.append newcigarcore totrss)
               newfullcigar = B.append fHs (B.append newcigar rHs)
               newcig = contractcigar newfullcigar
-
 
 showcigar :: (Integer, B.ByteString) -> B.ByteString
 showcigar cm =
@@ -2465,14 +2437,14 @@ pairedAlnToTuple p = ((r1prim p), (r2prim p), (r1secs p), (r2secs p))
 
 -- end of Library
 
-{-- code holding pen 180301
-
+{--
 -- UPDATE 18-03-01 revert CIGAR trimming changes while debugging problems
 updateCigF :: Integer -> B.ByteString -> B.ByteString
 updateCigF fdiff cigar
     | snd (head cmap) == "*" = "*"
     | fdiffi <= 0 = cigar
-    | ((nopadlen - fdiffi) > 0) = newcig -- 180219 DEBUG testing
+    | ((nopadlen - fdiffi) == 0) = "*" -- 180320
+    | ((nopadlen - fdiffi) > 0) = newcig -- 180320
     | otherwise = "*"
         where cmap = mapcig cigar
               grps = B.group $ expandcigar cmap
@@ -2485,10 +2457,14 @@ updateCigF fdiff cigar
               cignoclip = filter noclip cmap
               cigexp = expandcigar2 cignoclip -- [(Int, B.ByteString)] assoc. list
               nopadlen = length cigexp
-              (ftrimCigOps, remCigOps) = splitAt fdiffi cigexp -- 180223
-              ftrimSlength = sumSoftClipCigOps ftrimCigOps
-              newss = B.replicate ftrimSlength 'S'
-              newcigarcore = B.append newss $ B.concat $ snd <$> remCigOps -- remcigraw
+              adjcig = adjustcrds cigexp
+              ftrim = taketrim fdiff adjcig
+              trimDs = countDs ftrim
+              trimDcorr = intgr2int trimDs
+              adjix = (genericLength ftrim) + trimDs
+              remcigraw = drop trimDcorr $ trimrem adjix cigexp
+              newss = B.replicate (length ftrim) 'S'
+              newcigarcore = B.append newss $ B.concat $ snd <$> remcigraw
               newcigar = B.append (B.append fSs newcigarcore) rSs
               newfullcigar = B.append fHs (B.append newcigar rHs)
               newcig = contractcigar newfullcigar
@@ -2497,8 +2473,9 @@ updateCigR :: Integer -> B.ByteString -> B.ByteString
 updateCigR rdiff cigar
     | snd (head cmap) == "*" = "*"
     | rdiffi <= 0 = cigar
-    | ((nopadlen - rdiffi) > 0) = newcig -- 180219 DEBUGGING
-    | otherwise = "*"
+    | ((nopadlen - rdiffi) == 0) = "*" -- 180320 DEBUGGING
+    | ((nopadlen - rdiffi) > 0) = newcig -- 180320 DEBUGGING
+    | otherwise = "*" -- 180320 allow all 'S' trimmed CIGAR (diff == nopadlen)
         where cmap = mapcig cigar
               grps = B.group $ expandcigar cmap
               nohardgrps = B.group $ expandcigar $ filter nohardclip cmap
@@ -2510,12 +2487,18 @@ updateCigR rdiff cigar
               cignoclip = filter noclip cmap
               cigexpR = expandcigar2 $ reverse cignoclip
               nopadlen = length cigexpR
-              (rtrimCigOps, remCigOps) = splitAt rdiffi cigexpR -- 180223
-              rtrimSlength = sumSoftClipCigOps rtrimCigOps
-              newss = B.replicate rtrimSlength 'S'
-              newcigarcore = B.append
-                            (B.concat $ snd <$> (reverse remCigOps))
-                             newss
+              adjcigR = adjustcrds cigexpR
+              rtrim = taketrim rdiff adjcigR
+              trimDs = countDs rtrim
+              trimDcorr = intgr2int trimDs
+              adjix = (genericLength rtrim) + trimDs
+              remcigraw = drop trimDcorr $ trimrem adjix cigexpR
+              remDs = intgr2int $ countDs remcigraw
+              remcigDadj = reverse $ drop remDs remcigraw
+              newss = B.replicate ((length rtrim)
+                                  + trimDcorr
+                                  + remDs) 'S'
+              newcigarcore = B.append (B.concat $ snd <$> remcigDadj) newss
               newcigar = B.append fSs (B.append newcigarcore rSs)
               newfullcigar = B.append fHs (B.append newcigar rHs)
               newcig = contractcigar newfullcigar
@@ -2525,7 +2508,8 @@ updateCigB fdiff rdiff cigar
     | snd (head cmap) == "*" = "*"
     | fdiffi <= 0 = updateCigR rdiff cigar
     | rdiffi <= 0 = updateCigF fdiff cigar
-    | ((nopadlen - fdiffi - rdiffi) > 0) = newcig -- 180212 zero-match CIGAR strings fail picard validation
+    | ((nopadlen - fdiffi - rdiffi) == 0) = "*" -- 180320
+    | ((nopadlen - fdiffi - rdiffi) > 0) = newcig -- 180320
     | otherwise = "*"
         where cmap = mapcig cigar
               grps = B.group $ expandcigar cmap
@@ -2540,20 +2524,31 @@ updateCigB fdiff rdiff cigar
               cignoclipf = filter noclip cmap
               cigexpf = expandcigar2 cignoclipf
               nopadlen = length cigexpf
-              (ftrimCigOps, fremCigOps) = splitAt fdiffi cigexpf -- 180223
-              ftrimSlength = sumSoftClipCigOps ftrimCigOps
-              newfss = B.replicate ftrimSlength 'S'
-              cigexpftrimd = reverse fremCigOps
-              (rtrimCigOps, rremCigOps) = splitAt rdiffi cigexpftrimd -- 180223
-              rtrimSlength = sumSoftClipCigOps rtrimCigOps
-              newrss = B.replicate rtrimSlength 'S'
+              adjcigf = adjustcrds cigexpf
+              ftrim = taketrim fdiff adjcigf
+              ftrimDs = countDs ftrim
+              ftrimDcorr = intgr2int ftrimDs
+              adjixf = (genericLength ftrim) + ftrimDs
+              remcigrawf = drop ftrimDcorr $ trimrem adjixf cigexpf
+              newfss = B.replicate (length ftrim) 'S'
+              -- 3p trim3p
+              cigexpr = zipWith (\x (i, j) -> (x, j))
+                                [1..]
+                                (reverse remcigrawf)
+              adjcigr = adjustcrds cigexpr
+              rtrim = taketrim rdiff adjcigr
+              rtrimDs = countDs rtrim
+              rtrimDcorr = intgr2int rtrimDs
+              adjixr = (genericLength rtrim) + rtrimDs
+              remcigrawr = drop rtrimDcorr $ trimrem adjixr cigexpr
+              remDsr = intgr2int $ countDs remcigrawr
+              remcigrDadj = reverse $ drop remDsr remcigrawr
+              newrss = B.replicate
+                        ((length rtrim) + rtrimDcorr + remDsr + ftrimDcorr) 'S'
               totfss = B.append fSs newfss
               totrss = B.append rSs newrss
-              newcigarcore = B.concat $ snd <$> (reverse rremCigOps)
+              newcigarcore = B.concat $ snd <$> remcigrDadj
               newcigar = B.append totfss (B.append newcigarcore totrss)
               newfullcigar = B.append fHs (B.append newcigar rHs)
               newcig = contractcigar newfullcigar
-
-
-
 --}
