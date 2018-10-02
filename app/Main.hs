@@ -23,14 +23,13 @@ main = do
             (fullDesc <> progDesc
                         "Trim PCR primer sequences from aligned reads"
                       <> header
-                        "primerclip -- Swift Biosciences Accel-Amplicon™ targeted panel primer trimming tool v0.3.3")
+                        "primerclip -- Swift Biosciences Accel-Amplicon targeted panel primer trimming tool v0.3.3")
     args <- execParser opts
     runstats <- runPrimerTrimming args
     putStrLn "primer trimming complete."
     writeRunStats (outfilename args) runstats -- 180226
 -- end main
 
--- {--
 -- 180329 parse and trim as PairedAln sets
 runPrimerTrimming :: Opts -> IO RunStats
 runPrimerTrimming args = do
@@ -47,40 +46,6 @@ runPrimerTrimming args = do
               P..| P.getZipSink
                        (P.ZipSink (printAlnStreamToFile (outfilename args))
                                 *> calcRunStats) -- 180226 --}
-              -- P..| P.sinkList
-    return runstats
---}
-
--- 180206 
-runPrimerTrimming2 :: Opts -> IO RunStats
-runPrimerTrimming2 args = do
-    (fmp, rmp) <- createprimerbedmaps args
-    runstats <- P.runConduitRes
-              $ P.sourceFile (insamfile args)
-              P..| CB.lines
-              P..| P.mapC (A.parseOnly (hdralnparser <|> alnparser))
-              P..| P.mapC rightOrDefault -- convert parse fails to defaultAlignment
-              P..| P.mapC (trimprimersE fmp rmp)
-              P..| P.filterC (\x -> (qname x) /= "NONE") -- remove dummy alignments
-              P..| P.getZipSink
-                       (P.ZipSink (printAlnStreamToFile (outfilename args))
-                    *> calcRunStats) -- 180226
     return runstats
 
--- {--
--- 180329 parse and trim as PairedAln sets
-runPrimerTrimmingTest :: Opts -> IO [AlignedRead]
-runPrimerTrimmingTest args = do
-    (fmp, rmp) <- createprimerbedmaps args
-    trimdalns <- P.runConduitRes
-              $ P.sourceFile (insamfile args)
-              P..| CA.conduitParserEither parsePairedAlnsOrHdr
-              P..| P.mapC rightOrDefaultPaird -- convert parse fails to defaultAlignment
-              P..| P.concatC
-              P..| P.mapC (trimprimerPairsE fmp rmp)
-              P..| P.mapC flattenPairedAln
-              P..| P.concatC
-              P..| P.filterC (\x -> (qname x) /= "NONE") -- remove dummy alignments
-              P..| P.sinkList
-    return trimdalns
---}
+
