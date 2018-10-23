@@ -30,13 +30,14 @@ This binary is compiled for linux on x86_64 (Ubuntu 16.04).
 
 Path to the pre-compiled binary:
 
-   .stack-work/install/x86_64-linux/lts-8.12/8.0.2/bin/primerclip
+    .stack-work/install/x86_64-linux/lts-11.0/8.2.2/bin/primerclip
 
 To install, copy the "primerclip" file into a folder on your PATH, e.g /usr/local/bin
 
-    cp .stack-work/install/x86_64-linux/lts-8.12/8.0.2/bin/primerclip /usr/local/bin
+    cp .stack-work/install/x86_64-linux/lts-11.0/8.2.2/bin/primerclip /usr/local/bin
 
 Test that the binary is accessible by running
+
     which primerclip
 
 If the path to the binary is returned, the binary should be ready to use.
@@ -54,7 +55,6 @@ NOTE: although the pre-compiled binary is statically linked, it will still
       successfully. If you don't have this version of glibc
       ("ldd --version" to check), you will need to build from source
       (see instructions below).
-
 
 __USAGE:__
 
