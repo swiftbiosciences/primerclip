@@ -21,9 +21,9 @@ main :: IO ()
 main = do
     let opts = info (helper <*> optargs)
             (fullDesc <> progDesc
-                        "Trim PCR primer sequences from aligned reads"
+                        "Trim PCR primer sequences from aligned single-end reads"
                       <> header
-                        "primerclip -- Swift Biosciences Accel-Amplicon targeted panel primer trimming tool v0.3.4")
+                        "primerclip -- Swift Biosciences Accel-Amplicon targeted panel primer trimming tool for single-end reads v0.3.4")
     args <- execParser opts
     runstats <- runPrimerTrimming args
     putStrLn "primer trimming complete."
