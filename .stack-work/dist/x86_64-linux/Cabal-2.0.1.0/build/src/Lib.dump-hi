@@ -1,10 +1,10 @@
 
 ==================== FINAL INTERFACE ====================
-2018-11-26 04:22:33.113897 UTC
+2018-11-26 21:37:53.663911 UTC
 
 interface primerclip-0.3.4.0-1b5t2mlHPcvBmtAJ86MXDg:Lib [family instance module] 8022
-  interface hash: fdb40e0dc3d3b684efe0538832ac1509
-  ABI hash: a7c4ac5533ba1aa75eeeac00d830d668
+  interface hash: 8cdf3ebaf375dd29beb84e523d686a0d
+  ABI hash: cd7c61f29dad94db138b97196a886d7b
   export-list hash: 051367068f0de4ba9b36750dfd994bdb
   orphan hash: 3cd0cf76c867400f9411406db5d977dc
   flag hash: ec690ec25aa83b76b88f0ff85134ee97
@@ -30041,14 +30041,15 @@ cacadbb0a43fd2533467b5c6609fdb78
                         w1
                         w2 of ww { (#,,,#) ww1 ww2 ww3 ww4 ->
                  Lib.PairedAln ww1 ww2 ww3 ww4 }) -}
-3dbb6e823779b4bafba3d5072f7dd354
+af0ea65b4c9e477464604ce8cdc97431
   trimprimersE ::
     Lib.CMap -> Lib.CMap -> Lib.AlignedRead -> Lib.AlignedRead
   {- Arity: 3,
      Strictness: <L,1*U><L,1*U><S,1*U(U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,A,A,A,U,U,U,U,U,U,U,U,U)>,
      Unfolding: InlineRule (3, True, False)
                 (\ (fmap :: Lib.CMap) (rmap :: Lib.CMap) (a :: Lib.AlignedRead) ->
-                 Lib.trimalignment (Lib.addprimerints fmap rmap a)) -}
+                 Lib.updateTrimdAlnFields
+                   (Lib.trimalignment (Lib.addprimerints fmap rmap a))) -}
 374099ad2836cf1718ec4c4e3e79a329
   trimrem ::
     GHC.Integer.Type.Integer

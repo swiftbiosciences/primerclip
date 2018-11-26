@@ -1578,10 +1578,11 @@ trimprimerPairsE fmap rmap p =
     in nonprimZeroLengthRemoved
 
 -- element (single alignment)-wise primer trimming (for use with conduit)
+-- 181126 update SAM fields after primer trimming
 trimprimersE :: CMap -> CMap -> AlignedRead -> AlignedRead
 trimprimersE fmap rmap a =
     let intaln = addprimerints fmap rmap a
-        trimd = trimalignment intaln
+        trimd = updateTrimdAlnFields $ trimalignment intaln
     in trimd
 
 -- 171017 function to convert conduit ZipSink stream to output and write
@@ -1978,10 +1979,10 @@ softclipbase cigp
 clip :: CigarMod -> CigarMod
 clip cigp@(CigarMod crpos targpos ss rops trimcmplt)
     | op == "S" = clipS
-    | op == "M" = clipS
+    | op == "M" = clipM
     | op == "I" = clipI
     | op == "D" = clipD
-        where clipS = cigp { currpos = (crpos + 1)
+        where clipS = cigp { currpos = crpos -- (crpos + 1)
                            , targetpos = targpos
                            , softclipOps = B.append ss "S"
                            , remCigOps = remops
@@ -2155,6 +2156,10 @@ updateZeroTrimdPairFlags pa
               r2sMRNMs = r2secs newMRNMp
               newMRNMp = setMateRname pa
 --}
+
+-- 181126 clear mapped SAM flag for single-end AlignedRead when trimmed to
+-- zero-length
+
 
 -- 180416 setMateRname must only update RNAME when mate was mapped in input SAM
 setMateRname :: PairedAln -> PairedAln
