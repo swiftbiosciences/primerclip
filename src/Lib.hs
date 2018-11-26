@@ -237,9 +237,8 @@ defaultMidFam = MidFamily { chrom = NONE
 
 -- 181116 track genomic coords, CIGAR ops, soft-clip bases,
 -- and sequence length in one record
-data CigarPtr = CigarPtr { currpos :: Integer
+data CigarMod = CigarMod { currpos :: Integer
                          , targetpos :: Integer
-                         -- , cigarpos :: Integer
                          , softclipOps :: B.ByteString
                          , remCigOps :: B.ByteString
                          , trimcomplete :: Bool
@@ -1206,10 +1205,11 @@ headsafeAln as
 -- 171204 Attoparsec version of getRight (below)
 -- use of Conduit to read input alignment file precludes use of "rights" in Data.Either
 -- unless/until we come up with a more idiomatic implementation of the parsing step.
-rightOrDefault :: Either String AlignedRead -> AlignedRead
-rightOrDefault e = case e of
-    Left _ -> defaultAlignment
-    Right a -> a
+rightOrDefaultSingle :: Either CA.ParseError (CA.PositionRange, [AlignedRead])
+               -> [AlignedRead]
+rightOrDefaultSingle e = case e of
+    Left _ -> []
+    Right a -> snd a
 
 rightOrDefaultPaird :: Either CA.ParseError (CA.PositionRange, [PairedAln])
                     -> [PairedAln]
@@ -1858,18 +1858,20 @@ updateCigF fdiff cigar
               fdiffi = intgr2int fdiff
               cignoclip = filter nohardclip cmap
               cigexp = expandcigar2 cignoclip -- [(Int, B.ByteString)] assoc. list
-              -- origcigexp = expandcigar cignoclip
-              -- noinscigexp = expandRefmatchedCigar cignoclip
               nopadlen = length cigexp
+              cigmod = softclipinterval 0 fdiff (expandcigar cignoclip)
+              {--
               (ftrimCigOps, remCigOps) = splitAt fdiffi cigexp -- 180223
               ftrimSlength = sumSoftClipCigOps ftrimCigOps
               newss = B.replicate ftrimSlength 'S'
               newcigarcore = B.append newss $ B.concat $ snd <$> remCigOps -- remcigraw
               -- 181115
               newfullcigar = B.append fHs $ B.append newcigarcore rHs
-              -- newcigar = B.append (B.append fSs newcigarcore) rSs
-              -- newfullcigar = B.append fHs (B.append newcigar rHs)
-              newcig = contractcigar newfullcigar
+              --}
+              ftrimCigOps = softclipOps cigmod
+              fremCigOps = remCigOps cigmod
+              newcig = contractcigar
+                     $ B.concat [fHs, ftrimCigOps, fremCigOps, rHs]
 
 updateCigR :: Integer -> B.ByteString -> B.ByteString
 updateCigR rdiff cigar
@@ -1882,13 +1884,15 @@ updateCigR rdiff cigar
               nohardgrps = B.group $ expandcigar $ filter nohardclip cmap
               fHs = B.filter (== 'H') $ head grps -- maybe ""
               rHs = B.filter (== 'H') $ last grps -- maybe ""
-              -- fSs = B.filter (== 'S') $ head nohardgrps
-              -- rSs = B.filter (== 'S') $ last nohardgrps
               rdiffi = intgr2int rdiff
               cignoclip = filter nohardclip cmap
-              -- cignoclip = filter noclip cmap
               cigexpR = expandcigar2 $ reverse cignoclip
               nopadlen = length cigexpR
+              cigmod = softclipinterval
+                       0
+                       rdiff
+                      (expandcigar $ reverse cignoclip)
+              {--
               (rtrimCigOps, remCigOps) = splitAt rdiffi cigexpR -- 180223
               rtrimSlength = sumSoftClipCigOps rtrimCigOps
               newss = B.replicate rtrimSlength 'S'
@@ -1899,7 +1903,13 @@ updateCigR rdiff cigar
               newfullcigar = B.append fHs $ B.append newcigarcore rHs
               -- newcigar = B.append fSs (B.append newcigarcore rSs)
               -- newfullcigar = B.append fHs (B.append newcigar rHs)
-              newcig = contractcigar newfullcigar
+              --}
+              rtrimCigOps = softclipOps cigmod
+              rremCigOps = remCigOps cigmod
+              revdRawTrimCigOps = B.reverse $ B.concat [ rtrimCigOps
+                                                       , rremCigOps ]
+              newcig = contractcigar
+                     $ B.concat [fHs, revdRawTrimCigOps, rHs]
 
 updateCigB :: Integer -> Integer -> B.ByteString -> B.ByteString
 updateCigB fdiff rdiff cigar
@@ -1913,15 +1923,20 @@ updateCigB fdiff rdiff cigar
               nohardgrps = B.group $ expandcigar $ filter nohardclip cmap
               fHs = B.filter (== 'H') $ head grps -- maybe ""
               rHs = B.filter (== 'H') $ last grps -- maybe ""
-              fSs = B.filter (== 'S') $ head nohardgrps
-              rSs = B.filter (== 'S') $ last nohardgrps
+              -- fSs = B.filter (== 'S') $ head nohardgrps
+              -- rSs = B.filter (== 'S') $ last nohardgrps
               fdiffi = intgr2int fdiff
               rdiffi = intgr2int rdiff
               -- 5p trim
               cignoclipf = filter nohardclip cmap
-              -- cignoclipf = filter noclip cmap
               cigexpf = expandcigar2 cignoclipf
               nopadlen = length cigexpf
+              fcigmod = softclipinterval 0 fdiff (expandcigar cignoclipf)
+              ftrimCigOps = softclipOps fcigmod
+              fremCigOps = remCigOps fcigmod
+              fclipd = B.concat [ftrimCigOps, fremCigOps]
+              bcigmod = softclipinterval 0 rdiff (B.reverse fclipd)
+              {--
               (ftrimCigOps, fremCigOps) = splitAt fdiffi cigexpf -- 180223
               ftrimSlength = sumSoftClipCigOps ftrimCigOps
               newfss = B.replicate ftrimSlength 'S'
@@ -1929,28 +1944,30 @@ updateCigB fdiff rdiff cigar
               (rtrimCigOps, rremCigOps) = splitAt rdiffi cigexpftrimd -- 180223
               rtrimSlength = sumSoftClipCigOps rtrimCigOps
               newrss = B.replicate rtrimSlength 'S'
-              -- totfss = B.append fSs newfss
-              -- totrss = B.append rSs newrss
               newcigarcore = B.concat $ snd <$> (reverse rremCigOps)
               -- 181115
               newcigar = B.append newfss $ B.append newcigarcore newrss
               newfullcigar = B.append fHs $ B.append newcigar rHs
-              -- newcigar = B.append totfss (B.append newcigarcore totrss)
-              -- newfullcigar = B.append fHs (B.append newcigar rHs)
-              newcig = contractcigar newfullcigar
+              --}
+              rtrimCigOps = softclipOps bcigmod
+              rremCigOps = remCigOps bcigmod
+              revdRawTrimCigOps = B.reverse $ B.concat [ rtrimCigOps
+                                                       , rremCigOps]
+              newcig = contractcigar
+                     $ B.concat [fHs, revdRawTrimCigOps, rHs]
 
--- 181116 functions on CigarPtr record to track soft-clipping
+-- 181116 functions on CigarMod record to track soft-clipping
 
 -- soft clip bases, updating soft-clip CIGAR ops and remaining CIGAR ops
 -- until primer interval overlapping alingment has been spanned.
-softclipinterval :: Integer -> Integer -> B.ByteString -> CigarPtr
+softclipinterval :: Integer -> Integer -> B.ByteString -> CigarMod
 softclipinterval cpos endpos cigops
-    | (trimcomplete cigptr) == True = cigptr
-    | otherwise = softclipbase cigptr
-        where cigptr = CigarPtr cpos endpos B.empty cigops False
+    | (trimcomplete cigmod) == True = cigmod
+    | otherwise = softclipbase cigmod
+        where cigmod = CigarMod cpos endpos B.empty cigops False
 
 -- try stateful tracking of soft-clipping
-softclipbase :: CigarPtr -> CigarPtr
+softclipbase :: CigarMod -> CigarMod
 softclipbase cigp
     | (trimcomplete cigp) == True = cigp
     | B.empty == (remCigOps cigp) = cigp { trimcomplete = True }
@@ -1958,8 +1975,8 @@ softclipbase cigp
     | otherwise = loop
         where loop = softclipbase $ clip cigp
 
-clip :: CigarPtr -> CigarPtr
-clip cigp@(CigarPtr crpos targpos ss rops trimcmplt)
+clip :: CigarMod -> CigarMod
+clip cigp@(CigarMod crpos targpos ss rops trimcmplt)
     | op == "S" = clipS
     | op == "M" = clipS
     | op == "I" = clipI

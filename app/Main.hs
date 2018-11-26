@@ -25,7 +25,7 @@ main = do
                       <> header
                         "primerclip -- Swift Biosciences Accel-Amplicon targeted panel primer trimming tool for single-end reads v0.3.4")
     args <- execParser opts
-    runstats <- runPrimerTrimming args
+    runstats <- runPrimerTrimmingSE args
     putStrLn "primer trimming complete."
     writeRunStats (outfilename args) runstats -- 180226
 -- end main
@@ -48,4 +48,21 @@ runPrimerTrimming args = do
                                 *> calcRunStats) -- 180226 --}
     return runstats
 
+-- 181125 parse and trim single-end read alignments
+runPrimerTrimmingSE :: Opts -> IO RunStats
+runPrimerTrimmingSE args = do
+    (fmp, rmp) <- createprimerbedmaps args
+    runstats <- P.runConduitRes
+              $ P.sourceFile (insamfile args)
+              P..| CA.conduitParserEither parseSingleAlnsOrHdr
+              P..| P.mapC rightOrDefaultSingle -- convert parse fails to defaultAlignment
+              P..| P.concatC
+              P..| P.mapC (trimprimersE fmp rmp)
+              -- P..| P.mapC flattenPairedAln
+              -- P..| P.concatC
+              P..| P.filterC (\x -> (qname x) /= "NONE") -- remove dummy alignments
+              P..| P.getZipSink
+                       (P.ZipSink (printAlnStreamToFile (outfilename args))
+                                *> calcRunStats) -- 180226 --}
+    return runstats
 
