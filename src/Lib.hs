@@ -31,7 +31,7 @@ import GHC.Generics (Generic)
 
 {--
     Jonathan Irish
-    Post-alignment primer trimming tool v0.3.4
+    Post-alignment primer trimming tool v0.3.5
 
 --}
 
@@ -619,12 +619,18 @@ optargs = Opts
        <> long "bedpe"
        <> help "add this switch to use BEDPE coordinate input format (default format is master file)"
         )
+    <*> switch
+        ( short 's'
+       <> long "single-end"
+       <> help "add this switch to trim primers from single-end alignments"
+        )
     <*> argument str (metavar "PRIMER_COORDS_INFILE")
     <*> argument str (metavar "SAM_INFILE")
     <*> argument str (metavar "OUTPUT_SAM_FILENAME")
 
 -- record to store command line arguments
 data Opts = Opts { bedpeformat :: Bool
+                 , sereads :: Bool
                  , incoordsfile :: String
                  , insamfile :: String
                  , outfilename :: String
@@ -820,7 +826,6 @@ secalnp setqname = do
         tln = floor $ tl
         cigm = exrights $ parseCigar cig
         end = (sumMatches cigm) + p -- 180223 NOTE: previous CIGAR accounting inverted "D" and "I" (!)
-        -- optfieldstr = B.intercalate "\t" optfs -- B.pack optfs
         midstr = parsemIDstring optfs -- optfieldstr
         a = defaultAlignment { qname = qn
                              , flag = f
@@ -877,14 +882,11 @@ parsechkSAM numrec numsucc failedlines
         where reportOK = "all " ++ (show numrec)
                                 ++ " SAM alignments parsed successfully.\n"
               parsediff = length failedlines
-              --flinestrs = show <$> failedlines
-              --fstring = intercalate "\n" flinestrs
               reportFails = "WARNING: "
                              ++ (show parsediff)
                              ++ " of " ++ (show numrec)
                              ++ " SAM alignments failed to parse (see samparsefails.log)"
                              ++ "\n"
-                             -- ++ fstring ++ "\n"
 
 parsechkBED :: Int -> Int -> [Int] -> String
 parsechkBED numrec numsucc failedlines
@@ -893,8 +895,6 @@ parsechkBED numrec numsucc failedlines
         where reportOK = "all " ++ (show numrec)
                                 ++ " primer BEDPE records parsed successfully.\n"
               parsediff = length failedlines
-              -- flinestrs = show <$> failedlines
-              -- fstring = intercalate "\n" flinestrs
               reportFails = "WARNING: "
                              ++ (show parsediff)
                              ++ " of " ++ (show numrec)
@@ -1027,7 +1027,6 @@ alnparserEOL = do
         tln = floor $ tl
         cigm = exrights $ parseCigar cig
         end = (sumMatches cigm) + p -- 180223 NOTE: previous CIGAR accounting inverted "D" and "I" (!)
-        -- optfieldstr = B.intercalate "\t" optfs -- B.pack optfs
         midstr = parsemIDstring optfs -- optfieldstr
         a = defaultAlignment { qname = qn
                              , flag = f
@@ -1079,7 +1078,6 @@ alnparser = do
     qual <- txtfieldp
     A.space
     optfs <- optfieldstotalp -- optfieldsp
-    -- A.endOfLine -- 180321 for parsing alignment pairs
     let flag = f
         strand = case testBit flag 4 of
             True  -> B.pack "-"
@@ -1089,7 +1087,6 @@ alnparser = do
         tln = floor $ tl
         cigm = exrights $ parseCigar cig
         end = (sumMatches cigm) + p -- 180223 NOTE: previous CIGAR accounting inverted "D" and "I" (!)
-        -- optfieldstr = B.intercalate "\t" optfs -- B.pack optfs
         midstr = parsemIDstring optfs -- optfieldstr
         a = defaultAlignment { qname = qn
                              , flag = f
@@ -1206,7 +1203,7 @@ headsafeAln as
 -- use of Conduit to read input alignment file precludes use of "rights" in Data.Either
 -- unless/until we come up with a more idiomatic implementation of the parsing step.
 rightOrDefaultSingle :: Either CA.ParseError (CA.PositionRange, [AlignedRead])
-               -> [AlignedRead]
+                     -> [AlignedRead]
 rightOrDefaultSingle e = case e of
     Left _ -> []
     Right a -> snd a
@@ -1273,9 +1270,6 @@ nomapCigToNomapRname c rname
     | c == "*"  = NONE
     | otherwise = rname
 
--- 180223 check if cigar "length" equal to alignment length (refseq)
-
-
 -- 180223 check that trimmed cigar string still matches read length
 checkcigseqlen :: AlignedRead -> Bool
 checkcigseqlen a
@@ -1302,7 +1296,6 @@ getTrimdcigCoordDiff a
               trimdalen = (trimdendpos a) - (trimdpos a)
               diff =  trimdalen - tcmatchlen
 
-
 -- 170206 filter nonmatching and zero-length CIGAR/sequence lengths
 -- however: keep "*"
 checkcigseqlen2 :: AlignedRead -> Bool
@@ -1328,10 +1321,8 @@ checkCigarSeqlen a
 
 cigseqlenHdrPassTest :: AlignedRead -> Bool
 cigseqlenHdrPassTest a
-    -- | (isheader a) = True
     | (cigar a == "*") || (trimdcigar a == "*") = True -- 180222
     | (cigmatchlen == refseqlen) = True
-    -- | (cigmatchlen == refseqlen) && (matchcnt > 0) = True
     | otherwise = False
         where matchcnt = sumMatches tcmap
               cigmatchlen = sum [ x | (x, y) <- tcmap, y == "M"
@@ -1370,7 +1361,6 @@ parsesignedint i = floor $ exrights $ parsedbl i :: Integer
 
 spaces = A.many1 A.skipSpace
 
---txtfieldp = A.takeTill A.isHorizontalSpace
 txtfieldp = A.takeTill A.isSpace
 
 optfieldsp = A.sepBy' txtfieldp A.space -- parses correctly
@@ -1517,7 +1507,6 @@ anyPrimerIntAln p = (pintflag $ r1prim p)
                  || (any pintflag $ r1secs p)
                  || (any pintflag $ r2secs p)
 
-
 -- select element of nested vector
 getcol :: Int -> V.Vector (V.Vector a) -> V.Vector a
 getcol n txt = fmap (V.! n) txt
@@ -1540,29 +1529,6 @@ getlengths seqs = fmap B.length seqs
 ------------------------------------------------------------------------------
 ----------------------  HIGH-LEVEL FUNCTIONS IN MAIN -------------------------
 ------------------------------------------------------------------------------
-{--
---parseTrimSAM :: P.MonadResource m => B.ByteString -> P.ConduitM 
-parseTrimSAM outfile = do
-    pe <- CA.conduitParserEither hdralnparserEOL'
-    let defltPosRang = CA.PositionRange (CA.Position 0 0 0) (CA.Position 0 0 0)
-        (d, p) = U.fromRight (defltPosRang, defaultAlignment) pe
-    -- B.writeFile outfile $ printAlignmentOrHdr p
-    -- P.sinkList -- pass remainder of stream through function
-    return p
---}
-
-{--
--- 180329 try bundling parsing and trimming into one function
-parseAndTrimPairSet :: CMap -> CMap -> B.ByteString -> [AlignedRead]
-parseAndTrimPairSet fmp rmp bs =
-    -- assumes header already parsed from the stream
-    let pdaln = U.fromRight defaultPairedAln
-                $ A.parseOnly parsePairedAlnsOrHdr bs
-        trimd = trimprimerPairsE fmp rmp pdaln
-    in sort $ (r1prim trimd)
-            : (r2prim trimd)
-            : ((r1secs trimd) ++ (r2secs trimd))
---}
 
 -- 180409 expand PairedAln to [AlignedRead]
 flattenPairedAln :: PairedAln -> [AlignedRead]
@@ -1709,7 +1675,6 @@ setpintflag hits
 ---------- Functions to trim AlignedRead if it intersects primer(s) ----------
 ------------------------------------------------------------------------------
 
--- {--
 -- 180322 update flag, rnext, and pnext field for each alignment in a PairedAln
 -- record based on result of any primer trimming of that read's mate
 updateTrimdPairFields :: PairedAln -> PairedAln
@@ -1746,7 +1711,6 @@ updateR2nextfields pa =
         (newpr2:newsecr2s) = (\x -> x { pnext = trimdposR1 }) <$> nxtalns -- update pnext
         -- NOTE: should MRNM be kept "*" for trimmed-to-0-length with mate still mapped???
     in pa { r2prim = newpr2, r2secs = newsecr2s }
---}
 
 -- 180402 test whether paired alignment start is correctly updated for
 -- primer-trimmed alignments
@@ -1861,14 +1825,6 @@ updateCigF fdiff cigar
               cigexp = expandcigar2 cignoclip -- [(Int, B.ByteString)] assoc. list
               nopadlen = length cigexp
               cigmod = softclipinterval 0 fdiff (expandcigar cignoclip)
-              {--
-              (ftrimCigOps, remCigOps) = splitAt fdiffi cigexp -- 180223
-              ftrimSlength = sumSoftClipCigOps ftrimCigOps
-              newss = B.replicate ftrimSlength 'S'
-              newcigarcore = B.append newss $ B.concat $ snd <$> remCigOps -- remcigraw
-              -- 181115
-              newfullcigar = B.append fHs $ B.append newcigarcore rHs
-              --}
               ftrimCigOps = softclipOps cigmod
               fremCigOps = remCigOps cigmod
               newcig = contractcigar
@@ -1893,18 +1849,6 @@ updateCigR rdiff cigar
                        0
                        rdiff
                       (expandcigar $ reverse cignoclip)
-              {--
-              (rtrimCigOps, remCigOps) = splitAt rdiffi cigexpR -- 180223
-              rtrimSlength = sumSoftClipCigOps rtrimCigOps
-              newss = B.replicate rtrimSlength 'S'
-              newcigarcore = B.append
-                            (B.concat $ snd <$> (reverse remCigOps))
-                             newss
-              -- 181115
-              newfullcigar = B.append fHs $ B.append newcigarcore rHs
-              -- newcigar = B.append fSs (B.append newcigarcore rSs)
-              -- newfullcigar = B.append fHs (B.append newcigar rHs)
-              --}
               rtrimCigOps = softclipOps cigmod
               rremCigOps = remCigOps cigmod
               revdRawTrimCigOps = B.reverse $ B.concat [ rtrimCigOps
@@ -1924,8 +1868,6 @@ updateCigB fdiff rdiff cigar
               nohardgrps = B.group $ expandcigar $ filter nohardclip cmap
               fHs = B.filter (== 'H') $ head grps -- maybe ""
               rHs = B.filter (== 'H') $ last grps -- maybe ""
-              -- fSs = B.filter (== 'S') $ head nohardgrps
-              -- rSs = B.filter (== 'S') $ last nohardgrps
               fdiffi = intgr2int fdiff
               rdiffi = intgr2int rdiff
               -- 5p trim
@@ -1937,19 +1879,6 @@ updateCigB fdiff rdiff cigar
               fremCigOps = remCigOps fcigmod
               fclipd = B.concat [ftrimCigOps, fremCigOps]
               bcigmod = softclipinterval 0 rdiff (B.reverse fclipd)
-              {--
-              (ftrimCigOps, fremCigOps) = splitAt fdiffi cigexpf -- 180223
-              ftrimSlength = sumSoftClipCigOps ftrimCigOps
-              newfss = B.replicate ftrimSlength 'S'
-              cigexpftrimd = reverse fremCigOps
-              (rtrimCigOps, rremCigOps) = splitAt rdiffi cigexpftrimd -- 180223
-              rtrimSlength = sumSoftClipCigOps rtrimCigOps
-              newrss = B.replicate rtrimSlength 'S'
-              newcigarcore = B.concat $ snd <$> (reverse rremCigOps)
-              -- 181115
-              newcigar = B.append newfss $ B.append newcigarcore newrss
-              newfullcigar = B.append fHs $ B.append newcigar rHs
-              --}
               rtrimCigOps = softclipOps bcigmod
               rremCigOps = remCigOps bcigmod
               revdRawTrimCigOps = B.reverse $ B.concat [ rtrimCigOps
@@ -2004,7 +1933,6 @@ clip cigp@(CigarMod crpos targpos ss rops trimcmplt)
                            }
               (op, remops) = B.splitAt 1 rops
 
-
 showcigar :: (Integer, B.ByteString) -> B.ByteString
 showcigar cm =
     let cnt = B.pack $ show $ fst cm
@@ -2022,7 +1950,6 @@ expandcigar2 cmap =
         ixs = [1..opslen] :: [Integer]
     in zipWith (,) ixs ops
 
-
 -- convert expanded cigar string to standard CIGAR format (after trim update)
 contractcigar :: B.ByteString -> B.ByteString
 contractcigar longcig
@@ -2038,7 +1965,6 @@ contractcigar longcig
 expandRefmatchedCigar :: CigarMap -> B.ByteString
 expandRefmatchedCigar cmap = B.filter (/= 'I')
                            $ expandcigar cmap
-
 
 -- 161023 sum all "S", "I", and "M" chars in trimmed sequence (drop all "D")
 -- to get accurate CIGAR string
@@ -2099,20 +2025,14 @@ clearNonRealCigar a
     | (any (\x -> elem x ("MIDN" :: String)) (B.unpack $ trimdcigar a)) = a
     | otherwise = clearedCigAln
         where clearedCigAln = a { trimdcigar = "*"
-                                -- , flag = zeroLenFlag
                                 , trimdpos = 0
                                 , trimdendpos = 0
-                                -- , rnext = "*"
-                                -- , pnext = -1
                                 , tlen = 0
                                 , mapqual = 0
                                 , trimdToZeroLength = True
                                 , mapped = False
                                 }
-              -- zeroLenFlag = setZeroLengthAlnFlag $ flag a
 
-
--- {--
 -- 180409 clear flags only on trimmed-to-zero-length Alignments
 -- (NOT their mapped pairs)
 -- TODO: set mate MRNM of trimmed-to-zero-length alignments to ... ?
@@ -2155,11 +2075,6 @@ updateZeroTrimdPairFlags pa
               r1sMRNMs = r1secs newMRNMp
               r2sMRNMs = r2secs newMRNMp
               newMRNMp = setMateRname pa
---}
-
--- 181126 clear mapped SAM flag for single-end AlignedRead when trimmed to
--- zero-length
-
 
 -- 180416 setMateRname must only update RNAME when mate was mapped in input SAM
 setMateRname :: PairedAln -> PairedAln
@@ -2187,7 +2102,6 @@ setMateRname p
                                      , (r1secs p)
                                      , (r2secs p) )
 
--- {--
 -- 180416 clear RNEXT and PNEXT for (primary) pair if primary trimmed to 0-length
 updateZeroTrimdPairFields :: PairedAln -> PairedAln
 updateZeroTrimdPairFields p
@@ -2198,9 +2112,7 @@ updateZeroTrimdPairFields p
     | otherwise = p
         where primR1zerotrimmed = trimdToZeroLength $ r1prim p
               primR2zerotrimmed = trimdToZeroLength $ r2prim p
---}
 
--- {--
 -- 180726 IFF (mate read not mapped by bwa && read is trimmed to 0-length)
 -- then clear RNAME, POS, RNEXT (MRNM), and PNEXT for both reads
 clearR1primNextFields :: PairedAln -> PairedAln
@@ -2243,28 +2155,6 @@ clearNamesAndPositions p =
                      }
     in p { r1prim = newr1p, r2prim = newr2p }
 
---}
-
-{--
-clearR1primNextFields :: PairedAln -> PairedAln
-clearR1primNextFields p =
-    let r1p = r1prim p
-        newr1prim = r1p { rnext = "*"
-                        , pnext = 0
-                        , tlen = 0
-                        }
-    in p { r1prim = newr1prim }
-
-clearR2primNextFields :: PairedAln -> PairedAln
-clearR2primNextFields p =
-    let r2p = r2prim p
-        newr2prim = r2p { rnext = "*"
-                        , pnext = 0
-                        , tlen = 0
-                        }
-    in p { r2prim = newr2prim }
---}
-
 -- 180423 add setProperInsertSizeRange step (TESTING)
 -- modifications
 -- TODO: consolidate ad-hoc updates to trimmed alignments,
@@ -2276,7 +2166,6 @@ makeTrimmedUpdates pa = setProperInsertSizeRange (-1200) (1200)
                       $ updateZeroTrimdPairFlags
                       $ updateTrimdPairFields pa
 
--- {--
 makeMRNMexplicit :: PairedAln -> PairedAln
 makeMRNMexplicit p
     | r1zerotrimdR2mapped || r2zerotrimdR1mapped = explicitMRNM
@@ -2290,7 +2179,6 @@ makeMRNMexplicit p
                                , r2prim = newr2p
                                , r2secs = newr2s
                                }
-              -- explicitR2MRNM = p { r2prim = newr2p, r2secs = newr2s }
               newr1p = r1p { rnext = r2pRNAME }
               newr2p = r2p { rnext = r1pRNAME }
               newr1s = (\x -> x { rnext = r2pRNAME }) <$> r1s
@@ -2301,7 +2189,6 @@ makeMRNMexplicit p
               r2s = r2secs p
               r1pRNAME = B.pack $ show $ rname $ r1prim p
               r2pRNAME = B.pack $ show $ rname $ r2prim p
---}
 
 -- 180320 clear supp. alignment bit
 setZeroLengthAlnFlag :: Int -> Int
@@ -2552,33 +2439,8 @@ checkpos i
     | i < 0 = 0
     | otherwise = i
 
--- 170201 new trimming arithmetic adjusts read coords to reference
-adjustcrds :: [(Integer, B.ByteString)] -> [(Integer, B.ByteString)]
-adjustcrds cigs = scanl1 shiftcrds cigs
-
--- 'H' should be removed from CIGAR string before calling this function
--- this function adjusts read positions to align with reference (relative)
--- coordinates, allowing correct calculation of the primer-trimmed CIGAR string
-shiftcrds :: (Integer, B.ByteString) -> (Integer, B.ByteString)
-          -> (Integer, B.ByteString)
-shiftcrds (lastpos, _) (_, thiscigop)
-    | thiscigop == "I" = adjustposI
-    | thiscigop == "D" = adjustposD
-    | otherwise = keeppos
-    where adjustposI = (lastpos, thiscigop)
-          adjustposD = (lastpos + 2, thiscigop)
-          keeppos = (lastpos + 1, thiscigop)
-
 taketrim :: Integer -> [(Integer, B.ByteString)] -> [(Integer, B.ByteString)]
 taketrim cnt cs = takeWhile (\x -> (fst x) <= cnt) cs
-
--- 170203 try to fix edge case where D is first base in remaining CIGAR string
-trimrem :: Integer -> [(Integer, B.ByteString)] -> [(Integer, B.ByteString)]
-trimrem cnt cs
-    | length rem == 0 = []
-    | (snd $ head rem) == "D" = tail rem
-    | otherwise = rem
-        where rem = dropWhile (\x -> (fst x) <= cnt) cs
 
 -- 170510 print warning if chromosome name formats from SAM and master input
 -- files do not match
@@ -2603,219 +2465,4 @@ getNonHeaderAlns as = filter (not . isheader) as
 pairedAlnToTuple :: PairedAln ->
     (AlignedRead, AlignedRead, [AlignedRead], [AlignedRead])
 pairedAlnToTuple p = ((r1prim p), (r2prim p), (r1secs p), (r2secs p))
-
 -- end of Library
-
-{--
--- UPDATE 18-03-01 revert CIGAR trimming changes while debugging problems
-updateCigF :: Integer -> B.ByteString -> B.ByteString
-updateCigF fdiff cigar
-    | snd (head cmap) == "*" = "*"
-    | fdiffi <= 0 = cigar
-    | ((nopadlen - fdiffi) == 0) = "*" -- 180320
-    | ((nopadlen - fdiffi) > 0) = newcig -- 180320
-    | otherwise = "*"
-        where cmap = mapcig cigar
-              grps = B.group $ expandcigar cmap
-              nohardgrps = B.group $ expandcigar $ filter nohardclip cmap
-              fHs = B.filter (== 'H') $ head grps -- maybe ""
-              rHs = B.filter (== 'H') $ last grps -- maybe ""
-              fSs = B.filter (== 'S') $ head nohardgrps
-              rSs = B.filter (== 'S') $ last nohardgrps
-              fdiffi = intgr2int fdiff
-              cignoclip = filter noclip cmap
-              cigexp = expandcigar2 cignoclip -- [(Int, B.ByteString)] assoc. list
-              nopadlen = length cigexp
-              adjcig = adjustcrds cigexp
-              ftrim = taketrim fdiff adjcig
-              trimDs = countDs ftrim
-              trimDcorr = intgr2int trimDs
-              adjix = (genericLength ftrim) + trimDs
-              remcigraw = drop trimDcorr $ trimrem adjix cigexp
-              newss = B.replicate (length ftrim) 'S'
-              newcigarcore = B.append newss $ B.concat $ snd <$> remcigraw
-              newcigar = B.append (B.append fSs newcigarcore) rSs
-              newfullcigar = B.append fHs (B.append newcigar rHs)
-              newcig = contractcigar newfullcigar
-
-updateCigR :: Integer -> B.ByteString -> B.ByteString
-updateCigR rdiff cigar
-    | snd (head cmap) == "*" = "*"
-    | rdiffi <= 0 = cigar
-    | ((nopadlen - rdiffi) == 0) = "*" -- 180320 DEBUGGING
-    | ((nopadlen - rdiffi) > 0) = newcig -- 180320 DEBUGGING
-    | otherwise = "*" -- 180320 allow all 'S' trimmed CIGAR (diff == nopadlen)
-        where cmap = mapcig cigar
-              grps = B.group $ expandcigar cmap
-              nohardgrps = B.group $ expandcigar $ filter nohardclip cmap
-              fHs = B.filter (== 'H') $ head grps -- maybe ""
-              rHs = B.filter (== 'H') $ last grps -- maybe ""
-              fSs = B.filter (== 'S') $ head nohardgrps
-              rSs = B.filter (== 'S') $ last nohardgrps
-              rdiffi = intgr2int rdiff
-              cignoclip = filter noclip cmap
-              cigexpR = expandcigar2 $ reverse cignoclip
-              nopadlen = length cigexpR
-              adjcigR = adjustcrds cigexpR
-              rtrim = taketrim rdiff adjcigR
-              trimDs = countDs rtrim
-              trimDcorr = intgr2int trimDs
-              adjix = (genericLength rtrim) + trimDs
-              remcigraw = drop trimDcorr $ trimrem adjix cigexpR
-              remDs = intgr2int $ countDs remcigraw
-              remcigDadj = reverse $ drop remDs remcigraw
-              newss = B.replicate ((length rtrim)
-                                  + trimDcorr
-                                  + remDs) 'S'
-              newcigarcore = B.append (B.concat $ snd <$> remcigDadj) newss
-              newcigar = B.append fSs (B.append newcigarcore rSs)
-              newfullcigar = B.append fHs (B.append newcigar rHs)
-              newcig = contractcigar newfullcigar
-
-updateCigB :: Integer -> Integer -> B.ByteString -> B.ByteString
-updateCigB fdiff rdiff cigar
-    | snd (head cmap) == "*" = "*"
-    | fdiffi <= 0 = updateCigR rdiff cigar
-    | rdiffi <= 0 = updateCigF fdiff cigar
-    | ((nopadlen - fdiffi - rdiffi) == 0) = "*" -- 180320
-    | ((nopadlen - fdiffi - rdiffi) > 0) = newcig -- 180320
-    | otherwise = "*"
-        where cmap = mapcig cigar
-              grps = B.group $ expandcigar cmap
-              nohardgrps = B.group $ expandcigar $ filter nohardclip cmap
-              fHs = B.filter (== 'H') $ head grps -- maybe ""
-              rHs = B.filter (== 'H') $ last grps -- maybe ""
-              fSs = B.filter (== 'S') $ head nohardgrps
-              rSs = B.filter (== 'S') $ last nohardgrps
-              fdiffi = intgr2int fdiff
-              rdiffi = intgr2int rdiff
-              -- 5p trim
-              cignoclipf = filter noclip cmap
-              cigexpf = expandcigar2 cignoclipf
-              nopadlen = length cigexpf
-              adjcigf = adjustcrds cigexpf
-              ftrim = taketrim fdiff adjcigf
-              ftrimDs = countDs ftrim
-              ftrimDcorr = intgr2int ftrimDs
-              adjixf = (genericLength ftrim) + ftrimDs
-              remcigrawf = drop ftrimDcorr $ trimrem adjixf cigexpf
-              newfss = B.replicate (length ftrim) 'S'
-              -- 3p trim3p
-              cigexpr = zipWith (\x (i, j) -> (x, j))
-                                [1..]
-                                (reverse remcigrawf)
-              adjcigr = adjustcrds cigexpr
-              rtrim = taketrim rdiff adjcigr
-              rtrimDs = countDs rtrim
-              rtrimDcorr = intgr2int rtrimDs
-              adjixr = (genericLength rtrim) + rtrimDs
-              remcigrawr = drop rtrimDcorr $ trimrem adjixr cigexpr
-              remDsr = intgr2int $ countDs remcigrawr
-              remcigrDadj = reverse $ drop remDsr remcigrawr
-              newrss = B.replicate
-                        ((length rtrim) + rtrimDcorr + remDsr + ftrimDcorr) 'S'
-              totfss = B.append fSs newfss
-              totrss = B.append rSs newrss
-              newcigarcore = B.concat $ snd <$> remcigrDadj
-              newcigar = B.append totfss (B.append newcigarcore totrss)
-              newfullcigar = B.append fHs (B.append newcigar rHs)
-              newcig = contractcigar newfullcigar
-
--- UPDATE 18-03-01 revert CIGAR trimming changes while debugging problems
-updateCigF2 :: Integer -> B.ByteString -> B.ByteString
-updateCigF2 fdiff cigar
-    | snd (head cmap) == "*" = "*"
-    | fdiffi <= 0 = cigar
-    | ((nopadlen - fdiffi) > 0) = newcig -- 180219 DEBUG testing
-    | otherwise = "*"
-        where cmap = mapcig cigar
-              grps = B.group $ expandcigar cmap
-              nohardgrps = B.group $ expandcigar $ filter nohardclip cmap
-              fHs = B.filter (== 'H') $ head grps -- maybe ""
-              rHs = B.filter (== 'H') $ last grps -- maybe ""
-              -- fSs = B.filter (== 'S') $ head nohardgrps
-              -- rSs = B.filter (== 'S') $ last nohardgrps
-              fdiffi = intgr2int fdiff
-              cignoclip = filter nohardclip cmap
-              -- cignoclip = filter noclip cmap
-              cigexp = expandcigar2 cignoclip -- [(Int, B.ByteString)] assoc. list
-              nopadlen = length cigexp
-              (ftrimCigOps, remCigOps) = splitAt fdiffi cigexp -- 180223
-              ftrimSlength = sumSoftClipCigOps ftrimCigOps
-              newss = B.replicate ftrimSlength 'S'
-              newcigarcore = B.append newss $ B.concat $ snd <$> remCigOps -- remcigraw
-              -- 181115
-              newfullcigar = B.append fHs $ B.append newcigarcore rHs
-              -- newcigar = B.append (B.append fSs newcigarcore) rSs
-              -- newfullcigar = B.append fHs (B.append newcigar rHs)
-              newcig = contractcigar newfullcigar
-
-updateCigR2 :: Integer -> B.ByteString -> B.ByteString
-updateCigR2 rdiff cigar
-    | snd (head cmap) == "*" = "*"
-    | rdiffi <= 0 = cigar
-    | ((nopadlen - rdiffi) > 0) = newcig -- 180219 DEBUGGING
-    | otherwise = "*"
-        where cmap = mapcig cigar
-              grps = B.group $ expandcigar cmap
-              nohardgrps = B.group $ expandcigar $ filter nohardclip cmap
-              fHs = B.filter (== 'H') $ head grps -- maybe ""
-              rHs = B.filter (== 'H') $ last grps -- maybe ""
-              -- fSs = B.filter (== 'S') $ head nohardgrps
-              -- rSs = B.filter (== 'S') $ last nohardgrps
-              rdiffi = intgr2int rdiff
-              cignoclip = filter nohardclip cmap
-              -- cignoclip = filter noclip cmap
-              cigexpR = expandcigar2 $ reverse cignoclip
-              nopadlen = length cigexpR
-              (rtrimCigOps, remCigOps) = splitAt rdiffi cigexpR -- 180223
-              rtrimSlength = sumSoftClipCigOps rtrimCigOps
-              newss = B.replicate rtrimSlength 'S'
-              newcigarcore = B.append
-                            (B.concat $ snd <$> (reverse remCigOps))
-                             newss
-              -- 181115
-              newfullcigar = B.append fHs $ B.append newcigarcore rHs
-              -- newcigar = B.append fSs (B.append newcigarcore rSs)
-              -- newfullcigar = B.append fHs (B.append newcigar rHs)
-              newcig = contractcigar newfullcigar
-
-updateCigB2 :: Integer -> Integer -> B.ByteString -> B.ByteString
-updateCigB2 fdiff rdiff cigar
-    | snd (head cmap) == "*" = "*"
-    | fdiffi <= 0 = updateCigR rdiff cigar
-    | rdiffi <= 0 = updateCigF fdiff cigar
-    | ((nopadlen - fdiffi - rdiffi) > 0) = newcig -- 180212 zero-match CIGAR strings fail picard validation
-    | otherwise = "*"
-        where cmap = mapcig cigar
-              grps = B.group $ expandcigar cmap
-              nohardgrps = B.group $ expandcigar $ filter nohardclip cmap
-              fHs = B.filter (== 'H') $ head grps -- maybe ""
-              rHs = B.filter (== 'H') $ last grps -- maybe ""
-              fSs = B.filter (== 'S') $ head nohardgrps
-              rSs = B.filter (== 'S') $ last nohardgrps
-              fdiffi = intgr2int fdiff
-              rdiffi = intgr2int rdiff
-              -- 5p trim
-              cignoclipf = filter nohardclip cmap
-              -- cignoclipf = filter noclip cmap
-              cigexpf = expandcigar2 cignoclipf
-              nopadlen = length cigexpf
-              (ftrimCigOps, fremCigOps) = splitAt fdiffi cigexpf -- 180223
-              ftrimSlength = sumSoftClipCigOps ftrimCigOps
-              newfss = B.replicate ftrimSlength 'S'
-              cigexpftrimd = reverse fremCigOps
-              (rtrimCigOps, rremCigOps) = splitAt rdiffi cigexpftrimd -- 180223
-              rtrimSlength = sumSoftClipCigOps rtrimCigOps
-              newrss = B.replicate rtrimSlength 'S'
-              -- totfss = B.append fSs newfss
-              -- totrss = B.append rSs newrss
-              newcigarcore = B.concat $ snd <$> (reverse rremCigOps)
-              -- 181115
-              newcigar = B.append newfss $ B.append newcigarcore newrss
-              newfullcigar = B.append fHs $ B.append newcigar rHs
-              -- newcigar = B.append totfss (B.append newcigarcore totrss)
-              -- newfullcigar = B.append fHs (B.append newcigar rHs)
-              newcig = contractcigar newfullcigar
-
---}
