@@ -39,7 +39,6 @@ runPrimerTrimmingTest args = do
               P..| P.sinkList
     return trimdalns
 
-
 -- 181125 parse and trim single-end read alignments
 runPrimerTrimmingSEtest :: Opts -> IO [AlignedRead]
 runPrimerTrimmingSEtest args = do

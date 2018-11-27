@@ -1982,7 +1982,7 @@ clip cigp@(CigarMod crpos targpos ss rops trimcmplt)
     | op == "M" = clipM
     | op == "I" = clipI
     | op == "D" = clipD
-        where clipS = cigp { currpos = crpos -- (crpos + 1)
+        where clipS = cigp { currpos = crpos
                            , targetpos = targpos
                            , softclipOps = B.append ss "S"
                            , remCigOps = remops
