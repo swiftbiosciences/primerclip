@@ -31,11 +31,7 @@ import GHC.Generics (Generic)
 
 {--
     Jonathan Irish
-<<<<<<< HEAD
-    Post-alignment primer trimming tool v0.3.1
-=======
     Post-alignment primer trimming tool v0.3.5
->>>>>>> 4ade68d... add single-end trim feature and command option flag to corrected CIGAR mods
 
 --}
 
@@ -238,6 +234,15 @@ defaultMidFam = MidFamily { chrom = NONE
                           , negtxposdcnt = 0
                           , targetbed = defaultBed
                           }
+
+-- 181116 track genomic coords, CIGAR ops, soft-clip bases,
+-- and sequence length in one record
+data CigarMod = CigarMod { currpos :: Integer
+                         , targetpos :: Integer
+                         , softclipOps :: B.ByteString
+                         , remCigOps :: B.ByteString
+                         , trimcomplete :: Bool
+                         } deriving (Show, Eq)
 
 type Header = [B.ByteString]
 type Alignments = [AlignedRead]
@@ -753,6 +758,9 @@ parsePairedAlnsFromSAM bs = A.parseOnly parsePairedAlns bs
 
 parsePairedAlnsOrHdr = A.many1 (hdralnparserEOL <|> pairedalnparser)
 
+-- 181115
+parseSingleAlnsOrHdr = A.many1 (hdrSEalnparserEOL <|> alnparserEOL)
+
 parsePairedAlns = do
     h <- hdralnparserEOL
     pairsets <- A.many1 pairedalnparser
@@ -771,7 +779,7 @@ parseReadsetsFromSAM :: B.ByteString -> [[AlignedRead]]
 parseReadsetsFromSAM bs = U.fromRight [] $ A.parseOnly parsePairedAlns' bs
 
 parsePairedAlns' = do
-    h <- hdralnparserEOL'
+    h <- hdrSEalnparserEOL
     rsets <- A.many1 alignmentsetparser
     return $ [h] : rsets
 
@@ -981,8 +989,6 @@ getTargetBEDfromMaster mr =
                   , bedname = tname
                   }
 
-<<<<<<< HEAD
-=======
 -- 181115 new alignment parser which allows parse failures to be dropped
 -- from Alignments
 -- this version of alnparser designed to consume newline chars
@@ -1045,7 +1051,6 @@ alnparserEOL = do
                              }
     return a
 
->>>>>>> 4ade68d... add single-end trim feature and command option flag to corrected CIGAR mods
 -- new alignment parser which allows parse failures to be dropped
 -- from Alignments
 alnparser :: A.Parser AlignedRead
@@ -1116,8 +1121,8 @@ hdralnparserEOL = do
                                   }
     return $ defaultPairedAln { r1prim = hdraln }
 
-hdralnparserEOL' :: A.Parser AlignedRead
-hdralnparserEOL' = do
+hdrSEalnparserEOL :: A.Parser AlignedRead
+hdrSEalnparserEOL = do
     hlines <- A.many1 samhdrparserEOL
     return $ defaultAlignment { headerstrings = hlines
                               , isheader = True
@@ -1197,18 +1202,11 @@ headsafeAln as
 -- 171204 Attoparsec version of getRight (below)
 -- use of Conduit to read input alignment file precludes use of "rights" in Data.Either
 -- unless/until we come up with a more idiomatic implementation of the parsing step.
-<<<<<<< HEAD
-rightOrDefault :: Either String AlignedRead -> AlignedRead
-rightOrDefault e = case e of
-    Left _ -> defaultAlignment
-    Right a -> a
-=======
 rightOrDefaultSingle :: Either CA.ParseError (CA.PositionRange, [AlignedRead])
                      -> [AlignedRead]
 rightOrDefaultSingle e = case e of
     Left _ -> []
     Right a -> snd a
->>>>>>> 4ade68d... add single-end trim feature and command option flag to corrected CIGAR mods
 
 rightOrDefaultPaird :: Either CA.ParseError (CA.PositionRange, [PairedAln])
                     -> [PairedAln]
@@ -1255,8 +1253,15 @@ sumSeqMatches cigs = sum [ x | (x, y) <- cigs, y == "M"
 sumRefMatches :: [(Integer, B.ByteString)] -> Integer
 sumRefMatches cigs = sum [ x | (x, y) <- cigs, y == "M" || y == "D" ]
 
+-- 181115 include CIGAR 'S' OPs in sequence length arithmetic
 sumSoftClipCigOps :: [(Integer, B.ByteString)] -> Int
 sumSoftClipCigOps cigs = genericLength [ o | (_, o) <- cigs, o == "M"
+                                                          || o == "I"
+                                                          || o == "S"
+                                                          ]
+
+sumSoftClipCigOpsDepr :: [(Integer, B.ByteString)] -> Int
+sumSoftClipCigOpsDepr cigs = genericLength [ o | (_, o) <- cigs, o == "M"
                                                           || o == "I" ]
 
 -- 180212
@@ -1539,10 +1544,11 @@ trimprimerPairsE fmap rmap p =
     in nonprimZeroLengthRemoved
 
 -- element (single alignment)-wise primer trimming (for use with conduit)
+-- 181126 update SAM fields after primer trimming
 trimprimersE :: CMap -> CMap -> AlignedRead -> AlignedRead
 trimprimersE fmap rmap a =
     let intaln = addprimerints fmap rmap a
-        trimd = trimalignment intaln
+        trimd = updateTrimdAlnFields $ trimalignment intaln
     in trimd
 
 -- 171017 function to convert conduit ZipSink stream to output and write
@@ -1800,7 +1806,9 @@ trimboth a =
                      }
     in trimdaln
 
--- UPDATE 18-03-01 revert CIGAR trimming changes while debugging problems
+-- 181115 new updateCigF/R/Both functions which have updated CIGAR operations
+-- to correct mis-handling of existing soft-clipped bases and simplify
+-- reference coordinate adjustment due to indels in primers
 updateCigF :: Integer -> B.ByteString -> B.ByteString
 updateCigF fdiff cigar
     | snd (head cmap) == "*" = "*"
@@ -1812,27 +1820,15 @@ updateCigF fdiff cigar
               nohardgrps = B.group $ expandcigar $ filter nohardclip cmap
               fHs = B.filter (== 'H') $ head grps -- maybe ""
               rHs = B.filter (== 'H') $ last grps -- maybe ""
-              fSs = B.filter (== 'S') $ head nohardgrps
-              rSs = B.filter (== 'S') $ last nohardgrps
               fdiffi = intgr2int fdiff
-              cignoclip = filter noclip cmap
+              cignoclip = filter nohardclip cmap
               cigexp = expandcigar2 cignoclip -- [(Int, B.ByteString)] assoc. list
               nopadlen = length cigexp
-<<<<<<< HEAD
-              (ftrimCigOps, remCigOps) = splitAt fdiffi cigexp -- 180223
-              ftrimSlength = sumSoftClipCigOps ftrimCigOps
-              newss = B.replicate ftrimSlength 'S'
-              newcigarcore = B.append newss $ B.concat $ snd <$> remCigOps -- remcigraw
-              newcigar = B.append (B.append fSs newcigarcore) rSs
-              newfullcigar = B.append fHs (B.append newcigar rHs)
-              newcig = contractcigar newfullcigar
-=======
               cigmod = softclipinterval 0 fdiff (expandcigar cignoclip)
               ftrimCigOps = softclipOps cigmod
               fremCigOps = remCigOps cigmod
               newcig = contractcigar
                      $ B.concat [fHs, ftrimCigOps, fremCigOps, rHs]
->>>>>>> 4ade68d... add single-end trim feature and command option flag to corrected CIGAR mods
 
 updateCigR :: Integer -> B.ByteString -> B.ByteString
 updateCigR rdiff cigar
@@ -1845,23 +1841,10 @@ updateCigR rdiff cigar
               nohardgrps = B.group $ expandcigar $ filter nohardclip cmap
               fHs = B.filter (== 'H') $ head grps -- maybe ""
               rHs = B.filter (== 'H') $ last grps -- maybe ""
-              fSs = B.filter (== 'S') $ head nohardgrps
-              rSs = B.filter (== 'S') $ last nohardgrps
               rdiffi = intgr2int rdiff
-              cignoclip = filter noclip cmap
+              cignoclip = filter nohardclip cmap
               cigexpR = expandcigar2 $ reverse cignoclip
               nopadlen = length cigexpR
-<<<<<<< HEAD
-              (rtrimCigOps, remCigOps) = splitAt rdiffi cigexpR -- 180223
-              rtrimSlength = sumSoftClipCigOps rtrimCigOps
-              newss = B.replicate rtrimSlength 'S'
-              newcigarcore = B.append
-                            (B.concat $ snd <$> (reverse remCigOps))
-                             newss
-              newcigar = B.append fSs (B.append newcigarcore rSs)
-              newfullcigar = B.append fHs (B.append newcigar rHs)
-              newcig = contractcigar newfullcigar
-=======
               cigmod = softclipinterval
                        0
                        rdiff
@@ -1872,7 +1855,6 @@ updateCigR rdiff cigar
                                                        , rremCigOps ]
               newcig = contractcigar
                      $ B.concat [fHs, revdRawTrimCigOps, rHs]
->>>>>>> 4ade68d... add single-end trim feature and command option flag to corrected CIGAR mods
 
 updateCigB :: Integer -> Integer -> B.ByteString -> B.ByteString
 updateCigB fdiff rdiff cigar
@@ -1886,32 +1868,12 @@ updateCigB fdiff rdiff cigar
               nohardgrps = B.group $ expandcigar $ filter nohardclip cmap
               fHs = B.filter (== 'H') $ head grps -- maybe ""
               rHs = B.filter (== 'H') $ last grps -- maybe ""
-<<<<<<< HEAD
-              fSs = B.filter (== 'S') $ head nohardgrps
-              rSs = B.filter (== 'S') $ last nohardgrps
-=======
->>>>>>> 4ade68d... add single-end trim feature and command option flag to corrected CIGAR mods
               fdiffi = intgr2int fdiff
               rdiffi = intgr2int rdiff
               -- 5p trim
-              cignoclipf = filter noclip cmap
+              cignoclipf = filter nohardclip cmap
               cigexpf = expandcigar2 cignoclipf
               nopadlen = length cigexpf
-<<<<<<< HEAD
-              (ftrimCigOps, fremCigOps) = splitAt fdiffi cigexpf -- 180223
-              ftrimSlength = sumSoftClipCigOps ftrimCigOps
-              newfss = B.replicate ftrimSlength 'S'
-              cigexpftrimd = reverse fremCigOps
-              (rtrimCigOps, rremCigOps) = splitAt rdiffi cigexpftrimd -- 180223
-              rtrimSlength = sumSoftClipCigOps rtrimCigOps
-              newrss = B.replicate rtrimSlength 'S'
-              totfss = B.append fSs newfss
-              totrss = B.append rSs newrss
-              newcigarcore = B.concat $ snd <$> (reverse rremCigOps)
-              newcigar = B.append totfss (B.append newcigarcore totrss)
-              newfullcigar = B.append fHs (B.append newcigar rHs)
-              newcig = contractcigar newfullcigar
-=======
               fcigmod = softclipinterval 0 fdiff (expandcigar cignoclipf)
               ftrimCigOps = softclipOps fcigmod
               fremCigOps = remCigOps fcigmod
@@ -1970,7 +1932,6 @@ clip cigp@(CigarMod crpos targpos ss rops trimcmplt)
                            , remCigOps = remops
                            }
               (op, remops) = B.splitAt 1 rops
->>>>>>> 4ade68d... add single-end trim feature and command option flag to corrected CIGAR mods
 
 showcigar :: (Integer, B.ByteString) -> B.ByteString
 showcigar cm =
@@ -1999,15 +1960,12 @@ contractcigar longcig
                                    (B.singleton $ B.head x)
               cigarstring = B.concat $ shorten <$> grpd
 
-<<<<<<< HEAD
-=======
 -- 181115 new CIGAR operations for updating CIGAR string from non-tuple
 -- expanded CIGAR string
 expandRefmatchedCigar :: CigarMap -> B.ByteString
 expandRefmatchedCigar cmap = B.filter (/= 'I')
                            $ expandcigar cmap
 
->>>>>>> 4ade68d... add single-end trim feature and command option flag to corrected CIGAR mods
 -- 161023 sum all "S", "I", and "M" chars in trimmed sequence (drop all "D")
 -- to get accurate CIGAR string
 filtpadassoc :: [(Int, B.ByteString)] -> [(Int, B.ByteString)]
@@ -2117,10 +2075,6 @@ updateZeroTrimdPairFlags pa
               r1sMRNMs = r1secs newMRNMp
               r2sMRNMs = r2secs newMRNMp
               newMRNMp = setMateRname pa
-<<<<<<< HEAD
---}
-=======
->>>>>>> 4ade68d... add single-end trim feature and command option flag to corrected CIGAR mods
 
 -- 180416 setMateRname must only update RNAME when mate was mapped in input SAM
 setMateRname :: PairedAln -> PairedAln
@@ -2485,29 +2439,6 @@ checkpos i
     | i < 0 = 0
     | otherwise = i
 
-<<<<<<< HEAD
--- 170201 new trimming arithmetic adjusts read coords to reference
-adjustcrds :: [(Integer, B.ByteString)] -> [(Integer, B.ByteString)]
-adjustcrds cigs = scanl1 shiftcrds cigs
-
--- 'H' and 'S' should be removed from CIGAR string before calling this function
--- this function adjusts read positions to align with reference (relative)
--- coordinates, allowing correct calculation of the primer-trimmed CIGAR string
-shiftcrds :: (Integer, B.ByteString) -> (Integer, B.ByteString)
-        -> (Integer, B.ByteString)
-shiftcrds a b
-    | thiscig == "I" = adjustposI
-    | thiscig == "D" = adjustposD
-    | otherwise = keeppos
-    where lastpos = fst a
-          thispos = fst b
-          thiscig = snd b
-          adjustposI = (lastpos, thiscig)
-          adjustposD = (lastpos + 2, thiscig)
-          keeppos = (lastpos + 1, thiscig)
-
-=======
->>>>>>> 4ade68d... add single-end trim feature and command option flag to corrected CIGAR mods
 taketrim :: Integer -> [(Integer, B.ByteString)] -> [(Integer, B.ByteString)]
 taketrim cnt cs = takeWhile (\x -> (fst x) <= cnt) cs
 
@@ -2535,122 +2466,3 @@ pairedAlnToTuple :: PairedAln ->
     (AlignedRead, AlignedRead, [AlignedRead], [AlignedRead])
 pairedAlnToTuple p = ((r1prim p), (r2prim p), (r1secs p), (r2secs p))
 -- end of Library
-<<<<<<< HEAD
-
-{--
--- UPDATE 18-03-01 revert CIGAR trimming changes while debugging problems
-updateCigF :: Integer -> B.ByteString -> B.ByteString
-updateCigF fdiff cigar
-    | snd (head cmap) == "*" = "*"
-    | fdiffi <= 0 = cigar
-    | ((nopadlen - fdiffi) == 0) = "*" -- 180320
-    | ((nopadlen - fdiffi) > 0) = newcig -- 180320
-    | otherwise = "*"
-        where cmap = mapcig cigar
-              grps = B.group $ expandcigar cmap
-              nohardgrps = B.group $ expandcigar $ filter nohardclip cmap
-              fHs = B.filter (== 'H') $ head grps -- maybe ""
-              rHs = B.filter (== 'H') $ last grps -- maybe ""
-              fSs = B.filter (== 'S') $ head nohardgrps
-              rSs = B.filter (== 'S') $ last nohardgrps
-              fdiffi = intgr2int fdiff
-              cignoclip = filter noclip cmap
-              cigexp = expandcigar2 cignoclip -- [(Int, B.ByteString)] assoc. list
-              nopadlen = length cigexp
-              adjcig = adjustcrds cigexp
-              ftrim = taketrim fdiff adjcig
-              trimDs = countDs ftrim
-              trimDcorr = intgr2int trimDs
-              adjix = (genericLength ftrim) + trimDs
-              remcigraw = drop trimDcorr $ trimrem adjix cigexp
-              newss = B.replicate (length ftrim) 'S'
-              newcigarcore = B.append newss $ B.concat $ snd <$> remcigraw
-              newcigar = B.append (B.append fSs newcigarcore) rSs
-              newfullcigar = B.append fHs (B.append newcigar rHs)
-              newcig = contractcigar newfullcigar
-
-updateCigR :: Integer -> B.ByteString -> B.ByteString
-updateCigR rdiff cigar
-    | snd (head cmap) == "*" = "*"
-    | rdiffi <= 0 = cigar
-    | ((nopadlen - rdiffi) == 0) = "*" -- 180320 DEBUGGING
-    | ((nopadlen - rdiffi) > 0) = newcig -- 180320 DEBUGGING
-    | otherwise = "*" -- 180320 allow all 'S' trimmed CIGAR (diff == nopadlen)
-        where cmap = mapcig cigar
-              grps = B.group $ expandcigar cmap
-              nohardgrps = B.group $ expandcigar $ filter nohardclip cmap
-              fHs = B.filter (== 'H') $ head grps -- maybe ""
-              rHs = B.filter (== 'H') $ last grps -- maybe ""
-              fSs = B.filter (== 'S') $ head nohardgrps
-              rSs = B.filter (== 'S') $ last nohardgrps
-              rdiffi = intgr2int rdiff
-              cignoclip = filter noclip cmap
-              cigexpR = expandcigar2 $ reverse cignoclip
-              nopadlen = length cigexpR
-              adjcigR = adjustcrds cigexpR
-              rtrim = taketrim rdiff adjcigR
-              trimDs = countDs rtrim
-              trimDcorr = intgr2int trimDs
-              adjix = (genericLength rtrim) + trimDs
-              remcigraw = drop trimDcorr $ trimrem adjix cigexpR
-              remDs = intgr2int $ countDs remcigraw
-              remcigDadj = reverse $ drop remDs remcigraw
-              newss = B.replicate ((length rtrim)
-                                  + trimDcorr
-                                  + remDs) 'S'
-              newcigarcore = B.append (B.concat $ snd <$> remcigDadj) newss
-              newcigar = B.append fSs (B.append newcigarcore rSs)
-              newfullcigar = B.append fHs (B.append newcigar rHs)
-              newcig = contractcigar newfullcigar
-
-updateCigB :: Integer -> Integer -> B.ByteString -> B.ByteString
-updateCigB fdiff rdiff cigar
-    | snd (head cmap) == "*" = "*"
-    | fdiffi <= 0 = updateCigR rdiff cigar
-    | rdiffi <= 0 = updateCigF fdiff cigar
-    | ((nopadlen - fdiffi - rdiffi) == 0) = "*" -- 180320
-    | ((nopadlen - fdiffi - rdiffi) > 0) = newcig -- 180320
-    | otherwise = "*"
-        where cmap = mapcig cigar
-              grps = B.group $ expandcigar cmap
-              nohardgrps = B.group $ expandcigar $ filter nohardclip cmap
-              fHs = B.filter (== 'H') $ head grps -- maybe ""
-              rHs = B.filter (== 'H') $ last grps -- maybe ""
-              fSs = B.filter (== 'S') $ head nohardgrps
-              rSs = B.filter (== 'S') $ last nohardgrps
-              fdiffi = intgr2int fdiff
-              rdiffi = intgr2int rdiff
-              -- 5p trim
-              cignoclipf = filter noclip cmap
-              cigexpf = expandcigar2 cignoclipf
-              nopadlen = length cigexpf
-              adjcigf = adjustcrds cigexpf
-              ftrim = taketrim fdiff adjcigf
-              ftrimDs = countDs ftrim
-              ftrimDcorr = intgr2int ftrimDs
-              adjixf = (genericLength ftrim) + ftrimDs
-              remcigrawf = drop ftrimDcorr $ trimrem adjixf cigexpf
-              newfss = B.replicate (length ftrim) 'S'
-              -- 3p trim3p
-              cigexpr = zipWith (\x (i, j) -> (x, j))
-                                [1..]
-                                (reverse remcigrawf)
-              adjcigr = adjustcrds cigexpr
-              rtrim = taketrim rdiff adjcigr
-              rtrimDs = countDs rtrim
-              rtrimDcorr = intgr2int rtrimDs
-              adjixr = (genericLength rtrim) + rtrimDs
-              remcigrawr = drop rtrimDcorr $ trimrem adjixr cigexpr
-              remDsr = intgr2int $ countDs remcigrawr
-              remcigrDadj = reverse $ drop remDsr remcigrawr
-              newrss = B.replicate
-                        ((length rtrim) + rtrimDcorr + remDsr + ftrimDcorr) 'S'
-              totfss = B.append fSs newfss
-              totrss = B.append rSs newrss
-              newcigarcore = B.concat $ snd <$> remcigrDadj
-              newcigar = B.append totfss (B.append newcigarcore totrss)
-              newfullcigar = B.append fHs (B.append newcigar rHs)
-              newcig = contractcigar newfullcigar
---}
-=======
->>>>>>> 4ade68d... add single-end trim feature and command option flag to corrected CIGAR mods

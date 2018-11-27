@@ -1,6 +1,6 @@
 ## primerclip
 
-#### primerclip v0.3.3beta primer trimming tool.
+#### primerclip v0.3.5beta primer trimming tool.
 
 #### Swift Biosciences Inc. 2017
 
@@ -58,7 +58,13 @@ NOTE: although the pre-compiled binary is statically linked, it will still
 
 __USAGE:__
 
+To trim paired-end alignments:
+
     primerclip masterfile.txt alignmentfile.sam outputfilename.sam
+
+To trim single-end alignments:
+
+    primerclip -s masterfile.txt alignmentfile.sam outputfilename.sam
 
 OPTIONAL USE OF BEDPE format for primer coordinates:
 
