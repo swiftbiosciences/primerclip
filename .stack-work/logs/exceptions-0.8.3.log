@@ -1,7 +1,0 @@
-Configuring exceptions-0.8.3...
-Preprocessing library for exceptions-0.8.3..
-Building library for exceptions-0.8.3..
-[1 of 2] Compiling Control.Monad.Catch ( src/Control/Monad/Catch.hs, .stack-work/dist/x86_64-linux/Cabal-2.0.1.0/build/Control/Monad/Catch.o )
-[2 of 2] Compiling Control.Monad.Catch.Pure ( src/Control/Monad/Catch/Pure.hs, .stack-work/dist/x86_64-linux/Cabal-2.0.1.0/build/Control/Monad/Catch/Pure.o )
-Installing library in /home/irish/.stack/snapshots/x86_64-linux/lts-11.0/8.2.2/lib/x86_64-linux-ghc-8.2.2/exceptions-0.8.3-CYMTujxEbkkJnOJ7pW82ZD
-Registering library for exceptions-0.8.3..

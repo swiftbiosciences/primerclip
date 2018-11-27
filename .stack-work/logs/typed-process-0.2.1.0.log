@@ -1,7 +1,0 @@
-Configuring typed-process-0.2.1.0...
-Preprocessing library for typed-process-0.2.1.0..
-Building library for typed-process-0.2.1.0..
-[1 of 2] Compiling Paths_typed_process ( .stack-work/dist/x86_64-linux/Cabal-2.0.1.0/build/autogen/Paths_typed_process.hs, .stack-work/dist/x86_64-linux/Cabal-2.0.1.0/build/Paths_typed_process.o )
-[2 of 2] Compiling System.Process.Typed ( src/System/Process/Typed.hs, .stack-work/dist/x86_64-linux/Cabal-2.0.1.0/build/System/Process/Typed.o )
-Installing library in /home/irish/.stack/snapshots/x86_64-linux/lts-11.0/8.2.2/lib/x86_64-linux-ghc-8.2.2/typed-process-0.2.1.0-HhRTIWE85UrDsRPQC5dSyl
-Registering library for typed-process-0.2.1.0..

@@ -1,6 +1,0 @@
-Configuring async-2.1.1.1...
-Preprocessing library for async-2.1.1.1..
-Building library for async-2.1.1.1..
-[1 of 1] Compiling Control.Concurrent.Async ( Control/Concurrent/Async.hs, .stack-work/dist/x86_64-linux/Cabal-2.0.1.0/build/Control/Concurrent/Async.o )
-Installing library in /home/irish/.stack/snapshots/x86_64-linux/lts-11.0/8.2.2/lib/x86_64-linux-ghc-8.2.2/async-2.1.1.1-K429Y4XjamzDpSomhW85Gx
-Registering library for async-2.1.1.1..

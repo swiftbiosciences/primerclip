@@ -1,6 +1,0 @@
-Configuring StateVar-1.1.0.4...
-Preprocessing library for StateVar-1.1.0.4..
-Building library for StateVar-1.1.0.4..
-[1 of 1] Compiling Data.StateVar    ( src/Data/StateVar.hs, .stack-work/dist/x86_64-linux/Cabal-2.0.1.0/build/Data/StateVar.o )
-Installing library in /home/irish/.stack/snapshots/x86_64-linux/lts-11.0/8.2.2/lib/x86_64-linux-ghc-8.2.2/StateVar-1.1.0.4-3udXq0HXM3GEzK6HrsEWD7
-Registering library for StateVar-1.1.0.4..

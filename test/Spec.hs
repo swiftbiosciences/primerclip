@@ -6,8 +6,8 @@ main = do
 -- test functions for running in main
 
 -- 180329 parse and trim as PairedAln sets
-runPrimerTrimmingTest :: Opts -> IO [AlignedRead]
-runPrimerTrimmingTest args = do
+runPrimerTrimmingPETest :: Opts -> IO [AlignedRead]
+runPrimerTrimmingPETest args = do
     (fmp, rmp) <- createprimerbedmaps args
     trimdalns <- P.runConduitRes
               $ P.sourceFile (insamfile args)
@@ -19,3 +19,21 @@ runPrimerTrimmingTest args = do
               P..| P.concatC
               P..| P.filterC (\x -> (qname x) /= "NONE") -- remove dummy alignments
               P..| P.sinkList
+<<<<<<< HEAD
+=======
+    return trimdalns
+
+-- 181125 parse and trim single-end read alignments
+runPrimerTrimmingSEtest :: Opts -> IO [AlignedRead]
+runPrimerTrimmingSEtest args = do
+    (fmp, rmp) <- createprimerbedmaps args
+    trimdalns <- P.runConduitRes
+              $ P.sourceFile (insamfile args)
+              P..| CA.conduitParserEither parseSingleAlnsOrHdr
+              P..| P.mapC rightOrDefaultSingle -- convert parse fails to defaultAlignment
+              P..| P.concatC
+              P..| P.mapC (trimprimersE fmp rmp)
+              P..| P.filterC (\x -> (qname x) /= "NONE") -- remove dummy alignments
+              P..| P.sinkList
+    return trimdalns
+>>>>>>> 4ade68d... add single-end trim feature and command option flag to corrected CIGAR mods

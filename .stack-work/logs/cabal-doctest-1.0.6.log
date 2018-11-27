@@ -1,6 +1,0 @@
-Configuring cabal-doctest-1.0.6...
-Preprocessing library for cabal-doctest-1.0.6..
-Building library for cabal-doctest-1.0.6..
-[1 of 1] Compiling Distribution.Extra.Doctest ( src/Distribution/Extra/Doctest.hs, .stack-work/dist/x86_64-linux/Cabal-2.0.1.0/build/Distribution/Extra/Doctest.o )
-Installing library in /home/irish/.stack/snapshots/x86_64-linux/lts-11.0/8.2.2/lib/x86_64-linux-ghc-8.2.2/cabal-doctest-1.0.6-K34z9qJFa9S9lhohNycUoO
-Registering library for cabal-doctest-1.0.6..

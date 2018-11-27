@@ -23,16 +23,24 @@ main = do
             (fullDesc <> progDesc
                         "Trim PCR primer sequences from aligned reads"
                       <> header
+<<<<<<< HEAD
                         "primerclip -- Swift Biosciences Accel-Amplicon targeted panel primer trimming tool v0.3.3")
     args <- execParser opts
     runstats <- runPrimerTrimming args
+=======
+                        "primerclip -- Swift Biosciences Accel-Amplicon targeted panel primer trimming tool for single-end reads v0.3.5")
+    args <- execParser opts
+    runstats <- case (sereads args) of
+                    True  -> runPrimerTrimmingSE args
+                    False -> runPrimerTrimmingPE args
+>>>>>>> 4ade68d... add single-end trim feature and command option flag to corrected CIGAR mods
     putStrLn "primer trimming complete."
     writeRunStats (outfilename args) runstats -- 180226
 -- end main
 
 -- 180329 parse and trim as PairedAln sets
-runPrimerTrimming :: Opts -> IO RunStats
-runPrimerTrimming args = do
+runPrimerTrimmingPE :: Opts -> IO RunStats
+runPrimerTrimmingPE args = do
     (fmp, rmp) <- createprimerbedmaps args
     runstats <- P.runConduitRes
               $ P.sourceFile (insamfile args)
@@ -48,4 +56,22 @@ runPrimerTrimming args = do
                                 *> calcRunStats) -- 180226 --}
     return runstats
 
+<<<<<<< HEAD
+=======
+-- 181125 parse and trim single-end read alignments
+runPrimerTrimmingSE :: Opts -> IO RunStats
+runPrimerTrimmingSE args = do
+    (fmp, rmp) <- createprimerbedmaps args
+    runstats <- P.runConduitRes
+              $ P.sourceFile (insamfile args)
+              P..| CA.conduitParserEither parseSingleAlnsOrHdr
+              P..| P.mapC rightOrDefaultSingle -- convert parse fails to defaultAlignment
+              P..| P.concatC
+              P..| P.mapC (trimprimersE fmp rmp)
+              P..| P.filterC (\x -> (qname x) /= "NONE") -- remove dummy alignments
+              P..| P.getZipSink
+                       (P.ZipSink (printAlnStreamToFile (outfilename args))
+                                *> calcRunStats) -- 180226 --}
+    return runstats
+>>>>>>> 4ade68d... add single-end trim feature and command option flag to corrected CIGAR mods
 
