@@ -1,9 +1,5 @@
 name:                primerclip
-<<<<<<< HEAD
-version:             0.3.3.0
-=======
 version:             0.3.5.0
->>>>>>> 4ade68d... add single-end trim feature and command option flag to corrected CIGAR mods
 synopsis:            Initial project template from stack
 description:         Please see README.md
 homepage:            https://github.com/swiftbiosci/primerclip#readme
@@ -35,7 +31,6 @@ library
                      , conduit
                      , conduit-combinators
                      , conduit-extra
-                     -- , cryptonite
   extensions:          FlexibleContexts
                      , OverloadedStrings
                      , GADTs

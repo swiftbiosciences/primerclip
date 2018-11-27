@@ -1,0 +1,1968 @@
+
+==================== FINAL INTERFACE ====================
+2018-11-27 20:22:06.525516 UTC
+
+interface main:Main 8022
+  interface hash: 65122dc1cf8d47bb497af231681188fe
+  ABI hash: d8f7a83b244719ffd03b49b371386845
+  export-list hash: 32923fab01eb5bd7d7a66ea1dd78d170
+  orphan hash: a18b965d16d349d6bc32b0ba550a0dd7
+  flag hash: 2b3d14da8d30a11e07ace62e3e3564be
+  sig of: Nothing
+  used TH splices: False
+  where
+exports:
+  Main.main
+  Main.runPrimerTrimmingPE
+  Main.runPrimerTrimmingSE
+module dependencies:
+package dependencies: QuickCheck-2.10.1 ansi-terminal-0.8.0.2
+                      ansi-wl-pprint-0.6.8.2 array-0.5.2.0 attoparsec-0.13.2.2
+                      base-4.10.1.0 binary-0.8.5.1 bytestring-0.10.8.2 colour-2.3.4
+                      conduit-1.3.0 conduit-extra-1.3.0 containers-0.5.10.2
+                      deepseq-1.4.3.0 digits-0.3.1 directory-1.3.0.2 exceptions-0.8.3
+                      filepath-1.4.1.2 ghc-boot-th-8.2.2 ghc-prim-0.5.1.1
+                      hashable-1.2.7.0 integer-gmp-1.0.1.0 integer-logarithms-1.0.2.1
+                      mono-traversable-1.0.8.1 mtl-2.2.2 optparse-applicative-0.14.2.0
+                      pretty-1.1.3.3 primerclip-0.3.5.0 primitive-0.6.3.0 process-1.6.1.0
+                      random-1.1 resourcet-1.2.0 scientific-0.3.5.2 split-0.2.3.3
+                      stm-2.4.5.0 template-haskell-2.12.0.0 text-1.2.3.0 tf-random-0.5
+                      time-1.8.0.2 transformers-0.5.2.0 unix-2.7.2.2
+                      unliftio-core-0.1.1.0 unordered-containers-0.2.9.0 vector-0.12.0.1
+                      vector-algorithms-0.7.0.1
+orphans: colour-2.3.4:Data.Colour
+         vector-0.12.0.1:Data.Vector.Unboxed
+         vector-0.12.0.1:Data.Vector.Fusion.Bundle
+         time-1.8.0.2:Data.Time.Format.Parse
+         time-1.8.0.2:Data.Time.LocalTime.Internal.ZonedTime
+         time-1.8.0.2:Data.Time.LocalTime.Internal.LocalTime
+         time-1.8.0.2:Data.Time.Calendar.Gregorian
+         attoparsec-0.13.2.2:Data.Attoparsec.ByteString.Char8
+         hashable-1.2.7.0:Data.Hashable.Generic
+         attoparsec-0.13.2.2:Data.Attoparsec.Text.Internal
+         text-1.2.3.0:Data.Text.Lazy text-1.2.3.0:Data.Text
+         binary-0.8.5.1:Data.Binary.Generic
+         bytestring-0.10.8.2:Data.ByteString.Builder
+         text-1.2.3.0:Data.Text.Show stm-2.4.5.0:Control.Monad.STM
+         transformers-0.5.2.0:Control.Monad.Trans.Error
+         base-4.10.1.0:GHC.Float base-4.10.1.0:GHC.Base
+family instance modules: attoparsec-0.13.2.2:Data.Attoparsec.Internal.Types
+                         base-4.10.1.0:Control.Applicative base-4.10.1.0:Data.Complex
+                         base-4.10.1.0:Data.Either base-4.10.1.0:Data.Functor.Compose
+                         base-4.10.1.0:Data.Functor.Const
+                         base-4.10.1.0:Data.Functor.Identity
+                         base-4.10.1.0:Data.Functor.Product base-4.10.1.0:Data.Functor.Sum
+                         base-4.10.1.0:Data.List.NonEmpty base-4.10.1.0:Data.Monoid
+                         base-4.10.1.0:Data.Semigroup base-4.10.1.0:Data.Type.Equality
+                         base-4.10.1.0:Data.Version base-4.10.1.0:Data.Void
+                         base-4.10.1.0:GHC.Exts base-4.10.1.0:GHC.Generics
+                         base-4.10.1.0:GHC.IO.Exception base-4.10.1.0:GHC.TypeLits
+                         base-4.10.1.0:GHC.TypeNats
+                         conduit-1.3.0:Data.Conduit.Internal.Conduit
+                         conduit-1.3.0:Data.Conduit.Internal.Pipe
+                         containers-0.5.10.2:Data.IntMap.Internal
+                         containers-0.5.10.2:Data.IntSet.Internal
+                         containers-0.5.10.2:Data.Map.Internal
+                         containers-0.5.10.2:Data.Sequence.Internal
+                         containers-0.5.10.2:Data.Set.Internal containers-0.5.10.2:Data.Tree
+                         ghc-boot-th-8.2.2:GHC.ForeignSrcLang.Type
+                         ghc-boot-th-8.2.2:GHC.LanguageExtensions.Type
+                         mono-traversable-1.0.8.1:Data.MonoTraversable
+                         mono-traversable-1.0.8.1:Data.NonNull
+                         mono-traversable-1.0.8.1:Data.Sequences
+                         pretty-1.1.3.3:Text.PrettyPrint.Annotated.HughesPJ
+                         pretty-1.1.3.3:Text.PrettyPrint.HughesPJ primerclip-0.3.5.0:Lib
+                         primitive-0.6.3.0:Control.Monad.Primitive
+                         primitive-0.6.3.0:Data.Primitive.Array
+                         primitive-0.6.3.0:Data.Primitive.ByteArray
+                         resourcet-1.2.0:Control.Monad.Trans.Resource.Internal
+                         template-haskell-2.12.0.0:Language.Haskell.TH.Syntax
+                         text-1.2.3.0:Data.Text text-1.2.3.0:Data.Text.Lazy
+                         unordered-containers-0.2.9.0:Data.HashMap.Base
+                         unordered-containers-0.2.9.0:Data.HashSet
+                         vector-0.12.0.1:Data.Vector vector-0.12.0.1:Data.Vector.Primitive
+                         vector-0.12.0.1:Data.Vector.Storable
+                         vector-0.12.0.1:Data.Vector.Unboxed
+                         vector-0.12.0.1:Data.Vector.Unboxed.Base
+import  -/  attoparsec-0.13.2.2:Data.Attoparsec.ByteString.Char8 75eb155dd50974f74df242dc5b5f3c20
+import  -/  base-4.10.1.0:Control.Applicative 99577a9c463ffe4790a1d37547a345bd
+import  -/  base-4.10.1.0:Control.Monad ebed2e8e7444944e0c1d827c6faf40a4
+import  -/  base-4.10.1.0:Data.Either d7dae5d9bf298dee616e465c14b5d60e
+import  -/  base-4.10.1.0:Data.List 4ab7fa2a1b87502b23af891a384f0506
+import  -/  base-4.10.1.0:Data.Maybe 07738c5485acb328136bb15596f8b845
+import  -/  base-4.10.1.0:Data.Semigroup 92914a5d9e5176805d2364209875f6ed
+import  -/  base-4.10.1.0:GHC.Base 782fd99b5e36f3698a26179a49afca64
+import  -/  base-4.10.1.0:Prelude 31945b7d0084063347fc52506d3a4020
+import  -/  base-4.10.1.0:System.IO 6e5bb580370d8d71dc5888f723cea4b4
+import  -/  bytestring-0.10.8.2:Data.ByteString.Char8 ad3bf7657730adeac35cbb427299ea44
+import  -/  conduit-1.3.0:Conduit 9ca771118110a6d629536df1c70cfb0c
+import  -/  conduit-1.3.0:Data.Conduit 214df678ad51311214f3e8dc14f14854
+import  -/  conduit-1.3.0:Data.Conduit.Combinators 879a6b83242087f07896e92d4cc7d0e9
+import  -/  conduit-1.3.0:Data.Conduit.Combinators.Unqualified bb15af616225f302b124833678fb569b
+import  -/  conduit-1.3.0:Data.Conduit.Internal.Conduit 2e849a9a0bf7ebe9e17389aa7226446c
+import  -/  conduit-extra-1.3.0:Data.Conduit.Attoparsec b4907557e083a7d91d1ea01e01aba9c2
+import  -/  conduit-extra-1.3.0:Data.Conduit.Binary 41355976e14d2e02c70b000849dc465d
+import  -/  containers-0.5.10.2:Data.IntMap.Strict 7892d40daae1f0118150f998d9c28567
+import  -/  containers-0.5.10.2:Data.Map.Strict 194f5b0a9785a91a43562790aa6787fc
+import  -/  ghc-prim-0.5.1.1:GHC.Classes 93e2660065dce9329577e83d76d8f0d4
+import  -/  ghc-prim-0.5.1.1:GHC.Types b1fd0716441595db508c1a74387bf394
+import  -/  optparse-applicative-0.14.2.0:Options.Applicative 93a6ca444e605eb4e5fada3ed41aa455
+import  -/  optparse-applicative-0.14.2.0:Options.Applicative.Builder 9b4b35d95a3739ae48e6b42cbe90c8ed
+import  -/  optparse-applicative-0.14.2.0:Options.Applicative.Extra 3e7572295fe04361b13fe1be6a5ecfc7
+import  -/  primerclip-0.3.5.0:Lib ba556460c50cecdca05461ab543ace25
+4dbf1aa03245061c15538bc68261fcdf
+  $s$fApplicativeResourceT ::
+    GHC.Base.Applicative
+      (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+  {- HasNoCafRefs, Strictness: m, Inline: CONLIKE,
+     Unfolding: DFun:.
+                  @ (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+                  Main.$s$fApplicativeResourceT_$s$fFunctorResourceT
+                  (\ @ a (eta :: a) ->
+                   let {
+                     x :: GHC.Prim.State# GHC.Prim.RealWorld
+                          -> (# GHC.Prim.State# GHC.Prim.RealWorld, a #)
+                       {- Arity: 1 -}
+                     = \ (s :: GHC.Prim.State# GHC.Prim.RealWorld) -> (# s, eta #)
+                   } in
+                   (\ (ds :: GHC.IORef.IORef
+                               Control.Monad.Trans.Resource.Internal.ReleaseMap) ->
+                    x)
+                     `cast`
+                   (Trans
+                        (<GHC.IORef.IORef
+                            Control.Monad.Trans.Resource.Internal.ReleaseMap>_R
+                         ->_R Sym (GHC.Types.N:IO[0] <a>_R))
+                        (Sym (Control.Monad.Trans.Resource.Internal.N:ResourceT[0]
+                                  <GHC.Types.IO>_R <a>_N))))
+                  (\ @ a
+                     @ b
+                     (ds :: Control.Monad.Trans.Resource.Internal.ResourceT
+                              GHC.Types.IO (a -> b))
+                     (ds1 :: Control.Monad.Trans.Resource.Internal.ResourceT
+                               GHC.Types.IO a)
+                     (r :: GHC.IORef.IORef
+                             Control.Monad.Trans.Resource.Internal.ReleaseMap)
+                     (s :: GHC.Prim.State# GHC.Prim.RealWorld) ->
+                   case (ds
+                           `cast`
+                         (Control.Monad.Trans.Resource.Internal.N:ResourceT[0]
+                              <GHC.Types.IO>_R <a -> b>_N)
+                           r)
+                          `cast`
+                        (GHC.Types.N:IO[0] <a -> b>_R)
+                          s of ds2 { (#,#) ipv ipv1 ->
+                   case (ds1
+                           `cast`
+                         (Control.Monad.Trans.Resource.Internal.N:ResourceT[0]
+                              <GHC.Types.IO>_R <a>_N)
+                           r)
+                          `cast`
+                        (GHC.Types.N:IO[0] <a>_R)
+                          ipv of ds3 { (#,#) ipv2 ipv3 ->
+                   (# ipv2, ipv1 ipv3 #) } })
+                    `cast`
+                  (forall (a :: <*>_N) (b :: <*>_N).
+                   Trans
+                       (<Control.Monad.Trans.Resource.Internal.ResourceT
+                           GHC.Types.IO (a -> b)>_R
+                        ->_R <Control.Monad.Trans.Resource.Internal.ResourceT
+                                GHC.Types.IO a>_R
+                        ->_R <GHC.IORef.IORef
+                                Control.Monad.Trans.Resource.Internal.ReleaseMap>_R
+                        ->_R Sym (GHC.Types.N:IO[0] <b>_R))
+                       (<Control.Monad.Trans.Resource.Internal.ResourceT
+                           GHC.Types.IO (a -> b)>_R
+                        ->_R <Control.Monad.Trans.Resource.Internal.ResourceT
+                                GHC.Types.IO a>_R
+                        ->_R Sym (Control.Monad.Trans.Resource.Internal.N:ResourceT[0]
+                                      <GHC.Types.IO>_R <b>_N)))
+                  (\ @ a
+                     @ b
+                     @ c
+                     (eta :: a -> b -> c)
+                     (eta1 :: Control.Monad.Trans.Resource.Internal.ResourceT
+                                GHC.Types.IO a)
+                     (eta2 :: Control.Monad.Trans.Resource.Internal.ResourceT
+                                GHC.Types.IO b)
+                     (eta3 :: GHC.IORef.IORef
+                                Control.Monad.Trans.Resource.Internal.ReleaseMap)
+                     (s :: GHC.Prim.State# GHC.Prim.RealWorld) ->
+                   case (eta1
+                           `cast`
+                         (Control.Monad.Trans.Resource.Internal.N:ResourceT[0]
+                              <GHC.Types.IO>_R <a>_N)
+                           eta3)
+                          `cast`
+                        (GHC.Types.N:IO[0] <a>_R)
+                          s of ds { (#,#) ipv ipv1 ->
+                   case (eta2
+                           `cast`
+                         (Control.Monad.Trans.Resource.Internal.N:ResourceT[0]
+                              <GHC.Types.IO>_R <b>_N)
+                           eta3)
+                          `cast`
+                        (GHC.Types.N:IO[0] <b>_R)
+                          ipv of ds1 { (#,#) ipv2 ipv3 ->
+                   (# ipv2, eta ipv1 ipv3 #) } })
+                    `cast`
+                  (forall (a :: <*>_N) (b :: <*>_N) (c :: <*>_N).
+                   Trans
+                       (<a -> b -> c>_R
+                        ->_R <Control.Monad.Trans.Resource.Internal.ResourceT
+                                GHC.Types.IO a>_R
+                        ->_R <Control.Monad.Trans.Resource.Internal.ResourceT
+                                GHC.Types.IO b>_R
+                        ->_R <GHC.IORef.IORef
+                                Control.Monad.Trans.Resource.Internal.ReleaseMap>_R
+                        ->_R Sym (GHC.Types.N:IO[0] <c>_R))
+                       (<a -> b -> c>_R
+                        ->_R <Control.Monad.Trans.Resource.Internal.ResourceT
+                                GHC.Types.IO a>_R
+                        ->_R <Control.Monad.Trans.Resource.Internal.ResourceT
+                                GHC.Types.IO b>_R
+                        ->_R Sym (Control.Monad.Trans.Resource.Internal.N:ResourceT[0]
+                                      <GHC.Types.IO>_R <c>_N)))
+                  (\ @ a
+                     @ b
+                     (eta :: Control.Monad.Trans.Resource.Internal.ResourceT
+                               GHC.Types.IO a)
+                     (eta1 :: Control.Monad.Trans.Resource.Internal.ResourceT
+                                GHC.Types.IO b)
+                     (eta2 :: GHC.IORef.IORef
+                                Control.Monad.Trans.Resource.Internal.ReleaseMap)
+                     (s :: GHC.Prim.State# GHC.Prim.RealWorld) ->
+                   case (eta
+                           `cast`
+                         (Control.Monad.Trans.Resource.Internal.N:ResourceT[0]
+                              <GHC.Types.IO>_R <a>_N)
+                           eta2)
+                          `cast`
+                        (GHC.Types.N:IO[0] <a>_R)
+                          s of ds { (#,#) ipv ipv1 ->
+                   (eta1
+                      `cast`
+                    (Control.Monad.Trans.Resource.Internal.N:ResourceT[0]
+                         <GHC.Types.IO>_R <b>_N)
+                      eta2)
+                     `cast`
+                   (GHC.Types.N:IO[0] <b>_R)
+                     ipv })
+                    `cast`
+                  (forall (a :: <*>_N) (b :: <*>_N).
+                   Trans
+                       (<Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO a>_R
+                        ->_R <Control.Monad.Trans.Resource.Internal.ResourceT
+                                GHC.Types.IO b>_R
+                        ->_R <GHC.IORef.IORef
+                                Control.Monad.Trans.Resource.Internal.ReleaseMap>_R
+                        ->_R Sym (GHC.Types.N:IO[0] <b>_R))
+                       (<Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO a>_R
+                        ->_R <Control.Monad.Trans.Resource.Internal.ResourceT
+                                GHC.Types.IO b>_R
+                        ->_R Sym (Control.Monad.Trans.Resource.Internal.N:ResourceT[0]
+                                      <GHC.Types.IO>_R <b>_N)))
+                  (\ @ a
+                     @ b
+                     (eta1 :: Control.Monad.Trans.Resource.Internal.ResourceT
+                                GHC.Types.IO a)
+                     (eta2 :: Control.Monad.Trans.Resource.Internal.ResourceT
+                                GHC.Types.IO b)
+                     (eta3 :: GHC.IORef.IORef
+                                Control.Monad.Trans.Resource.Internal.ReleaseMap)
+                     (s :: GHC.Prim.State# GHC.Prim.RealWorld) ->
+                   case (eta1
+                           `cast`
+                         (Control.Monad.Trans.Resource.Internal.N:ResourceT[0]
+                              <GHC.Types.IO>_R <a>_N)
+                           eta3)
+                          `cast`
+                        (GHC.Types.N:IO[0] <a>_R)
+                          s of ds { (#,#) ipv ipv1 ->
+                   case (eta2
+                           `cast`
+                         (Control.Monad.Trans.Resource.Internal.N:ResourceT[0]
+                              <GHC.Types.IO>_R <b>_N)
+                           eta3)
+                          `cast`
+                        (GHC.Types.N:IO[0] <b>_R)
+                          ipv of ds1 { (#,#) ipv2 ipv3 ->
+                   (# ipv2, ipv1 #) } })
+                    `cast`
+                  (forall (a :: <*>_N) (b :: <*>_N).
+                   Trans
+                       (<Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO a>_R
+                        ->_R <Control.Monad.Trans.Resource.Internal.ResourceT
+                                GHC.Types.IO b>_R
+                        ->_R <GHC.IORef.IORef
+                                Control.Monad.Trans.Resource.Internal.ReleaseMap>_R
+                        ->_R Sym (GHC.Types.N:IO[0] <a>_R))
+                       (<Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO a>_R
+                        ->_R <Control.Monad.Trans.Resource.Internal.ResourceT
+                                GHC.Types.IO b>_R
+                        ->_R Sym (Control.Monad.Trans.Resource.Internal.N:ResourceT[0]
+                                      <GHC.Types.IO>_R <a>_N))) -}
+7b41713d7866cba5f7537248f00a15e1
+  $s$fApplicativeResourceT_$cpure ::
+    a -> Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO a
+  {- Arity: 3, HasNoCafRefs, Strictness: <L,U><L,A><S,U>,
+     Unfolding: InlineRule (1, True, False)
+                (\ @ a (eta :: a) ->
+                 let {
+                   x :: GHC.Prim.State# GHC.Prim.RealWorld
+                        -> (# GHC.Prim.State# GHC.Prim.RealWorld, a #)
+                     {- Arity: 1 -}
+                   = \ (s :: GHC.Prim.State# GHC.Prim.RealWorld) -> (# s, eta #)
+                 } in
+                 (\ (ds :: GHC.IORef.IORef
+                             Control.Monad.Trans.Resource.Internal.ReleaseMap) ->
+                  x)
+                   `cast`
+                 (Trans
+                      (<GHC.IORef.IORef
+                          Control.Monad.Trans.Resource.Internal.ReleaseMap>_R
+                       ->_R Sym (GHC.Types.N:IO[0] <a>_R))
+                      (Sym (Control.Monad.Trans.Resource.Internal.N:ResourceT[0]
+                                <GHC.Types.IO>_R <a>_N)))) -}
+b3f1c6bd82613ab91b28b878a0134e99
+  $s$fApplicativeResourceT_$s$fFunctorResourceT ::
+    GHC.Base.Functor
+      (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+  {- HasNoCafRefs, Strictness: m, Inline: CONLIKE,
+     Unfolding: DFun:.
+                  @ (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+                  (\ @ a
+                     @ b
+                     (f :: a -> b)
+                     (ds :: Control.Monad.Trans.Resource.Internal.ResourceT
+                              GHC.Types.IO a)
+                     (r :: GHC.IORef.IORef
+                             Control.Monad.Trans.Resource.Internal.ReleaseMap)
+                     (s :: GHC.Prim.State# GHC.Prim.RealWorld) ->
+                   case (ds
+                           `cast`
+                         (Control.Monad.Trans.Resource.Internal.N:ResourceT[0]
+                              <GHC.Types.IO>_R <a>_N)
+                           r)
+                          `cast`
+                        (GHC.Types.N:IO[0] <a>_R)
+                          s of ds1 { (#,#) ipv ipv1 ->
+                   (# ipv, f ipv1 #) })
+                    `cast`
+                  (forall (a :: <*>_N) (b :: <*>_N).
+                   Trans
+                       (<a -> b>_R
+                        ->_R <Control.Monad.Trans.Resource.Internal.ResourceT
+                                GHC.Types.IO a>_R
+                        ->_R <GHC.IORef.IORef
+                                Control.Monad.Trans.Resource.Internal.ReleaseMap>_R
+                        ->_R Sym (GHC.Types.N:IO[0] <b>_R))
+                       (<a -> b>_R
+                        ->_R <Control.Monad.Trans.Resource.Internal.ResourceT
+                                GHC.Types.IO a>_R
+                        ->_R Sym (Control.Monad.Trans.Resource.Internal.N:ResourceT[0]
+                                      <GHC.Types.IO>_R <b>_N)))
+                  (\ @ a
+                     @ b
+                     (x :: a)
+                     (eta :: Control.Monad.Trans.Resource.Internal.ResourceT
+                               GHC.Types.IO b)
+                     (eta1 :: GHC.IORef.IORef
+                                Control.Monad.Trans.Resource.Internal.ReleaseMap)
+                     (s :: GHC.Prim.State# GHC.Prim.RealWorld) ->
+                   case (eta
+                           `cast`
+                         (Control.Monad.Trans.Resource.Internal.N:ResourceT[0]
+                              <GHC.Types.IO>_R <b>_N)
+                           eta1)
+                          `cast`
+                        (GHC.Types.N:IO[0] <b>_R)
+                          s of ds { (#,#) ipv ipv1 ->
+                   (# ipv, x #) })
+                    `cast`
+                  (forall (a :: <*>_N) (b :: <*>_N).
+                   Trans
+                       (<a>_R
+                        ->_R <Control.Monad.Trans.Resource.Internal.ResourceT
+                                GHC.Types.IO b>_R
+                        ->_R <GHC.IORef.IORef
+                                Control.Monad.Trans.Resource.Internal.ReleaseMap>_R
+                        ->_R Sym (GHC.Types.N:IO[0] <a>_R))
+                       (<a>_R
+                        ->_R <Control.Monad.Trans.Resource.Internal.ResourceT
+                                GHC.Types.IO b>_R
+                        ->_R Sym (Control.Monad.Trans.Resource.Internal.N:ResourceT[0]
+                                      <GHC.Types.IO>_R <a>_N))) -}
+6bb7b65b3845d7a95991a1a11296ffc7
+  $s$fMonadIOResourceT ::
+    Control.Monad.IO.Class.MonadIO
+      (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+  {- Strictness: m, Inline: CONLIKE,
+     Unfolding: DFun:.
+                  @ (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+                  Main.$s$fMonadIOResourceT_$s$fMonadResourceT
+                  (\ @ a
+                     (eta :: GHC.Types.IO a)
+                     (ds :: GHC.IORef.IORef
+                              Control.Monad.Trans.Resource.Internal.ReleaseMap) ->
+                   eta)
+                    `cast`
+                  (forall (a :: <*>_N).
+                   <GHC.Types.IO a>_R
+                   ->_R Sym (Control.Monad.Trans.Resource.Internal.N:ResourceT[0]
+                                 <GHC.Types.IO>_R <a>_N)) -}
+a50d06e986f79dcca2e0f39530238e59
+  $s$fMonadIOResourceT_$cliftIO ::
+    GHC.Types.IO a
+    -> Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO a
+  {- Arity: 2, HasNoCafRefs, Strictness: <S,1*U><L,A>,
+     Unfolding: InlineRule (1, True, True)
+                (\ @ a
+                   (eta :: GHC.Types.IO a)
+                   (ds :: GHC.IORef.IORef
+                            Control.Monad.Trans.Resource.Internal.ReleaseMap) ->
+                 eta)
+                  `cast`
+                (forall (a :: <*>_N).
+                 <GHC.Types.IO a>_R
+                 ->_R Sym (Control.Monad.Trans.Resource.Internal.N:ResourceT[0]
+                               <GHC.Types.IO>_R <a>_N)) -}
+569d45414e8b1a4901d477c084e4ec46
+  $s$fMonadIOResourceT_$s$fMonadResourceT ::
+    GHC.Base.Monad
+      (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+  {- Strictness: m, Inline: CONLIKE,
+     Unfolding: DFun:.
+                  @ (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+                  Main.$s$fApplicativeResourceT
+                  (\ @ a
+                     @ b
+                     (ds :: Control.Monad.Trans.Resource.Internal.ResourceT
+                              GHC.Types.IO a)
+                     (f :: a
+                           -> Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO b)
+                     (r :: GHC.IORef.IORef
+                             Control.Monad.Trans.Resource.Internal.ReleaseMap)
+                     (s :: GHC.Prim.State# GHC.Prim.RealWorld) ->
+                   case (ds
+                           `cast`
+                         (Control.Monad.Trans.Resource.Internal.N:ResourceT[0]
+                              <GHC.Types.IO>_R <a>_N)
+                           r)
+                          `cast`
+                        (GHC.Types.N:IO[0] <a>_R)
+                          s of ds1 { (#,#) ipv ipv1 ->
+                   ((f ipv1)
+                      `cast`
+                    (Control.Monad.Trans.Resource.Internal.N:ResourceT[0]
+                         <GHC.Types.IO>_R <b>_N)
+                      r)
+                     `cast`
+                   (GHC.Types.N:IO[0] <b>_R)
+                     ipv })
+                    `cast`
+                  (forall (a :: <*>_N) (b :: <*>_N).
+                   Trans
+                       (<Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO a>_R
+                        ->_R <a
+                              -> Control.Monad.Trans.Resource.Internal.ResourceT
+                                   GHC.Types.IO b>_R
+                        ->_R <GHC.IORef.IORef
+                                Control.Monad.Trans.Resource.Internal.ReleaseMap>_R
+                        ->_R Sym (GHC.Types.N:IO[0] <b>_R))
+                       (<Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO a>_R
+                        ->_R <a
+                              -> Control.Monad.Trans.Resource.Internal.ResourceT
+                                   GHC.Types.IO b>_R
+                        ->_R Sym (Control.Monad.Trans.Resource.Internal.N:ResourceT[0]
+                                      <GHC.Types.IO>_R <b>_N)))
+                  Main.$s$fMonadIOResourceT_$s$fMonadResourceT_$c>>
+                  (\ @ a (eta :: a) ->
+                   let {
+                     x :: GHC.Prim.State# GHC.Prim.RealWorld
+                          -> (# GHC.Prim.State# GHC.Prim.RealWorld, a #)
+                       {- Arity: 1 -}
+                     = \ (s :: GHC.Prim.State# GHC.Prim.RealWorld) -> (# s, eta #)
+                   } in
+                   (\ (ds :: GHC.IORef.IORef
+                               Control.Monad.Trans.Resource.Internal.ReleaseMap) ->
+                    x)
+                     `cast`
+                   (Trans
+                        (<GHC.IORef.IORef
+                            Control.Monad.Trans.Resource.Internal.ReleaseMap>_R
+                         ->_R Sym (GHC.Types.N:IO[0] <a>_R))
+                        (Sym (Control.Monad.Trans.Resource.Internal.N:ResourceT[0]
+                                  <GHC.Types.IO>_R <a>_N))))
+                  (\ @ a ->
+                   GHC.Err.errorWithoutStackTrace
+                     @ 'GHC.Types.LiftedRep
+                     @ (Control.Monad.Trans.Resource.Internal.ResourceT
+                          GHC.Types.IO a)) -}
+290afafad513b886a5a62fc8a49fbb11
+  $s$fMonadIOResourceT_$s$fMonadResourceT_$c>> ::
+    Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO a
+    -> Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO b
+    -> Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO b
+  {- Arity: 4, HasNoCafRefs,
+     Strictness: <C(C(S(SL))),1*C1(C1(U(U,A)))><L,1*C1(C1(U(U,U)))><L,U><S,U>,
+     Inline: (sat-args=2),
+     Unfolding: InlineRule (2, False, False)
+                (\ @ a
+                   @ b
+                   (m1 :: Control.Monad.Trans.Resource.Internal.ResourceT
+                            GHC.Types.IO a)
+                   (k :: Control.Monad.Trans.Resource.Internal.ResourceT
+                           GHC.Types.IO b)
+                   (r :: GHC.IORef.IORef
+                           Control.Monad.Trans.Resource.Internal.ReleaseMap)
+                   (s :: GHC.Prim.State# GHC.Prim.RealWorld) ->
+                 case (m1
+                         `cast`
+                       (Control.Monad.Trans.Resource.Internal.N:ResourceT[0]
+                            <GHC.Types.IO>_R <a>_N)
+                         r)
+                        `cast`
+                      (GHC.Types.N:IO[0] <a>_R)
+                        s of ds1 { (#,#) ipv ipv1 ->
+                 (k `cast`
+                  (Control.Monad.Trans.Resource.Internal.N:ResourceT[0]
+                       <GHC.Types.IO>_R <b>_N)
+                    r)
+                   `cast`
+                 (GHC.Types.N:IO[0] <b>_R)
+                   ipv })
+                  `cast`
+                (forall (a :: <*>_N) (b :: <*>_N).
+                 Trans
+                     (<Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO a>_R
+                      ->_R <Control.Monad.Trans.Resource.Internal.ResourceT
+                              GHC.Types.IO b>_R
+                      ->_R <GHC.IORef.IORef
+                              Control.Monad.Trans.Resource.Internal.ReleaseMap>_R
+                      ->_R Sym (GHC.Types.N:IO[0] <b>_R))
+                     (<Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO a>_R
+                      ->_R <Control.Monad.Trans.Resource.Internal.ResourceT
+                              GHC.Types.IO b>_R
+                      ->_R Sym (Control.Monad.Trans.Resource.Internal.N:ResourceT[0]
+                                    <GHC.Types.IO>_R <b>_N))) -}
+be799c2ee19cccb045d5e31318b1be7b
+  $s$fMonadResourceResourceT ::
+    Control.Monad.Trans.Resource.Internal.MonadResource
+      (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+  {- Strictness: m, Inline: CONLIKE,
+     Unfolding: DFun:.
+                  @ (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+                  Main.$s$fMonadIOResourceT
+                  (\ @ a
+                     (eta :: Control.Monad.Trans.Resource.Internal.ResourceT
+                               GHC.Types.IO a)
+                     (eta1 :: GHC.IORef.IORef
+                                Control.Monad.Trans.Resource.Internal.ReleaseMap) ->
+                   eta
+                     `cast`
+                   (Control.Monad.Trans.Resource.Internal.N:ResourceT[0]
+                        <GHC.Types.IO>_R <a>_N)
+                     eta1)
+                    `cast`
+                  (forall (a :: <*>_N).
+                   <Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO a>_R
+                   ->_R Sym (Control.Monad.Trans.Resource.Internal.N:ResourceT[0]
+                                 <GHC.Types.IO>_R <a>_N)) -}
+18abf8ed7120a165217dfd4af7f44029
+  $s$fMonadResourceResourceT1 ::
+    Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO a
+    -> GHC.IORef.IORef Control.Monad.Trans.Resource.Internal.ReleaseMap
+    -> GHC.Types.IO a
+  {- Arity: 2, HasNoCafRefs, Strictness: <C(S),1*C1(U)><L,U>,
+     Unfolding: InlineRule (2, True, True)
+                (\ @ a
+                   (eta :: Control.Monad.Trans.Resource.Internal.ResourceT
+                             GHC.Types.IO a)
+                   (eta1 :: GHC.IORef.IORef
+                              Control.Monad.Trans.Resource.Internal.ReleaseMap) ->
+                 eta
+                   `cast`
+                 (Control.Monad.Trans.Resource.Internal.N:ResourceT[0]
+                      <GHC.Types.IO>_R <a>_N)
+                   eta1) -}
+9d72b2fddb818bcd8919052935e0f1f3
+  $trModule :: GHC.Types.Module
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.Module Main.$trModule3 Main.$trModule1) -}
+3108ceeaf5a318be844de422b45de9d8
+  $trModule1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS Main.$trModule2) -}
+e5875966b74dad2d29772660b8a75e33
+  $trModule2 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("Main"#) -}
+33bd129667974f0a0ba4a893af79107d
+  $trModule3 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS Main.$trModule4) -}
+d026be77cb9ced20e35a61514e0458aa
+  $trModule4 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("main"#) -}
+9f246f465577ddd31866dbc5c9718e97
+  $wrunPrimerTrimmingPE ::
+    GHC.Types.Bool
+    -> GHC.Base.String
+    -> GHC.Base.String
+    -> GHC.Base.String
+    -> GHC.Prim.State# GHC.Prim.RealWorld
+    -> (# GHC.Prim.State# GHC.Prim.RealWorld, Lib.RunStats #)
+  {- Arity: 5, Strictness: <S,1*U><L,U><L,U><L,U><S,U>, Inline: [0],
+     Unfolding: (\ (ww :: GHC.Types.Bool)
+                   (ww1 :: GHC.Base.String)
+                   (ww2 :: GHC.Base.String)
+                   (ww3 :: GHC.Base.String)
+                   (w :: GHC.Prim.State# GHC.Prim.RealWorld) ->
+                 case Lib.$wcreateprimerbedmaps ww ww1 w of ds1 { (#,#) ipv ipv1 ->
+                 case ipv1 of wild { (,) fmp rmp ->
+                 (Control.Monad.Trans.Resource.runResourceT
+                    @ GHC.Types.IO
+                    @ Lib.RunStats
+                    Control.Monad.IO.Unlift.$fMonadUnliftIOIO
+                    (Data.Conduit.Internal.Pipe.runPipe
+                       @ (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+                       @ Lib.RunStats
+                       Main.$s$fMonadIOResourceT_$s$fMonadResourceT
+                       (Data.Conduit.Internal.Pipe.injectLeftovers
+                          @ (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+                          @ ()
+                          @ Data.Void.Void
+                          @ ()
+                          @ Lib.RunStats
+                          @ Data.Void.Void
+                          Main.$s$fMonadIOResourceT_$s$fMonadResourceT
+                          (Main.main_goRight13
+                             ((Data.Conduit.Combinators.sourceFile
+                                 @ (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+                                 @ ()
+                                 Main.$s$fMonadResourceResourceT
+                                 ww2)
+                                `cast`
+                              (Data.Conduit.Internal.Conduit.N:ConduitT[0]
+                                   <()>_N
+                                   <Data.ByteString.Internal.ByteString>_N
+                                   <Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO>_N
+                                   <()>_R)
+                                @ ()
+                                (Data.Conduit.Internal.Pipe.Done
+                                   @ ()
+                                   @ ()
+                                   @ Data.ByteString.Internal.ByteString
+                                   @ ()
+                                   @ (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+                                   @ ()))
+                             (Main.main_goRight12
+                                Main.main6
+                                (Main.main_goRight11
+                                   Main.main_go14
+                                   (Main.main_goRight10
+                                      Main.main_go12
+                                        `cast`
+                                      (Data.Conduit.Internal.Pipe.Pipe
+                                         <[Lib.PairedAln]>_N
+                                         <[Lib.PairedAln]>_N
+                                         (Data.MonoTraversable.D:R:Element[][0] <Lib.PairedAln>_N)
+                                         <()>_N
+                                         <Control.Monad.Trans.Resource.Internal.ResourceT
+                                            GHC.Types.IO>_N
+                                         <()>_N)_R
+                                      (Main.main_goRight9
+                                         (letrec {
+                                            go2 :: Data.Conduit.Internal.Pipe.Pipe
+                                                     Lib.PairedAln
+                                                     Lib.PairedAln
+                                                     Lib.PairedAln
+                                                     ()
+                                                     (Control.Monad.Trans.Resource.Internal.ResourceT
+                                                        GHC.Types.IO)
+                                                     ()
+                                            = Data.Conduit.Internal.Pipe.NeedInput
+                                                @ Lib.PairedAln
+                                                @ Lib.PairedAln
+                                                @ Lib.PairedAln
+                                                @ ()
+                                                @ (Control.Monad.Trans.Resource.Internal.ResourceT
+                                                     GHC.Types.IO)
+                                                @ ()
+                                                go3
+                                                (Data.Conduit.Internal.Pipe.Done
+                                                   @ Lib.PairedAln
+                                                   @ Lib.PairedAln
+                                                   @ Lib.PairedAln
+                                                   @ ()
+                                                   @ (Control.Monad.Trans.Resource.Internal.ResourceT
+                                                        GHC.Types.IO)
+                                                   @ ())
+                                            go3 :: Lib.PairedAln
+                                                   -> Data.Conduit.Internal.Pipe.Pipe
+                                                        Lib.PairedAln
+                                                        Lib.PairedAln
+                                                        Lib.PairedAln
+                                                        ()
+                                                        (Control.Monad.Trans.Resource.Internal.ResourceT
+                                                           GHC.Types.IO)
+                                                        ()
+                                              {- Arity: 1,
+                                                 Strictness: <L,1*U(1*U(U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,A,A,A,U,U,U,U,U,U,U,U,U),1*U(U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,A,A,A,U,U,U,U,U,U,U,U,U),1*U,1*U)> -}
+                                            = \ (i1 :: Lib.PairedAln) ->
+                                              Data.Conduit.Internal.Pipe.HaveOutput
+                                                @ Lib.PairedAln
+                                                @ Lib.PairedAln
+                                                @ Lib.PairedAln
+                                                @ ()
+                                                @ (Control.Monad.Trans.Resource.Internal.ResourceT
+                                                     GHC.Types.IO)
+                                                @ ()
+                                                go2
+                                                (Lib.trimprimerPairsE fmp rmp i1)
+                                          } in
+                                          go2)
+                                         (Main.main_goRight8
+                                            Main.main_go10
+                                            (Main.main_goRight7
+                                               Main.main_go8
+                                                 `cast`
+                                               (Data.Conduit.Internal.Pipe.Pipe
+                                                  <[Lib.AlignedRead]>_N
+                                                  <[Lib.AlignedRead]>_N
+                                                  (Data.MonoTraversable.D:R:Element[][0]
+                                                       <Lib.AlignedRead>_N)
+                                                  <()>_N
+                                                  <Control.Monad.Trans.Resource.Internal.ResourceT
+                                                     GHC.Types.IO>_N
+                                                  <()>_N)_R
+                                               (Main.main_goRight6
+                                                  Main.main_go6
+                                                  (Data.Conduit.Internal.Conduit.$fApplicativeZipSink2
+                                                     @ (Control.Monad.Trans.Resource.Internal.ResourceT
+                                                          GHC.Types.IO)
+                                                     @ Lib.AlignedRead
+                                                     @ (Lib.RunStats -> Lib.RunStats)
+                                                     @ Lib.RunStats
+                                                     Main.$s$fMonadIOResourceT_$s$fMonadResourceT
+                                                     (\ @ b2
+                                                        (h :: (Lib.RunStats -> Lib.RunStats)
+                                                              -> Data.Conduit.Internal.Pipe.Pipe
+                                                                   Lib.AlignedRead
+                                                                   Lib.AlignedRead
+                                                                   Data.Void.Void
+                                                                   ()
+                                                                   (Control.Monad.Trans.Resource.Internal.ResourceT
+                                                                      GHC.Types.IO)
+                                                                   b2)[OneShot] ->
+                                                      let {
+                                                        lvl18 :: Data.Conduit.Internal.Pipe.Pipe
+                                                                   Lib.AlignedRead
+                                                                   Lib.AlignedRead
+                                                                   Data.Void.Void
+                                                                   ()
+                                                                   (Control.Monad.Trans.Resource.Internal.ResourceT
+                                                                      GHC.Types.IO)
+                                                                   b2
+                                                        = h (GHC.Base.breakpoint @ Lib.RunStats)
+                                                      } in
+                                                      (Lib.printAlnStreamToFile
+                                                         @ (Control.Monad.Trans.Resource.Internal.ResourceT
+                                                              GHC.Types.IO)
+                                                         @ Data.Void.Void
+                                                         Main.$s$fMonadResourceResourceT
+                                                         ww3)
+                                                        `cast`
+                                                      (Data.Conduit.Internal.Conduit.N:ConduitT[0]
+                                                           <Lib.AlignedRead>_N
+                                                           <Data.Void.Void>_N
+                                                           <Control.Monad.Trans.Resource.Internal.ResourceT
+                                                              GHC.Types.IO>_N
+                                                           <()>_R)
+                                                        @ b2
+                                                        (\ (a4 :: ()) -> lvl18))
+                                                       `cast`
+                                                     (Sym (Data.Conduit.Internal.Conduit.N:ConduitT[0]
+                                                               <Lib.AlignedRead>_N
+                                                               <Data.Void.Void>_N
+                                                               <Control.Monad.Trans.Resource.Internal.ResourceT
+                                                                  GHC.Types.IO>_N
+                                                               <Lib.RunStats -> Lib.RunStats>_R))
+                                                     Lib.calcRunStats1
+                                                       `cast`
+                                                     (Sym (Data.Conduit.Internal.Conduit.N:ConduitT[0]
+                                                               <Lib.AlignedRead>_N
+                                                               <Data.Void.Void>_N
+                                                               <Control.Monad.Trans.Resource.Internal.ResourceT
+                                                                  GHC.Types.IO>_N
+                                                               <Lib.RunStats>_R))
+                                                     @ Lib.RunStats
+                                                     Main.main2))))))))))))
+                   `cast`
+                 (GHC.Types.N:IO[0] <Lib.RunStats>_R)
+                   ipv } }) -}
+6f722a5b448b6ab1b9e277cb04630b3b
+  $wrunPrimerTrimmingSE ::
+    GHC.Types.Bool
+    -> GHC.Base.String
+    -> GHC.Base.String
+    -> GHC.Base.String
+    -> GHC.Prim.State# GHC.Prim.RealWorld
+    -> (# GHC.Prim.State# GHC.Prim.RealWorld, Lib.RunStats #)
+  {- Arity: 5, Strictness: <S,1*U><L,U><L,U><L,U><S,U>, Inline: [0],
+     Unfolding: (\ (ww :: GHC.Types.Bool)
+                   (ww1 :: GHC.Base.String)
+                   (ww2 :: GHC.Base.String)
+                   (ww3 :: GHC.Base.String)
+                   (w :: GHC.Prim.State# GHC.Prim.RealWorld) ->
+                 case Lib.$wcreateprimerbedmaps ww ww1 w of ds1 { (#,#) ipv ipv1 ->
+                 case ipv1 of wild { (,) fmp rmp ->
+                 (Control.Monad.Trans.Resource.runResourceT
+                    @ GHC.Types.IO
+                    @ Lib.RunStats
+                    Control.Monad.IO.Unlift.$fMonadUnliftIOIO
+                    (Data.Conduit.Internal.Pipe.runPipe
+                       @ (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+                       @ Lib.RunStats
+                       Main.$s$fMonadIOResourceT_$s$fMonadResourceT
+                       (Data.Conduit.Internal.Pipe.injectLeftovers
+                          @ (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+                          @ ()
+                          @ Data.Void.Void
+                          @ ()
+                          @ Lib.RunStats
+                          @ Data.Void.Void
+                          Main.$s$fMonadIOResourceT_$s$fMonadResourceT
+                          (Main.main_goRight5
+                             ((Data.Conduit.Combinators.sourceFile
+                                 @ (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+                                 @ ()
+                                 Main.$s$fMonadResourceResourceT
+                                 ww2)
+                                `cast`
+                              (Data.Conduit.Internal.Conduit.N:ConduitT[0]
+                                   <()>_N
+                                   <Data.ByteString.Internal.ByteString>_N
+                                   <Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO>_N
+                                   <()>_R)
+                                @ ()
+                                (Data.Conduit.Internal.Pipe.Done
+                                   @ ()
+                                   @ ()
+                                   @ Data.ByteString.Internal.ByteString
+                                   @ ()
+                                   @ (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+                                   @ ()))
+                             (Main.main_goRight4
+                                Main.main3
+                                (Main.main_goRight3
+                                   Main.main_go4
+                                   (Main.main_goRight2
+                                      Main.main_go2
+                                        `cast`
+                                      (Data.Conduit.Internal.Pipe.Pipe
+                                         <[Lib.AlignedRead]>_N
+                                         <[Lib.AlignedRead]>_N
+                                         (Data.MonoTraversable.D:R:Element[][0] <Lib.AlignedRead>_N)
+                                         <()>_N
+                                         <Control.Monad.Trans.Resource.Internal.ResourceT
+                                            GHC.Types.IO>_N
+                                         <()>_N)_R
+                                      (Main.main_goRight1
+                                         (letrec {
+                                            go2 :: Data.Conduit.Internal.Pipe.Pipe
+                                                     Lib.AlignedRead
+                                                     Lib.AlignedRead
+                                                     Lib.AlignedRead
+                                                     ()
+                                                     (Control.Monad.Trans.Resource.Internal.ResourceT
+                                                        GHC.Types.IO)
+                                                     ()
+                                            = Data.Conduit.Internal.Pipe.NeedInput
+                                                @ Lib.AlignedRead
+                                                @ Lib.AlignedRead
+                                                @ Lib.AlignedRead
+                                                @ ()
+                                                @ (Control.Monad.Trans.Resource.Internal.ResourceT
+                                                     GHC.Types.IO)
+                                                @ ()
+                                                go3
+                                                (Data.Conduit.Internal.Pipe.Done
+                                                   @ Lib.AlignedRead
+                                                   @ Lib.AlignedRead
+                                                   @ Lib.AlignedRead
+                                                   @ ()
+                                                   @ (Control.Monad.Trans.Resource.Internal.ResourceT
+                                                        GHC.Types.IO)
+                                                   @ ())
+                                            go3 :: Lib.AlignedRead
+                                                   -> Data.Conduit.Internal.Pipe.Pipe
+                                                        Lib.AlignedRead
+                                                        Lib.AlignedRead
+                                                        Lib.AlignedRead
+                                                        ()
+                                                        (Control.Monad.Trans.Resource.Internal.ResourceT
+                                                           GHC.Types.IO)
+                                                        ()
+                                              {- Arity: 1,
+                                                 Strictness: <L,1*U(U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,A,A,A,U,U,U,U,U,U,U,U,U)> -}
+                                            = \ (i1 :: Lib.AlignedRead) ->
+                                              Data.Conduit.Internal.Pipe.HaveOutput
+                                                @ Lib.AlignedRead
+                                                @ Lib.AlignedRead
+                                                @ Lib.AlignedRead
+                                                @ ()
+                                                @ (Control.Monad.Trans.Resource.Internal.ResourceT
+                                                     GHC.Types.IO)
+                                                @ ()
+                                                go2
+                                                (Lib.trimprimersE fmp rmp i1)
+                                          } in
+                                          go2)
+                                         (Main.main_goRight
+                                            Main.main_go
+                                            (Data.Conduit.Internal.Conduit.$fApplicativeZipSink2
+                                               @ (Control.Monad.Trans.Resource.Internal.ResourceT
+                                                    GHC.Types.IO)
+                                               @ Lib.AlignedRead
+                                               @ (Lib.RunStats -> Lib.RunStats)
+                                               @ Lib.RunStats
+                                               Main.$s$fMonadIOResourceT_$s$fMonadResourceT
+                                               (\ @ b2
+                                                  (h :: (Lib.RunStats -> Lib.RunStats)
+                                                        -> Data.Conduit.Internal.Pipe.Pipe
+                                                             Lib.AlignedRead
+                                                             Lib.AlignedRead
+                                                             Data.Void.Void
+                                                             ()
+                                                             (Control.Monad.Trans.Resource.Internal.ResourceT
+                                                                GHC.Types.IO)
+                                                             b2)[OneShot] ->
+                                                let {
+                                                  lvl18 :: Data.Conduit.Internal.Pipe.Pipe
+                                                             Lib.AlignedRead
+                                                             Lib.AlignedRead
+                                                             Data.Void.Void
+                                                             ()
+                                                             (Control.Monad.Trans.Resource.Internal.ResourceT
+                                                                GHC.Types.IO)
+                                                             b2
+                                                  = h (GHC.Base.breakpoint @ Lib.RunStats)
+                                                } in
+                                                (Lib.printAlnStreamToFile
+                                                   @ (Control.Monad.Trans.Resource.Internal.ResourceT
+                                                        GHC.Types.IO)
+                                                   @ Data.Void.Void
+                                                   Main.$s$fMonadResourceResourceT
+                                                   ww3)
+                                                  `cast`
+                                                (Data.Conduit.Internal.Conduit.N:ConduitT[0]
+                                                     <Lib.AlignedRead>_N
+                                                     <Data.Void.Void>_N
+                                                     <Control.Monad.Trans.Resource.Internal.ResourceT
+                                                        GHC.Types.IO>_N
+                                                     <()>_R)
+                                                  @ b2
+                                                  (\ (a4 :: ()) -> lvl18))
+                                                 `cast`
+                                               (Sym (Data.Conduit.Internal.Conduit.N:ConduitT[0]
+                                                         <Lib.AlignedRead>_N
+                                                         <Data.Void.Void>_N
+                                                         <Control.Monad.Trans.Resource.Internal.ResourceT
+                                                            GHC.Types.IO>_N
+                                                         <Lib.RunStats -> Lib.RunStats>_R))
+                                               Lib.calcRunStats1
+                                                 `cast`
+                                               (Sym (Data.Conduit.Internal.Conduit.N:ConduitT[0]
+                                                         <Lib.AlignedRead>_N
+                                                         <Data.Void.Void>_N
+                                                         <Control.Monad.Trans.Resource.Internal.ResourceT
+                                                            GHC.Types.IO>_N
+                                                         <Lib.RunStats>_R))
+                                               @ Lib.RunStats
+                                               Main.main2))))))))))
+                   `cast`
+                 (GHC.Types.N:IO[0] <Lib.RunStats>_R)
+                   ipv } }) -}
+6042c9b19e56db9f42af70972232528f
+  main :: GHC.Types.IO ()
+  {- Arity: 1, Strictness: <S,U>,
+     Unfolding: InlineRule (0, True, True)
+                Main.main1 `cast` (Sym (GHC.Types.N:IO[0] <()>_R)) -}
+ef490522f99b1099f8ee1373597b3d5e
+  main1 ::
+    GHC.Prim.State# GHC.Prim.RealWorld
+    -> (# GHC.Prim.State# GHC.Prim.RealWorld, () #)
+  {- Arity: 1, Strictness: <S,U>,
+     Unfolding: (\ (s :: GHC.Prim.State# GHC.Prim.RealWorld) ->
+                 case Options.Applicative.Extra.customExecParser1
+                        @ Lib.Opts
+                        Options.Applicative.Builder.defaultPrefs
+                        Main.main7
+                        s of ds1 { (#,#) ipv ipv1 ->
+                 case ipv1 of wild { Lib.Opts ds7 ds8 ds9 ds10 ds11 ->
+                 case ds8 of wild1 {
+                   GHC.Types.False
+                   -> case Main.$wrunPrimerTrimmingPE
+                             ds7
+                             ds9
+                             ds10
+                             ds11
+                             ipv of ds2 { (#,#) ipv2 ipv3 ->
+                      case GHC.IO.Handle.Text.hPutStr2
+                             GHC.IO.Handle.FD.stdout
+                             Main.main4
+                             GHC.Types.True
+                             ipv2 of ds3 { (#,#) ipv4 ipv5 ->
+                      Lib.writeRunStats1 ds11 ipv3 ipv4 } }
+                   GHC.Types.True
+                   -> case Main.$wrunPrimerTrimmingSE
+                             ds7
+                             ds9
+                             ds10
+                             ds11
+                             ipv of ds2 { (#,#) ipv2 ipv3 ->
+                      case GHC.IO.Handle.Text.hPutStr2
+                             GHC.IO.Handle.FD.stdout
+                             Main.main4
+                             GHC.Types.True
+                             ipv2 of ds3 { (#,#) ipv4 ipv5 ->
+                      Lib.writeRunStats1 ds11 ipv3 ipv4 } } } } }) -}
+06e463c8ff120c1192b76ae2e4cf17f2
+  main10 ::
+    Options.Applicative.Help.Chunk.Chunk
+      Text.PrettyPrint.ANSI.Leijen.Internal.Doc
+  {- Unfolding: (Options.Applicative.Help.Chunk.paragraph_go
+                   (GHC.CString.unpackCString# Main.main11)) -}
+1c541794fcfcd748c55467dae615eb66
+  main11 :: GHC.Prim.Addr#
+  {- HasNoCafRefs,
+     Unfolding: ("Trim PCR primer sequences from aligned reads"#) -}
+163c73c062144e34ae6addc6e572a9f7
+  main12 :: Options.Applicative.Types.Parser Lib.Opts
+  {- Unfolding: (Options.Applicative.Types.MultP
+                   @ Lib.Opts
+                   @ Lib.Opts
+                   (Options.Applicative.Extra.helper @ Lib.Opts)
+                   Lib.optargs) -}
+82388fe3e6d2a096a0589846d34e59c3
+  main13 ::
+    GHC.Prim.State# GHC.Prim.RealWorld
+    -> (# GHC.Prim.State# GHC.Prim.RealWorld, () #)
+  {- Arity: 1,
+     Unfolding: (GHC.TopHandler.runMainIO1
+                   @ ()
+                   Main.main1 `cast` (Sym (GHC.Types.N:IO[0] <()>_R))) -}
+28ed155cb3785d2d579c54457d4f6b5f
+  main2 ::
+    (Lib.RunStats -> Lib.RunStats, Lib.RunStats)
+    -> Data.Conduit.Internal.Pipe.Pipe
+         Lib.AlignedRead
+         Lib.AlignedRead
+         Data.Void.Void
+         ()
+         (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+         Lib.RunStats
+  {- Arity: 1, HasNoCafRefs, Strictness: <L,1*U(1*C1(U),U)>m3,
+     Unfolding: (\ (a4 :: (Lib.RunStats -> Lib.RunStats,
+                           Lib.RunStats)) ->
+                 Data.Conduit.Internal.Pipe.Done
+                   @ Lib.AlignedRead
+                   @ Lib.AlignedRead
+                   @ Data.Void.Void
+                   @ ()
+                   @ (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+                   @ Lib.RunStats
+                   (case a4 of wild { (,) x ds -> x ds })) -}
+c5ac98994b36213e32456599357d0e52
+  main3 ::
+    Data.Conduit.Internal.Pipe.Pipe
+      Data.ByteString.Internal.ByteString
+      Data.ByteString.Internal.ByteString
+      (Data.Either.Either
+         Data.Conduit.Attoparsec.ParseError
+         (Data.Conduit.Attoparsec.PositionRange, [Lib.AlignedRead]))
+      ()
+      (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+      ()
+  {- Unfolding: (Data.Conduit.Attoparsec.$w$sconduitParserEither
+                   @ (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+                   @ [Lib.AlignedRead]
+                   Lib.parseSingleAlnsOrHdr1
+                     `cast`
+                   (Sym (Data.Attoparsec.Internal.Types.N:Parser[0]
+                             <Data.ByteString.Internal.ByteString>_N <[Lib.AlignedRead]>_R))
+                   @ ()
+                   (Data.Conduit.Internal.Pipe.Done
+                      @ Data.ByteString.Internal.ByteString
+                      @ Data.ByteString.Internal.ByteString
+                      @ (Data.Either.Either
+                           Data.Conduit.Attoparsec.ParseError
+                           (Data.Conduit.Attoparsec.PositionRange, [Lib.AlignedRead]))
+                      @ ()
+                      @ (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+                      @ ())) -}
+e751e499cc48223ed22112adc0764400
+  main4 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Main.main5) -}
+db6f0874db32e0976dd0b4512602a9e5
+  main5 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("primer trimming complete."#) -}
+692faf4043cee7afd50621ff4e7fa206
+  main6 ::
+    Data.Conduit.Internal.Pipe.Pipe
+      Data.ByteString.Internal.ByteString
+      Data.ByteString.Internal.ByteString
+      (Data.Either.Either
+         Data.Conduit.Attoparsec.ParseError
+         (Data.Conduit.Attoparsec.PositionRange, [Lib.PairedAln]))
+      ()
+      (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+      ()
+  {- Unfolding: (Data.Conduit.Attoparsec.$w$sconduitParserEither
+                   @ (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+                   @ [Lib.PairedAln]
+                   Lib.parsePairedAlnsOrHdr1
+                     `cast`
+                   (Sym (Data.Attoparsec.Internal.Types.N:Parser[0]
+                             <Data.ByteString.Internal.ByteString>_N <[Lib.PairedAln]>_R))
+                   @ ()
+                   (Data.Conduit.Internal.Pipe.Done
+                      @ Data.ByteString.Internal.ByteString
+                      @ Data.ByteString.Internal.ByteString
+                      @ (Data.Either.Either
+                           Data.Conduit.Attoparsec.ParseError
+                           (Data.Conduit.Attoparsec.PositionRange, [Lib.PairedAln]))
+                      @ ()
+                      @ (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+                      @ ())) -}
+432515248500c3e8faa4feb4ec5eece9
+  main7 :: Options.Applicative.Types.ParserInfo Lib.Opts
+  {- Strictness: m,
+     Unfolding: (Options.Applicative.Types.ParserInfo
+                   @ Lib.Opts
+                   Main.main12
+                   GHC.Types.True
+                   Main.main10
+                   Main.main8
+                   (GHC.Base.Nothing @ Text.PrettyPrint.ANSI.Leijen.Internal.Doc)
+                     `cast`
+                   (Sym (Options.Applicative.Help.Chunk.N:Chunk[0]) <Text.PrettyPrint.ANSI.Leijen.Internal.Doc>_N)
+                   Options.Applicative.Builder.info1
+                   Options.Applicative.Types.Intersperse) -}
+185927e8e70d222028b712c0f2d6d384
+  main8 ::
+    Options.Applicative.Help.Chunk.Chunk
+      Text.PrettyPrint.ANSI.Leijen.Internal.Doc
+  {- Unfolding: (Options.Applicative.Help.Chunk.paragraph_go
+                   (GHC.CString.unpackCString# Main.main9)) -}
+b027618cd5e6b6d3253fad3038536dc6
+  main9 :: GHC.Prim.Addr#
+  {- HasNoCafRefs,
+     Unfolding: ("primerclip -- Swift Biosciences Accel-Amplicon targeted panel primer trimming tool for single-end reads v0.3.5"#) -}
+f588057e308f5ea7084612c17139d04e
+  main_go ::
+    Data.Conduit.Internal.Pipe.Pipe
+      Lib.AlignedRead
+      Lib.AlignedRead
+      Lib.AlignedRead
+      ()
+      (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+      ()
+  {- Strictness: m2,
+     Unfolding: (Data.Conduit.Internal.Pipe.NeedInput
+                   @ Lib.AlignedRead
+                   @ Lib.AlignedRead
+                   @ Lib.AlignedRead
+                   @ ()
+                   @ (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+                   @ ()
+                   Main.main_go1
+                   (Data.Conduit.Internal.Pipe.Done
+                      @ Lib.AlignedRead
+                      @ Lib.AlignedRead
+                      @ Lib.AlignedRead
+                      @ ()
+                      @ (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+                      @ ())) -}
+f8f36675042e8ec27ed9622e4f1a9c5a
+  main_go1 ::
+    Lib.AlignedRead
+    -> Data.Conduit.Internal.Pipe.Pipe
+         Lib.AlignedRead
+         Lib.AlignedRead
+         Lib.AlignedRead
+         ()
+         (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+         ()
+  {- Arity: 1,
+     Strictness: <S(S(LLLS)LLLLLLLLLLLLLLLLLLLLLLLLLLLLLL),1*U(U(U,U,U,U),U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U)> -}
+2efebb32a8d1b855eaf734af0501cdb5
+  main_go10 ::
+    Data.Conduit.Internal.Pipe.Pipe
+      Lib.PairedAln
+      Lib.PairedAln
+      [Lib.AlignedRead]
+      ()
+      (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+      ()
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (Data.Conduit.Internal.Pipe.NeedInput
+                   @ Lib.PairedAln
+                   @ Lib.PairedAln
+                   @ [Lib.AlignedRead]
+                   @ ()
+                   @ (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+                   @ ()
+                   Main.main_go11
+                   (Data.Conduit.Internal.Pipe.Done
+                      @ Lib.PairedAln
+                      @ Lib.PairedAln
+                      @ [Lib.AlignedRead]
+                      @ ()
+                      @ (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+                      @ ())) -}
+a49a0a1b453d7c60b3fa475d98b68275
+  main_go11 ::
+    Lib.PairedAln
+    -> Data.Conduit.Internal.Pipe.Pipe
+         Lib.PairedAln
+         Lib.PairedAln
+         [Lib.AlignedRead]
+         ()
+         (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+         ()
+  {- Arity: 1, HasNoCafRefs, Strictness: <L,U(U,U,U,U)>m1 -}
+d819c1e06e459b2087aab8e6b78f8e34
+  main_go12 ::
+    Data.Conduit.Internal.Pipe.Pipe
+      [Lib.PairedAln]
+      [Lib.PairedAln]
+      (Data.MonoTraversable.Element [Lib.PairedAln])
+      ()
+      (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+      ()
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (Data.Conduit.Internal.Pipe.NeedInput
+                   @ [Lib.PairedAln]
+                   @ [Lib.PairedAln]
+                   @ (Data.MonoTraversable.Element [Lib.PairedAln])
+                   @ ()
+                   @ (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+                   @ ()
+                   Main.main_go13
+                   (Data.Conduit.Internal.Pipe.Done
+                      @ [Lib.PairedAln]
+                      @ [Lib.PairedAln]
+                      @ Lib.PairedAln
+                      @ ()
+                      @ (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+                      @ ())
+                     `cast`
+                   (<()>_R
+                    ->_R (Data.Conduit.Internal.Pipe.Pipe
+                            <[Lib.PairedAln]>_N
+                            <[Lib.PairedAln]>_N
+                            (Sym (Data.MonoTraversable.D:R:Element[][0] <Lib.PairedAln>_N))
+                            <()>_N
+                            <Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO>_N
+                            <()>_N)_R)) -}
+70069d8cc7c9c820877bbdb132b8c7a5
+  main_go13 ::
+    [Lib.PairedAln]
+    -> Data.Conduit.Internal.Pipe.Pipe
+         [Lib.PairedAln]
+         [Lib.PairedAln]
+         (Data.MonoTraversable.Element [Lib.PairedAln])
+         ()
+         (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+         ()
+  {- Arity: 1, HasNoCafRefs, Strictness: <S,1*U> -}
+17d4e8ffaff42f9de5885b3d5fe93a8c
+  main_go14 ::
+    Data.Conduit.Internal.Pipe.Pipe
+      (Data.Either.Either
+         Data.Conduit.Attoparsec.ParseError
+         (Data.Conduit.Attoparsec.PositionRange, [Lib.PairedAln]))
+      (Data.Either.Either
+         Data.Conduit.Attoparsec.ParseError
+         (Data.Conduit.Attoparsec.PositionRange, [Lib.PairedAln]))
+      [Lib.PairedAln]
+      ()
+      (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+      ()
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (Data.Conduit.Internal.Pipe.NeedInput
+                   @ (Data.Either.Either
+                        Data.Conduit.Attoparsec.ParseError
+                        (Data.Conduit.Attoparsec.PositionRange, [Lib.PairedAln]))
+                   @ (Data.Either.Either
+                        Data.Conduit.Attoparsec.ParseError
+                        (Data.Conduit.Attoparsec.PositionRange, [Lib.PairedAln]))
+                   @ [Lib.PairedAln]
+                   @ ()
+                   @ (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+                   @ ()
+                   Main.main_go15
+                   (Data.Conduit.Internal.Pipe.Done
+                      @ (Data.Either.Either
+                           Data.Conduit.Attoparsec.ParseError
+                           (Data.Conduit.Attoparsec.PositionRange, [Lib.PairedAln]))
+                      @ (Data.Either.Either
+                           Data.Conduit.Attoparsec.ParseError
+                           (Data.Conduit.Attoparsec.PositionRange, [Lib.PairedAln]))
+                      @ [Lib.PairedAln]
+                      @ ()
+                      @ (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+                      @ ())) -}
+93e4a802f0bd042d51738ec6d48d8e39
+  main_go15 ::
+    Data.Either.Either
+      Data.Conduit.Attoparsec.ParseError
+      (Data.Conduit.Attoparsec.PositionRange, [Lib.PairedAln])
+    -> Data.Conduit.Internal.Pipe.Pipe
+         (Data.Either.Either
+            Data.Conduit.Attoparsec.ParseError
+            (Data.Conduit.Attoparsec.PositionRange, [Lib.PairedAln]))
+         (Data.Either.Either
+            Data.Conduit.Attoparsec.ParseError
+            (Data.Conduit.Attoparsec.PositionRange, [Lib.PairedAln]))
+         [Lib.PairedAln]
+         ()
+         (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+         ()
+  {- Arity: 1, HasNoCafRefs, Strictness: <L,1*U>m1 -}
+6eae0cb8e27a7d93d97dd7fb51dfa693
+  main_go2 ::
+    Data.Conduit.Internal.Pipe.Pipe
+      [Lib.AlignedRead]
+      [Lib.AlignedRead]
+      (Data.MonoTraversable.Element [Lib.AlignedRead])
+      ()
+      (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+      ()
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (Data.Conduit.Internal.Pipe.NeedInput
+                   @ [Lib.AlignedRead]
+                   @ [Lib.AlignedRead]
+                   @ (Data.MonoTraversable.Element [Lib.AlignedRead])
+                   @ ()
+                   @ (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+                   @ ()
+                   Main.main_go3
+                   (Data.Conduit.Internal.Pipe.Done
+                      @ [Lib.AlignedRead]
+                      @ [Lib.AlignedRead]
+                      @ Lib.AlignedRead
+                      @ ()
+                      @ (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+                      @ ())
+                     `cast`
+                   (<()>_R
+                    ->_R (Data.Conduit.Internal.Pipe.Pipe
+                            <[Lib.AlignedRead]>_N
+                            <[Lib.AlignedRead]>_N
+                            (Sym (Data.MonoTraversable.D:R:Element[][0] <Lib.AlignedRead>_N))
+                            <()>_N
+                            <Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO>_N
+                            <()>_N)_R)) -}
+c8614d1bd6b6dc2916bb278e9459c1a1
+  main_go3 ::
+    [Lib.AlignedRead]
+    -> Data.Conduit.Internal.Pipe.Pipe
+         [Lib.AlignedRead]
+         [Lib.AlignedRead]
+         (Data.MonoTraversable.Element [Lib.AlignedRead])
+         ()
+         (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+         ()
+  {- Arity: 1, HasNoCafRefs, Strictness: <S,1*U> -}
+9d805d55eb131f919e0192ba3c558f3c
+  main_go4 ::
+    Data.Conduit.Internal.Pipe.Pipe
+      (Data.Either.Either
+         Data.Conduit.Attoparsec.ParseError
+         (Data.Conduit.Attoparsec.PositionRange, [Lib.AlignedRead]))
+      (Data.Either.Either
+         Data.Conduit.Attoparsec.ParseError
+         (Data.Conduit.Attoparsec.PositionRange, [Lib.AlignedRead]))
+      [Lib.AlignedRead]
+      ()
+      (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+      ()
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (Data.Conduit.Internal.Pipe.NeedInput
+                   @ (Data.Either.Either
+                        Data.Conduit.Attoparsec.ParseError
+                        (Data.Conduit.Attoparsec.PositionRange, [Lib.AlignedRead]))
+                   @ (Data.Either.Either
+                        Data.Conduit.Attoparsec.ParseError
+                        (Data.Conduit.Attoparsec.PositionRange, [Lib.AlignedRead]))
+                   @ [Lib.AlignedRead]
+                   @ ()
+                   @ (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+                   @ ()
+                   Main.main_go5
+                   (Data.Conduit.Internal.Pipe.Done
+                      @ (Data.Either.Either
+                           Data.Conduit.Attoparsec.ParseError
+                           (Data.Conduit.Attoparsec.PositionRange, [Lib.AlignedRead]))
+                      @ (Data.Either.Either
+                           Data.Conduit.Attoparsec.ParseError
+                           (Data.Conduit.Attoparsec.PositionRange, [Lib.AlignedRead]))
+                      @ [Lib.AlignedRead]
+                      @ ()
+                      @ (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+                      @ ())) -}
+4cae20e4367677297ffbc8dfdc7a074d
+  main_go5 ::
+    Data.Either.Either
+      Data.Conduit.Attoparsec.ParseError
+      (Data.Conduit.Attoparsec.PositionRange, [Lib.AlignedRead])
+    -> Data.Conduit.Internal.Pipe.Pipe
+         (Data.Either.Either
+            Data.Conduit.Attoparsec.ParseError
+            (Data.Conduit.Attoparsec.PositionRange, [Lib.AlignedRead]))
+         (Data.Either.Either
+            Data.Conduit.Attoparsec.ParseError
+            (Data.Conduit.Attoparsec.PositionRange, [Lib.AlignedRead]))
+         [Lib.AlignedRead]
+         ()
+         (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+         ()
+  {- Arity: 1, HasNoCafRefs, Strictness: <L,1*U>m1 -}
+b30a9aad0aa238fade50e9ffca0bc4c9
+  main_go6 ::
+    Data.Conduit.Internal.Pipe.Pipe
+      Lib.AlignedRead
+      Lib.AlignedRead
+      Lib.AlignedRead
+      ()
+      (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+      ()
+  {- Strictness: m2,
+     Unfolding: (Data.Conduit.Internal.Pipe.NeedInput
+                   @ Lib.AlignedRead
+                   @ Lib.AlignedRead
+                   @ Lib.AlignedRead
+                   @ ()
+                   @ (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+                   @ ()
+                   Main.main_go7
+                   (Data.Conduit.Internal.Pipe.Done
+                      @ Lib.AlignedRead
+                      @ Lib.AlignedRead
+                      @ Lib.AlignedRead
+                      @ ()
+                      @ (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+                      @ ())) -}
+538fcdc5b43128a8e8153cab12eeb44b
+  main_go7 ::
+    Lib.AlignedRead
+    -> Data.Conduit.Internal.Pipe.Pipe
+         Lib.AlignedRead
+         Lib.AlignedRead
+         Lib.AlignedRead
+         ()
+         (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+         ()
+  {- Arity: 1,
+     Strictness: <S(S(LLLS)LLLLLLLLLLLLLLLLLLLLLLLLLLLLLL),1*U(U(U,U,U,U),U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U)> -}
+7d568a79503106a26df6c367c04349f5
+  main_go8 ::
+    Data.Conduit.Internal.Pipe.Pipe
+      [Lib.AlignedRead]
+      [Lib.AlignedRead]
+      (Data.MonoTraversable.Element [Lib.AlignedRead])
+      ()
+      (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+      ()
+  {- HasNoCafRefs, Strictness: m2,
+     Unfolding: (Data.Conduit.Internal.Pipe.NeedInput
+                   @ [Lib.AlignedRead]
+                   @ [Lib.AlignedRead]
+                   @ (Data.MonoTraversable.Element [Lib.AlignedRead])
+                   @ ()
+                   @ (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+                   @ ()
+                   Main.main_go9
+                   (Data.Conduit.Internal.Pipe.Done
+                      @ [Lib.AlignedRead]
+                      @ [Lib.AlignedRead]
+                      @ Lib.AlignedRead
+                      @ ()
+                      @ (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+                      @ ())
+                     `cast`
+                   (<()>_R
+                    ->_R (Data.Conduit.Internal.Pipe.Pipe
+                            <[Lib.AlignedRead]>_N
+                            <[Lib.AlignedRead]>_N
+                            (Sym (Data.MonoTraversable.D:R:Element[][0] <Lib.AlignedRead>_N))
+                            <()>_N
+                            <Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO>_N
+                            <()>_N)_R)) -}
+da53fa0c3b7f5b132b5ab27af472e27d
+  main_go9 ::
+    [Lib.AlignedRead]
+    -> Data.Conduit.Internal.Pipe.Pipe
+         [Lib.AlignedRead]
+         [Lib.AlignedRead]
+         (Data.MonoTraversable.Element [Lib.AlignedRead])
+         ()
+         (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+         ()
+  {- Arity: 1, HasNoCafRefs, Strictness: <S,1*U> -}
+dda397d25e12a459b1b32a38692a9237
+  main_goRight ::
+    Data.Conduit.Internal.Pipe.Pipe
+      Lib.AlignedRead
+      Lib.AlignedRead
+      Lib.AlignedRead
+      ()
+      (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+      ()
+    -> Data.Conduit.Internal.Pipe.Pipe
+         Lib.AlignedRead
+         Lib.AlignedRead
+         Data.Void.Void
+         ()
+         (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+         Lib.RunStats
+    -> Data.Conduit.Internal.Pipe.Pipe
+         Lib.AlignedRead
+         Lib.AlignedRead
+         Data.Void.Void
+         ()
+         (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+         Lib.RunStats
+  {- Arity: 2, HasNoCafRefs, Strictness: <L,U><S,1*U> -}
+97eee83eed0cffdd5587f141c8669d1f
+  main_goRight1 ::
+    Data.Conduit.Internal.Pipe.Pipe
+      Lib.AlignedRead
+      Lib.AlignedRead
+      Lib.AlignedRead
+      ()
+      (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+      ()
+    -> Data.Conduit.Internal.Pipe.Pipe
+         Lib.AlignedRead
+         Lib.AlignedRead
+         Data.Void.Void
+         ()
+         (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+         Lib.RunStats
+    -> Data.Conduit.Internal.Pipe.Pipe
+         Lib.AlignedRead
+         Lib.AlignedRead
+         Data.Void.Void
+         ()
+         (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+         Lib.RunStats
+  {- Arity: 2, HasNoCafRefs, Strictness: <L,U><S,1*U> -}
+f852f5b0855ea23fcefec7bf650afb61
+  main_goRight10 ::
+    Data.Conduit.Internal.Pipe.Pipe
+      [Lib.PairedAln]
+      [Lib.PairedAln]
+      Lib.PairedAln
+      ()
+      (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+      ()
+    -> Data.Conduit.Internal.Pipe.Pipe
+         Lib.PairedAln
+         Lib.PairedAln
+         Data.Void.Void
+         ()
+         (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+         Lib.RunStats
+    -> Data.Conduit.Internal.Pipe.Pipe
+         [Lib.PairedAln]
+         [Lib.PairedAln]
+         Data.Void.Void
+         ()
+         (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+         Lib.RunStats
+  {- Arity: 2, HasNoCafRefs, Strictness: <L,U><S,1*U> -}
+3534b65b24677178d537c9fb70f3eff3
+  main_goRight11 ::
+    Data.Conduit.Internal.Pipe.Pipe
+      (Data.Either.Either
+         Data.Conduit.Attoparsec.ParseError
+         (Data.Conduit.Attoparsec.PositionRange, [Lib.PairedAln]))
+      (Data.Either.Either
+         Data.Conduit.Attoparsec.ParseError
+         (Data.Conduit.Attoparsec.PositionRange, [Lib.PairedAln]))
+      [Lib.PairedAln]
+      ()
+      (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+      ()
+    -> Data.Conduit.Internal.Pipe.Pipe
+         [Lib.PairedAln]
+         [Lib.PairedAln]
+         Data.Void.Void
+         ()
+         (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+         Lib.RunStats
+    -> Data.Conduit.Internal.Pipe.Pipe
+         (Data.Either.Either
+            Data.Conduit.Attoparsec.ParseError
+            (Data.Conduit.Attoparsec.PositionRange, [Lib.PairedAln]))
+         (Data.Either.Either
+            Data.Conduit.Attoparsec.ParseError
+            (Data.Conduit.Attoparsec.PositionRange, [Lib.PairedAln]))
+         Data.Void.Void
+         ()
+         (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+         Lib.RunStats
+  {- Arity: 2, HasNoCafRefs, Strictness: <L,U><S,1*U> -}
+9c3aff14e86d3d6509347ff277e91e24
+  main_goRight12 ::
+    Data.Conduit.Internal.Pipe.Pipe
+      Data.ByteString.Internal.ByteString
+      Data.ByteString.Internal.ByteString
+      (Data.Either.Either
+         Data.Conduit.Attoparsec.ParseError
+         (Data.Conduit.Attoparsec.PositionRange, [Lib.PairedAln]))
+      ()
+      (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+      ()
+    -> Data.Conduit.Internal.Pipe.Pipe
+         (Data.Either.Either
+            Data.Conduit.Attoparsec.ParseError
+            (Data.Conduit.Attoparsec.PositionRange, [Lib.PairedAln]))
+         (Data.Either.Either
+            Data.Conduit.Attoparsec.ParseError
+            (Data.Conduit.Attoparsec.PositionRange, [Lib.PairedAln]))
+         Data.Void.Void
+         ()
+         (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+         Lib.RunStats
+    -> Data.Conduit.Internal.Pipe.Pipe
+         Data.ByteString.Internal.ByteString
+         Data.ByteString.Internal.ByteString
+         Data.Void.Void
+         ()
+         (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+         Lib.RunStats
+  {- Arity: 2, HasNoCafRefs, Strictness: <L,U><S,1*U> -}
+c411baf9eaa5bc2c73bf6064b9cf185e
+  main_goRight13 ::
+    Data.Conduit.Internal.Pipe.Pipe
+      ()
+      ()
+      Data.ByteString.Internal.ByteString
+      ()
+      (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+      ()
+    -> Data.Conduit.Internal.Pipe.Pipe
+         Data.ByteString.Internal.ByteString
+         Data.ByteString.Internal.ByteString
+         Data.Void.Void
+         ()
+         (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+         Lib.RunStats
+    -> Data.Conduit.Internal.Pipe.Pipe
+         ()
+         ()
+         Data.Void.Void
+         ()
+         (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+         Lib.RunStats
+  {- Arity: 2, HasNoCafRefs, Strictness: <L,U><S,1*U> -}
+7324eef09d62ddfec8b523cfc0f4a8ef
+  main_goRight2 ::
+    Data.Conduit.Internal.Pipe.Pipe
+      [Lib.AlignedRead]
+      [Lib.AlignedRead]
+      Lib.AlignedRead
+      ()
+      (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+      ()
+    -> Data.Conduit.Internal.Pipe.Pipe
+         Lib.AlignedRead
+         Lib.AlignedRead
+         Data.Void.Void
+         ()
+         (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+         Lib.RunStats
+    -> Data.Conduit.Internal.Pipe.Pipe
+         [Lib.AlignedRead]
+         [Lib.AlignedRead]
+         Data.Void.Void
+         ()
+         (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+         Lib.RunStats
+  {- Arity: 2, HasNoCafRefs, Strictness: <L,U><S,1*U> -}
+b2a251a66e76326b24f112fbd01211d8
+  main_goRight3 ::
+    Data.Conduit.Internal.Pipe.Pipe
+      (Data.Either.Either
+         Data.Conduit.Attoparsec.ParseError
+         (Data.Conduit.Attoparsec.PositionRange, [Lib.AlignedRead]))
+      (Data.Either.Either
+         Data.Conduit.Attoparsec.ParseError
+         (Data.Conduit.Attoparsec.PositionRange, [Lib.AlignedRead]))
+      [Lib.AlignedRead]
+      ()
+      (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+      ()
+    -> Data.Conduit.Internal.Pipe.Pipe
+         [Lib.AlignedRead]
+         [Lib.AlignedRead]
+         Data.Void.Void
+         ()
+         (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+         Lib.RunStats
+    -> Data.Conduit.Internal.Pipe.Pipe
+         (Data.Either.Either
+            Data.Conduit.Attoparsec.ParseError
+            (Data.Conduit.Attoparsec.PositionRange, [Lib.AlignedRead]))
+         (Data.Either.Either
+            Data.Conduit.Attoparsec.ParseError
+            (Data.Conduit.Attoparsec.PositionRange, [Lib.AlignedRead]))
+         Data.Void.Void
+         ()
+         (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+         Lib.RunStats
+  {- Arity: 2, HasNoCafRefs, Strictness: <L,U><S,1*U> -}
+2dd100da41941de1933f5bde805bfecc
+  main_goRight4 ::
+    Data.Conduit.Internal.Pipe.Pipe
+      Data.ByteString.Internal.ByteString
+      Data.ByteString.Internal.ByteString
+      (Data.Either.Either
+         Data.Conduit.Attoparsec.ParseError
+         (Data.Conduit.Attoparsec.PositionRange, [Lib.AlignedRead]))
+      ()
+      (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+      ()
+    -> Data.Conduit.Internal.Pipe.Pipe
+         (Data.Either.Either
+            Data.Conduit.Attoparsec.ParseError
+            (Data.Conduit.Attoparsec.PositionRange, [Lib.AlignedRead]))
+         (Data.Either.Either
+            Data.Conduit.Attoparsec.ParseError
+            (Data.Conduit.Attoparsec.PositionRange, [Lib.AlignedRead]))
+         Data.Void.Void
+         ()
+         (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+         Lib.RunStats
+    -> Data.Conduit.Internal.Pipe.Pipe
+         Data.ByteString.Internal.ByteString
+         Data.ByteString.Internal.ByteString
+         Data.Void.Void
+         ()
+         (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+         Lib.RunStats
+  {- Arity: 2, HasNoCafRefs, Strictness: <L,U><S,1*U> -}
+209c08f74484748c7530d85b42bbe1f9
+  main_goRight5 ::
+    Data.Conduit.Internal.Pipe.Pipe
+      ()
+      ()
+      Data.ByteString.Internal.ByteString
+      ()
+      (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+      ()
+    -> Data.Conduit.Internal.Pipe.Pipe
+         Data.ByteString.Internal.ByteString
+         Data.ByteString.Internal.ByteString
+         Data.Void.Void
+         ()
+         (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+         Lib.RunStats
+    -> Data.Conduit.Internal.Pipe.Pipe
+         ()
+         ()
+         Data.Void.Void
+         ()
+         (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+         Lib.RunStats
+  {- Arity: 2, HasNoCafRefs, Strictness: <L,U><S,1*U> -}
+0de81da07cec2d60a0f981b329425976
+  main_goRight6 ::
+    Data.Conduit.Internal.Pipe.Pipe
+      Lib.AlignedRead
+      Lib.AlignedRead
+      Lib.AlignedRead
+      ()
+      (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+      ()
+    -> Data.Conduit.Internal.Pipe.Pipe
+         Lib.AlignedRead
+         Lib.AlignedRead
+         Data.Void.Void
+         ()
+         (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+         Lib.RunStats
+    -> Data.Conduit.Internal.Pipe.Pipe
+         Lib.AlignedRead
+         Lib.AlignedRead
+         Data.Void.Void
+         ()
+         (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+         Lib.RunStats
+  {- Arity: 2, HasNoCafRefs, Strictness: <L,U><S,1*U> -}
+df93d4b66b77da5f41737ef9c3ae23e1
+  main_goRight7 ::
+    Data.Conduit.Internal.Pipe.Pipe
+      [Lib.AlignedRead]
+      [Lib.AlignedRead]
+      Lib.AlignedRead
+      ()
+      (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+      ()
+    -> Data.Conduit.Internal.Pipe.Pipe
+         Lib.AlignedRead
+         Lib.AlignedRead
+         Data.Void.Void
+         ()
+         (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+         Lib.RunStats
+    -> Data.Conduit.Internal.Pipe.Pipe
+         [Lib.AlignedRead]
+         [Lib.AlignedRead]
+         Data.Void.Void
+         ()
+         (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+         Lib.RunStats
+  {- Arity: 2, HasNoCafRefs, Strictness: <L,U><S,1*U> -}
+870260dad996b2879451c1e748ea5c27
+  main_goRight8 ::
+    Data.Conduit.Internal.Pipe.Pipe
+      Lib.PairedAln
+      Lib.PairedAln
+      [Lib.AlignedRead]
+      ()
+      (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+      ()
+    -> Data.Conduit.Internal.Pipe.Pipe
+         [Lib.AlignedRead]
+         [Lib.AlignedRead]
+         Data.Void.Void
+         ()
+         (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+         Lib.RunStats
+    -> Data.Conduit.Internal.Pipe.Pipe
+         Lib.PairedAln
+         Lib.PairedAln
+         Data.Void.Void
+         ()
+         (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+         Lib.RunStats
+  {- Arity: 2, HasNoCafRefs, Strictness: <L,U><S,1*U> -}
+f428b25b54f97420f2dad76ab9921e3c
+  main_goRight9 ::
+    Data.Conduit.Internal.Pipe.Pipe
+      Lib.PairedAln
+      Lib.PairedAln
+      Lib.PairedAln
+      ()
+      (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+      ()
+    -> Data.Conduit.Internal.Pipe.Pipe
+         Lib.PairedAln
+         Lib.PairedAln
+         Data.Void.Void
+         ()
+         (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+         Lib.RunStats
+    -> Data.Conduit.Internal.Pipe.Pipe
+         Lib.PairedAln
+         Lib.PairedAln
+         Data.Void.Void
+         ()
+         (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
+         Lib.RunStats
+  {- Arity: 2, HasNoCafRefs, Strictness: <L,U><S,1*U> -}
+cbd7e9106cb69128ffe12120c742bcb7
+  runPrimerTrimmingPE :: Lib.Opts -> GHC.Types.IO Lib.RunStats
+  {- Arity: 2, Strictness: <S(SLLLL),1*U(1*U,A,U,U,U)><S,U>,
+     Unfolding: InlineRule (0, True, True)
+                Main.runPrimerTrimmingPE1
+                  `cast`
+                (<Lib.Opts>_R ->_R Sym (GHC.Types.N:IO[0] <Lib.RunStats>_R)) -}
+00196a28cce6381e49a025dfc587d810
+  runPrimerTrimmingPE1 ::
+    Lib.Opts
+    -> GHC.Prim.State# GHC.Prim.RealWorld
+    -> (# GHC.Prim.State# GHC.Prim.RealWorld, Lib.RunStats #)
+  {- Arity: 2, Strictness: <S(SLLLL),1*U(1*U,A,U,U,U)><S,U>,
+     Inline: [0],
+     Unfolding: InlineRule (2, True, False)
+                (\ (w :: Lib.Opts) (w1 :: GHC.Prim.State# GHC.Prim.RealWorld) ->
+                 case w of ww { Lib.Opts ww1 ww2 ww3 ww4 ww5 ->
+                 Main.$wrunPrimerTrimmingPE ww1 ww3 ww4 ww5 w1 }) -}
+6170e79272aca5c3111c8a3fd4bfcd9c
+  runPrimerTrimmingSE :: Lib.Opts -> GHC.Types.IO Lib.RunStats
+  {- Arity: 2, Strictness: <S(SLLLL),1*U(1*U,A,U,U,U)><S,U>,
+     Unfolding: InlineRule (0, True, True)
+                Main.runPrimerTrimmingSE1
+                  `cast`
+                (<Lib.Opts>_R ->_R Sym (GHC.Types.N:IO[0] <Lib.RunStats>_R)) -}
+6880a504f58361e05eca384d6a2bed6e
+  runPrimerTrimmingSE1 ::
+    Lib.Opts
+    -> GHC.Prim.State# GHC.Prim.RealWorld
+    -> (# GHC.Prim.State# GHC.Prim.RealWorld, Lib.RunStats #)
+  {- Arity: 2, Strictness: <S(SLLLL),1*U(1*U,A,U,U,U)><S,U>,
+     Inline: [0],
+     Unfolding: InlineRule (2, True, False)
+                (\ (w :: Lib.Opts) (w1 :: GHC.Prim.State# GHC.Prim.RealWorld) ->
+                 case w of ww { Lib.Opts ww1 ww2 ww3 ww4 ww5 ->
+                 Main.$wrunPrimerTrimmingSE ww1 ww3 ww4 ww5 w1 }) -}
+"SPEC/Main $fApplicativeResourceT @ IO" [orphan] forall (v :: GHC.Base.Applicative
+                                                                GHC.Types.IO)
+  Control.Monad.Trans.Resource.Internal.$fApplicativeResourceT @ GHC.Types.IO
+                                                               v
+  = Main.$s$fApplicativeResourceT
+"SPEC/Main $fApplicativeResourceT_$cpure @ IO" [orphan] forall ($dApplicative :: GHC.Base.Applicative
+                                                                                   GHC.Types.IO)
+  Control.Monad.Trans.Resource.Internal.$fApplicativeResourceT_$cpure @ GHC.Types.IO
+                                                                      $dApplicative
+  = Main.$s$fApplicativeResourceT_$cpure
+"SPEC/Main $fFunctorResourceT @ IO" [orphan] forall (v :: GHC.Base.Functor
+                                                            GHC.Types.IO)
+  Control.Monad.Trans.Resource.Internal.$fFunctorResourceT @ GHC.Types.IO
+                                                           v
+  = Main.$s$fApplicativeResourceT_$s$fFunctorResourceT
+"SPEC/Main $fMonadIOResourceT @ IO" [orphan] forall (v :: Control.Monad.IO.Class.MonadIO
+                                                            GHC.Types.IO)
+  Control.Monad.Trans.Resource.Internal.$fMonadIOResourceT @ GHC.Types.IO
+                                                           v
+  = Main.$s$fMonadIOResourceT
+"SPEC/Main $fMonadIOResourceT_$cliftIO @ IO" [orphan] forall ($dMonadIO :: Control.Monad.IO.Class.MonadIO
+                                                                             GHC.Types.IO)
+  Control.Monad.Trans.Resource.Internal.$fMonadIOResourceT_$cliftIO @ GHC.Types.IO
+                                                                    $dMonadIO
+  = Main.$s$fMonadIOResourceT_$cliftIO
+"SPEC/Main $fMonadResourceResourceT @ IO" [orphan] forall (v :: Control.Monad.IO.Class.MonadIO
+                                                                  GHC.Types.IO)
+  Control.Monad.Trans.Resource.Internal.$fMonadResourceResourceT @ GHC.Types.IO
+                                                                 v
+  = Main.$s$fMonadResourceResourceT
+"SPEC/Main $fMonadResourceResourceT1 @ IO" [orphan] forall ($dMonadIO :: Control.Monad.IO.Class.MonadIO
+                                                                           GHC.Types.IO)
+  Control.Monad.Trans.Resource.Internal.$fMonadResourceResourceT1 @ GHC.Types.IO
+                                                                  $dMonadIO
+  = Main.$s$fMonadResourceResourceT1
+"SPEC/Main $fMonadResourceT @ IO" [orphan] forall (v :: GHC.Base.Monad
+                                                          GHC.Types.IO)
+  Control.Monad.Trans.Resource.Internal.$fMonadResourceT @ GHC.Types.IO
+                                                         v
+  = Main.$s$fMonadIOResourceT_$s$fMonadResourceT
+"SPEC/Main $fMonadResourceT_$c>> @ IO" [orphan] forall ($dMonad :: GHC.Base.Monad
+                                                                     GHC.Types.IO)
+  Control.Monad.Trans.Resource.Internal.$fMonadResourceT_$c>> @ GHC.Types.IO
+                                                              $dMonad
+  = Main.$s$fMonadIOResourceT_$s$fMonadResourceT_$c>>
+vectorised variables:
+vectorised tycons:
+vectorised reused tycons:
+parallel variables:
+parallel tycons:
+trusted: none
+require own pkg trusted: False
+

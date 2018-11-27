@@ -1,3 +1,21 @@
+module Spec where
+
+import Lib
+import Control.Monad
+import Control.Applicative
+import Options.Applicative
+import Data.Semigroup ((<>))
+import Data.List
+import qualified Data.ByteString.Char8 as B
+import Data.Maybe
+import qualified Data.Map.Strict as M
+import qualified Data.IntMap.Strict as I
+import Data.Either (isRight, rights)
+import qualified Conduit as P
+import qualified Data.Conduit.Binary as CB
+import qualified Data.Attoparsec.ByteString.Char8 as A
+import qualified Data.Conduit.Attoparsec as CA
+
 main :: IO ()
 main = do
     putStrLn "test suite under construction."
@@ -19,8 +37,6 @@ runPrimerTrimmingPETest args = do
               P..| P.concatC
               P..| P.filterC (\x -> (qname x) /= "NONE") -- remove dummy alignments
               P..| P.sinkList
-<<<<<<< HEAD
-=======
     return trimdalns
 
 -- 181125 parse and trim single-end read alignments
@@ -36,4 +52,3 @@ runPrimerTrimmingSEtest args = do
               P..| P.filterC (\x -> (qname x) /= "NONE") -- remove dummy alignments
               P..| P.sinkList
     return trimdalns
->>>>>>> 4ade68d... add single-end trim feature and command option flag to corrected CIGAR mods

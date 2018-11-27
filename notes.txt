@@ -1,5 +1,0 @@
-TODO:
-
-MN00139:210:000H2CV3V:1:11101:11631:15661
-Find out why MRNM for zero-trimmed alignment is "*" when mate is still mapped
-
