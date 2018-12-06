@@ -1,0 +1,10 @@
+Configuring stm-conduit-4.0.0...
+Preprocessing library for stm-conduit-4.0.0..
+Building library for stm-conduit-4.0.0..
+[1 of 5] Compiling Data.Conduit.Async.Composition ( Data/Conduit/Async/Composition.hs, .stack-work/dist/x86_64-linux/Cabal-2.0.1.0/build/Data/Conduit/Async/Composition.o )
+[2 of 5] Compiling Data.Conduit.Async ( Data/Conduit/Async.hs, .stack-work/dist/x86_64-linux/Cabal-2.0.1.0/build/Data/Conduit/Async.o )
+[3 of 5] Compiling Data.Conduit.TMChan ( Data/Conduit/TMChan.hs, .stack-work/dist/x86_64-linux/Cabal-2.0.1.0/build/Data/Conduit/TMChan.o )
+[4 of 5] Compiling Data.Conduit.TQueue ( Data/Conduit/TQueue.hs, .stack-work/dist/x86_64-linux/Cabal-2.0.1.0/build/Data/Conduit/TQueue.o )
+[5 of 5] Compiling Data.Conduit.Utils ( Data/Conduit/Utils.hs, .stack-work/dist/x86_64-linux/Cabal-2.0.1.0/build/Data/Conduit/Utils.o )
+Installing library in /home/irish/.stack/snapshots/x86_64-linux/lts-11.0/8.2.2/lib/x86_64-linux-ghc-8.2.2/stm-conduit-4.0.0-3BClxI255w2IEr1XkQlolq
+Registering library for stm-conduit-4.0.0..

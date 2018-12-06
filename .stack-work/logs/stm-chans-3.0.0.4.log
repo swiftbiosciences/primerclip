@@ -1,0 +1,13 @@
+[1 of 2] Compiling Main             ( /tmp/stack157592/stm-chans-3.0.0.4/Setup.hs, /tmp/stack157592/stm-chans-3.0.0.4/.stack-work/dist/x86_64-linux/Cabal-2.0.1.0/setup/Main.o )
+[2 of 2] Compiling StackSetupShim   ( /home/irish/.stack/setup-exe-src/setup-shim-mPHDZzAJ.hs, /tmp/stack157592/stm-chans-3.0.0.4/.stack-work/dist/x86_64-linux/Cabal-2.0.1.0/setup/StackSetupShim.o )
+Linking /tmp/stack157592/stm-chans-3.0.0.4/.stack-work/dist/x86_64-linux/Cabal-2.0.1.0/setup/setup ...
+Configuring stm-chans-3.0.0.4...
+Preprocessing library for stm-chans-3.0.0.4..
+Building library for stm-chans-3.0.0.4..
+[1 of 5] Compiling Control.Concurrent.STM.TBChan ( src/Control/Concurrent/STM/TBChan.hs, .stack-work/dist/x86_64-linux/Cabal-2.0.1.0/build/Control/Concurrent/STM/TBChan.o )
+[2 of 5] Compiling Control.Concurrent.STM.TBMChan ( src/Control/Concurrent/STM/TBMChan.hs, .stack-work/dist/x86_64-linux/Cabal-2.0.1.0/build/Control/Concurrent/STM/TBMChan.o )
+[3 of 5] Compiling Control.Concurrent.STM.TBMQueue ( src/Control/Concurrent/STM/TBMQueue.hs, .stack-work/dist/x86_64-linux/Cabal-2.0.1.0/build/Control/Concurrent/STM/TBMQueue.o )
+[4 of 5] Compiling Control.Concurrent.STM.TMChan ( src/Control/Concurrent/STM/TMChan.hs, .stack-work/dist/x86_64-linux/Cabal-2.0.1.0/build/Control/Concurrent/STM/TMChan.o )
+[5 of 5] Compiling Control.Concurrent.STM.TMQueue ( src/Control/Concurrent/STM/TMQueue.hs, .stack-work/dist/x86_64-linux/Cabal-2.0.1.0/build/Control/Concurrent/STM/TMQueue.o )
+Installing library in /home/irish/.stack/snapshots/x86_64-linux/lts-11.0/8.2.2/lib/x86_64-linux-ghc-8.2.2/stm-chans-3.0.0.4-9KWlZojlDY6EOkvWdSsnpZ
+Registering library for stm-chans-3.0.0.4..

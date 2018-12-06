@@ -187,6 +187,61 @@
   (major1) == 1 && (major2) == 3 && (minor) <= 0)
 #endif /* MIN_VERSION_conduit_extra */
 
+/* package stm-conduit-4.0.0 */
+#ifndef VERSION_stm_conduit
+#define VERSION_stm_conduit "4.0.0"
+#endif /* VERSION_stm_conduit */
+#ifndef MIN_VERSION_stm_conduit
+#define MIN_VERSION_stm_conduit(major1,major2,minor) (\
+  (major1) <  4 || \
+  (major1) == 4 && (major2) <  0 || \
+  (major1) == 4 && (major2) == 0 && (minor) <= 0)
+#endif /* MIN_VERSION_stm_conduit */
+
+/* package stm-chans-3.0.0.4 */
+#ifndef VERSION_stm_chans
+#define VERSION_stm_chans "3.0.0.4"
+#endif /* VERSION_stm_chans */
+#ifndef MIN_VERSION_stm_chans
+#define MIN_VERSION_stm_chans(major1,major2,minor) (\
+  (major1) <  3 || \
+  (major1) == 3 && (major2) <  0 || \
+  (major1) == 3 && (major2) == 0 && (minor) <= 0)
+#endif /* MIN_VERSION_stm_chans */
+
+/* package stm-2.4.5.0 */
+#ifndef VERSION_stm
+#define VERSION_stm "2.4.5.0"
+#endif /* VERSION_stm */
+#ifndef MIN_VERSION_stm
+#define MIN_VERSION_stm(major1,major2,minor) (\
+  (major1) <  2 || \
+  (major1) == 2 && (major2) <  4 || \
+  (major1) == 2 && (major2) == 4 && (minor) <= 5)
+#endif /* MIN_VERSION_stm */
+
+/* package async-2.1.1.1 */
+#ifndef VERSION_async
+#define VERSION_async "2.1.1.1"
+#endif /* VERSION_async */
+#ifndef MIN_VERSION_async
+#define MIN_VERSION_async(major1,major2,minor) (\
+  (major1) <  2 || \
+  (major1) == 2 && (major2) <  1 || \
+  (major1) == 2 && (major2) == 1 && (minor) <= 1)
+#endif /* MIN_VERSION_async */
+
+/* package resourcet-1.2.0 */
+#ifndef VERSION_resourcet
+#define VERSION_resourcet "1.2.0"
+#endif /* VERSION_resourcet */
+#ifndef MIN_VERSION_resourcet
+#define MIN_VERSION_resourcet(major1,major2,minor) (\
+  (major1) <  1 || \
+  (major1) == 1 && (major2) <  2 || \
+  (major1) == 1 && (major2) == 2 && (minor) <= 0)
+#endif /* MIN_VERSION_resourcet */
+
 /* tool gcc-4.8 */
 #ifndef TOOL_VERSION_gcc
 #define TOOL_VERSION_gcc "4.8"
@@ -287,10 +342,10 @@
 #endif /* MIN_TOOL_VERSION_strip */
 
 #ifndef CURRENT_PACKAGE_KEY
-#define CURRENT_PACKAGE_KEY "primerclip-0.3.5.0-EKfIVVkqmIVLNVlfKBtA8g"
+#define CURRENT_PACKAGE_KEY "primerclip-0.3.5.0-1Jdeh124hxeEktoirzSRqe"
 #endif /* CURRENT_PACKAGE_KEY */
 #ifndef CURRENT_COMPONENT_ID
-#define CURRENT_COMPONENT_ID "primerclip-0.3.5.0-EKfIVVkqmIVLNVlfKBtA8g"
+#define CURRENT_COMPONENT_ID "primerclip-0.3.5.0-1Jdeh124hxeEktoirzSRqe"
 #endif /* CURRENT_COMPONENT_ID */
 #ifndef CURRENT_PACKAGE_VERSION
 #define CURRENT_PACKAGE_VERSION "0.3.5.0"

@@ -1,0 +1,7 @@
+Configuring cereal-conduit-0.8.0...
+Preprocessing library for cereal-conduit-0.8.0..
+Building library for cereal-conduit-0.8.0..
+[1 of 2] Compiling Data.Conduit.Cereal.Internal ( Data/Conduit/Cereal/Internal.hs, .stack-work/dist/x86_64-linux/Cabal-2.0.1.0/build/Data/Conduit/Cereal/Internal.o )
+[2 of 2] Compiling Data.Conduit.Cereal ( Data/Conduit/Cereal.hs, .stack-work/dist/x86_64-linux/Cabal-2.0.1.0/build/Data/Conduit/Cereal.o )
+Installing library in /home/irish/.stack/snapshots/x86_64-linux/lts-11.0/8.2.2/lib/x86_64-linux-ghc-8.2.2/cereal-conduit-0.8.0-J5W2XeYg8wlCnoP756hFKj
+Registering library for cereal-conduit-0.8.0..
