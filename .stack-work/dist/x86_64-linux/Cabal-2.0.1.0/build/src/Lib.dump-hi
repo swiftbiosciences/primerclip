@@ -1,11 +1,11 @@
 
 ==================== FINAL INTERFACE ====================
-2018-12-06 03:57:35.63183 UTC
+2018-12-06 15:16:03.534927 UTC
 
 interface primerclip-0.3.5.0-1Jdeh124hxeEktoirzSRqe:Lib [family instance module] 8022
-  interface hash: b4a12c9f897863cf6cdfabe0a9e2b3b3
-  ABI hash: 826519040f573d4b63453909201ff713
-  export-list hash: fe60157697fe3251529494c378865fe4
+  interface hash: 09e2d8728a908c4eb69f00c342415a93
+  ABI hash: c1177298f8e26222690ec765970b580b
+  export-list hash: d05b03e93ef19da44efaf80212496b03
   orphan hash: ba9ccca38774489e17704ed1c3950db1
   flag hash: ec690ec25aa83b76b88f0ff85134ee97
   sig of: Nothing
@@ -147,6 +147,7 @@ exports:
   Lib.printAlignment
   Lib.printAlignmentOrHdr
   Lib.printAlnStreamToFile
+  Lib.printAlnStreamToStdout
   Lib.rdint
   Lib.read1filter
   Lib.readBEDPE
@@ -14291,7 +14292,7 @@ c04b7bb82bde0c589835e182230c3c9b
                                   DEFAULT -> $j GHC.Types.EQ -> wild1 }
                              GHC.Types.True -> wild1 } }
                    GHC.Types.True -> $j } }) -}
-88aa4829486c88f00d1eb9a7e1f87faa
+15c038912f5bc5a38b084f27144fa33a
   $wcreateprimerbedmaps ::
     GHC.Types.Bool
     -> GHC.Base.String
@@ -18102,7 +18103,7 @@ ae4964553c664c85acfe51aed35a53f6
                          nt1 `cast` (Sym (Data.Attoparsec.Internal.Types.N:Pos[0]))
                          more'1
                          (GHC.Types.: @ Lib.AlignedRead a1 a3) }) } })) -}
-12a29e84d427eeff12e8c8047bd76b0e
+d119934a08ecbfa334e0a53917791988
   $wparsechkBED ::
     GHC.Prim.Int#
     -> GHC.Prim.Int# -> [GHC.Types.Int] -> [GHC.Types.Char]
@@ -18115,7 +18116,7 @@ ae4964553c664c85acfe51aed35a53f6
                         (GHC.Prim.==# ww ww1) of wild {
                    GHC.Types.False
                    -> GHC.CString.unpackAppendCString#
-                        Lib.createprimerbedmaps13
+                        Lib.parsechkBED7
                         (case GHC.List.$wlenAcc @ GHC.Types.Int w 0# of ww2 { DEFAULT ->
                          case GHC.Show.$wshowSignedInt
                                 0#
@@ -18125,7 +18126,7 @@ ae4964553c664c85acfe51aed35a53f6
                            @ GHC.Types.Char
                            (GHC.Types.: @ GHC.Types.Char ww5 ww6)
                            (GHC.CString.unpackAppendCString#
-                              Lib.createprimerbedmaps12
+                              Lib.parsechkBED6
                               (case GHC.Show.$wshowSignedInt
                                       0#
                                       ww
@@ -18133,10 +18134,10 @@ ae4964553c664c85acfe51aed35a53f6
                                GHC.Base.++
                                  @ GHC.Types.Char
                                  (GHC.Types.: @ GHC.Types.Char ww7 ww8)
-                                 Lib.parsechkBED3 })) } })
+                                 Lib.parsechkBED4 })) } })
                    GHC.Types.True
                    -> GHC.CString.unpackAppendCString#
-                        Lib.createprimerbedmaps9
+                        Lib.parsechkBED3
                         (case GHC.Show.$wshowSignedInt
                                 0#
                                 ww
@@ -18145,7 +18146,7 @@ ae4964553c664c85acfe51aed35a53f6
                            @ GHC.Types.Char
                            (GHC.Types.: @ GHC.Types.Char ww5 ww6)
                            Lib.parsechkBED1 }) }) -}
-3c6e768e18b36b06c9a1758fa25aeac8
+d149b39b71e59b7dc1df534c60583b25
   $wparsechkMaster ::
     GHC.Prim.Int#
     -> GHC.Prim.Int# -> [GHC.Types.Int] -> [GHC.Types.Char]
@@ -18158,7 +18159,7 @@ ae4964553c664c85acfe51aed35a53f6
                         (GHC.Prim.==# ww ww1) of wild {
                    GHC.Types.False
                    -> GHC.CString.unpackAppendCString#
-                        Lib.createprimerbedmaps13
+                        Lib.parsechkBED7
                         (case GHC.List.$wlenAcc @ GHC.Types.Int w 0# of ww2 { DEFAULT ->
                          case GHC.Show.$wshowSignedInt
                                 0#
@@ -18168,7 +18169,7 @@ ae4964553c664c85acfe51aed35a53f6
                            @ GHC.Types.Char
                            (GHC.Types.: @ GHC.Types.Char ww5 ww6)
                            (GHC.CString.unpackAppendCString#
-                              Lib.createprimerbedmaps12
+                              Lib.parsechkBED6
                               (case GHC.Show.$wshowSignedInt
                                       0#
                                       ww
@@ -18176,10 +18177,10 @@ ae4964553c664c85acfe51aed35a53f6
                                GHC.Base.++
                                  @ GHC.Types.Char
                                  (GHC.Types.: @ GHC.Types.Char ww7 ww8)
-                                 Lib.createprimerbedmaps10 })) } })
+                                 Lib.parsechkMaster3 })) } })
                    GHC.Types.True
                    -> GHC.CString.unpackAppendCString#
-                        Lib.createprimerbedmaps9
+                        Lib.parsechkBED3
                         (case GHC.Show.$wshowSignedInt
                                 0#
                                 ww
@@ -18187,8 +18188,8 @@ ae4964553c664c85acfe51aed35a53f6
                          GHC.Base.++
                            @ GHC.Types.Char
                            (GHC.Types.: @ GHC.Types.Char ww5 ww6)
-                           Lib.createprimerbedmaps7 }) }) -}
-ef357402df0f6f20fa7d2632d93614ef
+                           Lib.parsechkMaster1 }) }) -}
+275286eae43ae388b3dabc09cc88ba9c
   $wparsechkSAM ::
     GHC.Prim.Int#
     -> GHC.Prim.Int# -> [GHC.Types.Int] -> [GHC.Types.Char]
@@ -18201,7 +18202,7 @@ ef357402df0f6f20fa7d2632d93614ef
                         (GHC.Prim.==# ww ww1) of wild {
                    GHC.Types.False
                    -> GHC.CString.unpackAppendCString#
-                        Lib.createprimerbedmaps13
+                        Lib.parsechkBED7
                         (case GHC.List.$wlenAcc @ GHC.Types.Int w 0# of ww2 { DEFAULT ->
                          case GHC.Show.$wshowSignedInt
                                 0#
@@ -18211,7 +18212,7 @@ ef357402df0f6f20fa7d2632d93614ef
                            @ GHC.Types.Char
                            (GHC.Types.: @ GHC.Types.Char ww5 ww6)
                            (GHC.CString.unpackAppendCString#
-                              Lib.createprimerbedmaps12
+                              Lib.parsechkBED6
                               (case GHC.Show.$wshowSignedInt
                                       0#
                                       ww
@@ -18222,7 +18223,7 @@ ef357402df0f6f20fa7d2632d93614ef
                                  Lib.parsechkSAM3 })) } })
                    GHC.Types.True
                    -> GHC.CString.unpackAppendCString#
-                        Lib.createprimerbedmaps9
+                        Lib.parsechkBED3
                         (case GHC.Show.$wshowSignedInt
                                 0#
                                 ww
@@ -22579,7 +22580,7 @@ a2fb97de20d5a81c4f16cb879969080e
     [(GHC.Integer.Type.Integer, Data.ByteString.Internal.ByteString)]
     -> GHC.Integer.Type.Integer -> GHC.Integer.Type.Integer
   {- Arity: 2, Strictness: <S,1*U><S,1*U> -}
-787760a9d99bc6125c5b1b6f4c0d0b1e
+1e1428d3ff43978981da1c82f02e0ef7
   createprimerbedmaps ::
     Lib.Opts
     -> GHC.Types.IO
@@ -22597,7 +22598,7 @@ a2fb97de20d5a81c4f16cb879969080e
                                    Lib.UChr (Data.IntMap.Internal.IntMap Lib.BedRecord),
                                  Data.Map.Internal.Map
                                    Lib.UChr (Data.IntMap.Internal.IntMap Lib.BedRecord))>_R)) -}
-0218b5f7024980a362c8c3e7ad1c4e2a
+8477f00c4c9c83012a97c060ba699e0e
   createprimerbedmaps1 ::
     Lib.Opts
     -> GHC.Prim.State# GHC.Prim.RealWorld
@@ -22612,33 +22613,143 @@ a2fb97de20d5a81c4f16cb879969080e
                 (\ (w :: Lib.Opts) (w1 :: GHC.Prim.State# GHC.Prim.RealWorld) ->
                  case w of ww { Lib.Opts ww1 ww2 ww3 ww4 ww5 ->
                  Lib.$wcreateprimerbedmaps ww1 ww3 w1 }) -}
-a1ed705a38ba075e5fe9f96023205f43
-  createprimerbedmaps10 :: [GHC.Types.Char]
+7fb86529456fb0adad228e6d49aa9642
+  createprimerbedmaps2 ::
+    GHC.IO.FilePath
+    -> GHC.Prim.State# GHC.Prim.RealWorld
+    -> (# GHC.Prim.State# GHC.Prim.RealWorld, [Lib.BEDPE] #)
+  {- Arity: 2, Strictness: <L,U><S,U> -}
+69b146c0cd2f1379e8839b56f3cac44d
+  createprimerbedmaps3 ::
+    Lib.BedRecord -> Lib.BedRecord -> GHC.Types.Bool
+  {- Arity: 2, HasNoCafRefs,
+     Strictness: <S(SLLL),1*U(U,A,A,A)><S(SLLL),1*U(U,A,A,A)>,
+     Unfolding: InlineRule (2, True, False)
+                (\ (x :: Lib.BedRecord) (y :: Lib.BedRecord) ->
+                 case x of wild { Lib.BedRecord ds6 ds7 ds8 ds9 ->
+                 case ds6 of x1 { DEFAULT ->
+                 case y of wild1 { Lib.BedRecord ds10 ds11 ds12 ds13 ->
+                 case ds10 of x2 { DEFAULT ->
+                 case GHC.Prim.dataToTag# @ Lib.UChr x1 of a# { DEFAULT ->
+                 case GHC.Prim.dataToTag# @ Lib.UChr x2 of b# { DEFAULT ->
+                 GHC.Prim.tagToEnum#
+                   @ GHC.Types.Bool
+                   (GHC.Prim.==# a# b#) } } } } } }) -}
+a1d937f1873d9cf6eddc95cd9a3e6466
+  createprimerbedmaps4 ::
+    GHC.IO.FilePath
+    -> GHC.Prim.State# GHC.Prim.RealWorld
+    -> (# GHC.Prim.State# GHC.Prim.RealWorld, [Lib.MasterRecord] #)
+  {- Arity: 2, Strictness: <L,U><S,U>,
+     Unfolding: (\ (fp :: GHC.IO.FilePath)
+                   (eta :: GHC.Prim.State# GHC.Prim.RealWorld) ->
+                 case System.IO.withBinaryFile1
+                        @ Data.ByteString.Internal.ByteString
+                        fp
+                        GHC.IO.IOMode.ReadMode
+                        Data.ByteString.readFile2
+                          `cast`
+                        (<GHC.IO.Handle.Types.Handle>_R
+                         ->_R Sym (GHC.Types.N:IO[0]
+                                       <Data.ByteString.Internal.ByteString>_R))
+                        eta of ds6 { (#,#) ipv ipv1 ->
+                 let {
+                   ipv2 :: [Data.ByteString.Internal.ByteString]
+                   = case ipv1 of ww { Data.ByteString.Internal.PS ww1 ww2 ww3 ww4 ->
+                     Data.ByteString.Char8.$wlines ww1 ww2 ww3 ww4 }
+                 } in
+                 let {
+                   ds7 :: (Data.Map.Internal.Map
+                             GHC.Types.Int
+                             (Data.Either.Either GHC.Base.String Lib.MasterRecord),
+                           Data.Map.Internal.Map
+                             GHC.Types.Int
+                             (Data.Either.Either GHC.Base.String Lib.MasterRecord))
+                   = case Data.Map.Internal.$wpoly_go3
+                            @ GHC.Types.Int
+                            @ (Data.Either.Either GHC.Base.String Lib.MasterRecord)
+                            Lib.createprimerbedmaps9
+                            (Lib.$sfromList
+                               @ (Data.Either.Either GHC.Base.String Lib.MasterRecord)
+                               (Lib.createprimerbedmaps_go1
+                                  0#
+                                  (GHC.Base.map
+                                     @ Data.ByteString.Internal.ByteString
+                                     @ (Data.Either.Either GHC.Base.String Lib.MasterRecord)
+                                     Lib.createprimerbedmaps7
+                                     ipv2))) of ww { (#,#) ww1 ww2 ->
+                     (ww1, ww2) }
+                 } in
+                 case System.IO.withBinaryFile1
+                        @ ()
+                        Lib.createprimerbedmaps5
+                        GHC.IO.IOMode.WriteMode
+                        (\ (ds8 :: GHC.IO.Handle.Types.Handle)[OneShot]
+                           (eta1 :: GHC.Prim.State# GHC.Prim.RealWorld)[OneShot] ->
+                         case ds7 of wild { (,) succm failm ->
+                         letrec {
+                           go16 :: [Data.ByteString.Internal.ByteString]
+                                   -> Data.Map.Internal.Map
+                                        GHC.Types.Int
+                                        (Data.Either.Either GHC.Base.String Lib.MasterRecord)
+                                   -> [Data.ByteString.Internal.ByteString]
+                             {- Arity: 2, Strictness: <L,1*U><S,1*U> -}
+                           = \ (z' :: [Data.ByteString.Internal.ByteString])
+                               (ds9 :: Data.Map.Internal.Map
+                                         GHC.Types.Int
+                                         (Data.Either.Either GHC.Base.String Lib.MasterRecord)) ->
+                             case ds9 of wild1 {
+                               Data.Map.Internal.Bin dt kx x l r
+                               -> case kx of ww { GHC.Types.I# ww1 ->
+                                  go16
+                                    (GHC.Types.:
+                                       @ Data.ByteString.Internal.ByteString
+                                       (GHC.List.$w!!
+                                          @ Data.ByteString.Internal.ByteString
+                                          ipv2
+                                          ww1)
+                                       (go16 z' r))
+                                    l }
+                               Data.Map.Internal.Tip -> z' }
+                         } in
+                         case Data.ByteString.Char8.unlines
+                                (go16
+                                   (GHC.Types.[] @ Data.ByteString.Internal.ByteString)
+                                   failm) of ww { Data.ByteString.Internal.PS ww1 ww2 ww3 ww4 ->
+                         Data.ByteString.$whPut ds8 ww1 ww2 ww3 ww4 eta1 } })
+                          `cast`
+                        (<GHC.IO.Handle.Types.Handle>_R
+                         ->_R Sym (GHC.Types.N:IO[0] <()>_R))
+                        ipv of ds8 { (#,#) ipv3 ipv4 ->
+                 (# ipv3,
+                    case ds7 of wild { (,) succm failm ->
+                    Data.Either.rights
+                      @ GHC.Base.String
+                      @ Lib.MasterRecord
+                      (Lib.createprimerbedmaps_go13
+                         (GHC.Types.[]
+                            @ (Data.Either.Either GHC.Base.String Lib.MasterRecord))
+                         succm) } #) } }) -}
+5c6af9e254821d34439b0fb9a3bc4972
+  createprimerbedmaps5 :: [GHC.Types.Char]
   {- Unfolding: (GHC.CString.unpackCString#
-                   Lib.createprimerbedmaps11) -}
-f2aa74a0f124e43dda8d32b8ad4c4870
-  createprimerbedmaps11 :: GHC.Prim.Addr#
-  {- HasNoCafRefs,
-     Unfolding: (" master records failed to parse (see masterparsefails.log)\n"#) -}
-cd1e32d3b1d9346bdb2c324400875301
-  createprimerbedmaps12 :: GHC.Prim.Addr#
-  {- HasNoCafRefs, Unfolding: (" of "#) -}
-b78d8a1a1ac4760fb34e3e65d4e99c62
-  createprimerbedmaps13 :: GHC.Prim.Addr#
-  {- HasNoCafRefs, Unfolding: ("WARNING: "#) -}
-a0a67be6802f78365d23c5ec849e4dc8
-  createprimerbedmaps14 ::
+                   Lib.createprimerbedmaps6) -}
+cd438ef8fdc3d5fac649ac140e28c4ae
+  createprimerbedmaps6 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("masterparsefails.log"#) -}
+9dde191ab2a1dae8a905edcf188a23e2
+  createprimerbedmaps7 ::
     Data.ByteString.Internal.ByteString
     -> Data.Either.Either GHC.Base.String Lib.MasterRecord
   {- Arity: 1,
      Unfolding: (Data.Attoparsec.ByteString.Internal.parseOnly
                    @ Lib.MasterRecord
-                   Lib.createprimerbedmaps15
+                   Lib.createprimerbedmaps8
                      `cast`
                    (Sym (Data.Attoparsec.Internal.Types.N:Parser[0]
                              <Data.ByteString.Internal.ByteString>_N <Lib.MasterRecord>_R))) -}
-ca7abfe46368be1e9c38be6bef9349ef
-  createprimerbedmaps15 ::
+458792fdee9a0e92886cdedb4dd84922
+  createprimerbedmaps8 ::
     Data.Attoparsec.Internal.Types.State
       Data.ByteString.Internal.ByteString
     -> Data.Attoparsec.Internal.Types.Pos
@@ -22682,8 +22793,8 @@ ca7abfe46368be1e9c38be6bef9349ef
                         `cast`
                       (Data.Attoparsec.Internal.Types.N:Pos[0]) of ww7 { GHC.Types.I# ww8 ->
                  Lib.$wmasterparser @ r ww1 ww2 ww3 ww4 ww5 ww6 ww8 w2 w3 w4 } }) -}
-2141924292f162d7954b720d2f6f1878
-  createprimerbedmaps16 ::
+edbe61ab5c52139fae521e3cefb29a28
+  createprimerbedmaps9 ::
     GHC.Types.Int
     -> Data.Either.Either GHC.Base.String Lib.MasterRecord
     -> GHC.Types.Bool
@@ -22693,138 +22804,6 @@ ca7abfe46368be1e9c38be6bef9349ef
                    (x :: Data.Either.Either
                            GHC.Base.String Lib.MasterRecord)[OneShot] ->
                  Data.Either.isRight @ GHC.Base.String @ Lib.MasterRecord x) -}
-7fb86529456fb0adad228e6d49aa9642
-  createprimerbedmaps2 ::
-    GHC.IO.FilePath
-    -> GHC.Prim.State# GHC.Prim.RealWorld
-    -> (# GHC.Prim.State# GHC.Prim.RealWorld, [Lib.BEDPE] #)
-  {- Arity: 2, Strictness: <L,U><S,U> -}
-69b146c0cd2f1379e8839b56f3cac44d
-  createprimerbedmaps3 ::
-    Lib.BedRecord -> Lib.BedRecord -> GHC.Types.Bool
-  {- Arity: 2, HasNoCafRefs,
-     Strictness: <S(SLLL),1*U(U,A,A,A)><S(SLLL),1*U(U,A,A,A)>,
-     Unfolding: InlineRule (2, True, False)
-                (\ (x :: Lib.BedRecord) (y :: Lib.BedRecord) ->
-                 case x of wild { Lib.BedRecord ds6 ds7 ds8 ds9 ->
-                 case ds6 of x1 { DEFAULT ->
-                 case y of wild1 { Lib.BedRecord ds10 ds11 ds12 ds13 ->
-                 case ds10 of x2 { DEFAULT ->
-                 case GHC.Prim.dataToTag# @ Lib.UChr x1 of a# { DEFAULT ->
-                 case GHC.Prim.dataToTag# @ Lib.UChr x2 of b# { DEFAULT ->
-                 GHC.Prim.tagToEnum#
-                   @ GHC.Types.Bool
-                   (GHC.Prim.==# a# b#) } } } } } }) -}
-3b18359bc688ff5d011cdd9d430c992b
-  createprimerbedmaps4 ::
-    GHC.IO.FilePath
-    -> GHC.Prim.State# GHC.Prim.RealWorld
-    -> (# GHC.Prim.State# GHC.Prim.RealWorld, [Lib.MasterRecord] #)
-  {- Arity: 2, Strictness: <L,U><S,U>,
-     Unfolding: (\ (fp :: GHC.IO.FilePath)
-                   (eta :: GHC.Prim.State# GHC.Prim.RealWorld) ->
-                 case System.IO.withBinaryFile1
-                        @ Data.ByteString.Internal.ByteString
-                        fp
-                        GHC.IO.IOMode.ReadMode
-                        Data.ByteString.readFile2
-                          `cast`
-                        (<GHC.IO.Handle.Types.Handle>_R
-                         ->_R Sym (GHC.Types.N:IO[0]
-                                       <Data.ByteString.Internal.ByteString>_R))
-                        eta of ds6 { (#,#) ipv ipv1 ->
-                 let {
-                   ipv2 :: [Data.ByteString.Internal.ByteString]
-                   = case ipv1 of ww { Data.ByteString.Internal.PS ww1 ww2 ww3 ww4 ->
-                     Data.ByteString.Char8.$wlines ww1 ww2 ww3 ww4 }
-                 } in
-                 let {
-                   ds7 :: (Data.Map.Internal.Map
-                             GHC.Types.Int
-                             (Data.Either.Either GHC.Base.String Lib.MasterRecord),
-                           Data.Map.Internal.Map
-                             GHC.Types.Int
-                             (Data.Either.Either GHC.Base.String Lib.MasterRecord))
-                   = case Data.Map.Internal.$wpoly_go3
-                            @ GHC.Types.Int
-                            @ (Data.Either.Either GHC.Base.String Lib.MasterRecord)
-                            Lib.createprimerbedmaps16
-                            (Lib.$sfromList
-                               @ (Data.Either.Either GHC.Base.String Lib.MasterRecord)
-                               (Lib.createprimerbedmaps_go1
-                                  0#
-                                  (GHC.Base.map
-                                     @ Data.ByteString.Internal.ByteString
-                                     @ (Data.Either.Either GHC.Base.String Lib.MasterRecord)
-                                     Lib.createprimerbedmaps14
-                                     ipv2))) of ww { (#,#) ww1 ww2 ->
-                     (ww1, ww2) }
-                 } in
-                 let {
-                   succs :: [Lib.MasterRecord]
-                   = case ds7 of wild { (,) succm failm ->
-                     Lib.createprimerbedmaps_go13
-                       (GHC.Types.[] @ Lib.MasterRecord)
-                       succm }
-                 } in
-                 let {
-                   failedlinenums :: [GHC.Types.Int]
-                   = case ds7 of wild { (,) succm failm ->
-                     Data.Map.Internal.keys_go
-                       @ GHC.Types.Int
-                       @ (Data.Either.Either GHC.Base.String Lib.MasterRecord)
-                       (GHC.Types.[] @ GHC.Types.Int)
-                       failm }
-                 } in
-                 case GHC.IO.Handle.Text.hPutStr2
-                        GHC.IO.Handle.FD.stdout
-                        (case GHC.List.$wlenAcc
-                                @ Data.ByteString.Internal.ByteString
-                                ipv2
-                                0# of ww2 { DEFAULT ->
-                         case GHC.List.$wlenAcc
-                                @ Lib.MasterRecord
-                                succs
-                                0# of ww1 { DEFAULT ->
-                         Lib.$wparsechkMaster ww2 ww1 failedlinenums } })
-                        GHC.Types.True
-                        ipv of ds8 { (#,#) ipv3 ipv4 ->
-                 case System.IO.withBinaryFile1
-                        @ ()
-                        Lib.createprimerbedmaps5
-                        GHC.IO.IOMode.WriteMode
-                        (\ (ds9 :: GHC.IO.Handle.Types.Handle)[OneShot]
-                           (eta1 :: GHC.Prim.State# GHC.Prim.RealWorld)[OneShot] ->
-                         case Data.ByteString.Char8.unlines
-                                (GHC.Base.map
-                                   @ GHC.Types.Int
-                                   @ Data.ByteString.Internal.ByteString
-                                   (GHC.List.!! @ Data.ByteString.Internal.ByteString ipv2)
-                                   failedlinenums) of ww { Data.ByteString.Internal.PS ww1 ww2 ww3 ww4 ->
-                         Data.ByteString.$whPut ds9 ww1 ww2 ww3 ww4 eta1 })
-                          `cast`
-                        (<GHC.IO.Handle.Types.Handle>_R
-                         ->_R Sym (GHC.Types.N:IO[0] <()>_R))
-                        ipv3 of ds9 { (#,#) ipv5 ipv6 ->
-                 (# ipv5, succs #) } } }) -}
-5c6af9e254821d34439b0fb9a3bc4972
-  createprimerbedmaps5 :: [GHC.Types.Char]
-  {- Unfolding: (GHC.CString.unpackCString#
-                   Lib.createprimerbedmaps6) -}
-cd438ef8fdc3d5fac649ac140e28c4ae
-  createprimerbedmaps6 :: GHC.Prim.Addr#
-  {- HasNoCafRefs, Unfolding: ("masterparsefails.log"#) -}
-90f19097404d1f6d80bb024534a0fa59
-  createprimerbedmaps7 :: [GHC.Types.Char]
-  {- Unfolding: (GHC.CString.unpackCString#
-                   Lib.createprimerbedmaps8) -}
-a00ab9c37de65b71c94011a67fa0f220
-  createprimerbedmaps8 :: GHC.Prim.Addr#
-  {- HasNoCafRefs,
-     Unfolding: (" master records parsed successfully.\n"#) -}
-70b97a8f69b6c3dc2ec92ea9a0ade13a
-  createprimerbedmaps9 :: GHC.Prim.Addr#
-  {- HasNoCafRefs, Unfolding: ("all "#) -}
 5594fd607b1bc6a048cbfe9604672e51
   createprimerbedmaps_go ::
     [[Lib.BedRecord]]
@@ -22838,12 +22817,12 @@ a00ab9c37de65b71c94011a67fa0f220
     -> [(GHC.Types.Int,
          Data.Either.Either GHC.Base.String Lib.MasterRecord)]
   {- Arity: 2, HasNoCafRefs, Strictness: <L,U><S,1*U> -}
-9fbe1c6149b80a26ee36b4016d3e4f66
+0d33bf958eeb959a09227a86f89a93c1
   createprimerbedmaps_go13 ::
-    [Lib.MasterRecord]
+    [Data.Either.Either GHC.Base.String Lib.MasterRecord]
     -> Data.Map.Internal.Map
          GHC.Types.Int (Data.Either.Either GHC.Base.String Lib.MasterRecord)
-    -> [Lib.MasterRecord]
+    -> [Data.Either.Either GHC.Base.String Lib.MasterRecord]
   {- Arity: 2, HasNoCafRefs, Strictness: <L,1*U><S,1*U> -}
 704a9cf975b6168a6cc46607fcf45fc7
   currpos :: Lib.CigarMod -> GHC.Integer.Type.Integer
@@ -23651,7 +23630,7 @@ b4cbd5260dfa44bfca0469165f386dfd
                     ds11 })
                    (case mr of wild { Lib.MasterRecord ds6 ds7 ds8 ds9 ds10 ds11 ds12 ds13 ds14 ds15 ds16 ds17 ->
                     ds14 })) -}
-786d09877eee6efd975e3f0ea3040185
+321169b63e5161e7f6e40773e04178c7
   getMasterFile :: GHC.IO.FilePath -> GHC.Types.IO [Lib.MasterRecord]
   {- Arity: 2, Strictness: <L,U><S,U>,
      Unfolding: InlineRule (0, True, True)
@@ -25192,13 +25171,13 @@ ba9e601e9685a0e929dcf637f64c67cf
                                                                (GHC.ST.ST GHC.Prim.RealWorld))
                                                             Lib.BedRecord>_R))))) }) of ds6 { (#,#) ipv1 ipv2 ->
                  ipv2 }) -}
-82360347bce9f9ec45af3b1fcb2857f4
+41ab68c0b89a6bff36a2fbe46b53a643
   masterparser ::
     Data.Attoparsec.ByteString.Internal.Parser Lib.MasterRecord
   {- Arity: 5,
      Strictness: <S(SLSSSS),1*U(U,U,U,U,U,U)><S(S),1*U(U)><L,U><L,C(C1(C1(C1(C1(U)))))><L,C(C1(C1(C1(U))))>,
      Unfolding: InlineRule (0, True, True)
-                Lib.createprimerbedmaps15
+                Lib.createprimerbedmaps8
                   `cast`
                 (Sym (Data.Attoparsec.Internal.Types.N:Parser[0]
                           <Data.ByteString.Internal.ByteString>_N <Lib.MasterRecord>_R)) -}
@@ -27172,7 +27151,7 @@ a2146118ee9d1fa3ad037d83bc92ab25
                    w2
                    w3
                    w4 } }) -}
-fcfeb60d94c49e956b325fa65d18dc02
+c83e904e376e8cbf9b4237211c68a0ac
   parsechkBED ::
     GHC.Types.Int
     -> GHC.Types.Int -> [GHC.Types.Int] -> GHC.Base.String
@@ -27192,14 +27171,23 @@ e33db3600ada53f23119213e67fd04fe
   parsechkBED2 :: GHC.Prim.Addr#
   {- HasNoCafRefs,
      Unfolding: (" primer BEDPE records parsed successfully.\n"#) -}
-e4270178b9679cdd64634db148af8881
-  parsechkBED3 :: [GHC.Types.Char]
-  {- Unfolding: (GHC.CString.unpackCString# Lib.parsechkBED4) -}
-73ed3f94d55c14ab910e8db5652b0b01
-  parsechkBED4 :: GHC.Prim.Addr#
+849e1d6a1d258f7650255e58bbfab0c7
+  parsechkBED3 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("all "#) -}
+7cdd06be8eeee1c5cfefee8562614136
+  parsechkBED4 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Lib.parsechkBED5) -}
+782f0d60ac52f80a302330acfba18238
+  parsechkBED5 :: GHC.Prim.Addr#
   {- HasNoCafRefs,
      Unfolding: (" primer BEDPE records failed to parse (see bedparsefails.log)\n"#) -}
-731fafdd366db78c05ebc531eadcae3f
+05cbc95fbd208a2225dd3a5989873863
+  parsechkBED6 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: (" of "#) -}
+844f76fcabf40a36be64cfc128aa67c6
+  parsechkBED7 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("WARNING: "#) -}
+cac776ed1969aeb7b7170a7a401b49f5
   parsechkMaster ::
     GHC.Types.Int
     -> GHC.Types.Int -> [GHC.Types.Int] -> GHC.Base.String
@@ -27212,7 +27200,21 @@ e4270178b9679cdd64634db148af8881
                  case w of ww { GHC.Types.I# ww1 ->
                  case w1 of ww2 { GHC.Types.I# ww3 ->
                  Lib.$wparsechkMaster ww1 ww3 w2 } }) -}
-ed7cf4f25408392da7692e1332854293
+cda9da6860e3d0b12f1e559c41242cff
+  parsechkMaster1 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Lib.parsechkMaster2) -}
+849c99abe8a481c92a55a456acd8c128
+  parsechkMaster2 :: GHC.Prim.Addr#
+  {- HasNoCafRefs,
+     Unfolding: (" master records parsed successfully.\n"#) -}
+589b886f1fd5a881e9b584bb53d1951c
+  parsechkMaster3 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# Lib.parsechkMaster4) -}
+b57fc8aec532dc9bc3cdc7258c29ec40
+  parsechkMaster4 :: GHC.Prim.Addr#
+  {- HasNoCafRefs,
+     Unfolding: (" master records failed to parse (see masterparsefails.log)\n"#) -}
+9baadf3d3018fec88004c4fa963ca405
   parsechkSAM ::
     GHC.Types.Int
     -> GHC.Types.Int -> [GHC.Types.Int] -> GHC.Base.String
@@ -27402,6 +27404,30 @@ e434ac5d7811de3b633911d3bc1369ed
     -> Data.Conduit.Internal.Conduit.ConduitM Lib.AlignedRead c m ()
   {- Arity: 2,
      Strictness: <L,U(U(U(A,C(C1(U)),A,C(U),A),C(U)),C(U))><L,U> -}
+3468b97ecfcaeaa131f3d70b2419c32c
+  printAlnStreamToStdout ::
+    Control.Monad.Trans.Resource.Internal.MonadResource m =>
+    Data.Conduit.Internal.Conduit.ConduitM Lib.AlignedRead c m ()
+  {- Arity: 2,
+     Strictness: <L,1*U(1*U(U(A,C(C1(U)),A,C(U),A),C(U)),A)><L,C(U)>,
+     Unfolding: InlineRule (0, True, True)
+                Lib.printAlnStreamToStdout1
+                  `cast`
+                (forall (m109 :: <* -> *>_N) (c2 :: <*>_N).
+                 <Control.Monad.Trans.Resource.Internal.MonadResource m109>_R
+                 ->_R Sym (Data.Conduit.Internal.Conduit.N:ConduitT[0]
+                               <Lib.AlignedRead>_N <c2>_N <m109>_N <()>_R)) -}
+34acd3279d190f9ef46d77e6c7189c58
+  printAlnStreamToStdout1 ::
+    Control.Monad.Trans.Resource.Internal.MonadResource m =>
+    forall b.
+    (()
+     -> Data.Conduit.Internal.Pipe.Pipe
+          Lib.AlignedRead Lib.AlignedRead c () m b)
+    -> Data.Conduit.Internal.Pipe.Pipe
+         Lib.AlignedRead Lib.AlignedRead c () m b
+  {- Arity: 2,
+     Strictness: <L,1*U(1*U(U(A,C(C1(U)),A,C(U),A),C(U)),A)><L,C(U)> -}
 eebc773303e54df44abf8c738ef5c996
   qname :: Lib.AlignedRead -> Data.ByteString.Internal.ByteString
   RecSel Left Lib.AlignedRead

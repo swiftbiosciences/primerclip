@@ -56,7 +56,7 @@ library
 executable primerclip-partest
   hs-source-dirs:      app
   main-is:             Main.hs
-  ghc-options:         -O2 -static -optl-static -optl-pthread
+  ghc-options:         -O2 -static -optl-static -optl-pthread -threaded -rtsopts -with-rtsopts=-N
   build-depends:       base
                      , primerclip
                      , bytestring

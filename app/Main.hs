@@ -22,7 +22,7 @@ import Control.Concurrent.STM
 import Control.Concurrent.STM.TBMQueue
 import Control.Concurrent.STM.TBMChan
 import Control.Monad.Trans.Resource (register)
-
+import Data.Conduit.Async (($$&))
 
 -- main
 main :: IO ()
@@ -33,14 +33,15 @@ main = do
                       <> header
                         "primerclip -- Swift Biosciences Accel-Amplicon targeted panel primer trimming tool v0.3.5")
     args <- execParser opts
-    runPrimerTrimmingPEpar args -- 181205 test parallel execution performance
+    _ <- runPrimerTrimmingSEpar args -- 181205 test parallel execution performance
     {--
     runstats <- case (sereads args) of
                     True  -> runPrimerTrimmingSE args
                     False -> runPrimerTrimmingPE args
     --}
-    putStrLn "primer trimming complete."
+    -- putStrLn "primer trimming complete."
     -- writeRunStats (outfilename args) runstats -- 180226
+    return ()
 -- end main
 
 -- 180329 parse and trim as PairedAln sets
@@ -78,29 +79,45 @@ runPrimerTrimmingSE args = do
     return runstats
 
 -- 181205 test parallel execution using a TBMQueue and async
-runPrimerTrimmingPEpar :: Opts -> IO ()
-runPrimerTrimmingPEpar args = do
-    -- (fmp, rmp) <- createprimerbedmaps args
-    q <- atomically $ newTBMQueue 10
+runPrimerTrimmingSEpar :: Opts -> IO ()
+runPrimerTrimmingSEpar args = do
+    (fmp, rmp) <- createprimerbedmaps args
+    q <- atomically $ newTBMQueue 1
     _ <- async $ C.runResourceT $ do
         _ <- register $ atomically $ closeTBMQueue q
         C.runConduitRes $ C.sourceFile (insamfile args) C..| sinkTBMQueue q
-    _ <- replicateConcurrently_ 8 (runPrimerTrimPEchan args q) -- TODO: print run stats to log file
+    _ <- replicateConcurrently_ 24 ( C.runConduitRes
+                                  $ sourceTBMQueue q
+                               C..| CA.conduitParserEither parseSingleAlnsOrHdr
+                               C..| C.mapC rightOrDefaultSingle
+                               C..| C.concatC
+                               C..| C.mapC (trimprimersE fmp rmp)
+                               C..| C.filterC (\x -> (qname x) /= "NONE") -- remove dummy alignments
+                               C..| C.mapC printAlignmentOrHdr
+                               C..| C.unlinesAsciiC
+                               C..| C.stdoutC )
     return ()
 
--- runPrimerTrimPEchan :: Opts -> IO RunStats
-runPrimerTrimPEchan args q = do
+{--
+-- 181205 test parallel execution using a TBMQueue and async
+runPrimerTrimmingPEpar :: Opts -> IO ()
+runPrimerTrimmingPEpar args = do
     (fmp, rmp) <- createprimerbedmaps args
-    runstats <- C.runConduitRes
-              $ sourceTBMQueue q
-              C..| CA.conduitParserEither parsePairedAlnsOrHdr
-              C..| C.mapC rightOrDefaultPaird -- convert parse fails to defaultAlignment
-              C..| C.concatC
-              C..| C.mapC (trimprimerPairsE fmp rmp)
-              C..| C.mapC flattenPairedAln
-              C..| C.concatC
-              C..| C.filterC (\x -> (qname x) /= "NONE") -- remove dummy alignments
-              C..| C.getZipSink
-                       (C.ZipSink (printAlnStreamToFile (outfilename args))
-                                *> calcRunStats) -- 180226 --}
-    return runstats
+    q <- atomically $ newTBMQueue 20
+    _ <- async $ C.runResourceT $ do
+        _ <- register $ atomically $ closeTBMQueue q
+        C.runConduitRes $ C.sourceFile (insamfile args) C..| sinkTBMQueue q
+    _ <- replicateConcurrently_ 8 ( C.runConduitRes
+                                  $ sourceTBMQueue q
+                               C..| CA.conduitParserEither parsePairedAlnsOrHdr
+                               C..| C.mapC rightOrDefaultPaird
+                               C..| C.concatC
+                               C..| C.mapC (trimprimerPairsE fmp rmp)
+                               C..| C.mapC flattenPairedAln
+                               C..| C.concatC
+                               C..| C.filterC (\x -> (qname x) /= "NONE") -- remove dummy alignments
+                               C..| C.mapC printAlignmentOrHdr
+                               C..| C.unlinesAsciiC
+                               C..| C.stdoutC )
+    return ()
+--}

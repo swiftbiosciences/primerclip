@@ -917,7 +917,7 @@ getMasterFile fp = do
         failcnt = length failedlinenums
         parseStatus = parsechkMaster nr mcnt failedlinenums
         parsefailrecs = B.unlines $ (mlines !!) <$> failedlinenums
-    putStrLn parseStatus
+    -- putStrLn parseStatus
     B.writeFile "masterparsefails.log" $ parsefailrecs
     return succs
 
@@ -1557,6 +1557,11 @@ printAlnStreamToFile :: P.MonadResource m => FilePath -> P.ConduitM AlignedRead 
 printAlnStreamToFile outfile = P.mapC printAlignmentOrHdr
                           P..| P.unlinesAsciiC
                           P..| P.sinkFile outfile
+
+printAlnStreamToStdout :: P.MonadResource m => P.ConduitM AlignedRead c m ()
+printAlnStreamToStdout = P.mapC printAlignmentOrHdr
+                    P..| P.unlinesAsciiC
+                    P..| P.stdoutC
 
 -- 180226 write RunStats to run log file (TODO: also print to stderr to allow
 -- more flexible logging from caller of primerclip?)
