@@ -252,6 +252,17 @@ type CMap = M.Map UChr BedMap
 type BedMap = I.IntMap BedRecord
 type CigarMap = [(Integer, B.ByteString)]
 
+-- 181230 try parsing arbitrary strings for chromosome names while still
+-- enumerating canonical chromosome names
+data UChr = C1 | C2 | C3 | C4 | C5 | C6 | C7 | C8 | C9 | C10 | C11
+          | C12 | C13 | C14 | C15 | C16 | C17 | C18 | C19 | C20 | C21
+          | C22 | CX | CY | CMT | Chr1 | Chr2 | Chr3 | Chr4 | Chr5 | Chr6
+          | Chr7 | Chr8 | Chr9 | Chr10 | Chr11 | Chr12 | Chr13 | Chr14 | Chr15
+          | Chr16 | Chr17 | Chr18 | Chr19 | Chr20 | Chr21 | Chr22
+          | ChrX | ChrY | ChrM | ChrAlt B.ByteString | NONE
+            deriving (Eq, Ord, Generic)
+
+{--
 -- Internal sum type for all chromosome names in both UCSC and ensembl naming
 -- schemes.
 -- NOTE: only GRCh37 non-canonical chromosomes recognized this version
@@ -320,8 +331,10 @@ data UChr = C1 | C2 | C3 | C4 | C5 | C6 | C7 | C8 | C9 | C10 | C11 | C12 | C13
           | GL000225P1
           | GL000192P1
           | NC_007605
+          | Hs37d5
           | NONE
             deriving (Eq, Ord, Bounded, Enum, Generic)
+--}
 
 -- 170508 type for tracking chromosome name type
 data ChromNameFormat = GRC | UCSC
@@ -353,6 +366,7 @@ instance Show UChr where
     show CX = "X"
     show CY = "Y"
     show CMT = "MT"
+  {--
     show GL000207P1 = "GL000207.1"
     show GL000226P1 = "GL000226.1"
     show GL000229P1 = "GL000229.1"
@@ -413,6 +427,8 @@ instance Show UChr where
     show GL000225P1 = "GL000225.1"
     show GL000192P1 = "GL000192.1"
     show NC_007605 = "NC_007605"
+    show Hs37d5  =  "hs37d5"
+    --}
     show Chr1 = "chr1"
     show Chr2 = "chr2"
     show Chr3 = "chr3"
@@ -438,6 +454,7 @@ instance Show UChr where
     show ChrX = "chrX"
     show ChrY = "chrY"
     show ChrM = "chrM"
+    show (ChrAlt bs) = B.unpack bs
     show NONE = "*"
 
 -- 170508 add alternate "show" function to print chromosome names based on
@@ -548,6 +565,9 @@ uchrparser =      (A.string "chr10" >> return Chr10)
         <|>  (A.string "X" >> return CX)
         <|>  (A.string "Y" >> return CY)
         <|>  (A.string "MT" >> return CMT)
+        <|>  (A.string "*" >> return NONE)
+        <|>  altchromp -- 181230
+        {--
         <|>  (A.string "GL000207.1" >> return GL000207P1)
         <|>  (A.string "GL000226.1" >> return GL000226P1)
         <|>  (A.string "GL000229.1" >> return GL000229P1)
@@ -608,7 +628,7 @@ uchrparser =      (A.string "chr10" >> return Chr10)
         <|>  (A.string "GL000225.1" >> return GL000225P1)
         <|>  (A.string "GL000192.1" >> return GL000192P1)
         <|>  (A.string "NC_007605" >> return NC_007605)
-        <|>  (A.string "*" >> return NONE)
+        --}
 
 -- 180206 include option for providing primer coords in BED or BEDPE format
 -- in addition to master file
@@ -1366,6 +1386,13 @@ txtfieldp = A.takeTill A.isSpace
 optfieldsp = A.sepBy' txtfieldp A.space -- parses correctly
 
 optfieldstotalp = A.takeTill (A.inClass "\r\n")
+
+-- 181230 parse alt chrom name
+altchromp :: A.Parser UChr
+altchromp = do
+    cname <- txtfieldp
+    return $ ChrAlt cname
+
 
 -- 171017 prevent entire SAM file being parsed into optional fields field of
 -- first AlignedRead
