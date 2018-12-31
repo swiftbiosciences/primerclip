@@ -366,7 +366,7 @@ instance Show UChr where
     show CX = "X"
     show CY = "Y"
     show CMT = "MT"
-  {--
+    {--
     show GL000207P1 = "GL000207.1"
     show GL000226P1 = "GL000226.1"
     show GL000229P1 = "GL000229.1"
@@ -515,7 +515,7 @@ showChrom fmt chr = case (fmt, chr) of
 
 -- 170510 try parsing either GRC or UCSC chromosome names
 uchrparser :: A.Parser UChr
-uchrparser =      (A.string "chr10" >> return Chr10)
+uchrparser = (A.string "chr10" >> return Chr10)
         <|>  (A.string "chr11" >> return Chr11)
         <|>  (A.string "chr12" >> return Chr12)
         <|>  (A.string "chr13" >> return Chr13)
@@ -566,7 +566,7 @@ uchrparser =      (A.string "chr10" >> return Chr10)
         <|>  (A.string "Y" >> return CY)
         <|>  (A.string "MT" >> return CMT)
         <|>  (A.string "*" >> return NONE)
-        <|>  altchromp -- 181230
+        -- <|>  altchromp -- 181230
         {--
         <|>  (A.string "GL000207.1" >> return GL000207P1)
         <|>  (A.string "GL000226.1" >> return GL000226P1)
@@ -743,6 +743,12 @@ readSAMtoPairedAlns fp = do
         pairsets = alnsToPairedAln <$> (tail parsedAlns)
     return (hdr, pairsets)
 
+readSAMtoPAlns :: FilePath -> IO (Either String [PairedAln])
+readSAMtoPAlns fp = do
+    intxt <- B.readFile fp
+    let epa = A.parseOnly parsePairedAlnsOrHdr intxt
+    return epa
+
 alnsToPairedAln :: [AlignedRead] -> PairedAln
 alnsToPairedAln [] = defaultPairedAln
 alnsToPairedAln as =
@@ -777,6 +783,12 @@ parsePairedAlnsFromSAM :: B.ByteString -> Either String [PairedAln]
 parsePairedAlnsFromSAM bs = A.parseOnly parsePairedAlns bs
 
 parsePairedAlnsOrHdr = A.many1 (hdralnparserEOL <|> pairedalnparser)
+
+-- 181231 avoid header parsing test for all alignments when header occurs once
+parseSAMtoPairedAlns = do
+    h <- hdralnparserEOL
+    as <- A.many1 pairedalnparser
+    return $ h:as
 
 -- 181115
 parseSingleAlnsOrHdr = A.many1 (hdrSEalnparserEOL <|> alnparserEOL)
@@ -1387,12 +1399,13 @@ optfieldsp = A.sepBy' txtfieldp A.space -- parses correctly
 
 optfieldstotalp = A.takeTill (A.inClass "\r\n")
 
+-- {--
 -- 181230 parse alt chrom name
 altchromp :: A.Parser UChr
 altchromp = do
     cname <- txtfieldp
     return $ ChrAlt cname
-
+--}
 
 -- 171017 prevent entire SAM file being parsed into optional fields field of
 -- first AlignedRead
@@ -1560,6 +1573,12 @@ getlengths seqs = fmap B.length seqs
 -- 180409 expand PairedAln to [AlignedRead]
 flattenPairedAln :: PairedAln -> [AlignedRead]
 flattenPairedAln p = sort $ (r1prim p) : (r2prim p) : ((r1secs p) ++ (r2secs p))
+
+-- 181231 handle default r2prim entry in PairedAln containing header
+flattenPairedAln' :: PairedAln -> [AlignedRead]
+flattenPairedAln' p = case (qname $ r2prim p) of
+    "NONE" -> [r1prim p]
+    _      -> sort $ (r1prim p) : (r2prim p) : ((r1secs p) ++ (r2secs p))
 
 -- 180409 add function to update RNEXT and PNEXT of alns w/ 0-trimmed
 -- 180417 try removing any secondary alignments which are 0-trimmed
@@ -2257,6 +2276,7 @@ updatePairedAlnTrimdFields p = PairedAln (updateTrimdAlnFields $ r1prim p)
 updateTrimdAlnFields :: AlignedRead -> AlignedRead
 updateTrimdAlnFields a
     | (any (\x -> elem x ("MIDN" :: String)) (B.unpack $ trimdcigar a))
+        && (trimdflag a)
         = trimdAln
     | (trimdflag a) = trimdToZero
     | otherwise = a -- no clipping due to no primer intersections for alignment

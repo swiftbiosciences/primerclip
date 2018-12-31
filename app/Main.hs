@@ -23,7 +23,7 @@ main = do
             (fullDesc <> progDesc
                         "Trim PCR primer sequences from aligned reads"
                       <> header
-                        "primerclip -- Swift Biosciences Accel-Amplicon targeted panel primer trimming tool for single-end reads v0.3.5")
+                        "primerclip -- Swift Biosciences Accel-Amplicon targeted panel primer trimming tool v0.3.6")
     args <- execParser opts
     runstats <- case (sereads args) of
                     True  -> runPrimerTrimmingSE args
@@ -38,7 +38,7 @@ runPrimerTrimmingPE args = do
     (fmp, rmp) <- createprimerbedmaps args
     runstats <- P.runConduitRes
               $ P.sourceFile (insamfile args)
-              P..| CA.conduitParserEither parsePairedAlnsOrHdr
+              P..| CA.conduitParserEither parseSAMtoPairedAlns -- parsePairedAlnsOrHdr
               P..| P.mapC rightOrDefaultPaird -- convert parse fails to defaultAlignment
               P..| P.concatC
               P..| P.mapC (trimprimerPairsE fmp rmp)
