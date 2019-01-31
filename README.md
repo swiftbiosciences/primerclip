@@ -24,6 +24,12 @@ Please visit [Swift Biosciences Accel-Amplicon™ trim and analysis files](https
 to download the files needed for trimming primers with primerclip and performing
 targeted variant calling.
 
+__CHANGELOG__
+
+190130 merged "extchrnames" branch to master to fix issue with some chromosome
+names failing to parse. Primerclip should now parse arbitrary chromosome names
+successfully.
+
 __INSTALL PRE-COMPILED BINARY:__
 
 This binary is compiled for linux on x86_64 (Ubuntu 16.04).
