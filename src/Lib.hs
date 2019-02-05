@@ -566,7 +566,7 @@ uchrparser = (A.string "chr10" >> return Chr10)
         <|>  (A.string "Y" >> return CY)
         <|>  (A.string "MT" >> return CMT)
         <|>  (A.string "*" >> return NONE)
-        -- <|>  altchromp -- 181230
+        <|>  altchromp -- 181230
         {--
         <|>  (A.string "GL000207.1" >> return GL000207P1)
         <|>  (A.string "GL000226.1" >> return GL000226P1)

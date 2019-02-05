@@ -1,6 +1,6 @@
 ## primerclip
 
-#### primerclip v0.3.6beta primer trimming tool.
+#### primerclip v0.3.7beta primer trimming tool.
 
 #### Swift Biosciences Inc. 2017
 
@@ -25,6 +25,9 @@ to download the files needed for trimming primers with primerclip and performing
 targeted variant calling.
 
 __CHANGELOG__
+
+190205 uncommented alternate chromosome parser to enable new arbitrary chromosome
+parsing code.
 
 190130 merged "extchrnames" branch to master to fix issue with some chromosome
 names failing to parse. Primerclip should now parse arbitrary chromosome names
