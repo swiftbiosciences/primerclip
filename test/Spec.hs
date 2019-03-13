@@ -16,6 +16,7 @@ import qualified Conduit as P
 import qualified Data.Conduit.Binary as CB
 import qualified Data.Attoparsec.ByteString.Char8 as A
 import qualified Data.Conduit.Attoparsec as CA
+import Data.Bits
 
 main :: IO ()
 main = do

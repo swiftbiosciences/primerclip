@@ -765,12 +765,20 @@ readSAMnameset fp = do
     txt <- B.readFile fp
     return $ parseReadsetsFromSAM txt
 
--- 180212 non-conduit latest SAM parsing function for debugging
+-- 190313 non-conduit latest SAM parsing function for debugging
+readSAMtoAlns :: FilePath -> IO [AlignedRead]
+readSAMtoAlns fp = do
+    sambs <- B.readFile fp
+    let parsedAlns = A.parseOnly parseSAMtoAlns sambs
+    return $ U.fromRight [] parsedAlns
+
+{--
 readSAM :: FilePath -> IO [AlignedRead]
 readSAM fp = do
     bslines <- B.lines <$> B.readFile fp
     let parsedAlns = (A.parseOnly (hdralnparser <|> alnparser)) <$> bslines
     return $ U.rights parsedAlns
+--}
 
 -- NOTE: changed to make use of U.rights to leave out parsing failures
 parseAlns :: [B.ByteString] -> Alignments
@@ -792,6 +800,12 @@ parseSAMtoPairedAlns = do
 
 -- 181115
 parseSingleAlnsOrHdr = A.many1 (hdrSEalnparserEOL <|> alnparserEOL)
+
+-- 190313
+parseSAMtoAlns = do
+    h <- hdrSEalnparserEOL
+    as <- A.many1 alnparserEOL
+    return $ h:as
 
 parsePairedAlns = do
     h <- hdralnparserEOL
@@ -1528,12 +1542,18 @@ readSAMFlag flag =
 read1filter :: AlignedRead -> Bool
 read1filter a = testBit (flag a) 6
 
+-- 190313 include supplementary alignment in list of secondary alignments
+-- NOTE: initial testing; not sure if this will behave properly during trimming
 primaryR1filter :: AlignedRead -> Bool
 primaryR1filter a = (not $ testBit (flag a) 8)
+                 && (not $ testBit (flag a) 11)
                  && (read1filter a)
 
+-- 190313 include supplementary alignment in list of secondary alignments
+-- NOTE: initial testing; not sure if this will behave properly during trimming
 primaryR2filter :: AlignedRead -> Bool
-primaryR2filter a =  (not $ testBit (flag a) 8)
+primaryR2filter a = (not $ testBit (flag a) 8)
+                 && (not $ testBit (flag a) 11)
                  && (not $ read1filter a)
 
 -- 180322 filter PairedAln for records containing at least one alignment with
