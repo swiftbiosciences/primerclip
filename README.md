@@ -1,6 +1,6 @@
 ## primerclip
 
-#### primerclip v0.3.7beta primer trimming tool.
+#### primerclip v0.3.7.1beta primer trimming tool.
 
 #### Swift Biosciences Inc. 2017
 
@@ -25,6 +25,9 @@ to download the files needed for trimming primers with primerclip and performing
 targeted variant calling.
 
 __CHANGELOG__
+
+190313 updated input SAM parser to properly handle supplementary alignment parsing
+and trimming.
 
 190205 uncommented alternate chromosome parser to enable new arbitrary chromosome
 parsing code.
