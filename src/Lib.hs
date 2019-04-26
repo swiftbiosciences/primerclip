@@ -31,7 +31,7 @@ import GHC.Generics (Generic)
 
 {--
     Jonathan Irish
-    Post-alignment primer trimming tool v0.3.5
+    Post-alignment primer trimming tool v0.3.7
 
 --}
 
@@ -110,6 +110,11 @@ defaultAlignment = AlignedRead { qname = "NONE"
                                , tbed = defaultBed
                                , trimdToZeroLength = False
                                }
+
+-- 190426 data type for sort order (SO) header line
+-- used to abort with warning if input SAM file stream is not name-sorted (SO:queryname)
+data SAMSortOrder = Coordinate | Queryname | Unsorted | Unknown
+    deriving (Show, Eq, Ord)
 
 -- 180321 organize aligned reads by name, with read1 and read2 organized by
 -- primary and secondary Alignments
@@ -882,7 +887,6 @@ secalnp setqname = do
                              }
     return a
 
-
 readBEDPE :: FilePath -> IO [BEDPE]
 readBEDPE fp = do
     flines <- B.lines <$> B.readFile fp
@@ -1147,6 +1151,20 @@ alnparser = do
 hdralnparserEOL :: A.Parser PairedAln
 hdralnparserEOL = do
     hlines <- A.many1 samhdrparserEOL
+    -- 190426 check "SO" (sort order) header line and abort if not "queryname"
+    -- primerclip stream execution requires name-sorted input SAM
+    let sohdrlines = filter (\x -> B.isInfixOf "SO:" x) hlines
+    let sohdr = case sohdrlines of
+                     []      -> error "[ERROR] No SO header line in input SAM"
+                     _       -> maybe "unknown" id
+                                    $ B.stripPrefix "SO:"
+                                    $ snd
+                                    $ B.breakSubstring "SO:" (head sohdrlines)
+    case sohdr of
+            "queryname"  -> return Queryname
+            "coordinate" -> error "[ERROR] Input SAM file is coordinate sorted: please name-sort input SAM"
+            "unsorted"   -> error "[ERROR] Input SAM file is unsorted: please name-sort input SAM"
+            _            -> error "[ERROR] Input SAM file sort order uknown: please name-sort input SAM"
     let hdraln = defaultAlignment { headerstrings = hlines
                                   , isheader = True
                                   , qname = "HEADERLINE"
@@ -1181,6 +1199,22 @@ hdrchromp = do
     A.many1 A.anyChar
     return c
 
+-- 190426
+samhdrSOlinep :: A.Parser SAMSortOrder
+samhdrSOlinep = do
+    atprefix <- A.string "@HD"
+    A.skipSpace
+    version <- A.takeTill A.isSpace
+    A.skipSpace
+    soprefix <- A.string "SO:"
+    sortOrderTxt <- A.takeTill (A.inClass "\n\r")
+    let sortOrder = case sortOrderTxt of
+                        "queryname"  -> Queryname
+                        "coordinate" -> Coordinate
+                        "unsorted"   -> Unsorted
+                        _            -> Unknown
+    return sortOrder
+
 samhdrparser :: A.Parser B.ByteString
 samhdrparser = do
     atprefix <- A.char '@'
@@ -1196,6 +1230,17 @@ samhdrparserEOL = do
     A.endOfLine
     let hdrln = B.append "@" fields
     return hdrln
+
+-- 190426 check sort order header line (should be "queryname")
+{--
+checkSortOrder :: AlignedRead -> B.ByteString
+checkSortOrder a
+    | not $ isheader a = "NOT HEADERLINE"
+    | otherwise = testNameSorted a
+
+testNameSorted :: B.ByteString -> Bool
+testNameSorted hdrlineSO = undefined
+--}
 
 -- 180409 generic filter function over PairedAln
 anyPairedAln :: (AlignedRead -> Bool) -> PairedAln -> Bool
