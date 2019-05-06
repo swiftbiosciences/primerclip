@@ -520,120 +520,58 @@ showChrom fmt chr = case (fmt, chr) of
 
 -- 170510 try parsing either GRC or UCSC chromosome names
 uchrparser :: A.Parser UChr
-uchrparser = (A.string "chr10" >> return Chr10)
-        <|>  (A.string "chr11" >> return Chr11)
-        <|>  (A.string "chr12" >> return Chr12)
-        <|>  (A.string "chr13" >> return Chr13)
-        <|>  (A.string "chr14" >> return Chr14)
-        <|>  (A.string "chr15" >> return Chr15)
-        <|>  (A.string "chr16" >> return Chr16)
-        <|>  (A.string "chr17" >> return Chr17)
-        <|>  (A.string "chr18" >> return Chr18)
-        <|>  (A.string "chr19" >> return Chr19)
-        <|>  (A.string "chr20" >> return Chr20)
-        <|>  (A.string "chr21" >> return Chr21)
-        <|>  (A.string "chr22" >> return Chr22)
-        <|>  (A.string "chr1" >> return Chr1)
-        <|>  (A.string "chr2" >> return Chr2)
-        <|>  (A.string "chr3" >> return Chr3)
-        <|>  (A.string "chr4" >> return Chr4)
-        <|>  (A.string "chr5" >> return Chr5)
-        <|>  (A.string "chr6" >> return Chr6)
-        <|>  (A.string "chr7" >> return Chr7)
-        <|>  (A.string "chr8" >> return Chr8)
-        <|>  (A.string "chr9" >> return Chr9)
-        <|>  (A.string "chrX" >> return ChrX)
-        <|>  (A.string "chrY" >> return ChrY)
-        <|>  (A.string "chrM" >> return ChrM)
-        <|>  (A.string "10" >> return C10)
-        <|>  (A.string "11" >> return C11)
-        <|>  (A.string "12" >> return C12)
-        <|>  (A.string "13" >> return C13)
-        <|>  (A.string "14" >> return C14)
-        <|>  (A.string "15" >> return C15)
-        <|>  (A.string "16" >> return C16)
-        <|>  (A.string "17" >> return C17)
-        <|>  (A.string "18" >> return C18)
-        <|>  (A.string "19" >> return C19)
-        <|>  (A.string "20" >> return C20)
-        <|>  (A.string "21" >> return C21)
-        <|>  (A.string "22" >> return C22)
-        <|>  (A.string "1" >> return C1)
-        <|>  (A.string "2" >> return C2)
-        <|>  (A.string "3" >> return C3)
-        <|>  (A.string "4" >> return C4)
-        <|>  (A.string "5" >> return C5)
-        <|>  (A.string "6" >> return C6)
-        <|>  (A.string "7" >> return C7)
-        <|>  (A.string "8" >> return C8)
-        <|>  (A.string "9" >> return C9)
-        <|>  (A.string "X" >> return CX)
-        <|>  (A.string "Y" >> return CY)
-        <|>  (A.string "MT" >> return CMT)
-        <|>  (A.string "*" >> return NONE)
+uchrparser = ((A.string "chr10" <* A.space) >> return Chr10)
+        <|>  ((A.string "chr11" <* A.space) >> return Chr11)
+        <|>  ((A.string "chr12" <* A.space) >> return Chr12)
+        <|>  ((A.string "chr13" <* A.space) >> return Chr13)
+        <|>  ((A.string "chr14" <* A.space) >> return Chr14)
+        <|>  ((A.string "chr15" <* A.space) >> return Chr15)
+        <|>  ((A.string "chr16" <* A.space) >> return Chr16)
+        <|>  ((A.string "chr17" <* A.space) >> return Chr17)
+        <|>  ((A.string "chr18" <* A.space) >> return Chr18)
+        <|>  ((A.string "chr19" <* A.space) >> return Chr19)
+        <|>  ((A.string "chr20" <* A.space) >> return Chr20)
+        <|>  ((A.string "chr21" <* A.space) >> return Chr21)
+        <|>  ((A.string "chr22" <* A.space) >> return Chr22)
+        <|>  ((A.string "chr1" <* A.space) >> return Chr1)
+        <|>  ((A.string "chr2" <* A.space) >> return Chr2)
+        <|>  ((A.string "chr3" <* A.space) >> return Chr3)
+        <|>  ((A.string "chr4" <* A.space) >> return Chr4)
+        <|>  ((A.string "chr5" <* A.space) >> return Chr5)
+        <|>  ((A.string "chr6" <* A.space) >> return Chr6)
+        <|>  ((A.string "chr7" <* A.space) >> return Chr7)
+        <|>  ((A.string "chr8" <* A.space) >> return Chr8)
+        <|>  ((A.string "chr9" <* A.space) >> return Chr9)
+        <|>  ((A.string "chrX" <* A.space) >> return ChrX)
+        <|>  ((A.string "chrY" <* A.space) >> return ChrY)
+        <|>  ((A.string "chrM" <* A.space) >> return ChrM)
+        <|>  ((A.string "10" <* A.space) >> return C10)
+        <|>  ((A.string "11" <* A.space) >> return C11)
+        <|>  ((A.string "12" <* A.space) >> return C12)
+        <|>  ((A.string "13" <* A.space) >> return C13)
+        <|>  ((A.string "14" <* A.space) >> return C14)
+        <|>  ((A.string "15" <* A.space) >> return C15)
+        <|>  ((A.string "16" <* A.space) >> return C16)
+        <|>  ((A.string "17" <* A.space) >> return C17)
+        <|>  ((A.string "18" <* A.space) >> return C18)
+        <|>  ((A.string "19" <* A.space) >> return C19)
+        <|>  ((A.string "20" <* A.space) >> return C20)
+        <|>  ((A.string "21" <* A.space) >> return C21)
+        <|>  ((A.string "22" <* A.space) >> return C22)
+        <|>  ((A.string "1" <* A.space) >> return C1)
+        <|>  ((A.string "2" <* A.space) >> return C2)
+        <|>  ((A.string "3" <* A.space) >> return C3)
+        <|>  ((A.string "4" <* A.space) >> return C4)
+        <|>  ((A.string "5" <* A.space) >> return C5)
+        <|>  ((A.string "6" <* A.space) >> return C6)
+        <|>  ((A.string "7" <* A.space) >> return C7)
+        <|>  ((A.string "8" <* A.space) >> return C8)
+        <|>  ((A.string "9" <* A.space) >> return C9)
+        <|>  ((A.string "X" <* A.space) >> return CX)
+        <|>  ((A.string "Y" <* A.space) >> return CY)
+        <|>  ((A.string "MT" <* A.space) >> return CMT)
+        <|>  ((A.string "*" <* A.space) >> return NONE)
         <|>  altchromp -- 181230
-        {--
-        <|>  (A.string "GL000207.1" >> return GL000207P1)
-        <|>  (A.string "GL000226.1" >> return GL000226P1)
-        <|>  (A.string "GL000229.1" >> return GL000229P1)
-        <|>  (A.string "GL000231.1" >> return GL000231P1)
-        <|>  (A.string "GL000210.1" >> return GL000210P1)
-        <|>  (A.string "GL000239.1" >> return GL000239P1)
-        <|>  (A.string "GL000235.1" >> return GL000235P1)
-        <|>  (A.string "GL000201.1" >> return GL000201P1)
-        <|>  (A.string "GL000247.1" >> return GL000247P1)
-        <|>  (A.string "GL000245.1" >> return GL000245P1)
-        <|>  (A.string "GL000197.1" >> return GL000197P1)
-        <|>  (A.string "GL000203.1" >> return GL000203P1)
-        <|>  (A.string "GL000246.1" >> return GL000246P1)
-        <|>  (A.string "GL000249.1" >> return GL000249P1)
-        <|>  (A.string "GL000196.1" >> return GL000196P1)
-        <|>  (A.string "GL000248.1" >> return GL000248P1)
-        <|>  (A.string "GL000244.1" >> return GL000244P1)
-        <|>  (A.string "GL000238.1" >> return GL000238P1)
-        <|>  (A.string "GL000202.1" >> return GL000202P1)
-        <|>  (A.string "GL000234.1" >> return GL000234P1)
-        <|>  (A.string "GL000232.1" >> return GL000232P1)
-        <|>  (A.string "GL000206.1" >> return GL000206P1)
-        <|>  (A.string "GL000240.1" >> return GL000240P1)
-        <|>  (A.string "GL000236.1" >> return GL000236P1)
-        <|>  (A.string "GL000241.1" >> return GL000241P1)
-        <|>  (A.string "GL000243.1" >> return GL000243P1)
-        <|>  (A.string "GL000242.1" >> return GL000242P1)
-        <|>  (A.string "GL000230.1" >> return GL000230P1)
-        <|>  (A.string "GL000237.1" >> return GL000237P1)
-        <|>  (A.string "GL000233.1" >> return GL000233P1)
-        <|>  (A.string "GL000204.1" >> return GL000204P1)
-        <|>  (A.string "GL000198.1" >> return GL000198P1)
-        <|>  (A.string "GL000208.1" >> return GL000208P1)
-        <|>  (A.string "GL000191.1" >> return GL000191P1)
-        <|>  (A.string "GL000227.1" >> return GL000227P1)
-        <|>  (A.string "GL000228.1" >> return GL000228P1)
-        <|>  (A.string "GL000214.1" >> return GL000214P1)
-        <|>  (A.string "GL000221.1" >> return GL000221P1)
-        <|>  (A.string "GL000209.1" >> return GL000209P1)
-        <|>  (A.string "GL000218.1" >> return GL000218P1)
-        <|>  (A.string "GL000220.1" >> return GL000220P1)
-        <|>  (A.string "GL000213.1" >> return GL000213P1)
-        <|>  (A.string "GL000211.1" >> return GL000211P1)
-        <|>  (A.string "GL000199.1" >> return GL000199P1)
-        <|>  (A.string "GL000217.1" >> return GL000217P1)
-        <|>  (A.string "GL000216.1" >> return GL000216P1)
-        <|>  (A.string "GL000215.1" >> return GL000215P1)
-        <|>  (A.string "GL000205.1" >> return GL000205P1)
-        <|>  (A.string "GL000219.1" >> return GL000219P1)
-        <|>  (A.string "GL000224.1" >> return GL000224P1)
-        <|>  (A.string "GL000223.1" >> return GL000223P1)
-        <|>  (A.string "GL000195.1" >> return GL000195P1)
-        <|>  (A.string "GL000212.1" >> return GL000212P1)
-        <|>  (A.string "GL000222.1" >> return GL000222P1)
-        <|>  (A.string "GL000200.1" >> return GL000200P1)
-        <|>  (A.string "GL000193.1" >> return GL000193P1)
-        <|>  (A.string "GL000194.1" >> return GL000194P1)
-        <|>  (A.string "GL000225.1" >> return GL000225P1)
-        <|>  (A.string "GL000192.1" >> return GL000192P1)
-        <|>  (A.string "NC_007605" >> return NC_007605)
-        --}
 
 -- 180206 include option for providing primer coords in BED or BEDPE format
 -- in addition to master file
@@ -835,7 +773,8 @@ secalnp setqname = do
     f <- A.decimal
     A.space
     chr <- uchrparser
-    A.space
+    A.skipSpace
+    -- A.space
     p <- A.decimal
     A.space
     mpscore <- A.decimal
@@ -1035,7 +974,8 @@ alnparserEOL = do
     f <- A.decimal
     A.space
     chr <- uchrparser
-    A.space
+    A.skipSpace
+    -- A.space
     p <- A.decimal
     A.space
     mpscore <- A.decimal
@@ -1096,7 +1036,8 @@ alnparser = do
     f <- A.decimal
     A.space
     chr <- uchrparser
-    A.space
+    A.skipSpace
+    -- A.space
     p <- A.decimal
     A.space
     mpscore <- A.decimal
@@ -1449,6 +1390,7 @@ optfieldstotalp = A.takeTill (A.inClass "\r\n")
 altchromp :: A.Parser UChr
 altchromp = do
     cname <- txtfieldp
+    A.space
     return $ ChrAlt cname
 --}
 

@@ -1,11 +1,11 @@
 
 ==================== FINAL INTERFACE ====================
-2019-02-05 21:06:06.617527 UTC
+2019-05-06 18:23:28.852812 UTC
 
 interface main:Main 8022
-  interface hash: 95956172d4d5d4cb98aa8b1fc3d4bab0
-  ABI hash: fa6ffc1dea31f840a0f105249be1a145
-  export-list hash: 6aff85cbb750217fd7df3d000ccd75fd
+  interface hash: 294177d86dc1a412e598f15f9bdba265
+  ABI hash: 4443dbd5bf676df368b46a0865285a79
+  export-list hash: f7df9f9261d15512ff5e78dab2da5139
   orphan hash: a18b965d16d349d6bc32b0ba550a0dd7
   flag hash: 2b3d14da8d30a11e07ace62e3e3564be
   sig of: Nothing
@@ -24,7 +24,7 @@ package dependencies: QuickCheck-2.10.1 ansi-terminal-0.8.0.2
                       filepath-1.4.1.2 ghc-boot-th-8.2.2 ghc-prim-0.5.1.1
                       hashable-1.2.7.0 integer-gmp-1.0.1.0 integer-logarithms-1.0.2.1
                       mono-traversable-1.0.8.1 mtl-2.2.2 optparse-applicative-0.14.2.0
-                      pretty-1.1.3.3 primerclip-0.3.7.0 primitive-0.6.3.0 process-1.6.1.0
+                      pretty-1.1.3.3 primerclip-0.3.7.1 primitive-0.6.3.0 process-1.6.1.0
                       random-1.1 resourcet-1.2.0 scientific-0.3.5.2 split-0.2.3.3
                       stm-2.4.5.0 template-haskell-2.12.0.0 text-1.2.3.0 tf-random-0.5
                       time-1.8.0.2 transformers-0.5.2.0 unix-2.7.2.2
@@ -71,7 +71,7 @@ family instance modules: attoparsec-0.13.2.2:Data.Attoparsec.Internal.Types
                          mono-traversable-1.0.8.1:Data.NonNull
                          mono-traversable-1.0.8.1:Data.Sequences
                          pretty-1.1.3.3:Text.PrettyPrint.Annotated.HughesPJ
-                         pretty-1.1.3.3:Text.PrettyPrint.HughesPJ primerclip-0.3.7.0:Lib
+                         pretty-1.1.3.3:Text.PrettyPrint.HughesPJ primerclip-0.3.7.1:Lib
                          primitive-0.6.3.0:Control.Monad.Primitive
                          primitive-0.6.3.0:Data.Primitive.Array
                          primitive-0.6.3.0:Data.Primitive.ByteArray
@@ -109,7 +109,7 @@ import  -/  ghc-prim-0.5.1.1:GHC.Types b1fd0716441595db508c1a74387bf394
 import  -/  optparse-applicative-0.14.2.0:Options.Applicative 93a6ca444e605eb4e5fada3ed41aa455
 import  -/  optparse-applicative-0.14.2.0:Options.Applicative.Builder 9b4b35d95a3739ae48e6b42cbe90c8ed
 import  -/  optparse-applicative-0.14.2.0:Options.Applicative.Extra 3e7572295fe04361b13fe1be6a5ecfc7
-import  -/  primerclip-0.3.7.0:Lib 3d1eb3b67ebe79469d2c92b055adb4a7
+import  -/  primerclip-0.3.7.1:Lib 02e8e9dbca2aa3da904f5d7da83a24b3
 4dbf1aa03245061c15538bc68261fcdf
   $s$fApplicativeResourceT ::
     GHC.Base.Applicative
@@ -604,7 +604,7 @@ e5875966b74dad2d29772660b8a75e33
 d026be77cb9ced20e35a61514e0458aa
   $trModule4 :: GHC.Prim.Addr#
   {- HasNoCafRefs, Unfolding: ("main"#) -}
-e549c49d0f0aec161984c6585ef4c821
+a69444e1b634e3741646a942248b7771
   $wrunPrimerTrimmingPE ::
     GHC.Types.Bool
     -> GHC.Base.String
@@ -801,7 +801,7 @@ e549c49d0f0aec161984c6585ef4c821
                    `cast`
                  (GHC.Types.N:IO[0] <Lib.RunStats>_R)
                    ipv } }) -}
-25e9125c434b5bc4a04324db0f1328b6
+f26432192028509de2dbc8363882c1ec
   $wrunPrimerTrimmingSE ::
     GHC.Types.Bool
     -> GHC.Base.String
@@ -984,12 +984,12 @@ e549c49d0f0aec161984c6585ef4c821
                    `cast`
                  (GHC.Types.N:IO[0] <Lib.RunStats>_R)
                    ipv } }) -}
-d6542ff02ca7fb7e7e185192f7879bea
+91391f83b0ac3ff51a394ff4d5dc1229
   main :: GHC.Types.IO ()
   {- Arity: 1, Strictness: <S,U>,
      Unfolding: InlineRule (0, True, True)
                 Main.main1 `cast` (Sym (GHC.Types.N:IO[0] <()>_R)) -}
-46f72334c6b4630f27e72682dac8f3ed
+c8968c91cee4d24b5711cf6466196a29
   main1 ::
     GHC.Prim.State# GHC.Prim.RealWorld
     -> (# GHC.Prim.State# GHC.Prim.RealWorld, () #)
@@ -1038,14 +1038,14 @@ d6542ff02ca7fb7e7e185192f7879bea
   main11 :: GHC.Prim.Addr#
   {- HasNoCafRefs,
      Unfolding: ("Trim PCR primer sequences from aligned reads"#) -}
-5d57307479ff4fa57f6f2265cd6f1d0e
+b61a05284150520164a0cb1c5480392f
   main12 :: Options.Applicative.Types.Parser Lib.Opts
   {- Unfolding: (Options.Applicative.Types.MultP
                    @ Lib.Opts
                    @ Lib.Opts
                    (Options.Applicative.Extra.helper @ Lib.Opts)
                    Lib.optargs) -}
-facbed2b086fafdd1dd71c82d60767e8
+00100a613e34b911588a80737da3ccc6
   main13 ::
     GHC.Prim.State# GHC.Prim.RealWorld
     -> (# GHC.Prim.State# GHC.Prim.RealWorld, () #)
@@ -1053,7 +1053,7 @@ facbed2b086fafdd1dd71c82d60767e8
      Unfolding: (GHC.TopHandler.runMainIO1
                    @ ()
                    Main.main1 `cast` (Sym (GHC.Types.N:IO[0] <()>_R))) -}
-73da0f56c85df603582033e2e038eaa1
+16d6c113608cc731e63e5d09f4cc4b93
   main2 ::
     (Lib.RunStats -> Lib.RunStats, Lib.RunStats)
     -> Data.Conduit.Internal.Pipe.Pipe
@@ -1074,7 +1074,7 @@ facbed2b086fafdd1dd71c82d60767e8
                    @ (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
                    @ Lib.RunStats
                    (case a4 of wild { (,) x ds -> x ds })) -}
-f6f65328711b39fb9e7955ce116f2a2a
+331bca97523f1184817255ec109beba2
   main3 ::
     Data.Conduit.Internal.Pipe.Pipe
       Data.ByteString.Internal.ByteString
@@ -1108,7 +1108,7 @@ e751e499cc48223ed22112adc0764400
 db6f0874db32e0976dd0b4512602a9e5
   main5 :: GHC.Prim.Addr#
   {- HasNoCafRefs, Unfolding: ("primer trimming complete."#) -}
-1ced9c3ff5410a231380d70566e7f5ef
+746e6a88757ff5163ef2cd93296d943d
   main6 ::
     Data.Conduit.Internal.Pipe.Pipe
       Data.ByteString.Internal.ByteString
@@ -1136,7 +1136,7 @@ db6f0874db32e0976dd0b4512602a9e5
                       @ ()
                       @ (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
                       @ ())) -}
-367d3ce92a92acdb8c4edb1465a204a7
+ca99f44020d5e551f9440c3bd8237799
   main7 :: Options.Applicative.Types.ParserInfo Lib.Opts
   {- Strictness: m,
      Unfolding: (Options.Applicative.Types.ParserInfo
@@ -1160,7 +1160,7 @@ f936cd64a5a1036995a86275b0bb27cc
   main9 :: GHC.Prim.Addr#
   {- HasNoCafRefs,
      Unfolding: ("primerclip -- Swift Biosciences Accel-Amplicon targeted panel primer trimming tool v0.3.7"#) -}
-3e251468ea58052a9ad417c2ed159290
+29be26d11ed8c1bdab78ce7defa51ba3
   main_go ::
     Data.Conduit.Internal.Pipe.Pipe
       Lib.AlignedRead
@@ -1185,7 +1185,7 @@ f936cd64a5a1036995a86275b0bb27cc
                       @ ()
                       @ (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
                       @ ())) -}
-08b69a5bef5c034135a441044447ec67
+a29307c07ab42579519c0976efab42cf
   main_go1 ::
     Lib.AlignedRead
     -> Data.Conduit.Internal.Pipe.Pipe
@@ -1197,7 +1197,7 @@ f936cd64a5a1036995a86275b0bb27cc
          ()
   {- Arity: 1,
      Strictness: <S(S(LLLS)LLLLLLLLLLLLLLLLLLLLLLLLLLLLLL),1*U(U(U,U,U,U),U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U)> -}
-9c9efc0522f7ef11bec5e2606f9e747c
+42a111894b7c5ebe5ff3d7cdc58a6bcd
   main_go10 ::
     Data.Conduit.Internal.Pipe.Pipe
       Lib.PairedAln
@@ -1222,7 +1222,7 @@ f936cd64a5a1036995a86275b0bb27cc
                       @ ()
                       @ (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
                       @ ())) -}
-73ca52fbaaa9e2c9e253335c53f0de74
+0df3784c20c4db0db50cf9accf76df92
   main_go11 ::
     Lib.PairedAln
     -> Data.Conduit.Internal.Pipe.Pipe
@@ -1233,7 +1233,7 @@ f936cd64a5a1036995a86275b0bb27cc
          (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
          ()
   {- Arity: 1, HasNoCafRefs, Strictness: <L,U(U,U,U,U)>m1 -}
-081e3bb4bf00ecf5e743f3b983bc7384
+c658b9b0d04b8806967e24c22fd75916
   main_go12 ::
     Data.Conduit.Internal.Pipe.Pipe
       [Lib.PairedAln]
@@ -1267,7 +1267,7 @@ f936cd64a5a1036995a86275b0bb27cc
                             <()>_N
                             <Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO>_N
                             <()>_N)_R)) -}
-3fd6543e2aae68b66c1bfe9c21edbdd7
+f831a627ab7667d2b2860af4ec59f1fe
   main_go13 ::
     [Lib.PairedAln]
     -> Data.Conduit.Internal.Pipe.Pipe
@@ -1278,7 +1278,7 @@ f936cd64a5a1036995a86275b0bb27cc
          (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
          ()
   {- Arity: 1, HasNoCafRefs, Strictness: <S,1*U> -}
-8a625d1bf100d0457af7829d180e4fe4
+2b72f27b8efa8051d9000c6096950ece
   main_go14 ::
     Data.Conduit.Internal.Pipe.Pipe
       (Data.Either.Either
@@ -1315,7 +1315,7 @@ f936cd64a5a1036995a86275b0bb27cc
                       @ ()
                       @ (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
                       @ ())) -}
-e269174eaa37105a48a457376559fd91
+4a6b02b89c12ea5f8fbd4bbeb80c4da6
   main_go15 ::
     Data.Either.Either
       Data.Conduit.Attoparsec.ParseError
@@ -1332,7 +1332,7 @@ e269174eaa37105a48a457376559fd91
          (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
          ()
   {- Arity: 1, HasNoCafRefs, Strictness: <L,1*U>m1 -}
-88215ee2f778524e3012120215a15da3
+8d4c070d09e1a93d5dafae76ca18cb3b
   main_go2 ::
     Data.Conduit.Internal.Pipe.Pipe
       [Lib.AlignedRead]
@@ -1366,7 +1366,7 @@ e269174eaa37105a48a457376559fd91
                             <()>_N
                             <Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO>_N
                             <()>_N)_R)) -}
-689f7a67bcce412125cf4f0c56321ee8
+8c07f4810707897aceab1c65ead107ad
   main_go3 ::
     [Lib.AlignedRead]
     -> Data.Conduit.Internal.Pipe.Pipe
@@ -1377,7 +1377,7 @@ e269174eaa37105a48a457376559fd91
          (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
          ()
   {- Arity: 1, HasNoCafRefs, Strictness: <S,1*U> -}
-5b35738c368bea4651c6abacb5ca53a0
+9a5fbdc534d307d97e038c9c87129f6c
   main_go4 ::
     Data.Conduit.Internal.Pipe.Pipe
       (Data.Either.Either
@@ -1414,7 +1414,7 @@ e269174eaa37105a48a457376559fd91
                       @ ()
                       @ (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
                       @ ())) -}
-b7d458156a8f30be777a778c627549b8
+e06fdbcd7f9e01c699fb142285910501
   main_go5 ::
     Data.Either.Either
       Data.Conduit.Attoparsec.ParseError
@@ -1431,7 +1431,7 @@ b7d458156a8f30be777a778c627549b8
          (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
          ()
   {- Arity: 1, HasNoCafRefs, Strictness: <L,1*U>m1 -}
-b93acfd41e6d2af05bf31fb98780635c
+e3141a72cef5f63f16717ec2fbf844fd
   main_go6 ::
     Data.Conduit.Internal.Pipe.Pipe
       Lib.AlignedRead
@@ -1456,7 +1456,7 @@ b93acfd41e6d2af05bf31fb98780635c
                       @ ()
                       @ (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
                       @ ())) -}
-1a1499a33d7828b6528cf5400be627e9
+2943e6693c3387312261c8293bd0825d
   main_go7 ::
     Lib.AlignedRead
     -> Data.Conduit.Internal.Pipe.Pipe
@@ -1468,7 +1468,7 @@ b93acfd41e6d2af05bf31fb98780635c
          ()
   {- Arity: 1,
      Strictness: <S(S(LLLS)LLLLLLLLLLLLLLLLLLLLLLLLLLLLLL),1*U(U(U,U,U,U),U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U)> -}
-bccff8537bef948c19a361eb4c1a481f
+8f84e36f2337106d26f6e6440f98de00
   main_go8 ::
     Data.Conduit.Internal.Pipe.Pipe
       [Lib.AlignedRead]
@@ -1502,7 +1502,7 @@ bccff8537bef948c19a361eb4c1a481f
                             <()>_N
                             <Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO>_N
                             <()>_N)_R)) -}
-0acfeed406c754b5700b3caec68a174c
+bc6fb5ee405a4bd0f9de057af4f56050
   main_go9 ::
     [Lib.AlignedRead]
     -> Data.Conduit.Internal.Pipe.Pipe
@@ -1513,7 +1513,7 @@ bccff8537bef948c19a361eb4c1a481f
          (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
          ()
   {- Arity: 1, HasNoCafRefs, Strictness: <S,1*U> -}
-a5368c0208ffd96a6d8d181b345cac5f
+06cf65923acb3f2d39cd6c1f4bf9b58c
   main_goRight ::
     Data.Conduit.Internal.Pipe.Pipe
       Lib.AlignedRead
@@ -1537,7 +1537,7 @@ a5368c0208ffd96a6d8d181b345cac5f
          (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
          Lib.RunStats
   {- Arity: 2, HasNoCafRefs, Strictness: <L,U><S,1*U> -}
-aab26f5f88e1d1b8c7abfab908522b96
+0760056ec9a74844a2a239d56de35bfe
   main_goRight1 ::
     Data.Conduit.Internal.Pipe.Pipe
       Lib.AlignedRead
@@ -1561,7 +1561,7 @@ aab26f5f88e1d1b8c7abfab908522b96
          (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
          Lib.RunStats
   {- Arity: 2, HasNoCafRefs, Strictness: <L,U><S,1*U> -}
-9aeec7d9a43b9cc0b9319b5db77694ae
+6aa2d69ee3a22d02fe4b2e699e250368
   main_goRight10 ::
     Data.Conduit.Internal.Pipe.Pipe
       [Lib.PairedAln]
@@ -1585,7 +1585,7 @@ aab26f5f88e1d1b8c7abfab908522b96
          (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
          Lib.RunStats
   {- Arity: 2, HasNoCafRefs, Strictness: <L,U><S,1*U> -}
-9325161347faff751e9ee34ac04f22e1
+4b9ba8ec57ad2dbf5ada86d3e7702a09
   main_goRight11 ::
     Data.Conduit.Internal.Pipe.Pipe
       (Data.Either.Either
@@ -1617,7 +1617,7 @@ aab26f5f88e1d1b8c7abfab908522b96
          (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
          Lib.RunStats
   {- Arity: 2, HasNoCafRefs, Strictness: <L,U><S,1*U> -}
-3296803c9bf10e11cf73595f82e994cd
+c72dfef238c94df5e76a7d36eebe0851
   main_goRight12 ::
     Data.Conduit.Internal.Pipe.Pipe
       Data.ByteString.Internal.ByteString
@@ -1647,7 +1647,7 @@ aab26f5f88e1d1b8c7abfab908522b96
          (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
          Lib.RunStats
   {- Arity: 2, HasNoCafRefs, Strictness: <L,U><S,1*U> -}
-4c32d2989b1cceca827099f314bb33c8
+f509156ed14a072fa31e49c0bcaac0bc
   main_goRight13 ::
     Data.Conduit.Internal.Pipe.Pipe
       ()
@@ -1671,7 +1671,7 @@ aab26f5f88e1d1b8c7abfab908522b96
          (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
          Lib.RunStats
   {- Arity: 2, HasNoCafRefs, Strictness: <L,U><S,1*U> -}
-7a197c86178caa8c77b680b425e24195
+eb82da770c6e23e87e6eb31cf53cdb91
   main_goRight2 ::
     Data.Conduit.Internal.Pipe.Pipe
       [Lib.AlignedRead]
@@ -1695,7 +1695,7 @@ aab26f5f88e1d1b8c7abfab908522b96
          (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
          Lib.RunStats
   {- Arity: 2, HasNoCafRefs, Strictness: <L,U><S,1*U> -}
-d04c2fc730d4b5d9cb4fac8e0a641748
+6026c46d375273b85d3c42d4ccf5a7dd
   main_goRight3 ::
     Data.Conduit.Internal.Pipe.Pipe
       (Data.Either.Either
@@ -1727,7 +1727,7 @@ d04c2fc730d4b5d9cb4fac8e0a641748
          (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
          Lib.RunStats
   {- Arity: 2, HasNoCafRefs, Strictness: <L,U><S,1*U> -}
-cf8079da34374c018b6155c189df29c3
+f78217b4a560cc77e94d154afc60d563
   main_goRight4 ::
     Data.Conduit.Internal.Pipe.Pipe
       Data.ByteString.Internal.ByteString
@@ -1757,7 +1757,7 @@ cf8079da34374c018b6155c189df29c3
          (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
          Lib.RunStats
   {- Arity: 2, HasNoCafRefs, Strictness: <L,U><S,1*U> -}
-3362683c57bf455b10e4a2106129ce8f
+90b7941dc05054f585fa339ce8008bd2
   main_goRight5 ::
     Data.Conduit.Internal.Pipe.Pipe
       ()
@@ -1781,7 +1781,7 @@ cf8079da34374c018b6155c189df29c3
          (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
          Lib.RunStats
   {- Arity: 2, HasNoCafRefs, Strictness: <L,U><S,1*U> -}
-55ab73ec1a6d6d662c780c0baece6382
+ff86d189905c00e70c959c7cd677ad7a
   main_goRight6 ::
     Data.Conduit.Internal.Pipe.Pipe
       Lib.AlignedRead
@@ -1805,7 +1805,7 @@ cf8079da34374c018b6155c189df29c3
          (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
          Lib.RunStats
   {- Arity: 2, HasNoCafRefs, Strictness: <L,U><S,1*U> -}
-3b601a06bf5b542ffcb53d2d83821a52
+035c4a123f0dc23cf4bbc2b2dcba45d3
   main_goRight7 ::
     Data.Conduit.Internal.Pipe.Pipe
       [Lib.AlignedRead]
@@ -1829,7 +1829,7 @@ cf8079da34374c018b6155c189df29c3
          (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
          Lib.RunStats
   {- Arity: 2, HasNoCafRefs, Strictness: <L,U><S,1*U> -}
-93e4a71fb63deb437b3a731f1c953c8d
+9c4f3fb2089ba2866c661b91ade997d6
   main_goRight8 ::
     Data.Conduit.Internal.Pipe.Pipe
       Lib.PairedAln
@@ -1853,7 +1853,7 @@ cf8079da34374c018b6155c189df29c3
          (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
          Lib.RunStats
   {- Arity: 2, HasNoCafRefs, Strictness: <L,U><S,1*U> -}
-5492306d43a89cc7a15ac476284d599f
+0f501ef7e13afd02549a7a81ecc99434
   main_goRight9 ::
     Data.Conduit.Internal.Pipe.Pipe
       Lib.PairedAln
@@ -1877,14 +1877,14 @@ cf8079da34374c018b6155c189df29c3
          (Control.Monad.Trans.Resource.Internal.ResourceT GHC.Types.IO)
          Lib.RunStats
   {- Arity: 2, HasNoCafRefs, Strictness: <L,U><S,1*U> -}
-8c5ae79d7b2fddbf067337b695a1cd19
+79493df1085e16d4341f33b0f4ffb9b5
   runPrimerTrimmingPE :: Lib.Opts -> GHC.Types.IO Lib.RunStats
   {- Arity: 2, Strictness: <S(SLLLL),1*U(1*U,A,U,U,U)><S,U>,
      Unfolding: InlineRule (0, True, True)
                 Main.runPrimerTrimmingPE1
                   `cast`
                 (<Lib.Opts>_R ->_R Sym (GHC.Types.N:IO[0] <Lib.RunStats>_R)) -}
-1a41740b928e80656eeff2bfade0a2c2
+3c2092952abdd45687d5d552a6f45843
   runPrimerTrimmingPE1 ::
     Lib.Opts
     -> GHC.Prim.State# GHC.Prim.RealWorld
@@ -1895,14 +1895,14 @@ cf8079da34374c018b6155c189df29c3
                 (\ (w :: Lib.Opts) (w1 :: GHC.Prim.State# GHC.Prim.RealWorld) ->
                  case w of ww { Lib.Opts ww1 ww2 ww3 ww4 ww5 ->
                  Main.$wrunPrimerTrimmingPE ww1 ww3 ww4 ww5 w1 }) -}
-c7483743ca0ebaa868a367ceb5c9aa69
+4221e4a6707df125ea6b0ebad153a5ed
   runPrimerTrimmingSE :: Lib.Opts -> GHC.Types.IO Lib.RunStats
   {- Arity: 2, Strictness: <S(SLLLL),1*U(1*U,A,U,U,U)><S,U>,
      Unfolding: InlineRule (0, True, True)
                 Main.runPrimerTrimmingSE1
                   `cast`
                 (<Lib.Opts>_R ->_R Sym (GHC.Types.N:IO[0] <Lib.RunStats>_R)) -}
-63b1261d5a08d12d1c92c08cabb5c8b0
+eb086dc9364701d8efe1c14e7623a038
   runPrimerTrimmingSE1 ::
     Lib.Opts
     -> GHC.Prim.State# GHC.Prim.RealWorld
