@@ -31,7 +31,7 @@ import GHC.Generics (Generic)
 
 {--
     Jonathan Irish
-    Post-alignment primer trimming tool v0.3.7
+    Post-alignment primer trimming tool v0.3.8
 
 --}
 
