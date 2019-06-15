@@ -41,7 +41,7 @@ Path to the pre-compiled binary:
 
     .stack-work/install/x86_64-linux/lts-11.0/8.2.2/bin/primerclip
 
-To install, copy the "primerclip" file into a folder on your PATH, e.g /usr/local/bin
+To install, copy the "primerclip" file into a folder on your PATH, e.g `/usr/local/bin`
 
     cp .stack-work/install/x86_64-linux/lts-11.0/8.2.2/bin/primerclip /usr/local/bin
 
@@ -131,7 +131,7 @@ and run the following inside the primerclip project folder:
     stack build
     stack install
 
-(stack install installs binary in ~/.local/bin, which can be added to your PATH)
+(stack install installs binary in `~/.local/bin`, which can be added to your PATH)
 
 The primerclip binary has been tested on the following operating systems:
 
