@@ -1511,7 +1511,9 @@ flattenPairedAln' p = case (qname $ r2prim p) of
 
 -- 190702 flatten PairedAln to [AlignedRead] keeping only primary alns
 flattenPairedAlnFastq :: PairedAln -> [AlignedRead]
-flattenPairedAlnFastq p = (r1prim p) : (r2prim p) : []
+flattenPairedAlnFastq p
+    | pairMapped p = (r1prim p) : (r2prim p) : []
+    | otherwise    = []
 
 -- 180409 add function to update RNEXT and PNEXT of alns w/ 0-trimmed
 -- 180417 try removing any secondary alignments which are 0-trimmed
@@ -1543,14 +1545,14 @@ printAlnStreamToFile outfile = P.mapC printAlignmentOrHdr
 printAlnStreamToFastq1 :: P.MonadResource m => FilePath
                        -> P.ConduitT AlignedRead P.Void m ()
 printAlnStreamToFastq1 outfile = P.filterC isRead1
-                            P..| P.mapC printAlignmentAsFastq
+                            P..| P.concatMapC printAlignmentAsFastq
                             P..| P.unlinesAsciiC
                             P..| P.sinkFile outfile
 
 printAlnStreamToFastq2 :: P.MonadResource m => FilePath
                        -> P.ConduitT AlignedRead P.Void m ()
 printAlnStreamToFastq2 outfile = P.filterC isRead2
-                            P..| P.mapC printAlignmentAsFastq
+                            P..| P.concatMapC printAlignmentAsFastq
                             P..| P.unlinesAsciiC
                             P..| P.sinkFile outfile
 
@@ -2317,6 +2319,13 @@ isRead1 a = (testBit $ flag a) 6
 isRead2 :: AlignedRead -> Bool
 isRead2 a = (testBit $ flag a) 7
 
+-- check that both reads in a PairedAln record are mapped
+pairMapped :: PairedAln -> Bool
+pairMapped p
+    | (not $ (testBit $ flag a1) 2) && (not $ (testBit $ flag a1) 3) = True
+    | otherwise                                                      = False
+        where a1 = r1prim p
+
 -- 180212 append CO:Z tag indicating alignment was trimmed by >= 1 base, and
 -- also a warning if trimming removed all non-clipped bases from alignment
 -- (alignment == primer sequence)
@@ -2451,7 +2460,7 @@ printAlignment a =
     in alnstr
 
 -- 190627 print trimmed alignment as a FASTQ read record (remove soft-clipped bases)
-printAlignmentAsFastq :: AlignedRead -> B.ByteString
+printAlignmentAsFastq :: AlignedRead -> [B.ByteString]
 printAlignmentAsFastq a =
     let rn = qname a
         rstrand = strand a
@@ -2466,7 +2475,8 @@ printAlignmentAsFastq a =
         trimdseq = trimSoftClippedRefseqBases nodel_cigops refsequence
         trimdqual = B.take (B.length trimdseq) ql
         fqlines = [rn, trimdseq, "+", trimdqual]
-    in B.unlines fqlines
+    in fqlines
+    -- in B.unlines fqlines
 
 trimSoftClippedRefseqBases :: B.ByteString -> B.ByteString -> B.ByteString
 trimSoftClippedRefseqBases cigops refsq =
