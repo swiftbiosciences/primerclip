@@ -31,7 +31,7 @@ import GHC.Generics (Generic)
 
 {--
     Jonathan Irish
-    Post-alignment primer trimming tool v0.3.8
+    Post-alignment primer trimming tool v0.3.9
 
 --}
 
@@ -371,69 +371,6 @@ instance Show UChr where
     show CX = "X"
     show CY = "Y"
     show CMT = "MT"
-    {--
-    show GL000207P1 = "GL000207.1"
-    show GL000226P1 = "GL000226.1"
-    show GL000229P1 = "GL000229.1"
-    show GL000231P1 = "GL000231.1"
-    show GL000210P1 = "GL000210.1"
-    show GL000239P1 = "GL000239.1"
-    show GL000235P1 = "GL000235.1"
-    show GL000201P1 = "GL000201.1"
-    show GL000247P1 = "GL000247.1"
-    show GL000245P1 = "GL000245.1"
-    show GL000197P1 = "GL000197.1"
-    show GL000203P1 = "GL000203.1"
-    show GL000246P1 = "GL000246.1"
-    show GL000249P1 = "GL000249.1"
-    show GL000196P1 = "GL000196.1"
-    show GL000248P1 = "GL000248.1"
-    show GL000244P1 = "GL000244.1"
-    show GL000238P1 = "GL000238.1"
-    show GL000202P1 = "GL000202.1"
-    show GL000234P1 = "GL000234.1"
-    show GL000232P1 = "GL000232.1"
-    show GL000206P1 = "GL000206.1"
-    show GL000240P1 = "GL000240.1"
-    show GL000236P1 = "GL000236.1"
-    show GL000241P1 = "GL000241.1"
-    show GL000243P1 = "GL000243.1"
-    show GL000242P1 = "GL000242.1"
-    show GL000230P1 = "GL000230.1"
-    show GL000237P1 = "GL000237.1"
-    show GL000233P1 = "GL000233.1"
-    show GL000204P1 = "GL000204.1"
-    show GL000198P1 = "GL000198.1"
-    show GL000208P1 = "GL000208.1"
-    show GL000191P1 = "GL000191.1"
-    show GL000227P1 = "GL000227.1"
-    show GL000228P1 = "GL000228.1"
-    show GL000214P1 = "GL000214.1"
-    show GL000221P1 = "GL000221.1"
-    show GL000209P1 = "GL000209.1"
-    show GL000218P1 = "GL000218.1"
-    show GL000220P1 = "GL000220.1"
-    show GL000213P1 = "GL000213.1"
-    show GL000211P1 = "GL000211.1"
-    show GL000199P1 = "GL000199.1"
-    show GL000217P1 = "GL000217.1"
-    show GL000216P1 = "GL000216.1"
-    show GL000215P1 = "GL000215.1"
-    show GL000205P1 = "GL000205.1"
-    show GL000219P1 = "GL000219.1"
-    show GL000224P1 = "GL000224.1"
-    show GL000223P1 = "GL000223.1"
-    show GL000195P1 = "GL000195.1"
-    show GL000212P1 = "GL000212.1"
-    show GL000222P1 = "GL000222.1"
-    show GL000200P1 = "GL000200.1"
-    show GL000193P1 = "GL000193.1"
-    show GL000194P1 = "GL000194.1"
-    show GL000225P1 = "GL000225.1"
-    show GL000192P1 = "GL000192.1"
-    show NC_007605 = "NC_007605"
-    show Hs37d5  =  "hs37d5"
-    --}
     show Chr1 = "chr1"
     show Chr2 = "chr2"
     show Chr3 = "chr3"
@@ -587,6 +524,11 @@ optargs = Opts
        <> long "single-end"
        <> help "add this switch to trim primers from single-end alignments"
         )
+    <*> switch
+        ( short 'f'
+       <> long "fastq"
+       <> help "add this switch to trim primers from single-end alignments"
+        )
     <*> argument str (metavar "PRIMER_COORDS_INFILE")
     <*> argument str (metavar "SAM_INFILE")
     <*> argument str (metavar "OUTPUT_SAM_FILENAME")
@@ -594,6 +536,7 @@ optargs = Opts
 -- record to store command line arguments
 data Opts = Opts { bedpeformat :: Bool
                  , sereads :: Bool
+                 , fqout :: Bool
                  , incoordsfile :: String
                  , insamfile :: String
                  , outfilename :: String
@@ -975,7 +918,6 @@ alnparserEOL = do
     A.space
     chr <- uchrparser
     A.skipSpace
-    -- A.space
     p <- A.decimal
     A.space
     mpscore <- A.decimal
@@ -1567,6 +1509,10 @@ flattenPairedAln' p = case (qname $ r2prim p) of
     "NONE" -> [r1prim p]
     _      -> sort $ (r1prim p) : (r2prim p) : ((r1secs p) ++ (r2secs p))
 
+-- 190702 flatten PairedAln to [AlignedRead] keeping only primary alns
+flattenPairedAlnFastq :: PairedAln -> [AlignedRead]
+flattenPairedAlnFastq p = (r1prim p) : (r2prim p) : []
+
 -- 180409 add function to update RNEXT and PNEXT of alns w/ 0-trimmed
 -- 180417 try removing any secondary alignments which are 0-trimmed
 trimprimerPairsE :: CMap -> CMap -> PairedAln -> PairedAln
@@ -1586,10 +1532,40 @@ trimprimersE fmap rmap a =
 
 -- 171017 function to convert conduit ZipSink stream to output and write
 -- output to file in SAM format.
-printAlnStreamToFile :: P.MonadResource m => FilePath -> P.ConduitM AlignedRead c m ()
+printAlnStreamToFile :: P.MonadResource m => FilePath
+                     -> P.ConduitT AlignedRead c m ()
 printAlnStreamToFile outfile = P.mapC printAlignmentOrHdr
                           P..| P.unlinesAsciiC
                           P..| P.sinkFile outfile
+
+-- 190701 print to R1 and R2 FASTQ output files
+-- output to file in SAM format.
+printAlnStreamToFastq1 :: P.MonadResource m => FilePath
+                       -> P.ConduitT AlignedRead P.Void m ()
+printAlnStreamToFastq1 outfile = P.filterC isRead1
+                            P..| P.mapC printAlignmentAsFastq
+                            P..| P.unlinesAsciiC
+                            P..| P.sinkFile outfile
+
+printAlnStreamToFastq2 :: P.MonadResource m => FilePath
+                       -> P.ConduitT AlignedRead P.Void m ()
+printAlnStreamToFastq2 outfile = P.filterC isRead2
+                            P..| P.mapC printAlignmentAsFastq
+                            P..| P.unlinesAsciiC
+                            P..| P.sinkFile outfile
+
+-- {--
+printAlnStreamToFastqs :: P.MonadResource m => FilePath
+                       -> P.ConduitT AlignedRead P.Void m ()
+printAlnStreamToFastqs fqprefix = P.getZipSink
+     $  (P.ZipSink (printAlnStreamToFastq1 outfq1name))
+     *> (P.ZipSink (printAlnStreamToFastq2 outfq2name))
+                        where outfq1name = concat
+                                           [fqprefix, "_R1_001.fastq"]
+                              outfq2name = concat
+                                           [fqprefix, "_R2_001.fastq"]
+
+--}
 
 -- 180226 write RunStats to run log file (TODO: also print to stderr to allow
 -- more flexible logging from caller of primerclip?)
@@ -1629,7 +1605,7 @@ genLogFilePath fp
                        $ B.append (head parts) "_primerclip_runstats.log"
 
 -- 171017 calculate trim stats and print to stdout (TODO: print full stats to file)
-calculateTrimStats :: P.ConduitM AlignedRead c (P.ResourceT IO) Integer
+calculateTrimStats :: P.ConduitT AlignedRead c (P.ResourceT IO) Integer
 calculateTrimStats = P.filterC (\x -> trimdflag x) P..| P.lengthC
 
 -- 180226 use ZipSink to calculate run stats and return a RunStats record for
@@ -1650,15 +1626,15 @@ calcRunStats = (calc <$> P.ZipSink P.lengthC
                                                     / (fromIntegral total)
                                                     * 100.0)
 
-calcMappedCount :: Integral i => P.ConduitM AlignedRead c (P.ResourceT IO) i
+calcMappedCount :: Integral i => P.ConduitT AlignedRead c (P.ResourceT IO) i
 calcMappedCount = P.filterC (\x -> (mapped x) && (not $ trimdToZeroLength x))
                   P..| P.lengthC
 
-calcTrimdToZero :: Integral i => P.ConduitM AlignedRead c (P.ResourceT IO) i
+calcTrimdToZero :: Integral i => P.ConduitT AlignedRead c (P.ResourceT IO) i
 calcTrimdToZero = P.filterC (\x -> trimdToZeroLength x) P..| P.lengthC
 
 -- 180226 calculate percentage of total alignments trimmed by >=1 bases
-calcTrimmedPct :: P.Sink AlignedRead (P.ResourceT IO) Double
+calcTrimmedPct :: P.ConduitT AlignedRead P.Void (P.ResourceT IO) Double
 calcTrimmedPct = P.getZipSink (calc <$> P.ZipSink calculateTrimStats
                                     <*> P.ZipSink P.lengthC)
     where calc trimdcnt totalalns = (fromIntegral trimdcnt)
@@ -2334,6 +2310,13 @@ flipSetBit = flip setBit
 flipClrBit = flip clearBit
 flipTstBit = flip testBit
 
+-- 190701 check if AlignedRead is first in pair (R1) or second in pair (R2)
+isRead1 :: AlignedRead -> Bool
+isRead1 a = (testBit $ flag a) 6
+
+isRead2 :: AlignedRead -> Bool
+isRead2 a = (testBit $ flag a) 7
+
 -- 180212 append CO:Z tag indicating alignment was trimmed by >= 1 base, and
 -- also a warning if trimming removed all non-clipped bases from alignment
 -- (alignment == primer sequence)
@@ -2466,6 +2449,49 @@ printAlignment a =
         alnstr = B.intercalate "\t" [ q, f, rn, p, mq, c, rnxt,
                                       pnxtBS, tl, sq, bq, optfs ]
     in alnstr
+
+-- 190627 print trimmed alignment as a FASTQ read record (remove soft-clipped bases)
+printAlignmentAsFastq :: AlignedRead -> B.ByteString
+printAlignmentAsFastq a =
+    let rn = qname a
+        rstrand = strand a
+        c = trimdcigar a
+        sq = refseq a
+        ql = basequal a
+        cigops = expandcigar $ mapcig c
+        nodel_cigops = B.filter (\x -> (x /= 'D') && (x /= 'H')) cigops
+        refsequence = case rstrand of
+                            "-" -> reverseComplement sq
+                            _   -> sq
+        trimdseq = trimSoftClippedRefseqBases nodel_cigops refsequence
+        trimdqual = B.take (B.length trimdseq) ql
+        fqlines = [rn, trimdseq, "+", trimdqual]
+    in B.unlines fqlines
+
+trimSoftClippedRefseqBases :: B.ByteString -> B.ByteString -> B.ByteString
+trimSoftClippedRefseqBases cigops refsq =
+    B.filter (\x -> x /= 'N') refseqClipmasked
+        where refseqClipmasked = B.pack
+                               $ B.zipWith maskSoftclippedRefBase cigops refsq
+
+maskSoftclippedRefBase :: Char -> Char -> Char
+maskSoftclippedRefBase cigop base
+    | (cigop == 'S') = 'N'
+    | otherwise = base
+
+-- 190627 reverse complement DNA nucleotide sequence
+reverseComplement :: B.ByteString -> B.ByteString
+reverseComplement bs = B.reverse $ B.concatMap basecomplement bs
+    where basecomplement b = case b of
+                                'A' -> "T"
+                                'a' -> "t"
+                                'T' -> "A"
+                                't' -> "a"
+                                'C' -> "G"
+                                'c' -> "g"
+                                'G' -> "C"
+                                'g' -> "c"
+                                _   -> B.pack [b]
 
 -- max(0,i)
 checkpos :: Integer -> Integer

@@ -1,6 +1,6 @@
 ## primerclip
 
-#### primerclip v0.3.8beta primer trimming tool.
+#### primerclip v0.3.9beta primer trimming tool.
 
 #### Swift Biosciences Inc. 2017
 
