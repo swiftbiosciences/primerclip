@@ -2463,6 +2463,12 @@ printAlignment a =
 printAlignmentAsFastq :: AlignedRead -> [B.ByteString]
 printAlignmentAsFastq a =
     let rn = qname a
+        -- indexnum = get_XS_i_OptField a
+        readend
+            | isRead1 a = "1"
+            | otherwise = "2"
+        readname = B.concat ["@", rn, " ", readend, ":Y:0:", "0"] -- TODO: find SAM tag with index (if exists)
+        -- readname = B.concat ["@", rn, " ", readend, ":Y:0:", indexnum]
         rstrand = strand a
         c = trimdcigar a
         sq = refseq a
@@ -2474,9 +2480,8 @@ printAlignmentAsFastq a =
                             _   -> sq
         trimdseq = trimSoftClippedRefseqBases nodel_cigops refsequence
         trimdqual = B.take (B.length trimdseq) ql
-        fqlines = [rn, trimdseq, "+", trimdqual]
+        fqlines = [readname, trimdseq, "+", trimdqual]
     in fqlines
-    -- in B.unlines fqlines
 
 trimSoftClippedRefseqBases :: B.ByteString -> B.ByteString -> B.ByteString
 trimSoftClippedRefseqBases cigops refsq =
@@ -2488,6 +2493,17 @@ maskSoftclippedRefBase :: Char -> Char -> Char
 maskSoftclippedRefBase cigop base
     | (cigop == 'S') = 'N'
     | otherwise = base
+
+-- 190702 extract XS:i optional field value from optfields ByteString
+get_XS_i_OptField :: AlignedRead -> B.ByteString
+get_XS_i_OptField a =
+    let optfield_bs = B.words $ optfields a
+        xsi_fields = filter (\x -> B.isPrefixOf "XS:i:" x) optfield_bs
+        xsifield = case xsi_fields of
+                    []     -> "0"
+                    (x:_)  -> B.drop 5 x -- remove "XS:i:" prefix from field value
+    in xsifield
+
 
 -- 190627 reverse complement DNA nucleotide sequence
 reverseComplement :: B.ByteString -> B.ByteString
