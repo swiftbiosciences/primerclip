@@ -26,11 +26,6 @@ main = do
                         "primerclip -- Swift Biosciences Accel-Amplicon targeted panel primer trimming tool v0.3.9")
     args <- execParser opts
     runstats <- selectRunmode args
-    {--
-    runstats <- case (sereads args) of
-                    True  -> runPrimerTrimmingSE args
-                    False -> runPrimerTrimmingPE args
-    --}
     putStrLn "primer trimming complete."
     writeRunStats (outfilename args) runstats -- 180226
 -- end main

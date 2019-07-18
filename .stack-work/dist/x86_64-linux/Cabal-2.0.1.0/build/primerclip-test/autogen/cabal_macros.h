@@ -276,7 +276,7 @@
 #endif /* MIN_TOOL_VERSION_strip */
 
 #ifndef CURRENT_COMPONENT_ID
-#define CURRENT_COMPONENT_ID "primerclip-0.3.9.0-16g4wl8HBIQDvVRYbFGqYC-primerclip-test"
+#define CURRENT_COMPONENT_ID "primerclip-0.3.9.0-IUJUCkMudBC1R5BglhW8Zx-primerclip-test"
 #endif /* CURRENT_COMPONENT_ID */
 #ifndef CURRENT_PACKAGE_VERSION
 #define CURRENT_PACKAGE_VERSION "0.3.9.0"

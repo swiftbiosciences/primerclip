@@ -2475,11 +2475,15 @@ printAlignmentAsFastq a =
         ql = basequal a
         cigops = expandcigar $ mapcig c
         nodel_cigops = B.filter (\x -> (x /= 'D') && (x /= 'H')) cigops
-        refsequence = case rstrand of
-                            "-" -> reverseComplement sq
-                            _   -> sq
-        trimdseq = trimSoftClippedRefseqBases nodel_cigops refsequence
-        trimdqual = B.take (B.length trimdseq) ql
+        trimdrefseq = trimSoftClippedRefseqBases nodel_cigops sq
+        trimdrefqual = trimSoftClippedRefseqBases nodel_cigops ql
+        trimdseq = case rstrand of
+                    "-" -> reverseComplement sq
+                    _   -> sq
+        trimdqual = case rstrand of
+                    "-" -> B.reverse trimdrefqual
+                    _   -> trimdrefqual
+        -- trimdqual = B.take (B.length trimdseq) ql
         fqlines = [readname, trimdseq, "+", trimdqual]
     in fqlines
 
