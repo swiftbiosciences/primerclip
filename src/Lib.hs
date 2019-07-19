@@ -18,6 +18,7 @@ import Data.List
 import qualified Data.ByteString.Char8 as B
 import qualified Data.Attoparsec.ByteString.Char8 as A
 import qualified Conduit as P
+import Data.Conduit.Zlib (gzip)
 import qualified Data.Conduit.Attoparsec as CA
 import qualified Data.Vector as V
 import Data.Bits
@@ -1542,30 +1543,32 @@ printAlnStreamToFile outfile = P.mapC printAlignmentOrHdr
 
 -- 190701 print to R1 and R2 FASTQ output files
 -- output to file in SAM format.
-printAlnStreamToFastq1 :: P.MonadResource m => FilePath
-                       -> P.ConduitT AlignedRead P.Void m ()
+printAlnStreamToFastq1 :: (P.MonadResource m, P.MonadThrow m, P.PrimMonad m) =>
+                           FilePath -> P.ConduitT AlignedRead P.Void m ()
 printAlnStreamToFastq1 outfile = P.filterC isRead1
                             P..| P.concatMapC printAlignmentAsFastq
                             P..| P.unlinesAsciiC
+                            P..| gzip
                             P..| P.sinkFile outfile
 
-printAlnStreamToFastq2 :: P.MonadResource m => FilePath
-                       -> P.ConduitT AlignedRead P.Void m ()
+printAlnStreamToFastq2 :: (P.MonadResource m, P.MonadThrow m, P.PrimMonad m) =>
+                           FilePath -> P.ConduitT AlignedRead P.Void m ()
 printAlnStreamToFastq2 outfile = P.filterC isRead2
                             P..| P.concatMapC printAlignmentAsFastq
                             P..| P.unlinesAsciiC
+                            P..| gzip
                             P..| P.sinkFile outfile
 
 -- {--
-printAlnStreamToFastqs :: P.MonadResource m => FilePath
-                       -> P.ConduitT AlignedRead P.Void m ()
+printAlnStreamToFastqs :: (P.MonadResource m, P.MonadThrow m, P.PrimMonad m) =>
+                           FilePath -> P.ConduitT AlignedRead P.Void m ()
 printAlnStreamToFastqs fqprefix = P.getZipSink
      $  (P.ZipSink (printAlnStreamToFastq1 outfq1name))
      *> (P.ZipSink (printAlnStreamToFastq2 outfq2name))
                         where outfq1name = concat
-                                           [fqprefix, "_R1_001.fastq"]
+                                           [fqprefix, "_R1_001.fastq.gz"]
                               outfq2name = concat
-                                           [fqprefix, "_R2_001.fastq"]
+                                           [fqprefix, "_R2_001.fastq.gz"]
 
 --}
 
