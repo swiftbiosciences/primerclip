@@ -2478,8 +2478,8 @@ printAlignmentAsFastq a =
         trimdrefseq = trimSoftClippedRefseqBases nodel_cigops sq
         trimdrefqual = trimSoftClippedRefseqBases nodel_cigops ql
         trimdseq = case rstrand of
-                    "-" -> reverseComplement sq
-                    _   -> sq
+                    "-" -> reverseComplement trimdrefseq
+                    _   -> trimdrefseq
         trimdqual = case rstrand of
                     "-" -> B.reverse trimdrefqual
                     _   -> trimdrefqual
@@ -2489,13 +2489,13 @@ printAlignmentAsFastq a =
 
 trimSoftClippedRefseqBases :: B.ByteString -> B.ByteString -> B.ByteString
 trimSoftClippedRefseqBases cigops refsq =
-    B.filter (\x -> x /= 'N') refseqClipmasked
+    B.filter (\x -> x /= 'X') refseqClipmasked
         where refseqClipmasked = B.pack
                                $ B.zipWith maskSoftclippedRefBase cigops refsq
 
 maskSoftclippedRefBase :: Char -> Char -> Char
 maskSoftclippedRefBase cigop base
-    | (cigop == 'S') = 'N'
+    | (cigop == 'S') = 'X'
     | otherwise = base
 
 -- 190702 extract XS:i optional field value from optfields ByteString
