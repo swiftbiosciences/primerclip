@@ -26,6 +26,8 @@ targeted variant calling.
 
 __CHANGELOG__
 
+190823 option to output primer-trimmed fastq files instead of a SAM file
+
 190205 uncommented alternate chromosome parser to enable new arbitrary chromosome
 parsing code.
 
@@ -39,11 +41,11 @@ This binary is compiled for linux on x86_64 (Ubuntu 16.04).
 
 Path to the pre-compiled binary:
 
-    .stack-work/install/x86_64-linux/lts-11.0/8.2.2/bin/primerclip
+    .stack-work/install/x86_64-linux/4823bb974c979c9b1669f0832c38e1dba925d8ebd5c2f0d47a70dc9b860a8e1a/8.2.2/bin/primerclip
 
 To install, copy the "primerclip" file into a folder on your PATH, e.g /usr/local/bin
 
-    cp .stack-work/install/x86_64-linux/lts-11.0/8.2.2/bin/primerclip /usr/local/bin
+    cp .stack-work/install/x86_64-linux/4823bb974c979c9b1669f0832c38e1dba925d8ebd5c2f0d47a70dc9b860a8e1a/8.2.2/bin/primerclip /usr/local/bin
 
 Test that the binary is accessible by running
 
@@ -78,6 +80,12 @@ To trim single-end alignments:
 OPTIONAL USE OF BEDPE format for primer coordinates:
 
     primerclip -b primer_coords_bedpe.bed alignmentfile.sam outputfilename.sam
+
+OPTIONAL output primer-trimmed fastq files instead of soft-clipped SAM:
+
+    primerclip -f masterfiles.txt alignmentfile.sam outputfilename.sam
+
+NOTE: there will be two output fastq files, e.g. outputfilename_R1.fastq.gz and outputfilename_R2.fastq.gz
 
 This primer trimming tool is designed to be used after the Illumina adapter
 trimming and alignment steps:
