@@ -26,6 +26,8 @@ targeted variant calling.
 
 __CHANGELOG__
 
+190918 release 1 for bioconda integration
+
 190205 uncommented alternate chromosome parser to enable new arbitrary chromosome
 parsing code.
 
