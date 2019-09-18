@@ -26,15 +26,15 @@ catchIO :: IO a -> (Exception.IOException -> IO a) -> IO a
 catchIO = Exception.catch
 
 version :: Version
-version = Version [0,3,8,0] []
+version = Version [0,3,8] []
 bindir, libdir, dynlibdir, datadir, libexecdir, sysconfdir :: FilePath
 
-bindir     = "/home/irish/github/primerclip/.stack-work/install/x86_64-linux/lts-11.0/8.2.2/bin"
-libdir     = "/home/irish/github/primerclip/.stack-work/install/x86_64-linux/lts-11.0/8.2.2/lib/x86_64-linux-ghc-8.2.2/primerclip-0.3.8.0-AH3zWNnJh5PDS6H4EDtTte-primerclip"
-dynlibdir  = "/home/irish/github/primerclip/.stack-work/install/x86_64-linux/lts-11.0/8.2.2/lib/x86_64-linux-ghc-8.2.2"
-datadir    = "/home/irish/github/primerclip/.stack-work/install/x86_64-linux/lts-11.0/8.2.2/share/x86_64-linux-ghc-8.2.2/primerclip-0.3.8.0"
-libexecdir = "/home/irish/github/primerclip/.stack-work/install/x86_64-linux/lts-11.0/8.2.2/libexec/x86_64-linux-ghc-8.2.2/primerclip-0.3.8.0"
-sysconfdir = "/home/irish/github/primerclip/.stack-work/install/x86_64-linux/lts-11.0/8.2.2/etc"
+bindir     = "/home/irish/github/primerclip/.stack-work/install/x86_64-linux/4823bb974c979c9b1669f0832c38e1dba925d8ebd5c2f0d47a70dc9b860a8e1a/8.2.2/bin"
+libdir     = "/home/irish/github/primerclip/.stack-work/install/x86_64-linux/4823bb974c979c9b1669f0832c38e1dba925d8ebd5c2f0d47a70dc9b860a8e1a/8.2.2/lib/x86_64-linux-ghc-8.2.2/primerclip-0.3.8-FP5OgC5hJICUNAnirKGyk-primerclip"
+dynlibdir  = "/home/irish/github/primerclip/.stack-work/install/x86_64-linux/4823bb974c979c9b1669f0832c38e1dba925d8ebd5c2f0d47a70dc9b860a8e1a/8.2.2/lib/x86_64-linux-ghc-8.2.2"
+datadir    = "/home/irish/github/primerclip/.stack-work/install/x86_64-linux/4823bb974c979c9b1669f0832c38e1dba925d8ebd5c2f0d47a70dc9b860a8e1a/8.2.2/share/x86_64-linux-ghc-8.2.2/primerclip-0.3.8"
+libexecdir = "/home/irish/github/primerclip/.stack-work/install/x86_64-linux/4823bb974c979c9b1669f0832c38e1dba925d8ebd5c2f0d47a70dc9b860a8e1a/8.2.2/libexec/x86_64-linux-ghc-8.2.2/primerclip-0.3.8"
+sysconfdir = "/home/irish/github/primerclip/.stack-work/install/x86_64-linux/4823bb974c979c9b1669f0832c38e1dba925d8ebd5c2f0d47a70dc9b860a8e1a/8.2.2/etc"
 
 getBinDir, getLibDir, getDynLibDir, getDataDir, getLibexecDir, getSysconfDir :: IO FilePath
 getBinDir = catchIO (getEnv "primerclip_bindir") (\_ -> return bindir)
