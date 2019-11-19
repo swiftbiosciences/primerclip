@@ -15,6 +15,7 @@ import qualified Conduit as P
 import qualified Data.Conduit.Binary as CB
 import qualified Data.Attoparsec.ByteString.Char8 as A
 import qualified Data.Conduit.Attoparsec as CA
+import System.IO (stderr)
 
 -- main
 main :: IO ()
@@ -28,7 +29,8 @@ main = do
     runstats <- case (sereads args) of
                     True  -> runPrimerTrimmingSE args
                     False -> runPrimerTrimmingPE args
-    putStrLn "primer trimming complete."
+    -- putStrLn "primer trimming complete."
+    B.hPutStrLn stderr "primer trimming complete."
     writeRunStats (outfilename args) runstats -- 180226
 -- end main
 

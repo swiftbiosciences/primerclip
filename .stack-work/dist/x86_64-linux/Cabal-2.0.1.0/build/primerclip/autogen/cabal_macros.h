@@ -298,7 +298,7 @@
 #endif /* MIN_TOOL_VERSION_strip */
 
 #ifndef CURRENT_COMPONENT_ID
-#define CURRENT_COMPONENT_ID "primerclip-0.3.8-FP5OgC5hJICUNAnirKGyk-primerclip"
+#define CURRENT_COMPONENT_ID "primerclip-0.3.8-9tB6T4zsyY5EIelasR5Y3W-primerclip"
 #endif /* CURRENT_COMPONENT_ID */
 #ifndef CURRENT_PACKAGE_VERSION
 #define CURRENT_PACKAGE_VERSION "0.3.8"

@@ -28,6 +28,8 @@ import qualified Data.IntMap.Strict as I
 import Data.Maybe
 import qualified Data.Set as S
 import GHC.Generics (Generic)
+import System.IO (stderr)
+-- import qualified Data.Text.IO as TI
 
 {--
     Jonathan Irish
@@ -840,7 +842,9 @@ readBEDPE fp = do
         failcnt = length faildlineixs
         parsestatus = parsechkBED nr bcnt faildlineixs
         parsefaildLines = B.unlines $ (flines !!) <$> faildlineixs
-    putStrLn parsestatus
+    -- 191119
+    B.hPutStrLn stderr $ B.pack parsestatus
+    -- putStrLn parsestatus
     B.writeFile "bedPEparsefails.log" parsefaildLines
     writeFile "primer_BEDPE_parsing.log" parsestatus
     return succs
@@ -890,9 +894,10 @@ getMasterFile fp = do
         failedlinenums = M.keys failm
         mcnt = length succs
         failcnt = length failedlinenums
-        parseStatus = parsechkMaster nr mcnt failedlinenums
+        parsestatus = parsechkMaster nr mcnt failedlinenums
         parsefailrecs = B.unlines $ (mlines !!) <$> failedlinenums
-    putStrLn parseStatus
+    B.hPutStrLn stderr $ B.pack parsestatus -- 191119
+    -- putStrLn parseStatus
     B.writeFile "masterparsefails.log" $ parsefailrecs
     return succs
 
@@ -2485,7 +2490,8 @@ checkChromNameMatchStatus hdr bed = do
                 <$> ((hdr !!) <$> [1..25]) -- set of SAM hdr chrs
         matches = filter (\x -> x /= NONE) $ intersect bedchrs hdrchrs
     if (length matches) >= 1
-        then putStrLn "SAM and BED chromosome name formats match."
+        then B.hPutStrLn stderr "SAM and BED chromosome name formats match." -- 191119
+             -- putStrLn "SAM and BED chromosome name formats match."
         else error "ERROR: different chromosome name formats in SAM and BED!"
 
 -- 180223 find aln by qname

@@ -33,6 +33,17 @@
   (major1) == 0 && (major2) == 10 && (minor) <= 8)
 #endif /* MIN_VERSION_bytestring */
 
+/* package text-1.2.3.0 */
+#ifndef VERSION_text
+#define VERSION_text "1.2.3.0"
+#endif /* VERSION_text */
+#ifndef MIN_VERSION_text
+#define MIN_VERSION_text(major1,major2,minor) (\
+  (major1) <  1 || \
+  (major1) == 1 && (major2) <  2 || \
+  (major1) == 1 && (major2) == 2 && (minor) <= 3)
+#endif /* MIN_VERSION_text */
+
 /* package either-5 */
 #ifndef VERSION_either
 #define VERSION_either "5"
@@ -287,10 +298,10 @@
 #endif /* MIN_TOOL_VERSION_strip */
 
 #ifndef CURRENT_PACKAGE_KEY
-#define CURRENT_PACKAGE_KEY "primerclip-0.3.8-5Ceh2mZvYivB3xn31nskpW"
+#define CURRENT_PACKAGE_KEY "primerclip-0.3.8-CSqlEA4IUhKBx9zRRn8Wqt"
 #endif /* CURRENT_PACKAGE_KEY */
 #ifndef CURRENT_COMPONENT_ID
-#define CURRENT_COMPONENT_ID "primerclip-0.3.8-5Ceh2mZvYivB3xn31nskpW"
+#define CURRENT_COMPONENT_ID "primerclip-0.3.8-CSqlEA4IUhKBx9zRRn8Wqt"
 #endif /* CURRENT_COMPONENT_ID */
 #ifndef CURRENT_PACKAGE_VERSION
 #define CURRENT_PACKAGE_VERSION "0.3.8"
