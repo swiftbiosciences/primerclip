@@ -456,9 +456,12 @@ showChrom fmt chr = case (fmt, chr) of
     (UCSC,ChrM)  -> "chrM"
     otherwise    -> "*"
 
--- 170510 try parsing either GRC or UCSC chromosome names
+-- 200317 generic chromosome name parser (NOTE: will parse chromosomes in lexical order)
 uchrparser :: A.Parser UChr
-uchrparser = ((A.string "chr10" <* A.space) >> return Chr10)
+uchrparser = altchromp
+
+        {--
+            ((A.string "chr10" <* A.space) >> return Chr10)
         <|>  ((A.string "chr11" <* A.space) >> return Chr11)
         <|>  ((A.string "chr12" <* A.space) >> return Chr12)
         <|>  ((A.string "chr13" <* A.space) >> return Chr13)
@@ -510,6 +513,7 @@ uchrparser = ((A.string "chr10" <* A.space) >> return Chr10)
         <|>  ((A.string "MT" <* A.space) >> return CMT)
         <|>  ((A.string "*" <* A.space) >> return NONE)
         <|>  altchromp -- 181230
+        --}
 
 -- 180206 include option for providing primer coords in BED or BEDPE format
 -- in addition to master file

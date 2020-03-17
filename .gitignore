@@ -1,2 +1,9 @@
 testinput
 testfiles
+dist*
+*.hi
+*.o
+cabal-dev/
+.stack-work/
+src/\.*.sw*
+app/\.*.sw*
