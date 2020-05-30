@@ -1,9 +1,8 @@
 module Main where
 
-import Lib
+import qualified Conduit as P
 import Control.Monad
 import Control.Applicative
-import Options.Applicative
 import Data.Semigroup ((<>))
 import Data.List
 import qualified Data.ByteString.Char8 as B
@@ -11,10 +10,12 @@ import Data.Maybe
 import qualified Data.Map.Strict as M
 import qualified Data.IntMap.Strict as I
 import Data.Either (isRight, rights)
-import qualified Conduit as P
 import qualified Data.Conduit.Binary as CB
 import qualified Data.Attoparsec.ByteString.Char8 as A
 import qualified Data.Conduit.Attoparsec as CA
+import Lib
+import Options.Applicative
+import System.IO (stderr)
 
 -- main
 main :: IO ()
@@ -26,8 +27,9 @@ main = do
                         "primerclip -- Swift Biosciences Accel-Amplicon targeted panel primer trimming tool v0.3.9")
     args <- execParser opts
     runstats <- selectRunmode args
-    putStrLn "primer trimming complete."
-    writeRunStats (outfilename args) runstats -- 180226
+    -- writeRunStats (outfilename args) runstats -- 180226
+    putRunStats stderr runstats -- 200515
+    B.hPutStrLn stderr "primer trimming complete."
 -- end main
 
 -- 190702
@@ -44,6 +46,23 @@ selectRunmode args
 -- 190627 TODO: implement runPrimerTrimmingPE which outputs R1 and R2 FASTQ
 -- files (properly handle reads which are no longer paired)
 
+-- 200528 change conduit flow to output amplicon sizes to file before flattening PairedAln
+-- 180329 parse and trim as PairedAln sets
+runPrimerTrimmingPE :: Opts -> IO RunStats
+runPrimerTrimmingPE args = do
+    (fmp, rmp) <- createprimerbedmaps args
+    runstats <- P.runConduitRes
+              $ P.sourceFile (insamfile args)
+              P..| CA.conduitParserEither parseSAMtoPairedAlns -- parsePairedAlnsOrHdr
+              P..| P.mapC rightOrDefaultPaird -- convert parse fails to defaultAlignment
+              P..| P.concatC
+              P..| P.mapC (trimprimerPairsE fmp rmp)
+              P..| P.getZipSink
+                        (P.ZipSink (flattenAndFlow args) <* printAmpliconSizesToFile)
+    return runstats
+
+
+{--
 -- 180329 parse and trim as PairedAln sets
 runPrimerTrimmingPE :: Opts -> IO RunStats
 runPrimerTrimmingPE args = do
@@ -59,8 +78,9 @@ runPrimerTrimmingPE args = do
               P..| P.filterC (\x -> (qname x) /= "NONE") -- remove dummy alignments
               P..| P.getZipSink
                        (P.ZipSink (printAlnStreamToFile (outfilename args))
-                                *> calcRunStats) -- 180226 --}
+                                *> calcRunStats) -- 180226
     return runstats
+--}
 
 -- 190701 output as primer-trimmed FASTQ files
 runPrimerTrimmingPE_Fastq :: Opts -> IO RunStats

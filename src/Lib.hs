@@ -29,6 +29,7 @@ import qualified Data.IntMap.Strict as I
 import Data.Maybe
 import qualified Data.Set as S
 import GHC.Generics (Generic)
+import System.IO (Handle)
 
 {--
     Jonathan Irish
@@ -117,6 +118,7 @@ defaultAlignment = AlignedRead { qname = "NONE"
 data SAMSortOrder = Coordinate | Queryname | Unsorted | Unknown
     deriving (Show, Eq, Ord)
 
+-- 200528 add field for amplicon size
 -- 180321 organize aligned reads by name, with read1 and read2 organized by
 -- primary and secondary Alignments
 -- NOTE: this requires the input SAM file to be name sorted, and enables the
@@ -127,13 +129,14 @@ data PairedAln = PairedAln { r1prim :: AlignedRead
                            , r2prim :: AlignedRead
                            , r1secs :: [AlignedRead]
                            , r2secs :: [AlignedRead]
+                           , ampliconinfo :: B.ByteString
                            } deriving (Eq, Show, Generic)
 
 instance Ord PairedAln where
     compare = comparing r1prim
            <> comparing r2prim
 
-defaultPairedAln = PairedAln defaultAlignment defaultAlignment [] []
+defaultPairedAln = PairedAln defaultAlignment defaultAlignment [] [] ""
 
 -- 180206 add BEDPE primer coordinates input file option
 data BEDPE = BEDPE { chr1 :: UChr
@@ -547,6 +550,13 @@ data Opts = Opts { bedpeformat :: Bool
                  , outfilename :: String
                  } deriving (Show, Eq)
 
+defaultCmdOpts = Opts False
+                      False
+                      False
+                      "NONE"
+                      "NONE"
+                      "NONE"
+
 -- 170927 parse master file for primer and target intervals
 masterparser :: A.Parser MasterRecord
 masterparser = do
@@ -648,7 +658,7 @@ alnsToPairedAln as =
         (r2pl, r2secs) = partition primaryR2filter r2s
         r1p = headsafeAln r1pl
         r2p = headsafeAln r2pl
-    in PairedAln r1p r2p r1secs r2secs
+    in PairedAln r1p r2p r1secs r2secs "" -- 200528
 
 -- 180321 non-conduit read name-set SAM file reading function
 readSAMnameset :: FilePath -> IO [[AlignedRead]]
@@ -1537,6 +1547,7 @@ trimprimersE fmap rmap a =
         trimd = updateTrimdAlnFields $ trimalignment intaln
     in trimd
 
+-- 200528
 -- 171017 function to convert conduit ZipSink stream to output and write
 -- output to file in SAM format.
 printAlnStreamToFile :: P.MonadResource m => FilePath
@@ -1544,6 +1555,33 @@ printAlnStreamToFile :: P.MonadResource m => FilePath
 printAlnStreamToFile outfile = P.mapC printAlignmentOrHdr
                           P..| P.unlinesAsciiC
                           P..| P.sinkFile outfile
+
+{--
+printAlnStreamToFile :: P.MonadResource m => FilePath
+                     -> P.ConduitT AlignedRead c m ()
+printAlnStreamToFile outfile = P.mapC printAlignmentOrHdr
+                          P..| P.unlinesAsciiC
+                          P..| P.sinkFile outfile
+--}
+
+-- 200528
+printAjpliconSizesToFile :: P.ZipSink PairedAln (P.ResourceT IO) ()
+printAmpliconSizesToFile = P.ZipSink
+                         $ P.mapC (\p -> ampliconinfo $ calcAmpliconSize p)
+                      P..| P.unlinesAsciiC
+                      P..| P.sinkFile "ampsizes.txt"
+
+-- printAmpliconSize :: PairedAln -> B.ByteString
+-- printAmpliconSize pa = undefined
+
+flattenAndFlow :: Opts
+               -> P.ConduitT PairedAln P.Void (P.ResourceT IO) RunStats
+flattenAndFlow args = P.mapC flattenPairedAln
+                 P..| P.concatC
+                 P..| P.filterC (\x -> (qname x) /= "NONE") -- remove dummy alignments
+                 P..| P.getZipSink
+                         (P.ZipSink (printAlnStreamToFile (outfilename args))
+                                     *> calcRunStats)
 
 -- 190701 print to R1 and R2 FASTQ output files
 -- output to file in SAM format.
@@ -1575,6 +1613,30 @@ printAlnStreamToFastqs fqprefix = P.getZipSink
                                            [fqprefix, "_R2_001.fastq.gz"]
 
 --}
+
+-- 200515 write to file handle
+putRunStats :: Handle -> RunStats -> IO ()
+putRunStats fh r = do
+    let tot = B.pack $ show $ alnsTotal r
+        mapd = B.pack $ show $ alnsMapped r
+        trimd = B.pack $ show $ alnsTrimd r
+        tt0 = B.pack $ show $ alnsTrimdToZero r
+        tPct = B.pack $ show $ trimmedPct r
+        mPct = B.pack $ show $ mappedPct r
+        labels = [ "Total alignments processed:"
+                 , "Total mapped alignments:"
+                 , "Alignments trimmed by >= 1 base:"
+                 , "Alignments trimmed to zero aligned length:"
+                 , "% Alignments trimmed by >= 1 base:"
+                 , "% Alignments mapped after trimming:"
+                 ] :: [B.ByteString]
+        statslines = zipWith (\l v -> B.concat [l,"\t",v])
+                             labels
+                             [tot, mapd, trimd, tt0, tPct, mPct]
+        outbs = B.unlines statslines
+        -- logfilename = genLogFilePath fp
+    B.hPut fh outbs
+
 
 -- 180226 write RunStats to run log file (TODO: also print to stderr to allow
 -- more flexible logging from caller of primerclip?)
@@ -1656,6 +1718,26 @@ calcNotMappedPct = P.getZipSink (calc <$> P.ZipSink calcMappedCount
     where calc mapcnt total = (fromIntegral mapcnt)
                             / (fromIntegral total) * 100.0
 
+-- 200528 calculate amplicon size for each PairedAln
+calcAmpliconSize :: PairedAln -> PairedAln
+calcAmpliconSize pa
+    | diffchroms || noprimerint = pa { ampliconinfo = "NOPRIMERINT" }
+    | otherwise  = pa { ampliconinfo = ampinfo }
+        where diffchroms = (rname $ r1prim pa) /= (rname $ r2prim pa)
+              noprimerint = (null fprimers)
+                         && (null rprimers)
+              productsize = B.pack $ show $ rend - fstart
+              fprimers = sort $ join $ [(fint $ r1prim pa), (fint $ r2prim pa)]
+              rprimers = reverse $ sort $ join
+                       $ [(rint $ r1prim pa), (rint $ r2prim pa)]
+              fprimer = head fprimers -- minimum $ bedstart <$> fprimers
+              rprimer = head rprimers -- maximum $ bedend <$> rprimers
+              fprimername = bedname fprimer
+              rprimername = bedname rprimer
+              fstart = bedstart fprimer
+              rend = bedend rprimer
+              ampinfo = B.intercalate "\t"
+                                      [fprimername, rprimername, productsize]
 
 -- 180322 add primer intersections to AlignedRead as part of PairedAln record
 -- NOTE: define instance of Functor for PairedAln type to define fmap??
@@ -1738,12 +1820,14 @@ validateTrimdPairAlnStart p = ((pnext $ r2prim p) == (trimdpos $ r1prim p))
                            && ((pnext $ r1prim p) == (trimdpos $ r2prim p))
 
 
+-- 200528
 -- 180322 trim each alignment in PairedAln record
 trimPairedAlns :: PairedAln -> PairedAln
 trimPairedAlns pa = PairedAln (trimalignment $ r1prim pa)
                               (trimalignment $ r2prim pa)
                               (trimalignment <$> (r1secs pa))
                               (trimalignment <$> (r2secs pa))
+                              (ampliconinfo pa)
 
 -- 180411 remove updateTrimdAlnFields and apply after MRNM resolution for 0-trimd alns
 -- 180212 added addtrimtag function to append comment to optfields (CO:Z: SAM tag)
@@ -2244,6 +2328,7 @@ updatePairedAlnTrimdFields p = PairedAln (updateTrimdAlnFields $ r1prim p)
                                          (updateTrimdAlnFields $ r2prim p)
                                          (updateTrimdAlnFields <$> r1secs p)
                                          (updateTrimdAlnFields <$> r2secs p)
+                                         (ampliconinfo p)
 
 updateTrimdAlnFields :: AlignedRead -> AlignedRead
 updateTrimdAlnFields a

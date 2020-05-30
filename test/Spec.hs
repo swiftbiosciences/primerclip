@@ -61,7 +61,6 @@ readSAMTest args = do
     alns <- P.runConduitRes
               $ P.sourceFile (insamfile args)
               P..| CA.conduitParserEither parseSAMtoPairedAlns -- parsePairedAlnsOrHdr
-              P..| P.mapC rightOrDefaultPaird
-              P..| P.concatC
+              P..| P.mapC rightOrDefaultPaird -- P..| P.concatC
               P..| P.sinkList
     return alns
