@@ -30,7 +30,7 @@ version = Version [0,3,9,0] []
 bindir, libdir, dynlibdir, datadir, libexecdir, sysconfdir :: FilePath
 
 bindir     = "/home/admin/stack/primerclip/.stack-work/install/x86_64-linux/3f0c863dd7d182fb30b0b70be660352fc230b53ac8c4b8bf581e074e77625bd8/8.2.2/bin"
-libdir     = "/home/admin/stack/primerclip/.stack-work/install/x86_64-linux/3f0c863dd7d182fb30b0b70be660352fc230b53ac8c4b8bf581e074e77625bd8/8.2.2/lib/x86_64-linux-ghc-8.2.2/primerclip-0.3.9.0-B4eNBT144IFE62RZPSEhEE"
+libdir     = "/home/admin/stack/primerclip/.stack-work/install/x86_64-linux/3f0c863dd7d182fb30b0b70be660352fc230b53ac8c4b8bf581e074e77625bd8/8.2.2/lib/x86_64-linux-ghc-8.2.2/primerclip-0.3.9.0-29egFp88IgD4PCB5uWWKcn"
 dynlibdir  = "/home/admin/stack/primerclip/.stack-work/install/x86_64-linux/3f0c863dd7d182fb30b0b70be660352fc230b53ac8c4b8bf581e074e77625bd8/8.2.2/lib/x86_64-linux-ghc-8.2.2"
 datadir    = "/home/admin/stack/primerclip/.stack-work/install/x86_64-linux/3f0c863dd7d182fb30b0b70be660352fc230b53ac8c4b8bf581e074e77625bd8/8.2.2/share/x86_64-linux-ghc-8.2.2/primerclip-0.3.9.0"
 libexecdir = "/home/admin/stack/primerclip/.stack-work/install/x86_64-linux/3f0c863dd7d182fb30b0b70be660352fc230b53ac8c4b8bf581e074e77625bd8/8.2.2/libexec/x86_64-linux-ghc-8.2.2/primerclip-0.3.9.0"

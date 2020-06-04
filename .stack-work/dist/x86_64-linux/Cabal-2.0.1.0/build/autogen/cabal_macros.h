@@ -187,6 +187,17 @@
   (major1) == 1 && (major2) == 3 && (minor) <= 0)
 #endif /* MIN_VERSION_conduit_extra */
 
+/* package safe-0.3.17 */
+#ifndef VERSION_safe
+#define VERSION_safe "0.3.17"
+#endif /* VERSION_safe */
+#ifndef MIN_VERSION_safe
+#define MIN_VERSION_safe(major1,major2,minor) (\
+  (major1) <  0 || \
+  (major1) == 0 && (major2) <  3 || \
+  (major1) == 0 && (major2) == 3 && (minor) <= 17)
+#endif /* MIN_VERSION_safe */
+
 /* tool gcc-5.4.0 */
 #ifndef TOOL_VERSION_gcc
 #define TOOL_VERSION_gcc "5.4.0"
@@ -287,10 +298,10 @@
 #endif /* MIN_TOOL_VERSION_strip */
 
 #ifndef CURRENT_PACKAGE_KEY
-#define CURRENT_PACKAGE_KEY "primerclip-0.3.9.0-B4eNBT144IFE62RZPSEhEE"
+#define CURRENT_PACKAGE_KEY "primerclip-0.3.9.0-29egFp88IgD4PCB5uWWKcn"
 #endif /* CURRENT_PACKAGE_KEY */
 #ifndef CURRENT_COMPONENT_ID
-#define CURRENT_COMPONENT_ID "primerclip-0.3.9.0-B4eNBT144IFE62RZPSEhEE"
+#define CURRENT_COMPONENT_ID "primerclip-0.3.9.0-29egFp88IgD4PCB5uWWKcn"
 #endif /* CURRENT_COMPONENT_ID */
 #ifndef CURRENT_PACKAGE_VERSION
 #define CURRENT_PACKAGE_VERSION "0.3.9.0"

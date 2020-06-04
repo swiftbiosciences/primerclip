@@ -30,6 +30,7 @@ import Data.Maybe
 import qualified Data.Set as S
 import GHC.Generics (Generic)
 import System.IO (Handle)
+import Safe (headNote, lastNote)
 
 {--
     Jonathan Irish
@@ -129,14 +130,33 @@ data PairedAln = PairedAln { r1prim :: AlignedRead
                            , r2prim :: AlignedRead
                            , r1secs :: [AlignedRead]
                            , r2secs :: [AlignedRead]
-                           , ampliconinfo :: B.ByteString
+                           , ampliconinfo :: Amplicon
                            } deriving (Eq, Show, Generic)
 
 instance Ord PairedAln where
     compare = comparing r1prim
            <> comparing r2prim
 
-defaultPairedAln = PairedAln defaultAlignment defaultAlignment [] [] ""
+defaultPairedAln = PairedAln defaultAlignment
+                             defaultAlignment
+                             []
+                             []
+                             defaultAmplicon
+
+data Amplicon = Amplicon { ampchr :: UChr
+                         , ampstart :: Integer
+                         , ampend :: Integer
+                         , fpname :: B.ByteString
+                         , rpname :: B.ByteString
+                         , ampsize :: Integer
+                         } deriving (Eq, Show, Generic)
+
+instance Ord Amplicon where
+    compare = comparing ampchr
+           <> comparing ampstart
+           <> comparing ampsize
+
+defaultAmplicon = Amplicon NONE 0 0 "NONE" "NONE" 0
 
 -- 180206 add BEDPE primer coordinates input file option
 data BEDPE = BEDPE { chr1 :: UChr
@@ -658,7 +678,7 @@ alnsToPairedAln as =
         (r2pl, r2secs) = partition primaryR2filter r2s
         r1p = headsafeAln r1pl
         r2p = headsafeAln r2pl
-    in PairedAln r1p r2p r1secs r2secs "" -- 200528
+    in PairedAln r1p r2p r1secs r2secs defaultAmplicon
 
 -- 180321 non-conduit read name-set SAM file reading function
 readSAMnameset :: FilePath -> IO [[AlignedRead]]
@@ -701,7 +721,7 @@ parsePairedAlns = do
 
 pairedalnparser = do
     r1 <- alnparser
-    A.endOfLine
+    A.skipSpace -- A.endOfLine
     let setname = qname r1
     secrs <- A.many1 ((secalnp setname) <* A.endOfLine)
     return $ alnsToPairedAln (r1 : secrs)
@@ -748,7 +768,7 @@ secalnp setqname = do
     seq <- txtfieldp
     A.space
     qual <- txtfieldp
-    A.space
+    skipspaceNotnewline -- A.skipSpace -- A.space
     optfs <- optfieldstotalp -- optfieldsp
     -- A.endOfLine -- 180321 for parsing alignment pairs
     let flag = f
@@ -988,7 +1008,7 @@ alnparserEOL = do
 -- from Alignments
 alnparser :: A.Parser AlignedRead
 alnparser = do
-    qn <- txtfieldp
+    qn <- nametxtfieldp
     A.space
     f <- A.decimal
     A.space
@@ -1010,7 +1030,7 @@ alnparser = do
     seq <- txtfieldp
     A.space
     qual <- txtfieldp
-    A.space
+    skipspaceNotnewline -- A.space
     optfs <- optfieldstotalp -- optfieldsp
     let flag = f
         strand = case testBit flag 4 of
@@ -1048,7 +1068,7 @@ alnparser = do
 -- 180329 keep homogenous type throughout conduit stream
 hdralnparserEOL :: A.Parser PairedAln
 hdralnparserEOL = do
-    hlines <- A.many1 samhdrparserEOL
+    hlines <- A.many1 samhdrparser2EOL
     -- 190426 check "SO" (sort order) header line and abort if not "queryname"
     -- primerclip stream execution requires name-sorted input SAM
     let sohdrlines = filter (\x -> B.isInfixOf "SO:" x) hlines
@@ -1057,7 +1077,8 @@ hdralnparserEOL = do
                      _       -> maybe "unknown" id
                                     $ B.stripPrefix "SO:"
                                     $ snd
-                                    $ B.breakSubstring "SO:" (head sohdrlines)
+                                    $ B.breakSubstring "SO:"
+                                                       (headNote "No SO headerlines" sohdrlines)
     case sohdr of
             "queryname"  -> return Queryname
             "coordinate" -> error "[ERROR] Input SAM file is coordinate sorted: please name-sort input SAM"
@@ -1128,6 +1149,29 @@ samhdrparserEOL = do
     A.endOfLine
     let hdrln = B.append "@" fields
     return hdrln
+
+-- 200603 handle @SQ header line with separate parser
+samhdrSQparserEOL :: A.Parser B.ByteString
+samhdrSQparserEOL = do
+    sqprefix <- A.string "@SQ"
+    A.skipSpace
+    sqname <- txtfieldp
+    A.skipSpace
+    _ <- nametxtfieldp
+    A.skipSpace
+    lengthfld <- A.takeTill (A.inClass "\n\r")
+    A.endOfLine
+    let sqhdrln = B.concat [ sqprefix
+                           , "\t"
+                           , sqname
+                           , "\t"
+                           , lengthfld
+                           ]
+    return sqhdrln
+
+-- 200603
+samhdrparser2EOL :: A.Parser B.ByteString
+samhdrparser2EOL = samhdrSQparserEOL <|> samhdrparserEOL
 
 -- 190426 check sort order header line (should be "queryname")
 {--
@@ -1214,30 +1258,39 @@ parseCigar = A.parseOnly $ cigarP <|> starcigarP
 
 -- used on single cigar ByteString
 getAlignedLength cigcol = sumMatches ciglist
-    where ciglist = head $ U.rights $ cig
+    where ciglist = headNote "getAlignedLength: cig empty list" $ U.rights $ cig
           cig = (parseCigar cigcol) : []
 
 sumMatches :: [(Integer, B.ByteString)] -> Integer
-sumMatches cigs = sum [ x | (x, y) <- cigs, y == "M" || y == "D" ]
+sumMatches cigs = sum [ x | (x, y) <- cigs
+                      , y == "M" || y == "=" || y == "X" || y == "D" ]
 
 sumSeqMatches :: [(Integer, B.ByteString)] -> Integer
 sumSeqMatches cigs = sum [ x | (x, y) <- cigs, y == "M"
+                                            || y == "="
+                                            || y == "X"
                                             || y == "I"
                                             || y == "S" ]
 
 sumRefMatches :: [(Integer, B.ByteString)] -> Integer
-sumRefMatches cigs = sum [ x | (x, y) <- cigs, y == "M" || y == "D" ]
+sumRefMatches cigs = sum [ x | (x, y) <- cigs
+                         , y == "M" || y == "=" || y == "X" || y == "D" ]
 
 -- 181115 include CIGAR 'S' OPs in sequence length arithmetic
 sumSoftClipCigOps :: [(Integer, B.ByteString)] -> Int
 sumSoftClipCigOps cigs = genericLength [ o | (_, o) <- cigs, o == "M"
+                                                          || o == "="
+                                                          || o == "X"
                                                           || o == "I"
                                                           || o == "S"
                                                           ]
 
 sumSoftClipCigOpsDepr :: [(Integer, B.ByteString)] -> Int
-sumSoftClipCigOpsDepr cigs = genericLength [ o | (_, o) <- cigs, o == "M"
-                                                          || o == "I" ]
+sumSoftClipCigOpsDepr cigs = genericLength [ o | (_, o) <- cigs
+                                           , o == "M"
+                                          || o == "X"
+                                          || o == "="
+                                          || o == "I" ]
 
 -- 180212
 nomapCigToNomapRname :: B.ByteString -> UChr -> UChr
@@ -1338,16 +1391,23 @@ spaces = A.many1 A.skipSpace
 
 txtfieldp = A.takeTill A.isSpace
 
+-- 200602 allow for spaces (but not tabs) in reference sequence name
+nametxtfieldp = A.takeTill (== '\t')
+
 optfieldsp = A.sepBy' txtfieldp A.space -- parses correctly
 
 optfieldstotalp = A.takeTill (A.inClass "\r\n")
+
+-- 200603
+skipspaceNotnewline = A.skipWhile (\c -> (A.isSpace c) && not (A.inClass "\r\n" c))
 
 -- {--
 -- 181230 parse alt chrom name
 altchromp :: A.Parser UChr
 altchromp = do
     cname <- txtfieldp
-    A.space
+    _ <- nametxtfieldp
+    A.skipSpace -- A.space
     return $ ChrAlt cname
 --}
 
@@ -1500,7 +1560,7 @@ ix :: Int -> V.Vector a -> a
 ix i v = (V.! i) v
 
 -- parsing hack
-exrights x = head $ U.rights $ [x]
+exrights x = headNote "exrights: empty list" $ U.rights $ [x]
 
 -- safer exrights
 exrights2 :: [a] -> Maybe a
@@ -1535,7 +1595,8 @@ flattenPairedAlnFastq p
 trimprimerPairsE :: CMap -> CMap -> PairedAln -> PairedAln
 trimprimerPairsE fmap rmap p =
     let intpaln = addprimerintsPairedAln fmap rmap p
-        updated = makeTrimmedUpdates $ trimPairedAlns intpaln
+        intpalnampinfo = calcAmpliconSize intpaln -- 200601
+        updated = makeTrimmedUpdates $ trimPairedAlns intpalnampinfo
         nonprimZeroLengthRemoved = removeNonPrimaryZeroLengthAlignments updated
     in nonprimZeroLengthRemoved
 
@@ -1565,14 +1626,19 @@ printAlnStreamToFile outfile = P.mapC printAlignmentOrHdr
 --}
 
 -- 200528
-printAjpliconSizesToFile :: P.ZipSink PairedAln (P.ResourceT IO) ()
+printAmpliconSizesToFile :: P.ZipSink PairedAln (P.ResourceT IO) ()
 printAmpliconSizesToFile = P.ZipSink
-                         $ P.mapC (\p -> ampliconinfo $ calcAmpliconSize p)
+                         $ P.mapC showAmpliconInfo -- calcAmpliconSize
                       P..| P.unlinesAsciiC
                       P..| P.sinkFile "ampsizes.txt"
 
--- printAmpliconSize :: PairedAln -> B.ByteString
--- printAmpliconSize pa = undefined
+showAmpliconInfo :: PairedAln -> B.ByteString
+showAmpliconInfo pa =
+    let ampinfo = ampliconinfo pa
+        fnm = fpname ampinfo
+        rnm = rpname ampinfo
+        ampsz = B.pack $ show $ ampsize ampinfo
+    in B.intercalate "\t" [fnm, rnm, ampsz]
 
 flattenAndFlow :: Opts
                -> P.ConduitT PairedAln P.Void (P.ResourceT IO) RunStats
@@ -1673,7 +1739,9 @@ genLogFilePath fp
         where bs = B.pack fp
               parts = B.split '.' bs -- NOTE: should we have an alternate split char e.g. '.'?
               nameroot = B.unpack
-                       $ B.append (head parts) "_primerclip_runstats.log"
+                       $ B.append
+                         (headNote "genLogFilePath: empty fname parts list" parts)
+                         "_primerclip_runstats.log"
 
 -- 171017 calculate trim stats and print to stdout (TODO: print full stats to file)
 calculateTrimStats :: P.ConduitT AlignedRead c (P.ResourceT IO) Integer
@@ -1721,23 +1789,26 @@ calcNotMappedPct = P.getZipSink (calc <$> P.ZipSink calcMappedCount
 -- 200528 calculate amplicon size for each PairedAln
 calcAmpliconSize :: PairedAln -> PairedAln
 calcAmpliconSize pa
-    | diffchroms || noprimerint = pa { ampliconinfo = "NOPRIMERINT" }
+    | diffchroms || noprimerint = pa { ampliconinfo = defaultAmplicon }
     | otherwise  = pa { ampliconinfo = ampinfo }
         where diffchroms = (rname $ r1prim pa) /= (rname $ r2prim pa)
               noprimerint = (null fprimers)
-                         && (null rprimers)
-              productsize = B.pack $ show $ rend - fstart
+                         || (null rprimers)
               fprimers = sort $ join $ [(fint $ r1prim pa), (fint $ r2prim pa)]
               rprimers = reverse $ sort $ join
                        $ [(rint $ r1prim pa), (rint $ r2prim pa)]
-              fprimer = head fprimers -- minimum $ bedstart <$> fprimers
-              rprimer = head rprimers -- maximum $ bedend <$> rprimers
+              fprimer = headNote "calcAmpliconSize: fprimers list empty" fprimers -- minimum $ bedstart <$> fprimers
+              rprimer = headNote "calcAmpliconSize: rprimers list empty" rprimers -- maximum $ bedend <$> rprimers
               fprimername = bedname fprimer
               rprimername = bedname rprimer
               fstart = bedstart fprimer
               rend = bedend rprimer
-              ampinfo = B.intercalate "\t"
-                                      [fprimername, rprimername, productsize]
+              ampinfo = Amplicon (bedchr fprimer)
+                                 fstart
+                                 rend
+                                 fprimername
+                                 rprimername
+                                 (rend - fstart)
 
 -- 180322 add primer intersections to AlignedRead as part of PairedAln record
 -- NOTE: define instance of Functor for PairedAln type to define fmap??
@@ -2010,7 +2081,7 @@ softclipbase cigp
 clip :: CigarMod -> CigarMod
 clip cigp@(CigarMod crpos targpos ss rops trimcmplt)
     | op == "S" = clipS
-    | op == "M" = clipM
+    | (op == "M") || (op == "=") || (op == "X") = clipM -- 200603
     | op == "I" = clipI
     | op == "D" = clipD
         where clipS = cigp { currpos = crpos
@@ -2115,7 +2186,8 @@ checknonzeroCigMatch :: AlignedRead -> Bool
 checknonzeroCigMatch a
     | (isheader a) = True
     | (not $ mapped a) = True
-    | (B.any (== 'M') (trimdcigar a)) = True
+    | (B.any (\c -> (c == 'M') || (c == '=') || (c == 'X'))
+             (trimdcigar a)) = True
     | otherwise = False
 
 -- 180213 check for "no real operator" (picard) in trimmed CIGAR string
@@ -2124,7 +2196,7 @@ checknonzeroCigMatch a
 -- alignments
 clearNonRealCigar :: AlignedRead -> AlignedRead
 clearNonRealCigar a
-    | (any (\x -> elem x ("MIDN" :: String)) (B.unpack $ trimdcigar a)) = a
+    | (any (\x -> elem x ("M=XIDN" :: String)) (B.unpack $ trimdcigar a)) = a
     | otherwise = clearedCigAln
         where clearedCigAln = a { trimdcigar = "*"
                                 , trimdpos = 0
@@ -2320,7 +2392,7 @@ setProperPairMapFlagBit flg = flipSetBit 1 flg
 -- NOTE: prior to converting zero-match CIGAR to "*"
 boolZeroLengthCigar :: B.ByteString -> Bool
 boolZeroLengthCigar cigar = not
-    $ any (\x -> elem x ("MIDN" :: String)) (B.unpack cigar)
+    $ any (\x -> elem x ("M=XIDN" :: String)) (B.unpack cigar)
 
 -- 180411 apply updateTrimdAlnFields to all alignments in PairedAln
 updatePairedAlnTrimdFields :: PairedAln -> PairedAln
@@ -2332,7 +2404,7 @@ updatePairedAlnTrimdFields p = PairedAln (updateTrimdAlnFields $ r1prim p)
 
 updateTrimdAlnFields :: AlignedRead -> AlignedRead
 updateTrimdAlnFields a
-    | (any (\x -> elem x ("MIDN" :: String)) (B.unpack $ trimdcigar a))
+    | (any (\x -> elem x ("M=XIDN" :: String)) (B.unpack $ trimdcigar a))
         && (trimdflag a)
         = trimdAln
     | (trimdflag a) = trimdToZero
