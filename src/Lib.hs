@@ -1161,7 +1161,7 @@ samhdrSQparserEOL = do
     A.skipSpace
     lengthfld <- A.takeTill (A.inClass "\n\r")
     A.endOfLine
-    let sqhdrln = B.concat [ sqprefix
+    let sqhdrln = B.concat [ "@SQ" -- sqprefix
                            , "\t"
                            , sqname
                            , "\t"
@@ -1171,7 +1171,8 @@ samhdrSQparserEOL = do
 
 -- 200603
 samhdrparser2EOL :: A.Parser B.ByteString
-samhdrparser2EOL = samhdrSQparserEOL <|> samhdrparserEOL
+samhdrparser2EOL = sqhdrlinepEOL <|> samhdrparserEOL
+-- samhdrparser2EOL = samhdrSQparserEOL <|> samhdrparserEOL
 
 -- 190426 check sort order header line (should be "queryname")
 {--
@@ -1394,12 +1395,23 @@ txtfieldp = A.takeTill A.isSpace
 -- 200602 allow for spaces (but not tabs) in reference sequence name
 nametxtfieldp = A.takeTill (== '\t')
 
+hdrfieldp = A.takeTill (A.inClass "\t\r\n")
+
 optfieldsp = A.sepBy' txtfieldp A.space -- parses correctly
 
 optfieldstotalp = A.takeTill (A.inClass "\r\n")
 
 -- 200603
 skipspaceNotnewline = A.skipWhile (\c -> (A.isSpace c) && not (A.inClass "\r\n" c))
+
+-- 200615
+sqhdrlinepEOL :: A.Parser B.ByteString
+sqhdrlinepEOL = do
+    sqhdrprefix <- A.string "@SQ"
+    A.skipSpace
+    rest <- A.sepBy' hdrfieldp (A.char '\t')
+    A.endOfLine
+    return $ B.intercalate "\t" $ sqhdrprefix : rest
 
 -- {--
 -- 181230 parse alt chrom name

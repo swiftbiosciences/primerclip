@@ -1,6 +1,6 @@
 ## primerclip
 
-#### primerclip v0.3.9beta primer trimming tool.
+#### primerclip v0.3.9.1beta primer trimming tool.
 
 #### Swift Biosciences Inc. 2017
 
@@ -8,15 +8,15 @@ Primerclip™ is an alignment-based primer trimming tool designed to trim
 primer sequences for Swift Biosciences Accel-Amplicon™ panels. The motivation
 for designing an alignment-based primer trimming tool to increase speed.
 Primerclip uses an algorithm based on genomic intervals of the aligned reads
-rather than the sequence matching approach necessarily used by most trimming
+rather than the sequence matching approach used by most trimming
 tools to trim adapter sequences. Trimming based on alignment position allows
-primerclip to run in significantly less time than sequence-based trim tools,
+primerclip to run in less time than sequence-based trim tools,
 particularly as the size of the targeted panel increases.
 
 If you have questions or would like additional support, please contact
 Swift Technical Support at:
 
-email: TechSupport@swiftbiosci.com
+email: TechSupport@swiftbio.com
 phone: 734 330 2568
 
 #### Accel-Amplicon Trimming and Analysis Files for each Panel
@@ -25,6 +25,8 @@ to download the files needed for trimming primers with primerclip and performing
 targeted variant calling.
 
 __CHANGELOG__
+
+200615 update primerclip for compatibility with SAM v1.4+ CIGAR string specifications
 
 190205 uncommented alternate chromosome parser to enable new arbitrary chromosome
 parsing code.

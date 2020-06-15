@@ -26,14 +26,14 @@ catchIO :: IO a -> (Exception.IOException -> IO a) -> IO a
 catchIO = Exception.catch
 
 version :: Version
-version = Version [0,3,9,0] []
+version = Version [0,3,9,1] []
 bindir, libdir, dynlibdir, datadir, libexecdir, sysconfdir :: FilePath
 
 bindir     = "/home/admin/stack/primerclip/.stack-work/install/x86_64-linux/3f0c863dd7d182fb30b0b70be660352fc230b53ac8c4b8bf581e074e77625bd8/8.2.2/bin"
-libdir     = "/home/admin/stack/primerclip/.stack-work/install/x86_64-linux/3f0c863dd7d182fb30b0b70be660352fc230b53ac8c4b8bf581e074e77625bd8/8.2.2/lib/x86_64-linux-ghc-8.2.2/primerclip-0.3.9.0-29egFp88IgD4PCB5uWWKcn"
+libdir     = "/home/admin/stack/primerclip/.stack-work/install/x86_64-linux/3f0c863dd7d182fb30b0b70be660352fc230b53ac8c4b8bf581e074e77625bd8/8.2.2/lib/x86_64-linux-ghc-8.2.2/primerclip-0.3.9.1-ENS9d9mgpiN1AkwRgsXwFu"
 dynlibdir  = "/home/admin/stack/primerclip/.stack-work/install/x86_64-linux/3f0c863dd7d182fb30b0b70be660352fc230b53ac8c4b8bf581e074e77625bd8/8.2.2/lib/x86_64-linux-ghc-8.2.2"
-datadir    = "/home/admin/stack/primerclip/.stack-work/install/x86_64-linux/3f0c863dd7d182fb30b0b70be660352fc230b53ac8c4b8bf581e074e77625bd8/8.2.2/share/x86_64-linux-ghc-8.2.2/primerclip-0.3.9.0"
-libexecdir = "/home/admin/stack/primerclip/.stack-work/install/x86_64-linux/3f0c863dd7d182fb30b0b70be660352fc230b53ac8c4b8bf581e074e77625bd8/8.2.2/libexec/x86_64-linux-ghc-8.2.2/primerclip-0.3.9.0"
+datadir    = "/home/admin/stack/primerclip/.stack-work/install/x86_64-linux/3f0c863dd7d182fb30b0b70be660352fc230b53ac8c4b8bf581e074e77625bd8/8.2.2/share/x86_64-linux-ghc-8.2.2/primerclip-0.3.9.1"
+libexecdir = "/home/admin/stack/primerclip/.stack-work/install/x86_64-linux/3f0c863dd7d182fb30b0b70be660352fc230b53ac8c4b8bf581e074e77625bd8/8.2.2/libexec/x86_64-linux-ghc-8.2.2/primerclip-0.3.9.1"
 sysconfdir = "/home/admin/stack/primerclip/.stack-work/install/x86_64-linux/3f0c863dd7d182fb30b0b70be660352fc230b53ac8c4b8bf581e074e77625bd8/8.2.2/etc"
 
 getBinDir, getLibDir, getDynLibDir, getDataDir, getLibexecDir, getSysconfDir :: IO FilePath
