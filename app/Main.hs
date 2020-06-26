@@ -24,7 +24,7 @@ main = do
             (fullDesc <> progDesc
                         "Trim PCR primer sequences from aligned reads"
                       <> header
-                        "primerclip -- Swift Biosciences Accel-Amplicon targeted panel primer trimming tool v0.3.9.1")
+                        "primerclip -- Swift Biosciences Accel-Amplicon targeted panel primer trimming tool v0.3.9.2")
     args <- execParser opts
     runstats <- selectRunmode args
     -- writeRunStats (outfilename args) runstats -- 180226

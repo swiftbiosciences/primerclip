@@ -271,6 +271,7 @@ data CigarMod = CigarMod { currpos :: Integer
                          , softclipOps :: B.ByteString
                          , remCigOps :: B.ByteString
                          , trimcomplete :: Bool
+                         , marknotmapped :: Bool -- 200626
                          } deriving (Show, Eq)
 
 type Header = [B.ByteString]
@@ -1946,6 +1947,12 @@ trimfwd a =
                      }
     in trimdaln
 
+
+-- 200625 update POS field for primer clipping that runs into a deletion within the primer
+updateTrimdPos :: CigarMap -> Integer
+updateTrimdPos cmap = undefined
+
+
 -- for alignments intersecting a "reverse" primer only ( ref (+)-strand orientation)
 trimrev :: AlignedRead -> AlignedRead
 trimrev a =
@@ -2012,8 +2019,10 @@ updateCigF fdiff cigar
               cigmod = softclipinterval 0 fdiff (expandcigar cignoclip)
               ftrimCigOps = softclipOps cigmod
               fremCigOps = remCigOps cigmod
-              newcig = contractcigar
-                     $ B.concat [fHs, ftrimCigOps, fremCigOps, rHs]
+              newcig
+                | (marknotmapped cigmod) = "*"
+                | otherwise = contractcigar
+                            $ B.concat [fHs, ftrimCigOps, fremCigOps, rHs]
 
 updateCigR :: Integer -> B.ByteString -> B.ByteString
 updateCigR rdiff cigar
@@ -2038,8 +2047,10 @@ updateCigR rdiff cigar
               rremCigOps = remCigOps cigmod
               revdRawTrimCigOps = B.reverse $ B.concat [ rtrimCigOps
                                                        , rremCigOps ]
-              newcig = contractcigar
-                     $ B.concat [fHs, revdRawTrimCigOps, rHs]
+              newcig
+                | (marknotmapped cigmod) = "*"
+                | otherwise = contractcigar
+                            $ B.concat [fHs, revdRawTrimCigOps, rHs]
 
 updateCigB :: Integer -> Integer -> B.ByteString -> B.ByteString
 updateCigB fdiff rdiff cigar
@@ -2068,8 +2079,10 @@ updateCigB fdiff rdiff cigar
               rremCigOps = remCigOps bcigmod
               revdRawTrimCigOps = B.reverse $ B.concat [ rtrimCigOps
                                                        , rremCigOps]
-              newcig = contractcigar
-                     $ B.concat [fHs, revdRawTrimCigOps, rHs]
+              newcig
+                | (marknotmapped bcigmod) || (marknotmapped fcigmod) = "*"
+                | otherwise = contractcigar
+                            $ B.concat [fHs, revdRawTrimCigOps, rHs]
 
 -- 181116 functions on CigarMod record to track soft-clipping
 
@@ -2079,7 +2092,7 @@ softclipinterval :: Integer -> Integer -> B.ByteString -> CigarMod
 softclipinterval cpos endpos cigops
     | (trimcomplete cigmod) == True = cigmod
     | otherwise = softclipbase cigmod
-        where cigmod = CigarMod cpos endpos B.empty cigops False
+        where cigmod = CigarMod cpos endpos B.empty cigops False False
 
 -- try stateful tracking of soft-clipping
 softclipbase :: CigarMod -> CigarMod
@@ -2091,7 +2104,7 @@ softclipbase cigp
         where loop = softclipbase $ clip cigp
 
 clip :: CigarMod -> CigarMod
-clip cigp@(CigarMod crpos targpos ss rops trimcmplt)
+clip cigp@(CigarMod crpos targpos ss rops trimcmplt mrknotmapd)
     | op == "S" = clipS
     | (op == "M") || (op == "=") || (op == "X") = clipM -- 200603
     | op == "I" = clipI
@@ -2111,11 +2124,16 @@ clip cigp@(CigarMod crpos targpos ss rops trimcmplt)
                            , softclipOps = B.append ss "S"
                            , remCigOps = remops
                            }
+              clipD = cigp { currpos = targpos -- short circuit to completion of clipping
+                           , trimcomplete = True
+                           , marknotmapped = True }
+              {--
               clipD = cigp { currpos = (crpos + 1)
                            , targetpos = targpos
                            , softclipOps = ss
-                           , remCigOps = remops
+                           , remCigOps = rops -- remops
                            }
+              --}
               (op, remops) = B.splitAt 1 rops
 
 showcigar :: (Integer, B.ByteString) -> B.ByteString
