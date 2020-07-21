@@ -948,7 +948,7 @@ getTargetBEDfromMaster mr =
 -- this version of alnparser designed to consume newline chars
 alnparserEOL :: A.Parser AlignedRead
 alnparserEOL = do
-    qn <- txtfieldp
+    qn <- nametxtfieldp -- 200721
     A.space
     f <- A.decimal
     A.space
@@ -969,7 +969,8 @@ alnparserEOL = do
     seq <- txtfieldp
     A.space
     qual <- txtfieldp
-    A.space
+    skipspaceNotnewline -- 200721
+    -- A.space
     optfs <- optfieldstotalp -- optfieldsp
     A.endOfLine
     let flag = f
