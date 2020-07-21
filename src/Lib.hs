@@ -2124,10 +2124,16 @@ clip cigp@(CigarMod crpos targpos ss rops trimcmplt mrknotmapd)
                            , softclipOps = B.append ss "S"
                            , remCigOps = remops
                            }
+              -- 200629 INPROGRESS
+              clipD = cigp { currpos = (crpos + 1)
+                           , targetpos = targpos
+                           , softclipOps = B.replicate (B.length ss) 'H' -- replace Ss with Hs upstream of deletion
+                           , remCigOps = remops
+                           }
+              {--
               clipD = cigp { currpos = targpos -- short circuit to completion of clipping
                            , trimcomplete = True
                            , marknotmapped = True }
-              {--
               clipD = cigp { currpos = (crpos + 1)
                            , targetpos = targpos
                            , softclipOps = ss
