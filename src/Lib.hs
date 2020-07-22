@@ -896,7 +896,7 @@ getMasterFile fp = do
         failcnt = length failedlinenums
         parsestatus = parsechkMaster nr mcnt failedlinenums
         parsefailrecs = B.unlines $ (mlines !!) <$> failedlinenums
-    -- B.hPutStrLn stderr $ B.pack parsestatus -- 191119
+    B.hPutStrLn stderr $ B.pack parsestatus -- 191119
     -- putStrLn parseStatus
     B.writeFile "masterparsefails.log" $ parsefailrecs
     return succs
@@ -1987,11 +1987,12 @@ expandcigar cmap = B.concat
                 $ [ B.replicate (intgr2int n) $ B.head c
                   | (n, c) <- cmap ]
 
+-- 200204 try using bang patterns to reduce mem allocation
 expandcigar2 :: CigarMap -> [(Integer, B.ByteString)]
 expandcigar2 cmap =
-    let ops = B.singleton <$> (B.unpack $ expandcigar cmap)
-        opslen = genericLength ops
-        ixs = [1..opslen] :: [Integer]
+    let !ops = B.singleton <$> (B.unpack $ expandcigar cmap)
+        !opslen = genericLength ops
+        !ixs = [1..opslen] :: [Integer]
     in zipWith (,) ixs ops
 
 -- convert expanded cigar string to standard CIGAR format (after trim update)

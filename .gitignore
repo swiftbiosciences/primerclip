@@ -1,2 +1,11 @@
 testinput
 testfiles
+*.hi
+*.o
+.hsenv*
+cabal-dev/
+.stack-work/
+.stack-work-devel/
+.cabal-sandbox
+cabal.sandbox.config
+*.swp

@@ -48,10 +48,10 @@ library
                      , DeriveAnyClass
   default-language:    Haskell2010
 
-executable primerclip-test191119-3
+executable primerclip-profile-200204-strict1
   hs-source-dirs:      app
   main-is:             Main.hs
-  ghc-options:         -O2 -static -optl-static -optl-pthread
+  ghc-options:         -O2 -static -optl-static -optl-pthread -rtsopts -funfolding-use-threshold=16 -optc-O3
   build-depends:       base
                      , primerclip
                      , bytestring
