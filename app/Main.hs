@@ -32,7 +32,7 @@ main = do
             (fullDesc <> progDesc
                         "Trim PCR primer sequences from aligned reads"
                       <> header full_hdr)
-    putStrLn full_hdr
+    -- putStrLn full_hdr
     args <- execParser opts
     runstats <- selectRunmode args
     -- writeRunStats (outfilename args) runstats -- 180226

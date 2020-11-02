@@ -442,11 +442,13 @@ optargs = Opts
        <> long "single-end"
        <> help "add this switch to trim primers from single-end alignments"
         )
-    <*> option auto
+    <*> strOption
         ( short 'f'
        <> long "fastq"
        <> help "add this option to trim primers from single-end alignments"
-       <> metavar "FASTQ_OUTFILEPREFIX" )
+       <> metavar "FASTQ_OUTFILEPREFIX"
+       <> showDefault
+       <> value "NONE")
     {--
     <*> option auto
         ( long "outfile"
@@ -455,9 +457,11 @@ optargs = Opts
        <> metavar "OUTFILENAME" )
     --}
     <*> argument str (metavar "PRIMER_COORDS_INFILE")
-    <*> some (argument str (metavar "FILES..."))
+    <*> ((some (argument str (metavar "FILES..."))) <|> (pure []))
     -- <*> argument str (metavar "SAM_INFILE")
     -- <*> argument str (metavar "OUTPUT_SAM_FILENAME")
+
+
 
 -- record to store command line arguments
 data Opts = Opts { bedpeformat :: Bool
@@ -1532,6 +1536,7 @@ printAlnStreamToFile outfile = P.mapC printAlignmentOrHdr
 
 printAlnStreamToStdout :: P.MonadIO m => P.ConduitM AlignedRead c m ()
 printAlnStreamToStdout = P.mapC printAlignmentOrHdr
+                    P..| P.unlinesAsciiC
                     P..| P.stdoutC
 
 {--
