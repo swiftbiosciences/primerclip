@@ -29,7 +29,7 @@ import qualified Data.IntMap.Strict as I
 import Data.Maybe
 import qualified Data.Set as S
 import GHC.Generics (Generic)
-import System.IO (Handle)
+import System.IO (Handle, stderr, hPutStrLn)
 import Safe (headNote, lastNote)
 
 {--
@@ -424,120 +424,9 @@ instance Show UChr where
     show (ChrAlt bs) = B.unpack bs
     show NONE = "*"
 
--- 170508 add alternate "show" function to print chromosome names based on
--- config flag setting
-showChrom :: ChromNameFormat -> UChr -> String
-showChrom fmt chr = case (fmt, chr) of
-    (GRC,Chr1)   -> "1"
-    (GRC,Chr2)   -> "2"
-    (GRC,Chr3)   -> "3"
-    (GRC,Chr4)   -> "4"
-    (GRC,Chr5)   -> "5"
-    (GRC,Chr6)   -> "6"
-    (GRC,Chr7)   -> "7"
-    (GRC,Chr8)   -> "8"
-    (GRC,Chr9)   -> "9"
-    (GRC,Chr10)  -> "10"
-    (GRC,Chr11)  -> "11"
-    (GRC,Chr12)  -> "12"
-    (GRC,Chr13)  -> "13"
-    (GRC,Chr14)  -> "14"
-    (GRC,Chr15)  -> "15"
-    (GRC,Chr16)  -> "16"
-    (GRC,Chr17)  -> "17"
-    (GRC,Chr18)  -> "18"
-    (GRC,Chr19)  -> "19"
-    (GRC,Chr20)  -> "20"
-    (GRC,Chr21)  -> "21"
-    (GRC,Chr22)  -> "22"
-    (GRC,ChrX)   -> "X"
-    (GRC,ChrY)   -> "Y"
-    (GRC,ChrM)   -> "MT"
-    (UCSC,Chr1)  -> "chr1"
-    (UCSC,Chr2)  -> "chr2"
-    (UCSC,Chr3)  -> "chr3"
-    (UCSC,Chr4)  -> "chr4"
-    (UCSC,Chr5)  -> "chr5"
-    (UCSC,Chr6)  -> "chr6"
-    (UCSC,Chr7)  -> "chr7"
-    (UCSC,Chr8)  -> "chr8"
-    (UCSC,Chr9)  -> "chr9"
-    (UCSC,Chr10) -> "chr10"
-    (UCSC,Chr11) -> "chr11"
-    (UCSC,Chr12) -> "chr12"
-    (UCSC,Chr13) -> "chr13"
-    (UCSC,Chr14) -> "chr14"
-    (UCSC,Chr15) -> "chr15"
-    (UCSC,Chr16) -> "chr16"
-    (UCSC,Chr17) -> "chr17"
-    (UCSC,Chr18) -> "chr18"
-    (UCSC,Chr19) -> "chr19"
-    (UCSC,Chr20) -> "chr20"
-    (UCSC,Chr21) -> "chr21"
-    (UCSC,Chr22) -> "chr22"
-    (UCSC,ChrX)  -> "chrX"
-    (UCSC,ChrY)  -> "chrY"
-    (UCSC,ChrM)  -> "chrM"
-    otherwise    -> "*"
-
 -- 200317 generic chromosome name parser (NOTE: will parse chromosomes in lexical order)
 uchrparser :: A.Parser UChr
 uchrparser = altchromp
-
-        {--
-            ((A.string "chr10" <* A.space) >> return Chr10)
-        <|>  ((A.string "chr11" <* A.space) >> return Chr11)
-        <|>  ((A.string "chr12" <* A.space) >> return Chr12)
-        <|>  ((A.string "chr13" <* A.space) >> return Chr13)
-        <|>  ((A.string "chr14" <* A.space) >> return Chr14)
-        <|>  ((A.string "chr15" <* A.space) >> return Chr15)
-        <|>  ((A.string "chr16" <* A.space) >> return Chr16)
-        <|>  ((A.string "chr17" <* A.space) >> return Chr17)
-        <|>  ((A.string "chr18" <* A.space) >> return Chr18)
-        <|>  ((A.string "chr19" <* A.space) >> return Chr19)
-        <|>  ((A.string "chr20" <* A.space) >> return Chr20)
-        <|>  ((A.string "chr21" <* A.space) >> return Chr21)
-        <|>  ((A.string "chr22" <* A.space) >> return Chr22)
-        <|>  ((A.string "chr1" <* A.space) >> return Chr1)
-        <|>  ((A.string "chr2" <* A.space) >> return Chr2)
-        <|>  ((A.string "chr3" <* A.space) >> return Chr3)
-        <|>  ((A.string "chr4" <* A.space) >> return Chr4)
-        <|>  ((A.string "chr5" <* A.space) >> return Chr5)
-        <|>  ((A.string "chr6" <* A.space) >> return Chr6)
-        <|>  ((A.string "chr7" <* A.space) >> return Chr7)
-        <|>  ((A.string "chr8" <* A.space) >> return Chr8)
-        <|>  ((A.string "chr9" <* A.space) >> return Chr9)
-        <|>  ((A.string "chrX" <* A.space) >> return ChrX)
-        <|>  ((A.string "chrY" <* A.space) >> return ChrY)
-        <|>  ((A.string "chrM" <* A.space) >> return ChrM)
-        <|>  ((A.string "10" <* A.space) >> return C10)
-        <|>  ((A.string "11" <* A.space) >> return C11)
-        <|>  ((A.string "12" <* A.space) >> return C12)
-        <|>  ((A.string "13" <* A.space) >> return C13)
-        <|>  ((A.string "14" <* A.space) >> return C14)
-        <|>  ((A.string "15" <* A.space) >> return C15)
-        <|>  ((A.string "16" <* A.space) >> return C16)
-        <|>  ((A.string "17" <* A.space) >> return C17)
-        <|>  ((A.string "18" <* A.space) >> return C18)
-        <|>  ((A.string "19" <* A.space) >> return C19)
-        <|>  ((A.string "20" <* A.space) >> return C20)
-        <|>  ((A.string "21" <* A.space) >> return C21)
-        <|>  ((A.string "22" <* A.space) >> return C22)
-        <|>  ((A.string "1" <* A.space) >> return C1)
-        <|>  ((A.string "2" <* A.space) >> return C2)
-        <|>  ((A.string "3" <* A.space) >> return C3)
-        <|>  ((A.string "4" <* A.space) >> return C4)
-        <|>  ((A.string "5" <* A.space) >> return C5)
-        <|>  ((A.string "6" <* A.space) >> return C6)
-        <|>  ((A.string "7" <* A.space) >> return C7)
-        <|>  ((A.string "8" <* A.space) >> return C8)
-        <|>  ((A.string "9" <* A.space) >> return C9)
-        <|>  ((A.string "X" <* A.space) >> return CX)
-        <|>  ((A.string "Y" <* A.space) >> return CY)
-        <|>  ((A.string "MT" <* A.space) >> return CMT)
-        <|>  ((A.string "*" <* A.space) >> return NONE)
-        <|>  altchromp -- 181230
-        --}
 
 -- 180206 include option for providing primer coords in BED or BEDPE format
 -- in addition to master file
@@ -553,27 +442,33 @@ optargs = Opts
        <> long "single-end"
        <> help "add this switch to trim primers from single-end alignments"
         )
-    <*> switch
+    <*> option auto
         ( short 'f'
        <> long "fastq"
-       <> help "add this switch to trim primers from single-end alignments"
-        )
+       <> help "add this option to trim primers from single-end alignments"
+       <> metavar "FASTQ_OUTFILEPREFIX" )
+    <*> option auto
+        ( long "outfile"
+       <> short 'o'
+       <> help "Output filename"
+       <> metavar "OUTFILENAME" )
     <*> argument str (metavar "PRIMER_COORDS_INFILE")
     <*> argument str (metavar "SAM_INFILE")
-    <*> argument str (metavar "OUTPUT_SAM_FILENAME")
+    -- <*> argument str (metavar "OUTPUT_SAM_FILENAME")
 
 -- record to store command line arguments
 data Opts = Opts { bedpeformat :: Bool
                  , sereads :: Bool
-                 , fqout :: Bool
+                 , fqout :: String -- 201102
+                 , optoutfilename :: String -- 201102
                  , incoordsfile :: String
                  , insamfile :: String
-                 , outfilename :: String
+                 -- , outfilename :: String
                  } deriving (Show, Eq)
 
 defaultCmdOpts = Opts False
                       False
-                      False
+                      "NONE"
                       "NONE"
                       "NONE"
                       "NONE"
@@ -871,7 +766,7 @@ getMasterFile fp = do
         failcnt = length failedlinenums
         parseStatus = parsechkMaster nr mcnt failedlinenums
         parsefailrecs = B.unlines $ (mlines !!) <$> failedlinenums
-    putStrLn parseStatus
+    hPutStrLn stderr parseStatus
     B.writeFile "masterparsefails.log" $ parsefailrecs
     return succs
 
@@ -1631,6 +1526,10 @@ printAlnStreamToFile outfile = P.mapC printAlignmentOrHdr
                           P..| P.unlinesAsciiC
                           P..| P.sinkFile outfile
 
+printAlnStreamToStdout :: P.MonadIO m => P.ConduitM AlignedRead c m ()
+printAlnStreamToStdout = P.mapC printAlignmentOrHdr
+                    P..| P.stdoutC
+
 {--
 printAlnStreamToFile :: P.MonadResource m => FilePath
                      -> P.ConduitT AlignedRead c m ()
@@ -1654,6 +1553,7 @@ showAmpliconInfo pa =
         ampsz = B.pack $ show $ ampsize ampinfo
     in B.intercalate "\t" [fnm, rnm, ampsz]
 
+{--
 flattenAndFlow :: Opts
                -> P.ConduitT PairedAln P.Void (P.ResourceT IO) RunStats
 flattenAndFlow args = P.mapC flattenPairedAln
@@ -1661,6 +1561,16 @@ flattenAndFlow args = P.mapC flattenPairedAln
                  P..| P.filterC (\x -> (qname x) /= "NONE") -- remove dummy alignments
                  P..| P.getZipSink
                          (P.ZipSink (printAlnStreamToFile (outfilename args))
+                                     *> calcRunStats)
+--}
+
+flattenAndFlow' :: Opts
+                -> P.ConduitT PairedAln P.Void (P.ResourceT IO) RunStats
+flattenAndFlow' args = P.mapC flattenPairedAln
+                 P..| P.concatC
+                 P..| P.filterC (\x -> (qname x) /= "NONE") -- remove dummy alignments
+                 P..| P.getZipSink
+                         (P.ZipSink printAlnStreamToStdout
                                      *> calcRunStats)
 
 -- 190701 print to R1 and R2 FASTQ output files

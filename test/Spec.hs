@@ -21,7 +21,6 @@ main :: IO ()
 main = do
     putStrLn "test suite under construction."
 
-
 -- test functions for running in main
 
 -- 180329 parse and trim as PairedAln sets
