@@ -447,22 +447,26 @@ optargs = Opts
        <> long "fastq"
        <> help "add this option to trim primers from single-end alignments"
        <> metavar "FASTQ_OUTFILEPREFIX" )
+    {--
     <*> option auto
         ( long "outfile"
        <> short 'o'
        <> help "Output filename"
        <> metavar "OUTFILENAME" )
+    --}
     <*> argument str (metavar "PRIMER_COORDS_INFILE")
-    <*> argument str (metavar "SAM_INFILE")
+    <*> some (argument str (metavar "FILES..."))
+    -- <*> argument str (metavar "SAM_INFILE")
     -- <*> argument str (metavar "OUTPUT_SAM_FILENAME")
 
 -- record to store command line arguments
 data Opts = Opts { bedpeformat :: Bool
                  , sereads :: Bool
                  , fqout :: String -- 201102
-                 , optoutfilename :: String -- 201102
+                 -- , optoutfilename :: String -- 201102
                  , incoordsfile :: String
-                 , insamfile :: String
+                 , filenames :: [String]
+                 -- , insamfile :: String
                  -- , outfilename :: String
                  } deriving (Show, Eq)
 
@@ -470,8 +474,8 @@ defaultCmdOpts = Opts False
                       False
                       "NONE"
                       "NONE"
-                      "NONE"
-                      "NONE"
+                      []
+                      -- "NONE"
 
 -- 170927 parse master file for primer and target intervals
 masterparser :: A.Parser MasterRecord
@@ -1553,20 +1557,19 @@ showAmpliconInfo pa =
         ampsz = B.pack $ show $ ampsize ampinfo
     in B.intercalate "\t" [fnm, rnm, ampsz]
 
-{--
-flattenAndFlow :: Opts
+-- {--
+flattenAndFlow :: FilePath
                -> P.ConduitT PairedAln P.Void (P.ResourceT IO) RunStats
-flattenAndFlow args = P.mapC flattenPairedAln
+flattenAndFlow outf = P.mapC flattenPairedAln
                  P..| P.concatC
                  P..| P.filterC (\x -> (qname x) /= "NONE") -- remove dummy alignments
                  P..| P.getZipSink
-                         (P.ZipSink (printAlnStreamToFile (outfilename args))
+                         (P.ZipSink (printAlnStreamToFile outf)
                                      *> calcRunStats)
 --}
 
-flattenAndFlow' :: Opts
-                -> P.ConduitT PairedAln P.Void (P.ResourceT IO) RunStats
-flattenAndFlow' args = P.mapC flattenPairedAln
+flattenAndFlow' :: P.ConduitT PairedAln P.Void (P.ResourceT IO) RunStats
+flattenAndFlow' = P.mapC flattenPairedAln
                  P..| P.concatC
                  P..| P.filterC (\x -> (qname x) /= "NONE") -- remove dummy alignments
                  P..| P.getZipSink
