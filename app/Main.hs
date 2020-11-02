@@ -44,9 +44,9 @@ main = do
 selectRunmode :: Opts -> IO RunStats
 selectRunmode args
     | (not isSE) && (not isFQ) = runPrimerTrimmingPE args
-    -- | (not isSE) && isFQ = runPrimerTrimmingPE_Fastq args
+    | (not isSE) && isFQ = runPrimerTrimmingPE_Fastq args
     | isSE && (not isFQ) = runPrimerTrimmingSE args
-    -- | isSE && isFQ = runPrimerTrimmingSE_Fastq args
+    | isSE && isFQ = runPrimerTrimmingSE_Fastq args
     | otherwise = error "[!] Invalid command line arguments: please check your command"
         where isSE = sereads args
               isFQ = "NONE" /= fqout args
@@ -69,14 +69,6 @@ runPrimerTrimmingPE args = do
             | (length fnames) < 2 = flattenAndFlow'
             | otherwise           = flattenAndFlow outsamfile
                 where outsamfile  = last fnames
-        {--
-        insource = case (filenames args) of
-                    []            -> P.stdinC
-                    (insamfile:_) -> P.sourceFile insamfile
-        outsink = case (filenames args) of
-                    []               -> flattenAndFlow'
-                    (_:outsamfile:_) -> flattenAndFlow outsamfile
-        --}
     (fmp, rmp) <- createprimerbedmaps args
     runstats <- P.runConduitRes
               $ insource
@@ -88,35 +80,19 @@ runPrimerTrimmingPE args = do
                         (P.ZipSink outsink <* printAmpliconSizesToFile)
     return runstats
 
-{--
--- 180329 parse and trim as PairedAln sets
-runPrimerTrimmingPE :: Opts -> IO RunStats
-runPrimerTrimmingPE args = do
-    (fmp, rmp) <- createprimerbedmaps args
-    runstats <- P.runConduitRes
-              $ P.sourceFile (insamfile args)
-              P..| CA.conduitParserEither parseSAMtoPairedAlns -- parsePairedAlnsOrHdr
-              P..| P.mapC rightOrDefaultPaird -- convert parse fails to defaultAlignment
-              P..| P.concatC
-              P..| P.mapC (trimprimerPairsE fmp rmp)
-              P..| P.mapC flattenPairedAln
-              P..| P.concatC
-              P..| P.filterC (\x -> (qname x) /= "NONE") -- remove dummy alignments
-              P..| P.getZipSink
-                       (P.ZipSink (printAlnStreamToFile (outfilename args))
-                                *> calcRunStats) -- 180226
-    return runstats
---}
-
-{--
 -- 190701 output as primer-trimmed FASTQ files
 runPrimerTrimmingPE_Fastq :: Opts -> IO RunStats
 runPrimerTrimmingPE_Fastq args = do
+    let fnames = filenames args
+        outfnameprefix = fqout args
+        insource
+            | null fnames          = P.stdinC
+            | (head fnames) == "-" = P.stdinC
+            | otherwise            = P.sourceFile insamfile
+                where insamfile = head fnames -- should be safe
     (fmp, rmp) <- createprimerbedmaps args
-    -- let outfnameprefix = reverse $ drop 4 $ reverse $ outfilename args
-    let outfnameprefix = fqout args
     runstats <- P.runConduitRes
-              $ P.sourceFile (insamfile args)
+              $ insource
               P..| CA.conduitParserEither parseSAMtoPairedAlns -- parsePairedAlnsOrHdr
               P..| P.mapC rightOrDefaultPaird -- convert parse fails to defaultAlignment
               P..| P.concatC
@@ -129,7 +105,6 @@ runPrimerTrimmingPE_Fastq args = do
                             (printAlnStreamToFastqs outfnameprefix)
                                 *> calcRunStats)
     return runstats
---}
 
 -- 181125 parse and trim single-end read alignments
 runPrimerTrimmingSE :: Opts -> IO RunStats
@@ -144,14 +119,6 @@ runPrimerTrimmingSE args = do
             | (length fnames) < 2 = printAlnStreamToStdout
             | otherwise           = printAlnStreamToFile outsamfile
                 where outsamfile  = last fnames
-    {--
-    let insource = case (optoutfilename args) of
-                    "NONE" -> P.stdinC
-                    _      -> P.sourceFile (insamfile args)
-        outsink = case (optoutfilename args) of
-                    "NONE" -> printAlnStreamToStdout
-                    _      -> printAlnStreamToFile $ optoutfilename args
-    --}
     (fmp, rmp) <- createprimerbedmaps args
     runstats <- P.runConduitRes
               $ insource
@@ -162,20 +129,21 @@ runPrimerTrimmingSE args = do
               P..| P.filterC (\x -> (qname x) /= "NONE") -- remove dummy alignments
               P..| P.getZipSink
                        (P.ZipSink outsink *> calcRunStats) -- 201102
-                       {--
-                       (P.ZipSink (printAlnStreamToFile (outfilename args))
-                                *> calcRunStats) -- 201102--}
     return runstats
 
-{--
 -- 190702 print R1 FASTQ file as output
 runPrimerTrimmingSE_Fastq :: Opts -> IO RunStats
 runPrimerTrimmingSE_Fastq args = do
+    let fnames = filenames args
+        outfnameprefix = fqout args
+        insource
+            | null fnames          = P.stdinC
+            | (head fnames) == "-" = P.stdinC
+            | otherwise            = P.sourceFile insamfile
+                where insamfile = head fnames -- should be safe
     (fmp, rmp) <- createprimerbedmaps args
-    -- let outfnameprefix = reverse $ drop 4 $ reverse $ outfilename args
-    let outfnameprefix = fqout args
     runstats <- P.runConduitRes
-              $ P.sourceFile (insamfile args)
+              $ insource
               P..| CA.conduitParserEither parseSingleAlnsOrHdr
               P..| P.mapC rightOrDefaultSingle -- convert parse fails to defaultAlignment
               P..| P.concatC
@@ -184,6 +152,5 @@ runPrimerTrimmingSE_Fastq args = do
               P..| P.getZipSink
                        (P.ZipSink
                             (printAlnStreamToFastq1 outfnameprefix)
-                                *> calcRunStats) -- 180226 --}
+                                *> calcRunStats) -- 180226
     return runstats
---}

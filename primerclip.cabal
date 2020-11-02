@@ -32,7 +32,6 @@ library
                      , conduit-combinators
                      , conduit-extra
                      , safe
-                     , githash
   extensions:          FlexibleContexts
                      , OverloadedStrings
                      , GADTs
@@ -49,7 +48,7 @@ library
                      , DeriveAnyClass
   default-language:    Haskell2010
 
-executable primerclip-test-201030
+executable primerclip-test-201102
   hs-source-dirs:      app
   main-is:             Main.hs
   ghc-options:         -O2 -static -optl-static -optl-pthread -rtsopts -funfolding-use-threshold=16 -optc-O3
@@ -57,6 +56,7 @@ executable primerclip-test-201030
                      , primerclip
                      , bytestring
                      , either
+                     , githash
                      , process
                      , monad-control
                      , vector

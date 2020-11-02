@@ -26,9 +26,16 @@ main = do
 -- 180329 parse and trim as PairedAln sets
 runPrimerTrimmingPETest :: Opts -> IO [AlignedRead]
 runPrimerTrimmingPETest args = do
+    -- determine input type (stdin or filename)
+    let fnames = filenames args
+        insource
+            | null fnames          = P.stdinC
+            | (head fnames) == "-" = P.stdinC
+            | otherwise            = P.sourceFile insamfile
+                where insamfile = head fnames -- should be safe
     (fmp, rmp) <- createprimerbedmaps args
     trimdalns <- P.runConduitRes
-              $ P.sourceFile (insamfile args)
+              $ insource
               P..| CA.conduitParserEither parseSAMtoPairedAlns -- parsePairedAlnsOrHdr
               P..| P.mapC rightOrDefaultPaird -- convert parse fails to defaultAlignment
               P..| P.concatC
@@ -42,9 +49,15 @@ runPrimerTrimmingPETest args = do
 -- 181125 parse and trim single-end read alignments
 runPrimerTrimmingSEtest :: Opts -> IO [AlignedRead]
 runPrimerTrimmingSEtest args = do
+    let fnames = filenames args
+        insource
+            | null fnames          = P.stdinC
+            | (head fnames) == "-" = P.stdinC
+            | otherwise            = P.sourceFile insamfile
+                where insamfile = head fnames -- should be safe
     (fmp, rmp) <- createprimerbedmaps args
     trimdalns <- P.runConduitRes
-              $ P.sourceFile (insamfile args)
+              $ insource
               P..| CA.conduitParserEither parseSingleAlnsOrHdr
               P..| P.mapC rightOrDefaultSingle -- convert parse fails to defaultAlignment
               P..| P.concatC
@@ -56,9 +69,15 @@ runPrimerTrimmingSEtest args = do
 -- 181230
 -- readSAMTest :: Opts -> IO [AlignedRead]
 readSAMTest args = do
+    let fnames = filenames args
+        insource
+            | null fnames          = P.stdinC
+            | (head fnames) == "-" = P.stdinC
+            | otherwise            = P.sourceFile insamfile
+                where insamfile = head fnames -- should be safe
     (fmp, rmp) <- createprimerbedmaps args
     alns <- P.runConduitRes
-              $ P.sourceFile (insamfile args)
+              $ insource
               P..| CA.conduitParserEither parseSAMtoPairedAlns -- parsePairedAlnsOrHdr
               P..| P.mapC rightOrDefaultPaird -- P..| P.concatC
               P..| P.sinkList
