@@ -449,17 +449,8 @@ optargs = Opts
        <> metavar "FASTQ_OUTFILEPREFIX"
        <> showDefault
        <> value "NONE")
-    {--
-    <*> option auto
-        ( long "outfile"
-       <> short 'o'
-       <> help "Output filename"
-       <> metavar "OUTFILENAME" )
-    --}
     <*> argument str (metavar "PRIMER_COORDS_INFILE")
     <*> ((some (argument str (metavar "FILES..."))) <|> (pure []))
-    -- <*> argument str (metavar "SAM_INFILE")
-    -- <*> argument str (metavar "OUTPUT_SAM_FILENAME")
 
 
 
@@ -467,11 +458,8 @@ optargs = Opts
 data Opts = Opts { bedpeformat :: Bool
                  , sereads :: Bool
                  , fqout :: String -- 201102
-                 -- , optoutfilename :: String -- 201102
                  , incoordsfile :: String
                  , filenames :: [String]
-                 -- , insamfile :: String
-                 -- , outfilename :: String
                  } deriving (Show, Eq)
 
 defaultCmdOpts = Opts False
@@ -479,7 +467,6 @@ defaultCmdOpts = Opts False
                       "NONE"
                       "NONE"
                       []
-                      -- "NONE"
 
 -- 170927 parse master file for primer and target intervals
 masterparser :: A.Parser MasterRecord
@@ -545,6 +532,7 @@ bedPEparser = do
     s2 <- A.decimal
     A.skipSpace
     e2 <- A.decimal
+    A.skipSpace
     bname <- txtfieldp
     -- ignore any additional columns present
     return $ BEDPE c1 s1 e1 c2 s2 e2 bname
@@ -1180,7 +1168,10 @@ sumSeqMatches cigs = sum [ x | (x, y) <- cigs, y == "M"
 
 sumRefMatches :: [(Integer, B.ByteString)] -> Integer
 sumRefMatches cigs = sum [ x | (x, y) <- cigs
-                         , y == "M" || y == "=" || y == "X" || y == "D" ]
+                         , y == "M"
+                        || y == "="
+                        || y == "X"
+                        || y == "D" ]
 
 -- 181115 include CIGAR 'S' OPs in sequence length arithmetic
 sumSoftClipCigOps :: [(Integer, B.ByteString)] -> Int
@@ -1194,8 +1185,8 @@ sumSoftClipCigOps cigs = genericLength [ o | (_, o) <- cigs, o == "M"
 sumSoftClipCigOpsDepr :: [(Integer, B.ByteString)] -> Int
 sumSoftClipCigOpsDepr cigs = genericLength [ o | (_, o) <- cigs
                                            , o == "M"
-                                          || o == "X"
                                           || o == "="
+                                          || o == "X"
                                           || o == "I" ]
 
 -- 180212
