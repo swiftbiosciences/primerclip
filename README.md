@@ -6,7 +6,7 @@
 
 Primerclip™ is an alignment-based primer trimming tool designed to trim
 primer sequences for Swift Biosciences Accel-Amplicon™ panels. The motivation
-for designing an alignment-based primer trimming tool to increase speed.
+for designing an alignment-based primer trimming tool is to increase speed.
 Primerclip uses an algorithm based on genomic intervals of the aligned reads
 rather than the sequence matching approach necessarily used by most trimming
 tools to trim adapter sequences. Trimming based on alignment position allows
@@ -17,6 +17,7 @@ If you have questions or would like additional support, please contact
 Swift Technical Support at:
 
 email: TechSupport@swiftbiosci.com
+
 phone: 734 330 2568
 
 #### Accel-Amplicon Trimming and Analysis Files for each Panel
@@ -53,11 +54,11 @@ Test that the binary is accessible by running
 
 If the path to the binary is returned, the binary should be ready to use.
 If no path is returned, please double-check the location of the binary,
-ensure that the folder with the binary is on your PATH:
+and ensure that the folder with the binary is on your PATH:
 
     echo $PATH
 
-and ensure that execute permissions are set for the binary:
+Also ensure that execute permissions are set for the binary:
 
     chmod a+x /path/to/primerclip
 
@@ -91,7 +92,7 @@ trimming and alignment steps:
     bwa mem). Input is trimmed FASTQ file(s), output should be in SAM
     format. NOTE: specifying an output filename with the ".sam" suffix
     should result in a SAM output file from bwa mem; if your input file is
-    in BAM foramt, you can use the samtools command below to convert BAM to SAM:
+    in BAM format, you can use the samtools command below to convert BAM to SAM:
 
         samtools view -h yourbamfile.bam > yoursamfile.sam
 
@@ -118,7 +119,7 @@ Primerclip takes three arguments and one optional switch:
 3. the desired name of the output file containing the primer-trimmed
     alignments in SAM format. [outputfilename.sam]
 
-The primerclip output file is in SAM format; it is common to convert The
+The primerclip output file is in SAM format; it is common to convert the
 output SAM file to sorted and indexed BAM format using samtools or
 picard-tools. The sorted, indexed BAM can then be used for downstream analysis
 steps.
